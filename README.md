@@ -23,22 +23,26 @@
 
 **본 프로젝트는 사용자에게 실시간 번역 및 자막 송출 기능을 통해 언어의 장벽을 넘어서 교육에 이르는 경험을 제공합니다.**
 
-Palette는 크게 다음과 같은 기능을 지원합니다
+**토크토피아**는 크게 다음과 같은 기능을 지원합니다
 1. 랜덤 화상 채팅
 2. 친구와 화상 채팅
 
 ## 시작 가이드
 ### 요구사항
 버전에 맞는 환경이 필요합니다.
-- Back-End
-  - OpenJdk x.x.x
-  - Java 11
-  - SpringBoot x.x.x
-  - MySQL x.x.x
 
-- Front-End
-  - Node.js x.x.x
-  - Npm x.x.x
+FE
+- React 18.2.0
+- Node.js 18.16.1
+- TypeScript
+- React-Redux 8.1.1
+- CSS3 or styled-components
+- Figma
+
+BE
+- Jdk 11
+- SpringBoot 2.7.1
+
 
 ### 설치
 ```
