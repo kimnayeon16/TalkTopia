@@ -1,0 +1,34 @@
+# application.yml
+server:
+  port: 8080
+
+# Spring
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    username: root
+    password: root
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # (create / create-drop / update / validate)
+
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+  # JWT
+  security:
+    jwt:
+      secret: B204RandomSecretKeyWithSuiinsiuuuuuuu1
+      token-validity-in-seconds: 86400000 # Jwt 1day
+
+# log level
+logging:
+  level:
+    root: INFO
