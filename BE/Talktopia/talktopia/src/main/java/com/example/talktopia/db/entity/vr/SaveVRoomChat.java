@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,17 +22,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "save_video_room_chat")
 public class SaveVRoomChat {
 	@Id
-	@GeneratedValue
-	private long svrc_id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "svrc_id")
+	private long svrcId;
 
-	@Column(length = 500)
-	private String svrc_sender;
+	@Column(length = 500, name = "svrc_sender")
+	private String svrcSender;
 
-	@Column
-	private String svrc_messag;
+	@Column(name = "svrc_messag")
+	private String svrcMessag;
 
 	@CreatedDate
-	private LocalDateTime svrc_send_time;
+	@Column(name = "svrc_send_time")
+	private LocalDateTime svrcSendTime;
 
 	@ManyToOne
 	@JoinColumn(name = "saveVroom_id") // user_id는 User 엔티티의 기본 키를 참조하는 외래 키

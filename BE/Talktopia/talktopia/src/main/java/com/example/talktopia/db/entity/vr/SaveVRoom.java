@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,14 +27,17 @@ import lombok.NoArgsConstructor;
 public class SaveVRoom {
 
 	@Id
-	@GeneratedValue
-	private long svr_no;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "svr_no")
+	private long svrNo;
 
 	@CreatedDate
-	private LocalDateTime svr_create_time;
+	@Column(name = "svr_create_time")
+	private LocalDateTime svrCreateTime;
 
 	@LastModifiedDate
-	private LocalDateTime svr_close_time;
+	@Column(name = "svr_close_time")
+	private LocalDateTime svrCloseTime;
 
 	@ManyToOne
 	@JoinColumn(name = "vroom_id") // user_id는 User 엔티티의 기본 키를 참조하는 외래 키
