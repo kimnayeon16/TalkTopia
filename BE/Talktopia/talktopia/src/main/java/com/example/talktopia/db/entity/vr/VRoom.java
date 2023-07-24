@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,26 +27,29 @@ import lombok.NoArgsConstructor;
 public class VRoom {
 
 	@Id
-	@GeneratedValue
-	private long vr_session;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "vr_session")
+	private long vrSession;
 
-	@Column(length = 50)
-	private int vr_max_cnt;
+	@Column(length = 50, name = "vr_max_cnt")
+	private int vrMaxCnt;
 
-	@Column
-	private boolean vr_enter;
+	@Column(name = "vr_enter")
+	private boolean vrEnter;
 
-	@Column
-	private boolean vr_type;
+	@Column(name = "vr_type")
+	private boolean vrType;
 
 	@CreatedDate
-	private LocalDateTime vr_create_time;
+	@Column(name = "vr_create_time")
+	private LocalDateTime vrCreateTime;
 
-	@Column
-	private int vr_curr_cnt;
+	@Column(name = "vr_curr_cnt")
+	private int vrCurrCnt;
 
 	@LastModifiedDate
-	private LocalDateTime vr_close_time;
+	@Column(name = "vr_close_time")
+	private LocalDateTime vrCloseTime;
 
 	@OneToMany(mappedBy = "vRoom")
 	List<User> user = new ArrayList<>();

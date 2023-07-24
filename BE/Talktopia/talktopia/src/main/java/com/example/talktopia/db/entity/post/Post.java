@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -15,15 +17,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "post")
 public class Post {
 
 	@Id
-	@GeneratedValue
-	private long p_no;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "p_no")
+	private long pNo;
 
-	@Column(length = 500)
-	private String p_content;
+	@Column(length = 500, name = "p_content")
+	private String pContent;
 
 	@CreatedDate
-	private LocalDateTime p_create_time;
+	@Column(name = "p_create_time")
+	private LocalDateTime pCreateTime;
 }
