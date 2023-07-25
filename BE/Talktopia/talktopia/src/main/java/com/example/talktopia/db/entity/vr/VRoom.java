@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,19 +18,21 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import com.example.talktopia.db.entity.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "video_room")
 public class VRoom {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "vr_session")
-	private long vrSession;
+	private String vrSession;
 
 	@Column(length = 50, name = "vr_max_cnt")
 	private int vrMaxCnt;
@@ -51,12 +54,17 @@ public class VRoom {
 	@Column(name = "vr_close_time")
 	private LocalDateTime vrCloseTime;
 
-	@OneToMany(mappedBy = "vRoom")
-	List<User> user = new ArrayList<>();
-	//... getter, setter
-
-	@OneToMany(mappedBy = "vRoom")
-	List<SaveVRoom> saveVRooms = new ArrayList<>();
-	//... getter, setter
-
+	@OneToMany(mappedBy = "vRoom", cascade = CascadeType.ALL)
+	private List<Participants> participantsList = new ArrayList<>();
+	@Builder
+	public VRoom(String vrSession, int vrMaxCnt, boolean vrEnter, boolean vrType, LocalDateTime vrCreateTime,
+		int vrCurrCnt, LocalDateTime vrCloseTime) {
+		this.vrSession = vrSession;
+		this.vrMaxCnt = vrMaxCnt;
+		this.vrEnter = vrEnter;
+		this.vrType = vrType;
+		this.vrCreateTime = vrCreateTime;
+		this.vrCurrCnt = vrCurrCnt;
+		this.vrCloseTime = vrCloseTime;
+	}
 }

@@ -32,7 +32,8 @@ public class UserController {
 
 	// 로그인
 	@PostMapping("/login")
-	public ResponseEntity<UserLoginResponse> loginUser(@RequestBody UserLoginRequest userLoginRequest) {
+	public ResponseEntity<UserLoginResponse> loginUser(@RequestBody UserLoginRequest userLoginRequest) throws
+		Exception {
 		UserLoginResponse userLoginResponse = userService.login(userLoginRequest);
 		return ResponseEntity.ok().body(userLoginResponse);
 	}

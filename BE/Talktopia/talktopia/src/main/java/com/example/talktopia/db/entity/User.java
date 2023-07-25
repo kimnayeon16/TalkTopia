@@ -1,5 +1,9 @@
 package com.example.talktopia.db.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.talktopia.api.request.UserJoinRequest;
+import com.example.talktopia.db.entity.vr.Participants;
 import com.example.talktopia.db.entity.vr.VRoom;
 
 import lombok.Builder;
@@ -39,9 +45,8 @@ public class User {
 	@Column(length = 45, name = "user_email")
 	private String userEmail;
 
-	@ManyToOne
-	@JoinColumn(name = "vr_session")
-	private VRoom vRoom;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Participants> participantsList = new ArrayList<>();
 
 	@Builder
 	public User(UserJoinRequest userJoinRequest) {

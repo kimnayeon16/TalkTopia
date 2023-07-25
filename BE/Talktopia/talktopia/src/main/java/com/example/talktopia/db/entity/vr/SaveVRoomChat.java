@@ -37,6 +37,5 @@ public class SaveVRoomChat {
 	private LocalDateTime svrcSendTime;
 
 	@ManyToOne
-	@JoinColumn(name = "saveVroom_id") // user_id는 User 엔티티의 기본 키를 참조하는 외래 키
 	private SaveVRoom saveVRoom;
 }
