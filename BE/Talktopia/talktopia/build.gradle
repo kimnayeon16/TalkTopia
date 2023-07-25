@@ -41,6 +41,9 @@ dependencies {
     implementation 'io.openvidu:openvidu-java-client:2.19.0'
     implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
 
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {

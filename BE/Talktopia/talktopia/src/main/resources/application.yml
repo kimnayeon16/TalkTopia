@@ -24,6 +24,18 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5Dialect
 
+  #NaverMail
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: wbo1026@naver.com
+    password: QuddnR1026!
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+      mail.smtp.starttls.enable: true
+
   # JWT
   security:
     jwt:
@@ -38,3 +50,4 @@ logging:
 openvidu:
   url: "http://localhost:4443"
   secret: "MY_SECRET"
+
