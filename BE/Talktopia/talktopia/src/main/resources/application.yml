@@ -6,9 +6,11 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://i9b204.p.ssafy.io:50000/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+#    url: jdbc:mysql://i9b204.p.ssafy.io:50000/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
     username: root
-    password: q1w2e3r4
+#    password: q1w2e3r4
+    password: root
 
   # JPA
   jpa:
