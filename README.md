@@ -115,6 +115,8 @@ $ npm run start
 
 
 ## 아키텍쳐
-아키텍쳐 그림...
+
+### ERD
+![ERD.png](./ERD.png)
 
 
