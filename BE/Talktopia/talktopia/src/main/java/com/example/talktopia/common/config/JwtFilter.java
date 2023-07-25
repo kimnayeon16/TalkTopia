@@ -1,6 +1,8 @@
 package com.example.talktopia.common.config;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -8,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.talktopia.api.service.UserService;
 import com.example.talktopia.common.util.JwtProvider;
 
 import io.jsonwebtoken.Claims;
@@ -38,7 +40,8 @@ public class JwtFilter extends OncePerRequestFilter {
 		final String authorization = request.getHeader("Authorization");
 
 		// 토큰을 안 보내거나 Bearer가 없으면
-		if (!jwtProvider.notExistTokenOrNotBearer(authorization)) {
+		System.out.println(jwtProvider.existTokenOrNotBearer(authorization));
+		if (!JwtProvider.existTokenOrNotBearer(authorization)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -46,28 +49,15 @@ public class JwtFilter extends OncePerRequestFilter {
 		// Token꺼내기 - Bearer 제거
 		String token = authorization.split(" ")[1];
 
-		// Token 기간 확인
-		if (jwtProvider.isExpired(token, secretKey)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-
-
-
-		// Set UsernamePasswordAuthenticationToken
-		// 유저아이디를 꺼내서 DB에서 PW를 가져와서
-		// UsernamePasswordAuthenticationToken을 생성하는건 너무 위험하지않나?
-
 		// token에서 클레임 꺼내기
 		Claims claims = jwtProvider.extractClaims(token, secretKey);
 
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(claims.getId(), null);
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+			claims.get("userId"), null, List.of(new SimpleGrantedAuthority("USER")));
 
-		log.info("getId: ",claims.getId());
-
-		// Detail
 		authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 		filterChain.doFilter(request, response);
+
 	}
 }

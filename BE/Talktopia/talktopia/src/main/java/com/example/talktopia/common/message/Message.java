@@ -1,14 +1,12 @@
-package com.example.talktopia.api.response;
+package com.example.talktopia.common.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinResponse {
+public class Message {
 	private String msg;
 }

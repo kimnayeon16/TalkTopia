@@ -13,7 +13,7 @@ spring:
   # JPA
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       # (create / create-drop / update / validate)
 
     properties:
@@ -25,8 +25,7 @@ spring:
   # JWT
   security:
     jwt:
-      secret: B204RandomSecretKeyWithSuiinsiuuuuuuu1
-      token-validity-in-seconds: 86400000 # Jwt 1day
+      secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
 # log level
 logging:

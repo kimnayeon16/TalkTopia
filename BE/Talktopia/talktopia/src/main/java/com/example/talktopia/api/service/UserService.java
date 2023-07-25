@@ -1,13 +1,20 @@
 package com.example.talktopia.api.service;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.common.util.JwtProvider;
+import com.example.talktopia.db.entity.Token;
 import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.repository.TokenRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,63 +25,65 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
 
+	private final PasswordEncoder bCryptPasswordEncoder;
 	private final UserRepository userRepository;
+	private final TokenRepository tokenRepository;
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
 
-	@Value("${spring.security.jwt.token-validity-in-seconds}")
-	private Long expiredMs;
+	private Long accessExpiredMs = 30 * 60 * 1000L; // 1시간
+	private Long refreshExpiredMs = 7 * 24 * 60 * 60 * 1000L; // 1주일
 
-	public User joinUser(UserJoinRequest userJoinRequest) {
-		User user = new User(userJoinRequest);
+	// 회원가입
+	public UserJoinResponse joinUser(UserJoinRequest userJoinRequest) {
+		isExistUser(userJoinRequest.getUserId());
 
-		userRepository.save(user);
-
-		return user;
+		// req -> toEntity -> save
+		User joinUser = userJoinRequest.toEntity();
+		joinUser.hashPassword(bCryptPasswordEncoder);
+		userRepository.save(joinUser);
+		return new UserJoinResponse("회원 가입에 성공하였습니다.");
 	}
 
-	public UserLoginResponse login(UserLoginRequest userLoginRequest) throws Exception {
-
-		// Response 초기화
-		UserLoginResponse userLoginResponse = new UserLoginResponse();
-
-		// Request 받은 Id가 실제 DB에 존재하는지 확인
-		User searchUser = checkUserId(userLoginRequest.getUserId());
-
-		// 1. 해당 유저가 없거나, 비밀번호가 다를경우
-		if (!checkUserPw(searchUser.getUserPw(), userLoginRequest.getUserPw())) {
-			userLoginResponse.setMsg("로그인에 실패하였습니다.");
-		} else {
-			// 토큰 생성
-			String accessToken = JwtProvider.createJwt(userLoginRequest.getUserId()
-				, searchUser.getUserName(), secretKey, expiredMs);
-
-			userLoginResponse.setMsg("로그인에 성공하였습니다.");
-			userLoginResponse.setUserId(searchUser.getUserId());
-			userLoginResponse.setAccessToken(accessToken);
-		}
-
-		return userLoginResponse;
+	public void isExistUser(String userJoinRequestId) {
+		userRepository.findByUserId(userJoinRequestId).ifPresent(user -> {
+			throw new RuntimeException("회원 아이디가 존재합니다");
+		});
 	}
 
-	/**
-	 * Request의 userPw와 실제 User DB의 userPw 비교
-	 * @param reqUserPw: 클라이언트가 보내온 pw
-	 * @param getUserPw: User DB에서 꺼내온 pw
-	 * @return: 두 파라미터(pw) 일치 여부 반환
-	 */
-	public boolean checkUserPw(String reqUserPw, String getUserPw) {
-		return reqUserPw.equals(getUserPw);
+	// 로그인
+	public UserLoginResponse login(UserLoginRequest userLoginRequest) {
+		// 아이디를 통해 있는 회원인지 확인
+		User dbSearchUser = isNotExistUser(userLoginRequest.getUserId());
+
+		// 패스워드 확인
+		checkUserPw(userLoginRequest.getUserPw(), dbSearchUser.getUserPw());
+
+		// 토큰 발행
+		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey, accessExpiredMs);
+		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey, refreshExpiredMs);
+		saveRefreshToken(refreshToken); // refreshToken DB에 저장
+
+		return new UserLoginResponse(userLoginRequest.getUserId(), accessToken, refreshToken,
+			JwtProvider.extractClaims(refreshToken, secretKey).getExpiration());
+
 	}
 
-	/**
-	 * Request의 userId가 실제로 DB에 존재하는지 여부 확인
-	 * @param reqUserId
-	 * @return: 해당 Id User 반환
-	 */
-	public User checkUserId(String reqUserId) throws Exception {
-		return userRepository.findByUserId(reqUserId).orElseThrow(()->new Exception("우저가ㅣ없아"));
+	public void saveRefreshToken(String refreshToken) {
+		Token token = new Token();
+		token.setTRefresh(refreshToken);
+		tokenRepository.save(token);
 	}
+
+	public User isNotExistUser(String userLoginRequestId) {
+		return userRepository.findByUserId(userLoginRequestId).orElseThrow(() -> new RuntimeException("로그인에 실패했습니다."));
+	}
+
+	public void checkUserPw(String reqUserPw, String dbSearchUserPw) {
+		if (!bCryptPasswordEncoder.matches(reqUserPw, dbSearchUserPw))
+			throw new RuntimeException("로그인에 실패했습니다.");
+	}
+
 
 }
