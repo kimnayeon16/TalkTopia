@@ -34,7 +34,7 @@ public class UserService {
 		return user;
 	}
 
-	public UserLoginResponse login(UserLoginRequest userLoginRequest) {
+	public UserLoginResponse login(UserLoginRequest userLoginRequest) throws Exception {
 
 		// Response 초기화
 		UserLoginResponse userLoginResponse = new UserLoginResponse();
@@ -73,8 +73,8 @@ public class UserService {
 	 * @param reqUserId
 	 * @return: 해당 Id User 반환
 	 */
-	public User checkUserId(String reqUserId) {
-		return userRepository.findByUserId(reqUserId);
+	public User checkUserId(String reqUserId) throws Exception {
+		return userRepository.findByUserId(reqUserId).orElseThrow(()->new Exception("우저가ㅣ없아"));
 	}
 
 }
