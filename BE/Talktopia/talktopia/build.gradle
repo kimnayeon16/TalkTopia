@@ -36,7 +36,13 @@ dependencies {
 
     implementation 'org.slf4j:slf4j-api'
     testImplementation 'ch.qos.logback:logback-classic'
+<<<<<<< HEAD
+
+    // OpenVidu
+    implementation 'io.openvidu:openvidu-java-client:2.19.0'
+=======
     implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
+>>>>>>> 7f8dd6bc03dfdd033f8ec4f4a3a382c55666b4a1
 }
 
 tasks.named('test') {

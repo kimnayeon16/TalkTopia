@@ -32,3 +32,8 @@ spring:
 logging:
   level:
     root: INFO
+
+# OpenVidu
+openvidu:
+  url: "http://localhost:4443"
+  secret: "MY_SECRET"
