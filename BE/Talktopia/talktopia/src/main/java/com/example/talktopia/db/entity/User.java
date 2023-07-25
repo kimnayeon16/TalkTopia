@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.db.entity.vr.Participants;
@@ -49,11 +52,16 @@ public class User {
 	private List<Participants> participantsList = new ArrayList<>();
 
 	@Builder
-	public User(UserJoinRequest userJoinRequest) {
-		this.userId = userJoinRequest.getUserId();
-		this.userPw = userJoinRequest.getUserPw();
-		this.userName = userJoinRequest.getUserName();
-		this.userEmail = userJoinRequest.getUserEmail();
+	public User(long userNo, String userId, String userPw, String userName, String userEmail) {
+		this.userNo = userNo;
+		this.userId = userId;
+		this.userPw = userPw;
+		this.userName = userName;
+		this.userEmail = userEmail;
 	}
 
+	public User hashPassword(PasswordEncoder passwordEncoder) {
+		this.userPw = passwordEncoder.encode(this.userPw);
+		return this;
+	}
 }
