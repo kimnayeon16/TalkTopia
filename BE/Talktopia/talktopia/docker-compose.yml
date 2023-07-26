@@ -3,7 +3,7 @@ services:
   server:
     container_name: server
     build:
-      context: ./BE/Talktopia/talktopia
+      context: ./BE/Talktopia/talktopia/Dockerfile
       args:
         SERVER_MODE: prod
     ports:
