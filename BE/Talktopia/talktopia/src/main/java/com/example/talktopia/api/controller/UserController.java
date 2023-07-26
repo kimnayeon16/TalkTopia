@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.talktopia.api.request.UserCheckEmailRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.request.UserNewTokenRequest;
+import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.api.response.UserCheckEmailResponse;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.service.UserMailService;
 import com.example.talktopia.api.service.UserService;
 import com.example.talktopia.common.message.Message;
-import com.example.talktopia.db.entity.User;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,9 +60,15 @@ public class UserController {
 	public ResponseEntity<UserCheckEmailResponse> checkEmail(@RequestBody UserCheckEmailRequest userCheckEmailRequest) throws
 		Exception {
 		UserCheckEmailResponse userCheckEmailResponse = new UserCheckEmailResponse();
-		System.out.println("=====================================================" + userCheckEmailRequest.getUserEmail());
 		userCheckEmailResponse.setCode(userMailService.sendSimpleMessage(userCheckEmailRequest.getUserEmail()));
 		return ResponseEntity.ok().body(userCheckEmailResponse);
 	}
+
+	// 토큰 재발급
+	// @PostMapping("/reqNewToken")
+	// public ResponseEntity<UserNewTokenResponse> createNewToken(@RequestBody UserNewTokenRequest userNewTokenRequest) {
+	// 	UserNewTokenResponse userNewTokenResponse = userService.reCreateNewToken(userNewTokenRequest);
+	// 	return ResponseEntity.ok().body(userNewTokenResponse);
+	// }
 
 }

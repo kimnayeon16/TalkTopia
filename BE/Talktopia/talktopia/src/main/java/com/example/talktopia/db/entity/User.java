@@ -51,6 +51,10 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Participants> participantsList = new ArrayList<>();
 
+	// 1대1 관계 설정
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Token token;
+
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail) {
 		this.userNo = userNo;
