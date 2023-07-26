@@ -40,7 +40,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		final String authorization = request.getHeader("Authorization");
 
 		// 토큰을 안 보내거나 Bearer가 없으면
-		System.out.println(jwtProvider.existTokenOrNotBearer(authorization));
 		if (!JwtProvider.existTokenOrNotBearer(authorization)) {
 			filterChain.doFilter(request, response);
 			return;

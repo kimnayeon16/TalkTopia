@@ -1,8 +1,5 @@
 package com.example.talktopia.api.service;
 
-import java.util.Date;
-import java.util.TimeZone;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +29,7 @@ public class UserService {
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
 
+	// Token validate Time
 	private Long accessExpiredMs = 30 * 60 * 1000L; // 1시간
 	private Long refreshExpiredMs = 7 * 24 * 60 * 60 * 1000L; // 1주일
 
@@ -84,6 +82,5 @@ public class UserService {
 		if (!bCryptPasswordEncoder.matches(reqUserPw, dbSearchUserPw))
 			throw new RuntimeException("로그인에 실패했습니다.");
 	}
-
 
 }
