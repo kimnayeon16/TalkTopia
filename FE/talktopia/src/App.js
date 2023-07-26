@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<Start></Start>}></Route>
         <Route path="/join" element={<Join></Join>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
-        <Route path="/main" element={<Home></Home>}></Route>
+        <Route path="/home" element={<Home></Home>}></Route>
         <Route path="/join2" element={<JJoin></JJoin>}></Route>
       </Routes>
     </div>
