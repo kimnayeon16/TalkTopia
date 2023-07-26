@@ -13,7 +13,6 @@ ENV TZ=Asia/Seoul
 #COPY build.gradle .
 #COPY settings.gradle .
 #COPY src src
-#RUN ./gradlew dependencies
 #RUN chmod +x ./gradlew
 #RUN ./gradlew bootJar
 #
