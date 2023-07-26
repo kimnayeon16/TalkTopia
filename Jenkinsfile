@@ -103,22 +103,10 @@ pipeline {
 //             }
 //         }
 
-        stage('Bulid & Run') {
+        stage('Execute start-prod.sh Script') {
             steps {
-                dir('BE'){
-                    sh 'echo " Image Bulid Start"'
-                    script {
-
-//                         업데이트된 코드로 빌드 및 실행
-                        sh 'docker compose up -d'
-                    }
-                }
-            }
-
-            post {
-                failure {
-                    sh 'echo "Bulid Docker Fail"'
-                }
+                // start-prod.sh 스크립트 실행
+                sh './var/jenkins_home/workspace/test3/start-prod.sh'
             }
         }
 
