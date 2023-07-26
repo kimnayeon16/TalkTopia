@@ -106,7 +106,7 @@ pipeline {
         stage('Execute start-prod.sh Script') {
             steps {
                 // start-prod.sh 스크립트 실행
-                sh '/var/jenkins_home/workspace/test3/start-prod.sh'
+                sudo sh '/var/jenkins_home/workspace/test3/start-prod.sh'
             }
         }
 
