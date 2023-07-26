@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.talktopia.api.request.UserCheckEmailRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.response.UserCheckEmailResponse;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
+import com.example.talktopia.api.service.UserMailService;
 import com.example.talktopia.api.service.UserService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.User;
@@ -30,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
 	private final UserService userService;
+	private final UserMailService userMailService;
 
 	// 회원가입
 	@PostMapping("/join")
@@ -49,6 +53,16 @@ public class UserController {
 	public ResponseEntity<UserLoginResponse> loginUser(@RequestBody UserLoginRequest userLoginRequest) {
 		UserLoginResponse userLoginResponse = userService.login(userLoginRequest);
 		return ResponseEntity.ok().body(userLoginResponse);
+	}
+
+	// 이메일 인증
+	@PostMapping("/checkEmail")
+	public ResponseEntity<UserCheckEmailResponse> checkEmail(@RequestBody UserCheckEmailRequest userCheckEmailRequest) throws
+		Exception {
+		UserCheckEmailResponse userCheckEmailResponse = new UserCheckEmailResponse();
+		System.out.println("=====================================================" + userCheckEmailRequest.getUserEmail());
+		userCheckEmailResponse.setCode(userMailService.sendSimpleMessage(userCheckEmailRequest.getUserEmail()));
+		return ResponseEntity.ok().body(userCheckEmailResponse);
 	}
 
 }
