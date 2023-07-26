@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
+import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.Token;
 import com.example.talktopia.db.entity.User;
@@ -64,7 +66,7 @@ public class UserService {
 		saveRefreshToken(refreshToken); // refreshToken DB에 저장
 
 		return new UserLoginResponse(userLoginRequest.getUserId(), accessToken, refreshToken,
-			JwtProvider.extractClaims(refreshToken, secretKey).getExpiration());
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration());
 
 	}
 
@@ -83,4 +85,13 @@ public class UserService {
 			throw new RuntimeException("로그인에 실패했습니다.");
 	}
 
+	// 새로운 토큰 요청
+	// public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {
+	// 	// refreshToken을 통해 userId check
+	// 	// 존재하지않으면 Exception 처리
+	//
+	// 	// 존재하면 새로 만들어서
+	// 	// Response
+	//
+	// }
 }
