@@ -96,7 +96,9 @@ public class UserService {
 	// 	Token token = tokenRepository.findByTokenUserNo(user.getUserNo()).orElseThrow(() -> new RuntimeException("로그인된 사용자가 아닙니다."));
 	//
 	// 	// 4. 있으면 새로 발급해주고 resp
-	// 	// 5. 없으면 가입된 사용자가 아닙니다.
+	// 	String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey, accessExpiredMs);
+	// 	String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey, refreshExpiredMs);
+	//
 	//
 	// }
 }
