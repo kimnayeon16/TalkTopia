@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 @Slf4j
-@CrossOrigin(origins = "http://172.30.1.3:3000/", methods = {RequestMethod.POST, RequestMethod.GET,
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET,
 	RequestMethod.OPTIONS})
 public class UserController {
 
