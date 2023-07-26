@@ -87,11 +87,16 @@ public class UserService {
 
 	// 새로운 토큰 요청
 	// public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {
-	// 	// refreshToken을 통해 userId check
-	// 	// 존재하지않으면 Exception 처리
+	// 	// 1. userReq로 userId와 refreshToken 받음
+	// 	// 2. userId로 userNo 찾음
+	// 	String reqUserId = userNewTokenRequest.getUserId();
+	// 	User user = userRepository.findByUserId(reqUserId).orElseThrow(() -> new RuntimeException("가입된 사용자가 아닙니다."));
 	//
-	// 	// 존재하면 새로 만들어서
-	// 	// Response
+	// 	// 3. userNo로 Token테이블에서 token 검색
+	// 	Token token = tokenRepository.findByTokenUserNo(user.getUserNo()).orElseThrow(() -> new RuntimeException("로그인된 사용자가 아닙니다."));
+	//
+	// 	// 4. 있으면 새로 발급해주고 resp
+	// 	// 5. 없으면 가입된 사용자가 아닙니다.
 	//
 	// }
 }

@@ -31,15 +31,15 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    runtimeOnly 'com.h2.database:h2'
+//    runtimeOnly 'com.h2.database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     implementation 'org.slf4j:slf4j-api'
     testImplementation 'ch.qos.logback:logback-classic'
 
     // OpenVidu
-    implementation 'io.openvidu:openvidu-java-client:2.19.0'
-    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
+//    implementation 'io.openvidu:openvidu-java-client:2.19.0'
+//    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.18.0'
 
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'

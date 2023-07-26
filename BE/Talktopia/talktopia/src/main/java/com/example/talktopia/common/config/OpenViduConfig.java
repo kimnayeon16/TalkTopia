@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.openvidu.java.client.OpenVidu;
+// import io.openvidu.java.client.OpenVidu;
 
 @Configuration
 public class OpenViduConfig {
@@ -15,8 +15,8 @@ public class OpenViduConfig {
 	@Value("${openvidu.secret}")
 	private String openViduSecret;
 
-	@Bean
-	public OpenVidu openVidu() {
-		return new OpenVidu(openViduUrl, openViduSecret);
-	}
+	// @Bean
+	// public OpenVidu openVidu() {
+	// 	return new OpenVidu(openViduUrl, openViduSecret);
+	// }
 }
