@@ -13,7 +13,7 @@ function Join(){
     const [userPwConfirm, setUserPwConfirm] = useState(''); //확인 pw 담을 state
     const [userName, setUserName] = useState(''); //name 담을 state
     const [userEmailPrefix, setUserEmailPrefix] = useState(''); //email prefix 담을 state
-    const [userEmailDomain, setUserEmailDomain] = useState(''); //email domain 담을 state
+    const [userEmailDomain, setUserEmailDomain] = useState('default'); //email domain 담을 state
     const [userEmail, setUserEmail] = useState(''); //email 형식 담을 state
     const [userLan, setUserLan] = useState(''); //lan 담을 state
 
@@ -22,9 +22,10 @@ function Join(){
 
     const [idValid, setIdValid] = useState(false);
     const [pwValid, setPwValid] = useState(false);
-    const [emailValid, setEmailValid] = useState(false);
+    // const [emailValid, setEmailValid] = useState(false);
 
     //이메일 인증 확인
+    const [emailSelect, setEmailSelect] = useState(true);
     const [emailConfirmWindow, setEmailConfirmWindow] = useState(false);
     const [emailConfirm, setEmailConfirm] = useState("");
     const [emailConfirmServer, setEmailConfirmServer] = useState("");
@@ -100,9 +101,11 @@ function Join(){
 
         if(em === "gmail.com" || em === "hotmail.com" || em === "outlook.com" || em === "yahoo.com" || em === "icloud.com" ||
         em === "naver.com" || em === "daum.net" || em === "nate.com" || em === "hanmail.com"){
-            setEmailValid(true);
+            // setEmailValid(true);
+            setEmailSelect(true);
         }else{
-            setEmailValid(false);
+            // setEmailValid(false);
+            setEmailSelect(false);
         }
 
         setUserEmail(`${userEmailPrefix}@${e.target.value}`);
@@ -144,36 +147,54 @@ function Join(){
 
     //이메일 인증 확인
     const checkEmail = async (e) => {
-        setEmailConfirmWindow(true);
         e.preventDefault();
 
-        const requestBody = {
-            userEmail
-        };
-        const requestBodyJSON = JSON.stringify(requestBody);
+        console.log("여기 안 오니?")
 
-        await axios
-        .post(`${BACKEND_URL}/api/v1/user/checkEmail`, requestBodyJSON, {headers})
-        .then((response) =>{
-         console.log(response.data);
-         setEmailConfirmServer(response.data);
+        console.log(userEmailDomain);
+        console.log(userEmailDomain.length);
+        console.log(userEmailPrefix.length);
+        
+        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0){
+            setEmailConfirmWindow(true);
+            
+            const requestBody = {
+                userEmail
+            };
+            const requestBodyJSON = JSON.stringify(requestBody);
+            console.log(requestBodyJSON);
+    
+            await axios
+            .post(`${BACKEND_URL}/api/v1/user/checkEmail`, requestBodyJSON, {headers})
+            .then((response) =>{
+             console.log(response.data.code);
+             setEmailConfirmServer(response.data.code);
+    
+            // 백으로부터 메세지가 올 것임
+            console.log('성공');
+            })
+            .catch((error) => {
+            console.log("에러 발생", error);
+            })
+        }else{
+            alert('빠짐없이 입력해주세요.');
+        }
 
-        // 백으로부터 메세지가 올 것임
-        console.log('성공');
-        })
-        .catch((error) => {
-        console.log("에러 발생", error);
-        })
+
+       
     }
 
     const checkEmailVerify = (e) => {
         e.preventDefault();
 
-        console.log(e.target.value);
+        console.log("입력 인증 번호 ", emailConfirm);
+        console.log("서버 인증", emailConfirmServer);
 
-        if(e.target.value === emailConfirmServer){
+        if(emailConfirm === emailConfirmServer){
             setEmailConfirmWindow(false);
             setEmailButton("이메일 인증");
+            setUserEmailCorrect(true);
+            
         }else{
             alert('인증 번호가 올바르지 않습니다.');
         }
@@ -187,8 +208,8 @@ function Join(){
 
        console.log(userIdCorrect);
        console.log(userPwCorrect);
-       console.log(userEmailCorrect);
        console.log(userNameCorrect);
+       console.log(userEmailCorrect);
        console.log(userLanCorrect);
 
        if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
@@ -251,36 +272,46 @@ function Join(){
                 <p>이메일</p>
                 <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler}></input>
                 @
-                {/* <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler} readOnly={emailValid}></input>
-                <select value={userEmailDomain} onChange={onEmailDomainHandler}>
-                    <option value="">직접입력</option>
-                    <option value="gmail.com">gmail.com</option>
-                    <option value="hotmail.com">hotmail.com</option>
-                    <option value="outlook.com">outlook.com</option>
-                    <option value="yahoo.com">yahoo.com</option>
-                    <option value="icloud.com">icloud.com</option>
-                    <option value="naver.com">naver.com</option>
-                    <option value="daum.net">daum.net</option>
-                    <option value="nate.com">nate.com</option>
-                    <option value="hanmail.com">hanmail.com</option>
-                </select><button onClick={checkEmail}>{emailButton}</button><br/> */}
-                <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler} readOnly={emailValid}></input>
-                <select value={userEmailDomain} onChange={onEmailDomainHandler}>
-                    <option value="선택">선택하세요</option>
-                    <option value="직접입력">직접입력</option>
-                    <option value="gmail.com">gmail.com</option>
-                    <option value="hotmail.com">hotmail.com</option>
-                    <option value="outlook.com">outlook.com</option>
-                    <option value="yahoo.com">yahoo.com</option>
-                    <option value="icloud.com">icloud.com</option>
-                    <option value="naver.com">naver.com</option>
-                    <option value="daum.net">daum.net</option>
-                    <option value="nate.com">nate.com</option>
-                    <option value="hanmail.com">hanmail.com</option>
-                </select><button onClick={checkEmail}>{emailButton}</button><br/>
+                {/* <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler} readOnly={emailValid}></input> */}
+                {
+                    emailSelect === true ? 
+                    <>
+                    <select value={userEmailDomain} onChange={onEmailDomainHandler}>
+                        <option value="default" disabled>선택하세요</option>
+                        <option value="">직접입력</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="hotmail.com">hotmail.com</option>
+                        <option value="outlook.com">outlook.com</option>
+                        <option value="yahoo.com">yahoo.com</option>
+                        <option value="icloud.com">icloud.com</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="daum.net">daum.net</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="hanmail.com">hanmail.com</option>
+                    </select>
+                    <button onClick={checkEmail}>{emailButton}</button><br/>
+                    </>
+                    :
+                    <>
+                        <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler}></input>
+                        <p onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>X</p>
+                    </>
+                    
+                }
+                
+                
                 
                 {
-                    emailConfirmWindow === true ? <EmailWindow emailConfirm={emailConfirm} checkEmailVerify={checkEmailVerify} onEmailVerify={onEmailVerify}></EmailWindow>: null
+                    emailConfirmWindow === true ? 
+                    <>
+                        <p>이메일로 전송된 인증코드를 입력해주세요</p>
+                        {/* <input type="text"  onChange={onEmailVerify}></input> */}
+                        <input type="text" value={emailConfirm} onChange={onEmailVerify}></input>
+                            <button onClick={checkEmailVerify}>인증 번호 확인</button>
+                            <p>입력 시간</p>
+                        </>
+                    : 
+                    null
                 }
 
                 <p>사용 언어</p>
@@ -307,15 +338,3 @@ function Join(){
 }
 
 export default Join;
-
-
-function EmailWindow(props){
-    return(
-        <>
-        <p>이메일로 전송된 인증코드를 입력해주세요</p>
-        <input type="text" value={props.emailConfirm} onChange={props.onEmailVerify}></input>
-            <button onClick={props.checkEmailVerify}>인증 번호 확인</button>
-            <p>입력 시간</p>
-        </>
-    )
-}
