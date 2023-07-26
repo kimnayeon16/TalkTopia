@@ -29,7 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 @Slf4j
-@CrossOrigin(origins = "http://172.30.1.3:3000/", methods = {RequestMethod.POST, RequestMethod.GET,RequestMethod.OPTIONS})
+@CrossOrigin(origins = "http://172.30.1.3:3000/", methods = {RequestMethod.POST, RequestMethod.GET,
+	RequestMethod.OPTIONS})
 public class UserController {
 
 	private final UserService userService;
@@ -57,7 +58,8 @@ public class UserController {
 
 	// 이메일 인증
 	@PostMapping("/checkEmail")
-	public ResponseEntity<UserCheckEmailResponse> checkEmail(@RequestBody UserCheckEmailRequest userCheckEmailRequest) throws
+	public ResponseEntity<UserCheckEmailResponse> checkEmail(
+		@RequestBody UserCheckEmailRequest userCheckEmailRequest) throws
 		Exception {
 		UserCheckEmailResponse userCheckEmailResponse = new UserCheckEmailResponse();
 		userCheckEmailResponse.setCode(userMailService.sendSimpleMessage(userCheckEmailRequest.getUserEmail()));

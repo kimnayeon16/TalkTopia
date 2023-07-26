@@ -22,7 +22,7 @@ import com.example.talktopia.db.repository.ParticipantsRepository;
 import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
-import io.openvidu.java.client.OpenVidu;
+// import io.openvidu.java.client.OpenVidu;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("api/v1/room")
 public class VRoomController {
 
-	private OpenVidu openvidu;
+	// private OpenVidu openvidu;
 
 	private Map<String, Integer> mapSessions = new ConcurrentHashMap<>();
 
@@ -46,10 +46,10 @@ public class VRoomController {
 	private final UserRepository userRepository;
 	private final ParticipantsRepository participantsRepository;
 
-	@PostConstruct
-	public void init() {
-		this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
-	}
+	// @PostConstruct
+	// public void init() {
+	// 	this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
+	// }
 
 	@PostMapping("/random")
 	public ResponseEntity<VRoomRes> quickRoom(@RequestBody VRoomReq vRoomReq) throws
