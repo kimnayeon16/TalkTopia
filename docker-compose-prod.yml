@@ -3,11 +3,11 @@ services:
   server:
     container_name: server
     build:
-      context: ./BE
+      context: ./BE/Talktopia/talktopia
       args:
         SERVER_MODE: prod
     ports:
-        - 8080:8080
+        - 10001:10001
     environment:
         - TZ=Asia/Seoul
   nginx:
