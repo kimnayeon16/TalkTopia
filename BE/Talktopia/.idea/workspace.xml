@@ -108,7 +108,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/talktopia/S09P12B204",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/talktopia/S09P12B204/BE/Talktopia/talktopia",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -212,6 +212,7 @@
       <workItem from="1690342831373" duration="18000" />
       <workItem from="1690342862699" duration="49000" />
       <workItem from="1690342919651" duration="3502000" />
+      <workItem from="1690351106585" duration="51000" />
     </task>
     <servers />
   </component>
