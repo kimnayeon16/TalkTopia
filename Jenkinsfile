@@ -45,7 +45,7 @@ pipeline {
                     // sh 'chmod -R 777 /usr/local/bin'
                     // sh 'chmod +x /usr/local/bin/docker-compose'
     //              기존 백그라운드에 돌아가던 컨테이너 중지
-                    sh 'docker compose stop'
+                    sh 'docker-compose -f docker-compose-prod.yml stop'
                 }
 
 
