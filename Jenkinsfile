@@ -35,73 +35,90 @@ pipeline {
         //     }
         // }
 
-//         stage('Docker stop'){
-//             steps {
-//                 dir('BE'){
-//                     sh 'echo "Docker Container Stop"'
-//     //              도커 컴포즈 다운
-//                     // sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
-//     //              해당 도커 컴포즈 다운한 경로로 권한 설정
-//                     // sh 'chmod -R 777 /usr/local/bin'
-//                     // sh 'chmod +x /usr/local/bin/docker-compose'
-//     //              기존 백그라운드에 돌아가던 컨테이너 중지
-//                     sh 'docker compose stop'
-//                 }
-//
-//
-//             }
-//             post {
-//                  failure {
-//                      sh 'echo "Docker Fail"'
-//                 }
-//             }
-//         }
+        stage('Docker stop'){
+            steps {
+                dir('BE'){
+                    sh 'echo "Docker Container Stop"'
+    //              도커 컴포즈 다운
+                    // sh 'curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
+    //              해당 도커 컴포즈 다운한 경로로 권한 설정
+                    // sh 'chmod -R 777 /usr/local/bin'
+                    // sh 'chmod +x /usr/local/bin/docker-compose'
+    //              기존 백그라운드에 돌아가던 컨테이너 중지
+                    sh 'docker compose stop'
+                }
 
-//         stage('RM Docker'){
-//             steps {
-//
-//                 sh 'echo "Remove Docker"'
-//
-//                 //정지된 도커 컨테이너 찾아서 컨테이너 ID로 삭제함
-//                 sh '''
-//                     result=$( docker container ls -a --filter "name=homesketcher*" -q )
-//                     if [ -n "$result" ]
-//                     then
-//                         docker rm $(docker container ls -a --filter "name=homesketcher*" -q)
-//                     else
-//                         echo "No such containers"
-//                     fi
-//                 '''
-//
-//                 // homesketcher로 시작하는 이미지 찾아서 삭제함
-//                 sh '''
-//                     result=$( docker images -f "reference=homesketcher*" -q )
-//                     if [ -n "$result" ]
-//                     then
-//                         docker rmi -f $(docker images -f "reference=homesketcher*" -q)
-//                     else
-//                         echo "No such container images"
-//                     fi
-//                 '''
-//
-//                 // 안쓰는이미지 -> <none> 태그 이미지 찾아서 삭제함
-//                 sh '''
-//                     result=$(docker images -f "dangling=true" -q)
-//                     if [ -n "$result" ]
-//                     then
-//                         docker rmi -f $(docker images -f "dangling=true" -q)
-//                     else
-//                         echo "No such container images"
-//                     fi
-//                 '''
-//
-//             }
-//             post {
-//                  failure {
-//                      sh 'echo "Remove Fail"'
-//                 }
-//             }
-//         }
+
+            }
+            post {
+                 failure {
+                     sh 'echo "Docker Fail"'
+                }
+            }
+        }
+
+        stage('RM Docker'){
+            steps {
+
+                sh 'echo "Remove Docker"'
+
+                //정지된 도커 컨테이너 찾아서 컨테이너 ID로 삭제함
+                sh '''
+                    result=$( docker container ls -a --filter "name=server*" -q )
+                    if [ -n "$result" ]
+                    then
+                        docker rm $(docker container ls -a --filter "name=server*" -q)
+                    else
+                        echo "No such containers"
+                    fi
+                '''
+                sh '''
+                                    result=$( docker container ls -a --filter "name=nginx*" -q )
+                                    if [ -n "$result" ]
+                                    then
+                                        docker rm $(docker container ls -a --filter "name=nginx*" -q)
+                                    else
+                                        echo "No such containers"
+                                    fi
+                                '''
+
+                // homesketcher로 시작하는 이미지 찾아서 삭제함
+                sh '''
+                    result=$( docker images -f "reference=server*" -q )
+                    if [ -n "$result" ]
+                    then
+                        docker rmi -f $(docker images -f "reference=server*" -q)
+                    else
+                        echo "No such container images"
+                    fi
+                '''
+                sh '''
+                                    result=$( docker images -f "reference=nginx*" -q )
+                                    if [ -n "$result" ]
+                                    then
+                                        docker rmi -f $(docker images -f "reference=nginx*" -q)
+                                    else
+                                        echo "No such container images"
+                                    fi
+                                '''
+                // 안쓰는이미지 -> <none> 태그 이미지 찾아서 삭제함
+                sh '''
+                    result=$(docker images -f "dangling=true" -q)
+                    if [ -n "$result" ]
+                    then
+                        docker rmi -f $(docker images -f "dangling=true" -q)
+                    else
+                        echo "No such container images"
+                    fi
+                '''
+
+            }
+            post {
+                 failure {
+                     sh 'echo "Remove Fail"'
+                }
+            }
+        }
         stage('Set Permissions') {
                     steps {
                         // 스크립트 파일에 실행 권한 추가
