@@ -10,6 +10,7 @@ import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
+import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.Token;
 import com.example.talktopia.db.entity.User;

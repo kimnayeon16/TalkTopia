@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.UserCheckEmailRequest;
@@ -72,5 +73,11 @@ public class UserController {
 	// 	UserNewTokenResponse userNewTokenResponse = userService.reCreateNewToken(userNewTokenRequest);
 	// 	return ResponseEntity.ok().body(userNewTokenResponse);
 	// }
+
+	// 로그아웃
+	@GetMapping("/logout/{userId}")
+	public ResponseEntity<Message> logoutUser(@PathVariable String userId) {
+		return ResponseEntity.ok().body(new Message(userId + "가 로그아웃 되었습니다."));
+	}
 
 }
