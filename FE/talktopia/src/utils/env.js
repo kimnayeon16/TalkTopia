@@ -1,3 +1,2 @@
-// export const BACKEND_URL = "http://192.168.31.232:8080";
-export const BACKEND_URL = "http://talktopia.site:10000";
-// export const BACKEND_URL = "http://192.168.31.184:8080";
+export const BACKEND_URL = "http://talktopia.site:10001";
+export const REACT_APP_X_RAPID_API_KEY= "789f74e95cmsh021fc65d6b5b7d5p15af28jsn304a9406d5a4";
