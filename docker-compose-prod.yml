@@ -15,9 +15,6 @@ services:
     build: ./.nginx
     depends_on:
       - server
-    volumes:
-      - .nginx/conf.d:/etc/nginx/conf.d
-      - .nginx/cert:/cert
     ports:
       - 80:80
       - 443:443
