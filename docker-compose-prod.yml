@@ -20,5 +20,5 @@ services:
       - .nginx/zerossl:/var/www/zerossl/.well-known/pki-validation
       - .nginx/cert:/cert
     ports:
-      - 80:80
+      - 81:81
       - 443:443
