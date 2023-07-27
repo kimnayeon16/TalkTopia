@@ -1,6 +1,6 @@
 # application.yml
 server:
-  port: 10000
+  port: 10001
 
 # Spring
 spring:

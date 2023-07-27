@@ -1,6 +1,6 @@
 # application.yml
 server:
-  port: 10000
+  port: 10001
   ssl:
     key-store: classpath:keystore.p12
     key-store-password: ssafy
