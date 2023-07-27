@@ -8,7 +8,8 @@ import Start from './pages/start/Start.js';
 import Join from './pages/auth/Join.js';
 import Login from './pages/auth/Login.js';
 import Home from './pages/home/Home.js';
-import JJoin from './pages/auth/JJoin.js';
+import Translation from './apis/translation/GoogleTranslator.js';
+// import JoinRoom from './pages/video/JoinRoom.js';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/join" element={<Join></Join>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/home" element={<Home></Home>}></Route>
-        <Route path="/join2" element={<JJoin></JJoin>}></Route>
+        <Route path="/translation" element={<Translation></Translation>}></Route>
       </Routes>
     </div>
   );

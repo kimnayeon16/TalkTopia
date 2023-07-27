@@ -137,10 +137,14 @@ function Join(){
         .then((response)=>{
             alert(response.data.msg);
             setUserIdCorrect(true);
+            console.log(response);
+            console.log(response.data)
             console.log(response.data.msg);
         })
         .catch((error)=>{
-            console.error("에러발생",error);
+            alert("중복 아이디입니다.");
+            // console.log(error);
+            // console.error("에러발생",error);
         })
     }
 
@@ -297,8 +301,7 @@ function Join(){
                         <p onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>X</p>
                     </>
                     
-                }
-                
+                }                
                 
                 
                 {

@@ -56,7 +56,6 @@ function Login(){
 
             Cookies.set('refreshToken', response.data.refreshToken);
 
-
             // console.log(user);
             alert('로그인 성공');
             navigate('/home');

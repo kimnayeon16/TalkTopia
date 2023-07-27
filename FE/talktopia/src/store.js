@@ -18,6 +18,7 @@ let userInfo = createSlice({
     }
 })
 
+
 export let { reduxUserInfo } = userInfo.actions;
 
 export default configureStore({
