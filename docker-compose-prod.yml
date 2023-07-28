@@ -10,11 +10,18 @@ services:
         - 10001:8000
     environment:
         - TZ=Asia/Seoul
+    networks:
+      - talktopia_network
   nginx:
     container_name: nginx
     build: ./.nginx
-    depends_on:
-      - server
+#    depends_on:
+#      - server
     ports:
       - 80:80
       - 443:443
+    networks:
+      - talktopia_network
+networks:
+  talktopia_network:
+    driver: bridge
