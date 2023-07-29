@@ -43,6 +43,6 @@ logging:
 
 # OpenVidu
 openvidu:
-  url: "http://localhost:4443"
+  url: "https://talktopia.site:8443"
   secret: "MY_SECRET"
 
