@@ -1,5 +1,7 @@
 package com.example.talktopia.api.controller;
 
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import com.example.talktopia.api.request.UserCheckEmailRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
+import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.api.response.UserCheckEmailResponse;
 import com.example.talktopia.api.response.UserJoinResponse;
@@ -22,6 +25,7 @@ import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.service.UserMailService;
 import com.example.talktopia.api.service.UserService;
 import com.example.talktopia.common.message.Message;
+import com.example.talktopia.db.entity.User;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +82,12 @@ public class UserController {
 	@GetMapping("/logout/{userId}")
 	public ResponseEntity<Message> logoutUser(@PathVariable String userId) {
 		return ResponseEntity.ok().body(new Message(userId + "가 로그아웃 되었습니다."));
+	}
+
+	// 마이페이지 정보 전달
+	@GetMapping("/myPage/{userId}")
+	public ResponseEntity<UserMyPageResponse> showMyPage(@PathVariable("userId") String userId) {
+		return ResponseEntity.ok().body(userService.myPage(userId));
 	}
 
 }

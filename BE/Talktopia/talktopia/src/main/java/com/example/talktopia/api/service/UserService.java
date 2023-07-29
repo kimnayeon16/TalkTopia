@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
-import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
-import com.example.talktopia.api.response.UserNewTokenResponse;
-import com.example.talktopia.common.message.Message;
+import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.Token;
 import com.example.talktopia.db.entity.User;
@@ -85,6 +83,21 @@ public class UserService {
 		if (!bCryptPasswordEncoder.matches(reqUserPw, dbSearchUserPw))
 			throw new RuntimeException("로그인에 실패했습니다.");
 	}
+
+	// 마이페이지: 유저 정보 반환
+	public UserMyPageResponse myPage(String userId) {
+		User user = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("유효하지 않은 회원입니다."));
+
+		UserMyPageResponse userMyPageResponse = UserMyPageResponse.builder()
+			.userId(user.getUserId())
+			.userPw(user.getUserPw())
+			.userEmail(user.getUserEmail())
+			.userName(user.getUserName())
+			.build();
+		// UserMyPageResponse res = userInfo;
+		return userMyPageResponse;
+	}
+
 
 	// 새로운 토큰 요청
 	// public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {

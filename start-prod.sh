@@ -5,6 +5,7 @@
 ## 접속할 EC2 인스턴스의 주소
 #ec2_instance_address="i9b204.p.ssafy.io"
 
+openvidu start
 
 docker-compose -f docker-compose-prod.yml pull
 
