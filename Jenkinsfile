@@ -64,10 +64,10 @@ pipeline {
 
                 //정지된 도커 컨테이너 찾아서 컨테이너 ID로 삭제함
                 sh '''
-                    result=$( docker container ls -a --filter "name=server*" -q )
+                    result=$( docker container ls -a --filter "name=ttp*" -q )
                     if [ -n "$result" ]
                     then
-                        docker rm $(docker container ls -a --filter "name=server*" -q)
+                        docker rm $(docker container ls -a --filter "name=ttp*" -q)
                     else
                         echo "No such containers"
                     fi
@@ -84,10 +84,10 @@ pipeline {
 
                 // homesketcher로 시작하는 이미지 찾아서 삭제함
                 sh '''
-                    result=$( docker images -f "reference=server*" -q )
+                    result=$( docker images -f "reference=ttp*" -q )
                     if [ -n "$result" ]
                     then
-                        docker rmi -f $(docker images -f "reference=server*" -q)
+                        docker rmi -f $(docker images -f "reference=ttp*" -q)
                     else
                         echo "No such container images"
                     fi
