@@ -36,8 +36,7 @@ public class Token {
 	private User user;
 
 	@Builder
-	public Token(long tNo, String tFcm, String tRefresh, User user) {
-		this.tNo = tNo;
+	public Token(String tFcm, String tRefresh, User user) {
 		this.tFcm = tFcm;
 		this.tRefresh = tRefresh;
 		this.user = user;
