@@ -1,6 +1,7 @@
 version: "3"
 services:
   server:
+    image: ttp-back:latest
     container_name: ttp_back
     build:
       context: ./BE/Talktopia/talktopia
@@ -13,6 +14,7 @@ services:
     networks:
       - talktopia_network
   nginx:
+    image: ttp-nginx:latest
     container_name: ttp_nginx
     build: ./.nginx
 #    depends_on:
