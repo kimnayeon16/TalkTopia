@@ -85,7 +85,7 @@ public class UserService {
 		} else {
 			// 토큰이 존재하지 않으면 새로 생성
 			tokenToUpdate = Token.builder()
-				.tFcm("")
+				.tFcm("11")
 				.tRefresh(refreshToken)
 				.user(dbSearchUser)
 				.build();
