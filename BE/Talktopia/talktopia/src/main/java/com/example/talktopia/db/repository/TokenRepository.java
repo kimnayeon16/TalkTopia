@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.talktopia.db.entity.Token;
 
 public interface TokenRepository extends JpaRepository<Token, String> {
-	// Optional<Token> findByTokenUserNo(long userNo);
+	Optional<Token> findByUserUserNo(long userNo);
 }

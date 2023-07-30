@@ -51,9 +51,13 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Participants> participantsList = new ArrayList<>();
 
-	// 1대1 관계 설정
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Token token;
+	@OneToOne
+	@JoinColumn(name = "img_no")
+	private ProfileImg profileImg;
+
+	@OneToOne
+	@JoinColumn(name = "lang_no")
+	private Language language;
 
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail) {

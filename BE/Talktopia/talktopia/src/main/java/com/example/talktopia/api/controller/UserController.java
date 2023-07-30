@@ -72,11 +72,11 @@ public class UserController {
 	}
 
 	// 토큰 재발급
-	// @PostMapping("/reqNewToken")
-	// public ResponseEntity<UserNewTokenResponse> createNewToken(@RequestBody UserNewTokenRequest userNewTokenRequest) {
-	// 	UserNewTokenResponse userNewTokenResponse = userService.reCreateNewToken(userNewTokenRequest);
-	// 	return ResponseEntity.ok().body(userNewTokenResponse);
-	// }
+	@PostMapping("/reqNewToken")
+	public ResponseEntity<UserNewTokenResponse> createNewToken(@RequestBody UserNewTokenRequest userNewTokenRequest) {
+		UserNewTokenResponse userNewTokenResponse = userService.reCreateNewToken(userNewTokenRequest);
+		return ResponseEntity.ok().body(userNewTokenResponse);
+	}
 
 	// 로그아웃
 	@GetMapping("/logout/{userId}")

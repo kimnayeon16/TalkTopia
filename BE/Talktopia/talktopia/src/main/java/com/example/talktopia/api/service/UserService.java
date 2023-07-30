@@ -1,14 +1,18 @@
 package com.example.talktopia.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.response.UserMyPageResponse;
+import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.Token;
 import com.example.talktopia.db.entity.User;
@@ -62,17 +66,32 @@ public class UserService {
 		// 토큰 발행
 		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey, accessExpiredMs);
 		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey, refreshExpiredMs);
-		saveRefreshToken(refreshToken); // refreshToken DB에 저장
+		saveRefreshToken(refreshToken, dbSearchUser); // refreshToken DB에 저장
 
 		return new UserLoginResponse(userLoginRequest.getUserId(), accessToken, refreshToken,
 			JwtProvider.extractClaims(accessToken, secretKey).getExpiration());
 
 	}
 
-	public void saveRefreshToken(String refreshToken) {
-		Token token = new Token();
-		token.setTRefresh(refreshToken);
-		tokenRepository.save(token);
+	public void saveRefreshToken(String refreshToken, User dbSearchUser) {
+		// Token이 처음 발급이면 새로저장 아니면 기존거에 update
+		Optional<Token> optionalToken = tokenRepository.findByUserUserNo(dbSearchUser.getUserNo());
+
+		Token tokenToUpdate;
+		if (optionalToken.isPresent()) {
+			// 토큰이 이미 존재하면 업데이트
+			tokenToUpdate = optionalToken.get();
+			tokenToUpdate.setTRefresh(refreshToken);
+		} else {
+			// 토큰이 존재하지 않으면 새로 생성
+			tokenToUpdate = Token.builder()
+				.tFcm("")
+				.tRefresh(refreshToken)
+				.user(dbSearchUser)
+				.build();
+		}
+
+		tokenRepository.save(tokenToUpdate);
 	}
 
 	public User isNotExistUser(String userLoginRequestId) {
@@ -100,19 +119,22 @@ public class UserService {
 
 
 	// 새로운 토큰 요청
-	// public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {
-	// 	// 1. userReq로 userId와 refreshToken 받음
-	// 	// 2. userId로 userNo 찾음
-	// 	String reqUserId = userNewTokenRequest.getUserId();
-	// 	User user = userRepository.findByUserId(reqUserId).orElseThrow(() -> new RuntimeException("가입된 사용자가 아닙니다."));
-	//
-	// 	// 3. userNo로 Token테이블에서 token 검색
-	// 	Token token = tokenRepository.findByTokenUserNo(user.getUserNo()).orElseThrow(() -> new RuntimeException("로그인된 사용자가 아닙니다."));
-	//
-	// 	// 4. 있으면 새로 발급해주고 resp
-	// 	String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey, accessExpiredMs);
-	// 	String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey, refreshExpiredMs);
-	//
-	//
-	// }
+	public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {
+		// 1. userReq로 userId와 refreshToken 받음
+		// 2. userId로 userNo 찾음
+		String reqUserId = userNewTokenRequest.getUserId();
+		User user = userRepository.findByUserId(reqUserId).orElseThrow(() -> new RuntimeException("가입된 사용자가 아닙니다."));
+
+		// 3. userNo로 Token테이블에서 token 검색
+		tokenRepository.findByUserUserNo(user.getUserNo()).orElseThrow(() -> new RuntimeException("로그인된 사용자가 아닙니다."));
+
+		// 4. 있으면 새로 발급해주고 resp
+		String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey, accessExpiredMs);
+		String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey, refreshExpiredMs);
+
+		saveRefreshToken(refreshToken, user);
+
+		return new UserNewTokenResponse(reqUserId, accessToken, refreshToken,
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration());
+	}
 }
