@@ -17,7 +17,7 @@ spring:
   # JPA
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       # (create / create-drop / update / validate)
 
     properties:
