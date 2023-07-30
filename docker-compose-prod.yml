@@ -13,7 +13,7 @@ services:
     networks:
       - talktopia_network
   nginx:
-    container_name: nginx
+    container_name: ttp_nginx
     build: ./.nginx
 #    depends_on:
 #      - server

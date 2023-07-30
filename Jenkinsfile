@@ -73,10 +73,10 @@ pipeline {
                     fi
                 '''
                 sh '''
-                                    result=$( docker container ls -a --filter "name=nginx*" -q )
+                                    result=$( docker container ls -a --filter "name=ttp*" -q )
                                     if [ -n "$result" ]
                                     then
-                                        docker rm $(docker container ls -a --filter "name=nginx*" -q)
+                                        docker rm $(docker container ls -a --filter "name=ttp*" -q)
                                     else
                                         echo "No such containers"
                                     fi
@@ -93,10 +93,10 @@ pipeline {
                     fi
                 '''
                 sh '''
-                                    result=$( docker images -f "reference=nginx*" -q )
+                                    result=$( docker images -f "reference=ttp*" -q )
                                     if [ -n "$result" ]
                                     then
-                                        docker rmi -f $(docker images -f "reference=nginx*" -q)
+                                        docker rmi -f $(docker images -f "reference=ttp*" -q)
                                     else
                                         echo "No such container images"
                                     fi
