@@ -13,6 +13,15 @@ services:
         - TZ=Asia/Seoul
     networks:
       - talktopia_network
+  client:
+    container_name: ttp_front
+    build:
+      context: ./FE/talktopia
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
   nginx:
     image: ttp-nginx:latest
     container_name: ttp_nginx
