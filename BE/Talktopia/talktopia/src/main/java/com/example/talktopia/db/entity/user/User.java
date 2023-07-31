@@ -69,6 +69,9 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Friend> friendOf = new ArrayList<>();
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Token token;
+
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
 		this.userNo = userNo;
