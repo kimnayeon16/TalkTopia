@@ -49,11 +49,11 @@ public class User {
 	private String userEmail;
 
 	@OneToOne
-	@JoinColumn(name = "img_no")
+	@JoinColumn(name = "user_img_no")
 	private ProfileImg profileImg;
 
 	@OneToOne
-	@JoinColumn(name = "lang_no")
+	@JoinColumn(name = "user_lang_no")
 	private Language language;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -64,6 +64,12 @@ public class User {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private ReportedUser reportedUser;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Friend> friends = new ArrayList<>();
+
+	@OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
+	private List<Friend> friendOf = new ArrayList<>();
 
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail) {
