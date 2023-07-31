@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
@@ -139,4 +140,11 @@ public class UserService {
 		return new UserNewTokenResponse(reqUserId, accessToken, refreshToken,
 			JwtProvider.extractClaims(accessToken, secretKey).getExpiration());
 	}
+
+	// 회원 탈퇴
+	@Transactional
+	public void deleteUser(String userId) {
+		userRepository.deleteByUserId(userId).orElseThrow(() -> new RuntimeException("없는 회원입니다."));
+	}
+
 }

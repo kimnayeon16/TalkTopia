@@ -2,6 +2,7 @@ package com.example.talktopia.api.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,5 +86,13 @@ public class UserController {
 	public ResponseEntity<UserMyPageResponse> showMyPage(@PathVariable("userId") String userId) {
 		return ResponseEntity.ok().body(userService.myPage(userId));
 	}
+
+	// 회원 탈퇴
+	@DeleteMapping("/leave/{userId}")
+	public ResponseEntity<Message> deleteUser(@PathVariable("userId") String userId) {
+		userService.deleteUser(userId);
+		return ResponseEntity.ok().body(new Message("회원 탈퇴가 완료되었습니다."));
+	}
+
 
 }
