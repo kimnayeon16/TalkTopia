@@ -83,6 +83,16 @@ public class User {
 		this.language = language;
 	}
 
+	public void update(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
+		this.userNo = userNo;
+		this.userId = userId;
+		this.userPw = userPw;
+		this.userName = userName;
+		this.userEmail = userEmail;
+		this.profileImg = profileImg;
+		this.language = language;
+	}
+
 	public User hashPassword(PasswordEncoder passwordEncoder) {
 		this.userPw = passwordEncoder.encode(this.userPw);
 		return this;

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.talktopia.api.request.UserCheckEmailRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.request.UserModifyRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
@@ -92,6 +94,13 @@ public class UserController {
 	public ResponseEntity<Message> deleteUser(@PathVariable("userId") String userId) {
 		userService.deleteUser(userId);
 		return ResponseEntity.ok().body(new Message("회원 탈퇴가 완료되었습니다."));
+	}
+
+	// 회원 정보 수정
+	@PutMapping("/modify")
+	public ResponseEntity<Message> modifyUser(@RequestBody UserModifyRequest userModifyRequest) {
+		userService.modifyUser(userModifyRequest);
+		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
 	}
 
 
