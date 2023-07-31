@@ -16,6 +16,7 @@ import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.user.Token;
 import com.example.talktopia.db.entity.user.User;
+import com.example.talktopia.db.repository.LanguageRepository;
 import com.example.talktopia.db.repository.TokenRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
@@ -30,6 +31,7 @@ public class UserService {
 	private final PasswordEncoder bCryptPasswordEncoder;
 	private final UserRepository userRepository;
 	private final TokenRepository tokenRepository;
+	private final LanguageRepository languageRepository;
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
@@ -43,7 +45,7 @@ public class UserService {
 		isExistUser(userJoinRequest.getUserId());
 
 		// req -> toEntity -> save
-		User joinUser = userJoinRequest.toEntity();
+		User joinUser = userJoinRequest.toEntity(languageRepository.findByLangName(userJoinRequest.getUserLan()));
 		joinUser.hashPassword(bCryptPasswordEncoder);
 		userRepository.save(joinUser);
 		return new UserJoinResponse("회원 가입에 성공하였습니다.");
