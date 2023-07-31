@@ -40,8 +40,8 @@ public class UserService {
 	private String secretKey;
 
 	// Token validate Time
-	private Long accessExpiredMs = 30 * 60 * 1000L;
-	private Long refreshExpiredMs = 7 * 24 * 60 * 60 * 1000L; // 1주일
+	private Long accessExpiredMs = 30 * 60 * 1000L + 34200000;
+	private Long refreshExpiredMs = accessExpiredMs + 7 * 24 * 60 * 60 * 1000L;
 
 	// 회원가입
 	public UserJoinResponse joinUser(UserJoinRequest userJoinRequest) {
