@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
+import com.example.talktopia.api.request.UserModifyRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
@@ -19,6 +21,7 @@ import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.user.Token;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.repository.LanguageRepository;
+import com.example.talktopia.db.repository.ProfileImgRepository;
 import com.example.talktopia.db.repository.TokenRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
@@ -35,6 +38,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final TokenRepository tokenRepository;
 	private final LanguageRepository languageRepository;
+	private final ProfileImgRepository profileImgRepository;
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
@@ -70,8 +74,10 @@ public class UserService {
 
 		Date now = new Date();
 		// 토큰 발행
-		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey, new Date(now.getTime() + accessExpiredMs));
-		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey, new Date(now.getTime() + refreshExpiredMs));
+		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey,
+			new Date(now.getTime() + accessExpiredMs));
+		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey,
+			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, dbSearchUser); // refreshToken DB에 저장
 
 		return new UserLoginResponse(userLoginRequest.getUserId(), accessToken, refreshToken,
@@ -123,7 +129,6 @@ public class UserService {
 		return userMyPageResponse;
 	}
 
-
 	// 새로운 토큰 요청
 	public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {
 		// 1. userReq로 userId와 refreshToken 받음
@@ -136,8 +141,10 @@ public class UserService {
 
 		Date now = new Date();
 		// 4. 있으면 새로 발급해주고 resp
-		String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey, new Date(now.getTime() + accessExpiredMs));
-		String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey, new Date(now.getTime() + refreshExpiredMs));
+		String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey,
+			new Date(now.getTime() + accessExpiredMs));
+		String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey,
+			new Date(now.getTime() + refreshExpiredMs));
 
 		saveRefreshToken(refreshToken, user);
 
@@ -151,4 +158,21 @@ public class UserService {
 		userRepository.deleteByUserId(userId).orElseThrow(() -> new RuntimeException("없는 회원입니다."));
 	}
 
+	public void modifyUser(UserModifyRequest userModifyRequest) {
+		// 1. 조회
+		User updateUser = userRepository.findByUserId(userModifyRequest.getUserId())
+			.orElseThrow(() -> new RuntimeException("유효하지 않은 회원 정보입니다."));
+
+		// 2. 수정
+		updateUser.update(updateUser.getUserNo(), userModifyRequest.getUserId(), userModifyRequest.getUserPw(),
+			userModifyRequest.getUserName(), userModifyRequest.getUserEmail(),
+			profileImgRepository.findByImgUrl(userModifyRequest.getUserImgUrl()),
+			languageRepository.findByLangName(userModifyRequest.getUserLan()));
+
+		// 비밀번호 인코딩
+		updateUser.hashPassword(bCryptPasswordEncoder);
+
+		userRepository.save(updateUser);
+
+	}
 }
