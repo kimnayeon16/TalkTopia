@@ -25,29 +25,29 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtProvider {
 
 	// accessToken 생성
-	public static String createAccessToken(String userId, String secretKey, Long expiredMs) {
+	public static String createAccessToken(String userId, String secretKey, Date date) {
 		// Jwt에 정보 추가
 		Claims claims = Jwts.claims();
 		claims.put("userId", userId);
 
 		return Jwts.builder()
 			.setClaims(claims)
-			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + expiredMs))
+			.setIssuedAt(new Date())
+			.setExpiration(date)
 			.signWith(SignatureAlgorithm.HS256, secretKey) // 서명
 			.compact();
 	}
 
 	// refreshToken 생성
-	public static String createRefreshToken(String userId, String secretKey, Long expiredMs) {
+	public static String createRefreshToken(String userId, String secretKey, Date date) {
 		// Jwt에 정보 추가
 		Claims claims = Jwts.claims();
 		claims.put("userId", userId);
 
 		return Jwts.builder()
 			.setClaims(claims)
-			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + expiredMs))
+			.setIssuedAt(new Date())
+			.setExpiration(date)
 			.signWith(SignatureAlgorithm.HS256, secretKey) // 서명
 			.compact();
 	}

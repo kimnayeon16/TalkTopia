@@ -1,5 +1,6 @@
 package com.example.talktopia.api.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import com.example.talktopia.db.repository.LanguageRepository;
 import com.example.talktopia.db.repository.TokenRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,8 +40,8 @@ public class UserService {
 	private String secretKey;
 
 	// Token validate Time
-	private Long accessExpiredMs = (30 * 60 * 1000L) * 10; // 10시간 (UTC + 9시간) = 한국시간
-	private Long refreshExpiredMs = accessExpiredMs + 7 * 24 * 60 * 60 * 1000L; // 1주일
+	private Long accessExpiredMs = 30 * 60 * 1000L;
+	private Long refreshExpiredMs = 7 * 24 * 60 * 60 * 1000L; // 1주일
 
 	// 회원가입
 	public UserJoinResponse joinUser(UserJoinRequest userJoinRequest) {
@@ -66,9 +68,10 @@ public class UserService {
 		// 패스워드 확인
 		checkUserPw(userLoginRequest.getUserPw(), dbSearchUser.getUserPw());
 
+		Date now = new Date();
 		// 토큰 발행
-		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey, accessExpiredMs);
-		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey, refreshExpiredMs);
+		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey, new Date(now.getTime() + accessExpiredMs));
+		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey, new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, dbSearchUser); // refreshToken DB에 저장
 
 		return new UserLoginResponse(userLoginRequest.getUserId(), accessToken, refreshToken,
@@ -131,9 +134,10 @@ public class UserService {
 		// 3. userNo로 Token테이블에서 token 검색
 		tokenRepository.findByUserUserNo(user.getUserNo()).orElseThrow(() -> new RuntimeException("로그인된 사용자가 아닙니다."));
 
+		Date now = new Date();
 		// 4. 있으면 새로 발급해주고 resp
-		String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey, accessExpiredMs);
-		String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey, refreshExpiredMs);
+		String accessToken = JwtProvider.createAccessToken(user.getUserId(), secretKey, new Date(now.getTime() + accessExpiredMs));
+		String refreshToken = JwtProvider.createRefreshToken(user.getUserId(), secretKey, new Date(now.getTime() + refreshExpiredMs));
 
 		saveRefreshToken(refreshToken, user);
 
