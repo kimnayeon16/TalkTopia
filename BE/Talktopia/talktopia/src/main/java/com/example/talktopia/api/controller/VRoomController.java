@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.VRoom.VRoomReq;
 import com.example.talktopia.api.response.VRoomRes;
+import com.example.talktopia.api.service.ParticipantsService;
 import com.example.talktopia.api.service.VRoomService;
 import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
@@ -40,7 +41,7 @@ public class VRoomController {
 	}
 
 	@PostMapping("/enter")
-	public com.example.talktopia.api.response.VRoom.VRoomRes enterRoom(@RequestBody VRoomReq vRoomReq) throws
+	public VRoomRes enterRoom(@RequestBody VRoomReq vRoomReq) throws
 		Exception {
 		return vRoomService.enterRoom(vRoomReq);
 	}
