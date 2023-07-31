@@ -23,6 +23,8 @@ services:
       - 3000:3000
     depends_on:
       - server
+    networks:
+        - talktopia_network
   nginx:
     image: ttp-nginx:latest
     container_name: ttp_nginx
