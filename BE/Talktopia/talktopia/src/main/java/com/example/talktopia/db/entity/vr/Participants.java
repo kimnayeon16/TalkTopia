@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.entity.user.User;
 
 import lombok.Builder;
 import lombok.Getter;

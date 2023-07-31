@@ -1,7 +1,7 @@
 package com.example.talktopia.api.request;
 
-import com.example.talktopia.db.entity.Token;
-import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.entity.user.Token;
+import com.example.talktopia.db.entity.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

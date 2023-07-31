@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.entity.user.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
