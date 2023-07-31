@@ -14,6 +14,7 @@ services:
     networks:
       - talktopia_network
   client:
+    image: ttp-front:latest
     container_name: ttp_front
     build:
       context: ./FE/talktopia
