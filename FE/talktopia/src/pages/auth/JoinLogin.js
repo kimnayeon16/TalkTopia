@@ -79,24 +79,21 @@ function JoinLogin(){
 
       return (
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
-      <div className={`${style.form} sign-in`}>
-        <h2>Welcome to TalkTopia</h2>
-        <label>
-          <span>아이디</span>
-          <input type="text" value={userId} onChange={onIdHandler} />
-        </label><br />
-        <label>
-          <span>비밀번호</span>
-          <input type="password" value={userPw} onChange={onPwHandler} />
-        </label>
-
-
-        <p className={style["forgot-pass"]}>Forgot password?</p>
-
-
-        <button type="button" className={`${style.submit}`} onClick={onLogin}>Sign In</button>
-        <button type="button" className="fb-btn">Connect with <span>facebook</span></button>
-      </div>
+            <div className={`${style.form} sign-in`}>
+                <h2>Welcome to TalkTopia</h2>
+                <label>
+                    <span>아이디</span>
+                    <input type="text" value={userId} onChange={onIdHandler} />
+                </label><br />
+                <label>
+                    <span>비밀번호</span>
+                    <input type="password" value={userPw} onChange={onPwHandler} />
+                </label>
+                <p className={style["forgot-pass"]}>아이디 찾기</p>
+                <p className={style["forgot-pass"]}>비밀번호 찾기</p>
+                <button type="button" className={`${style.submit}`} onClick={onLogin}>Sign In</button>
+                <button type="button" className="fb-btn">Connect with <span>facebook</span></button>
+            </div>
       <div className={style["sub-cont"]}>
         <div className={style.img}>
           <div className={`${style["img__text"]} ${style["m--up"]}`}>
@@ -105,7 +102,7 @@ function JoinLogin(){
           </div>
           <div className={`${style["img__text"]} ${style["m--in"]}`}>
             <h2>처음이신가요?</h2>
-            <p>가입하고 전세계의 새로운 친구들을 사겨보아요!</p>
+            <p>가입하고 전세계의 새로운 친구들을 사겨보세요!</p>
           </div>
           <div className={style["img__btn"]} onClick={handleToggleSignUp}>
             <span className={`${style["m--up"]} ${change ? style.active : ""}`}>회원가입</span>
