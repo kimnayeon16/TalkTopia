@@ -62,6 +62,9 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Reminder> reminderList = new ArrayList<>();
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private ReportedUser reportedUser;
+
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail) {
 		this.userNo = userNo;
