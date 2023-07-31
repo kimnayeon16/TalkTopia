@@ -45,7 +45,9 @@ $diffRatio: ($contW - $imgW) / $contW;
   width: $contW;
   height: 100vh;
   margin: 0 auto 100px;
-  background: #fff;
+  // background: LightSlateGray;
+  // background-image: url('../../public/img/login5.jpg');
+  background-color: #dad2bc;
 }
 
 .form {
@@ -100,7 +102,8 @@ button {
     top: 0;
     width: $contW;
     height: 100%;
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
+    // background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
+    background-image: url('../../public/img/login3.jpg');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
@@ -125,7 +128,7 @@ button {
     z-index: 2;
     position: absolute;
     left: 0;
-    top: 50px;
+    top: 200px;
     width: 100%;
     padding: 0 20px;
     text-align: center;
@@ -133,8 +136,10 @@ button {
     transition: transform $switchAT ease-in-out;
 
     h2 {
-      margin-bottom: 10px;
+      margin-bottom: 30px;
       font-weight: normal;
+      font-size: 32px;
+      font-weight: 700;
     }
 
     p {
@@ -162,14 +167,15 @@ button {
     overflow: hidden;
     z-index: 2;
     position: relative;
-    width: 100px;
-    height: $btnH;
+    width: 150px;
+    height: $btnH+10px; //36px
     margin: 0 auto;
     background: transparent;
     color: #fff;
     text-transform: uppercase;
     font-size: 15px;
     cursor: pointer;
+    margin-top: 100px;
     
     &:after {
       content: '';

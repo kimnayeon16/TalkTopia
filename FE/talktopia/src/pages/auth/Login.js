@@ -65,8 +65,8 @@ function Login(){
             console.log("에러",error);
         })
 
-        console.log(user.userId)
-        console.log(user.accessToken)
+        console.log(user.userId);
+        console.log(user.accessToken);
     }
     // useEffect(() => {
     //     // user 값이 변경될 때마다 호출됨
