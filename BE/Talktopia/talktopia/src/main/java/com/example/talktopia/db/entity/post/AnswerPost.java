@@ -34,7 +34,6 @@ public class AnswerPost {
 	private String cCreateTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Column(name = "p_no")
 	private Post post;
 
 	@Builder

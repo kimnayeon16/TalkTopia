@@ -1,4 +1,4 @@
-package com.example.talktopia.api.response.VRoom;
+package com.example.talktopia.api.response;
 
 import java.time.LocalDateTime;
 

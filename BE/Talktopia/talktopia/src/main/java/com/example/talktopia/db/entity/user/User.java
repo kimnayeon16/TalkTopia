@@ -66,7 +66,7 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Friend> friends = new ArrayList<>();
 
-	@OneToMany(mappedBy = "friend", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Friend> friendOf = new ArrayList<>();
 
 	@Builder

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.VRoom.VRoomReq;
-import com.example.talktopia.api.response.VRoom.VRoomRes;
+import com.example.talktopia.api.response.VRoomRes;
 import com.example.talktopia.api.service.VRoomService;
 import com.example.talktopia.common.util.RandomNumberUtil;
 import com.example.talktopia.db.entity.user.User;

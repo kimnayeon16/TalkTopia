@@ -40,12 +40,16 @@ public class Participants {
 
 	private void setvRoom(VRoom vRoom) {
 		this.vRoom = vRoom;
-		vRoom.getParticipantsList().add(this);
+		if (vRoom != null) {
+			vRoom.getParticipantsList().add(this);
+		}
 	}
 
 	private void setUser(User user) {
 		this.user = user;
-		user.getParticipantsList().add(this);
+		if (user != null) {
+			user.getParticipantsList().add(this);
+		}
 	}
 
 }
