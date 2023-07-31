@@ -9,6 +9,8 @@ import Join from './pages/auth/Join.js';
 import Login from './pages/auth/Login.js';
 import Home from './pages/home/Home.js';
 import Translation from './apis/translation/GoogleTranslator.js';
+import WebSpeechApi from './apis/stt/WebSpeechApi.js';
+import Sample from './apis/stt/Sample.js';
 // import JoinRoom from './pages/video/JoinRoom.js';
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/home" element={<Home></Home>}></Route>
         <Route path="/translation" element={<Translation></Translation>}></Route>
+        <Route path="/stt" element={<WebSpeechApi></WebSpeechApi>}></Route>
+        <Route path="/sample" element={<Sample></Sample>}></Route>
       </Routes>
     </div>
   );
