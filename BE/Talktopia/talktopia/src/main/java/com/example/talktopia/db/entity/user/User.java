@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.talktopia.db.entity.report.ReportedUser;
+import com.example.talktopia.db.entity.friend.Friend;
 import com.example.talktopia.db.entity.vr.Participants;
 
 import lombok.Builder;
