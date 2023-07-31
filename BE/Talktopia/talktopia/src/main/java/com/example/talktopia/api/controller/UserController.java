@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.UserCheckEmailRequest;
+import com.example.talktopia.api.request.UserCheckPwRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserModifyRequest;
@@ -101,6 +102,12 @@ public class UserController {
 	public ResponseEntity<Message> modifyUser(@RequestBody UserModifyRequest userModifyRequest) {
 		userService.modifyUser(userModifyRequest);
 		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
+	}
+
+	// 마이페이지 비밀번호 확인
+	@PostMapping("/myPage/checkPw")
+	private ResponseEntity<Message> checkPwUser(@RequestBody UserCheckPwRequest userCheckPwRequest) {
+		return ResponseEntity.ok().body(userService.myPageCheckPw(userCheckPwRequest));
 	}
 
 

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.talktopia.api.request.UserCheckPwRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserModifyRequest;
@@ -17,6 +18,7 @@ import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
+import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.user.Token;
 import com.example.talktopia.db.entity.user.User;
@@ -127,6 +129,17 @@ public class UserService {
 			.build();
 		// UserMyPageResponse res = userInfo;
 		return userMyPageResponse;
+	}
+
+	// 마이페이지 checkPw
+	public Message myPageCheckPw(UserCheckPwRequest userCheckPwRequest) {
+		User dbSearchUser = userRepository.findByUserId(userCheckPwRequest.getUserId())
+			.orElseThrow(() -> new RuntimeException("회원이 아닙니다."));
+
+		if (!bCryptPasswordEncoder.matches(userCheckPwRequest.getUserPw(), dbSearchUser.getUserPw()))
+			return new Message("비밀번호가 틀렸습니다. 다시 입력해주세요.");
+
+		return new Message("비밀번호가 인증되었습니다.");
 	}
 
 	// 새로운 토큰 요청
