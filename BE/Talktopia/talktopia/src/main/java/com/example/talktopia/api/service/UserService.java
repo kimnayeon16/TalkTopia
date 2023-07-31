@@ -14,8 +14,8 @@ import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.common.util.JwtProvider;
-import com.example.talktopia.db.entity.Token;
-import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.entity.user.Token;
+import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.repository.TokenRepository;
 import com.example.talktopia.db.repository.UserRepository;
 

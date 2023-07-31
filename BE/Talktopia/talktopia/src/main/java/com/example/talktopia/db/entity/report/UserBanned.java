@@ -1,4 +1,4 @@
-package com.example.talktopia.db.entity;
+package com.example.talktopia.db.entity.report;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,23 +7,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "profile_images")
-public class ProfileImg {
+@Table(name = "user_banned")
+public class UserBanned {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "img_no")
-	private long imgNo;
+	@Column(name = "ub_no")
+	private long ubNo;
 
-	@Column(name = "img_url")
-	private String imgUrl;
+	@Column(name = "ub_user_id")
+	private String userId;
 
 }

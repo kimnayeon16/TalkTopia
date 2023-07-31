@@ -1,4 +1,4 @@
-package com.example.talktopia.db.entity;
+package com.example.talktopia.db.entity.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.talktopia.api.request.UserJoinRequest;
+import com.example.talktopia.db.entity.report.ReportedUser;
 import com.example.talktopia.db.entity.vr.Participants;
-import com.example.talktopia.db.entity.vr.VRoom;
 
 import lombok.Builder;
 import lombok.Getter;
