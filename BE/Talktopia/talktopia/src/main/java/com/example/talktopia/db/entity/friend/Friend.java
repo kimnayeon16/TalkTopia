@@ -1,4 +1,4 @@
-package com.example.talktopia.db.entity.user;
+package com.example.talktopia.db.entity.friend;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.example.talktopia.db.entity.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.example.talktopia.db.entity.report;
+package com.example.talktopia.db.entity.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
