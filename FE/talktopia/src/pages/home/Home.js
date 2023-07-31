@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import IsTokenValid from "../../utils/tokenUtils";
 import NewToken from "../../utils/newToken";
+import "../../App.css";
 
 function Home(){
     const user = useSelector((state) => state.userInfo);
