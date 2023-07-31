@@ -30,7 +30,7 @@ public class VRoom {
 	@Column(name = "vr_session")
 	private String vrSession;
 
-	@Column(length = 50, name = "vr_max_cnt")
+	@Column(name = "vr_max_cnt")
 	private int vrMaxCnt;
 
 	@Column(name = "vr_enter")

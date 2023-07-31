@@ -39,15 +39,11 @@ public class SaveVRoom {
 	@Column(name = "svr_close_time")
 	private LocalDateTime svrCloseTime;
 
-	@ManyToOne
-	@JoinColumn(name = "vroom_id") // user_id는 User 엔티티의 기본 키를 참조하는 외래 키
-	private VRoom vRoom;
-
-	@OneToMany(mappedBy = "saveVRoom")
-	List<ReportList> reportLists = new ArrayList<>();
-	//... getter, setter
-
-	@OneToMany(mappedBy = "saveVRoom")
-	List<SaveVRoomChat> saveVRoomChats = new ArrayList<>();
-	//... getter, setter
+	// @OneToMany(mappedBy = "saveVroom")
+	// List<ReportList> reportLists = new ArrayList<>();
+	// //... getter, setter
+	//
+	// @OneToMany(mappedBy = "saveVroom")
+	// List<SaveVRoomChat> saveVRoomChats = new ArrayList<>();
+	// //... getter, setter
 }
