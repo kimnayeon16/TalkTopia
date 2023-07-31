@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
 import {useSelector, useDispatch} from "react-redux";

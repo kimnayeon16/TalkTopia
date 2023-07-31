@@ -11,7 +11,9 @@ import Home from './pages/home/Home.js';
 import Translation from './apis/translation/GoogleTranslator.js';
 import WebSpeechApi from './apis/stt/WebSpeechApi.js';
 import Sample from './apis/stt/Sample.js';
-// import JoinRoom from './pages/video/JoinRoom.js';
+import JoinRoom from './pages/video/JoinRoom.js';
+
+import Regist from './pages/auth/JoinLogin.js';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/translation" element={<Translation></Translation>}></Route>
         <Route path="/stt" element={<WebSpeechApi></WebSpeechApi>}></Route>
         <Route path="/sample" element={<Sample></Sample>}></Route>
+        <Route path="/regist" element={<Regist></Regist>}></Route>
+        <Route path="/joinroom" element={<JoinRoom></JoinRoom>}></Route>
       </Routes>
     </div>
   );
