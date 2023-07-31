@@ -5,7 +5,8 @@ import "../../App.css";
 
 function Home(){
     const user = useSelector((state) => state.userInfo);
-
+    
+    
     //요청 보낼 때.
     if(IsTokenValid()){
         //원래 보내려고 했던 요청 보내기
@@ -15,6 +16,7 @@ function Home(){
         NewToken()
         //원래 보내려고 했던 요청 보내기
     }
+    
 
     return(
         <div>
@@ -23,7 +25,7 @@ function Home(){
             <p>{user.accessToken}</p>
             <p>{user.expiredDate}</p>
 
-           
+
         </div>
     )
 }

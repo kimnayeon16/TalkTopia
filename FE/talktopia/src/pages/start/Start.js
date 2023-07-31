@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import style from "../../css/Start.module.css";
 
+import { BACKEND_URL } from "../../utils";
+import axios from "axios";
+
+
 function Start(){
     let navigate = useNavigate();
     const[i,setI] = useState(0);
@@ -11,6 +15,36 @@ function Start(){
         setI(i+1);
     }   
     // console(i);
+
+    // 화상 채팅 입장
+    const randomeForeEndter = async () => {
+        const headers = {
+            'Content-Type' : 'application/json'
+        }
+
+        const requestBody = {
+            userId: 'user1234',
+            maxCount: 4
+        };
+
+        const requestBodyJSON = JSON.stringify(requestBody);
+
+        await axios
+        .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
+        .then((response) => {
+            navigate('/joinroom', {
+                state: {
+                    myUserName: 'user1234',
+                    token: response
+                }
+            });
+        })
+        .catch((error) => {
+            console.log("에러 발생", error)
+        })
+    }
+
+
 
     return(
         <div>
@@ -22,7 +56,7 @@ function Start(){
             {i}
             <button className={`${style.button}`} onClick={()=>{navigate('/sample')}}>샘플stt</button>
             <button className={`${style.button}`} onClick={()=>{navigate('/regist')}}>로그인&회원가입</button>
-            <button className={`${style.button}`} onClick={()=>{navigate('/joinroom')}}>화상채팅</button>
+            <button className={`${style.button}`} onClick={randomeForeEndter}>화상채팅</button>
         </div>
     )
 }
