@@ -2,7 +2,7 @@ package com.example.talktopia.api.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.entity.vr.Participants;
 import com.example.talktopia.db.entity.vr.VRoom;
 import com.example.talktopia.db.repository.ParticipantsRepository;

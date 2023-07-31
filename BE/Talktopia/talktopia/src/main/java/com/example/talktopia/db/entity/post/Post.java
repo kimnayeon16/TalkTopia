@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.example.talktopia.db.entity.User;
+import com.example.talktopia.db.entity.user.User;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

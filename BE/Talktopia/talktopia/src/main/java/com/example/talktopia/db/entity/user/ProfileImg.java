@@ -1,4 +1,4 @@
-package com.example.talktopia.db.entity;
+package com.example.talktopia.db.entity.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,19 +15,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "language")
-public class Language {
+@Table(name = "profile_images")
+public class ProfileImg {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lang_no")
-	private long langNo;
+	@Column(name = "img_no")
+	private long imgNo;
 
-	@Column(length = 5, name = "lang_name")
-	private String langName;
+	@Column(name = "img_url")
+	private String imgUrl;
 
-	@Column(length = 15, name = "lang_stt")
-	private String langStt;
-
-	@Column(name = "lang_flag_img_url")
-	private String langFlagImgUrl;
 }
