@@ -44,6 +44,11 @@ dependencies {
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    //JSONObject
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
+
 }
 
 tasks.named('test') {

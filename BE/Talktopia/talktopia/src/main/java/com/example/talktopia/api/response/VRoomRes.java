@@ -9,6 +9,5 @@ import lombok.Setter;
 @Setter
 public class VRoomRes {
 	private String vr_session;
-	private boolean vr_enter;
-	private LocalDateTime vr_create_time;
+	private String token;
 }
