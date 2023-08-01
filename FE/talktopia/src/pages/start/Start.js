@@ -24,7 +24,7 @@ function Start(){
 
         const requestBody = {
             userId: 'user1234',
-            maxCount: 4
+            vr_max_cnt: 4
         };
 
         const requestBodyJSON = JSON.stringify(requestBody);
