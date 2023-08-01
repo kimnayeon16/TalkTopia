@@ -14,10 +14,12 @@ import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserModifyRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
+import com.example.talktopia.api.request.UserSearchIdRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
+import com.example.talktopia.api.response.UserSearchIdResponse;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.user.Token;
@@ -187,5 +189,13 @@ public class UserService {
 
 		userRepository.save(updateUser);
 
+	}
+
+	// 유저 아이디 찾기
+	public UserSearchIdResponse searchId(UserSearchIdRequest userSearchIdRequest) {
+		User searchUser = userRepository.findByUserNameAndUserEmail(userSearchIdRequest.getUserName(),
+			userSearchIdRequest.getUserEmail()).orElseThrow(() -> new RuntimeException("존재하는 아이디가 없습니다."));
+
+		return new UserSearchIdResponse(searchUser.getUserId(), "아이디 입니다.");
 	}
 }

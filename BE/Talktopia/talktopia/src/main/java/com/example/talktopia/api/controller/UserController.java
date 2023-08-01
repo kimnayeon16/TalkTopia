@@ -18,11 +18,13 @@ import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserModifyRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
+import com.example.talktopia.api.request.UserSearchIdRequest;
 import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.api.response.UserCheckEmailResponse;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
+import com.example.talktopia.api.response.UserSearchIdResponse;
 import com.example.talktopia.api.service.UserMailService;
 import com.example.talktopia.api.service.UserService;
 import com.example.talktopia.common.message.Message;
@@ -108,6 +110,12 @@ public class UserController {
 	@PostMapping("/myPage/checkPw")
 	private ResponseEntity<Message> checkPwUser(@RequestBody UserCheckPwRequest userCheckPwRequest) {
 		return ResponseEntity.ok().body(userService.myPageCheckPw(userCheckPwRequest));
+	}
+
+	// 아이디 찾기
+	@PostMapping("/searchId")
+	public ResponseEntity<UserSearchIdResponse> searchUserId(@RequestBody UserSearchIdRequest userSearchIdRequest) {
+		return ResponseEntity.ok().body(userService.searchId(userSearchIdRequest));
 	}
 
 
