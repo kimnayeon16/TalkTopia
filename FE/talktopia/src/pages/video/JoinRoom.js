@@ -216,10 +216,10 @@ function JoinRoom() {
                         
                         {myUserName !== undefined && mainStreamManager !== undefined && (
                             <div className={`${style.logs}`}>   
-                                {/* <ConversationLog 
+                                <ConversationLog 
                                     myUserName={myUserName}
                                     mainStreamManager={mainStreamManager}
-                                /> */}
+                                />
                                 <Chat
                                     myUserName={myUserName}
                                     mainStreamManager={mainStreamManager}
