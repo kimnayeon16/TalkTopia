@@ -137,7 +137,7 @@ function JoinLogin(){
                     icon: "success",
                     title: "사용가능한 아이디입니다.",
                     text: `다음 회원가입 절차를 진행해주세요!`,
-                    confirmButtonText: "확인",
+                    // confirmButtonText: "확인",
                 })
             })
             .catch((error)=>{
@@ -257,7 +257,11 @@ function JoinLogin(){
             console.log("에러 발생", error);
             })
         }else{
-            alert('빠짐없이 입력해주세요.');
+            Swal.fire({
+                icon: "warning",
+                title: "빠짐없이 입력해주세요!",
+                confirmButtonText: "확인",
+            })
         }
     }
 
@@ -273,7 +277,12 @@ function JoinLogin(){
             setUserEmailCorrect(true);
             
         }else{
-            alert('인증 번호가 올바르지 않습니다.');
+            // alert('인증 번호가 올바르지 않습니다.');
+            Swal.fire({
+                icon: "warning",
+                title: "인증 번호가 올바르지 않습니다.",
+                confirmButtonText: "확인",
+            })
         }
     }
 
@@ -319,14 +328,28 @@ function JoinLogin(){
                  const requestBodyJSON = JSON.stringify(requestBody);
      
                  const response = axios.post(`${BACKEND_URL}/api/v1/user/join`, requestBodyJSON, {headers});
-                 alert("회원 가입 성공");
+                //  alert("회원 가입 성공");
+                 Swal.fire({
+                    icon: "success",
+                    title: "회원 가입 성공",
+                    text: `TalkTopia의 친구가 되어주셔서 감사합니다 👨🏾‍🤝‍👨🏻`,
+                    confirmButtonText: "확인",
+                    timer: 2000,
+                    timerProgressBar: true,
+                })
+                 
                  console.log(response.data);
              } catch(error){
                  console.error("에러 발생",error);
                  alert("회원가입 실패");
              }   
             }else{
-             alert("빠짐 없이 입력해주세요 😃");
+                Swal.fire({
+                    icon: "warning",
+                    title: "빠짐 없이 입력해주세요 😃",
+                    confirmButtonText: "확인",
+                })
+            //  alert("빠짐 없이 입력해주세요 😃");
             }
      
          }
