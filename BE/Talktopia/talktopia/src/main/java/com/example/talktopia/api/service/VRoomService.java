@@ -44,8 +44,6 @@ public class VRoomService {
 	public VRoomService() {
 	}
 
-	;
-
 	public VRoomService(String SECRET, String OPENVIDU_URL, VRoomRepository vroomrepsitory,
 		UserRepository userRepository, ParticipantsService participantsService) {
 		this.SECRET = SECRET;
@@ -68,10 +66,12 @@ public class VRoomService {
 
 	public VRoomRes enterRoom(VRoomReq vRoomReq) throws Exception {
 
+		log.info(vRoomReq.getUserId());
 		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
-
+		log.info(String.valueOf(vRoomReq.getVr_max_cnt()));
 		try {
 			// Create a new OpenVidu Session
+			log.info("가자마자 터진다");
 			Session session = this.openVidu.createSession();
 			// Generate a new Connection with the recently created connectionProperties
 
