@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+/* 제주 돌담체 */
+@font-face {
+  font-family: 'EF_jejudoldam';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-EF@1.0/EF_jejudoldam.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 둘기마요체 */
+@font-face {
+  font-family: 'Dovemayo_wild';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/Dovemayo_wild.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}

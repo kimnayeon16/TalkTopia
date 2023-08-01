@@ -292,7 +292,7 @@ function Join(){
                         <option value="daum.net">daum.net</option>
                         <option value="nate.com">nate.com</option>
                         <option value="hanmail.com">hanmail.com</option>
-                    </select>
+                    </select><br/>
                     <button onClick={checkEmail}>{emailButton}</button><br/>
                     </>
                     :
