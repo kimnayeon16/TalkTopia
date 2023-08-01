@@ -52,6 +52,7 @@ public class VRoom {
 
 	@OneToMany(mappedBy = "vRoom", cascade = CascadeType.ALL)
 	private List<Participants> participantsList = new ArrayList<>();
+
 	@Builder
 	public VRoom(String vrSession, int vrMaxCnt, boolean vrEnter, boolean vrType, LocalDateTime vrCreateTime,
 		int vrCurrCnt, LocalDateTime vrCloseTime) {

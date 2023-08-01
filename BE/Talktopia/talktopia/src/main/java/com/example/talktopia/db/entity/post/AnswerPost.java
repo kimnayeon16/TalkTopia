@@ -49,5 +49,4 @@ public class AnswerPost {
 		post.getAnswerPostList().add(this);
 	}
 
-
 }
