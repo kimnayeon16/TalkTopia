@@ -15,16 +15,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserJoinRequest {
 
-	private String userId;
-	private String userPw;
+	private String userIdJoin;
+	private String userPwJoin;
 	private String userName;
 	private String userEmail;
 	private String userLan;
 
 	public User toEntity(Language language) {
 		return User.builder()
-			.userId(userId)
-			.userPw(userPw)
+			.userId(userIdJoin)
+			.userPw(userPwJoin)
 			.userName(userName)
 			.userEmail(userEmail)
 			.language(language)

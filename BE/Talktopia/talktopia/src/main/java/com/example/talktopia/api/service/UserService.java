@@ -53,7 +53,7 @@ public class UserService {
 
 	// 회원가입
 	public UserJoinResponse joinUser(UserJoinRequest userJoinRequest) {
-		isExistUser(userJoinRequest.getUserId());
+		isExistUser(userJoinRequest.getUserIdJoin());
 
 		// req -> toEntity -> save
 		User joinUser = userJoinRequest.toEntity(languageRepository.findByLangName(userJoinRequest.getUserLan()));
