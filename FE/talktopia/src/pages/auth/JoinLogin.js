@@ -387,40 +387,48 @@ function JoinLogin(){
                     </label><br />
                    
                     <label>
-      <span>이메일</span>
-      <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} className={`${style["email-input"]}`} />
-      <span>@</span>
+                        <span>이메일</span>
+                        <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} className={`${style["email-input"]}`}></input>
+                        <span>@</span>
+                        {
+                            emailSelect === true ? 
+                            <>
+                            <select className={`${style.selectEmail}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
+                                <option value="default" disabled>선택하세요</option>
+                                <option value="">직접입력</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="hotmail.com">hotmail.com</option>
+                                <option value="outlook.com">outlook.com</option>
+                                <option value="yahoo.com">yahoo.com</option>
+                                <option value="icloud.com">icloud.com</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="daum.net">daum.net</option>
+                                <option value="nate.com">nate.com</option>
+                                <option value="hanmail.com">hanmail.com</option>
+                            </select>
+                            <button onClick={checkEmail} className={`${style.buttonId}`}>{emailButton}</button><br/>
+                            </>
+                            :
+                            <>
+                                <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler}></input>
+                                <p onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>X</p>
+                            </>
+                            
+                        }
 
-      {/* div 요소로 select와 input을 묶어주고, isInputMode 상태에 따라 보여줄지 숨길지 결정 */}
-      <div style={{ display: isInputMode ? "block" : "none" }}>
-        <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler}></input>
-        <span onClick={() => setIsInputMode(false)}>X</span>
-      </div>
-      <div style={{ display: isInputMode ? "none" : "block" }}>
-        <select className={`${style.selectEmail}`} value={userEmailDomain} onChange={handleSelectChange}>
-          <option value="default" disabled>선택하세요</option>
-          <option value="">직접입력</option>
-          <option value="gmail.com">gmail.com</option>
-          <option value="hotmail.com">hotmail.com</option>
-          <option value="outlook.com">outlook.com</option>
-          <option value="yahoo.com">yahoo.com</option>
-          <option value="icloud.com">icloud.com</option>
-          <option value="naver.com">naver.com</option>
-          <option value="daum.net">daum.net</option>
-          <option value="nate.com">nate.com</option>
-          <option value="hanmail.com">hanmail.com</option>
-        </select>
-      </div>
-
-      {emailConfirmWindow === true ? (
-        <>
-          <p>이메일로 전송된 인증코드를 입력해주세요</p>
-          <input type="text" value={emailConfirm} onChange={onEmailVerify}></input>
-          <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
-          <p>입력 시간</p>
-        </>
-      ) : null}
-    </label><br />
+                        {
+                            emailConfirmWindow === true ? 
+                            <>
+                                <p>이메일로 전송된 인증코드를 입력해주세요</p>
+                                {/* <input type="text"  onChange={onEmailVerify}></input> */}
+                                <input type="text" value={emailConfirm} onChange={onEmailVerify}></input>
+                                    <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
+                                    <p>입력 시간</p>
+                                </>
+                            : 
+                            null
+                        }
+                    </label><br />
                     <label>
                         <span>사용 언어</span><br/>
                         <select className={`${style.selectLan}`} value={userLan} onChange={onLanHandler}>
