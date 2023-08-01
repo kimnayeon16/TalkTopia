@@ -75,24 +75,24 @@ public class VRoomService {
 			Session session = this.openVidu.createSession();
 			// Generate a new Connection with the recently created connectionProperties
 
-			System.out.println(3);
+			log.info("가자마자 터진다2");
 
 			// 커넥션 생성
 			String token = session.createConnection(connectionProperties).getToken();
 			//JSONObject responseJson = new JSONObject();
 			//JSONObject responseJson = new JSONObject();
-			System.out.println(2);
+			log.info("가자마자 터진다3");
 			String roomId = RandomNumberUtil.getRandomNumber();
-			System.out.println(1);
+			log.info("가자마자 터진다4");
 			//String sessionName = createRandName(15); //15자리의 랜덤 문자열
 			while (mapSessions.get(roomId) != null) { // 중복 방지
 				roomId = RandomNumberUtil.getRandomNumber();
 			}
-			System.out.println(0);
+			log.info("가자마자 터진다5");
 			this.mapSessions.put(roomId, session);
 			this.mapSessionNamesTokens.put(roomId, new HashMap<>());
 			this.mapSessionNamesTokens.get(roomId).put(token, vRoomReq.getUserId());
-			System.out.println(-1);
+			log.info("가자마자 터진다6");
 			//            this.mapUserSession.put(userEmail, new HashMap<>());
 			//            this.mapUserSession.get(userEmail).put(sessionName, token);
 			// Prepare the response with the token
@@ -102,6 +102,7 @@ public class VRoomService {
 			System.out.println(-2);
 			// Return the response to the client
 			// 토큰정보와 상태 정보 리턴
+			log.info("가자마자 터진다7");
 			return vRoomRes;
 
 		} catch (Exception e) {
