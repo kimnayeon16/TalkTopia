@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.talktopia.api.request.UserChangePwRequest;
 import com.example.talktopia.api.request.UserCheckEmailRequest;
 import com.example.talktopia.api.request.UserCheckPwRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
@@ -125,5 +126,10 @@ public class UserController {
 		return ResponseEntity.ok().body(userService.searchPw(userSearchPwRequest));
 	}
 
+	// 비밀번호 변경
+	@PostMapping("/changePw")
+	public ResponseEntity<Message> changeUserPw(@RequestBody UserChangePwRequest userChangePwRequest) {
+		return ResponseEntity.ok().body(userService.changeUserPw(userChangePwRequest));
+	}
 
 }

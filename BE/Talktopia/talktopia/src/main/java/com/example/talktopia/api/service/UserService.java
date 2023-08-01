@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.talktopia.api.request.UserChangePwRequest;
 import com.example.talktopia.api.request.UserCheckPwRequest;
 import com.example.talktopia.api.request.UserJoinRequest;
 import com.example.talktopia.api.request.UserLoginRequest;
@@ -30,7 +30,6 @@ import com.example.talktopia.db.repository.ProfileImgRepository;
 import com.example.talktopia.db.repository.TokenRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -224,5 +223,22 @@ public class UserService {
 
 		return new Message("임시 비밀번호를 해당 이메일로 발송해드렸습니다.");
 
+	}
+
+	public Message changeUserPw(UserChangePwRequest userChangePwRequest) {
+		// 유저 조회
+		User searchUser = userRepository.findByUserId(userChangePwRequest.getUserId())
+			.orElseThrow(() -> new RuntimeException("존재하는 아이디가 없습니다."));
+
+		// 비밀번호 변경
+		searchUser.update(searchUser.getUserNo(), userChangePwRequest.getUserId(),
+			userChangePwRequest.getUserChangePw(), searchUser.getUserName(), searchUser.getUserEmail(),
+			searchUser.getProfileImg(), searchUser.getLanguage());
+
+		// 비밀번호 인코딩
+		searchUser.hashPassword(bCryptPasswordEncoder);
+		userRepository.save(searchUser);
+
+		return new Message("비밀번호 수정완료.");
 	}
 }
