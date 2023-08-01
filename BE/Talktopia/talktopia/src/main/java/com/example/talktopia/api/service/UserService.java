@@ -134,7 +134,6 @@ public class UserService {
 		return userMyPageResponse;
 	}
 
-<<<<<<< Updated upstream
 	// 마이페이지 checkPw
 	public Message myPageCheckPw(UserCheckPwRequest userCheckPwRequest) {
 		User dbSearchUser = userRepository.findByUserId(userCheckPwRequest.getUserId())
@@ -146,8 +145,6 @@ public class UserService {
 		return new Message("비밀번호가 인증되었습니다.");
 	}
 
-=======
->>>>>>> Stashed changes
 	// 새로운 토큰 요청
 	public UserNewTokenResponse reCreateNewToken(UserNewTokenRequest userNewTokenRequest) {
 		// 1. userReq로 userId와 refreshToken 받음
