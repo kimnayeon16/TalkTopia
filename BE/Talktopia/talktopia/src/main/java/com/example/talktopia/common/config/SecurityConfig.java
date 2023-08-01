@@ -47,7 +47,7 @@ public class SecurityConfig {
 			.and()
 			.authorizeRequests()
 			.antMatchers("/api/v1/user/join", "/api/v1/user/existId/**", "/api/v1/user/login", "/api/v1/user/checkEmail",
-				"/api/v1/user/reqNewToken", "/api/v1/user/searchId", "/api/v1/user/searchPw", "/api/v1/room/enter")
+				"/api/v1/user/reqNewToken", "/api/v1/user/searchId", "/api/v1/user/searchPw",  "/api/v1/room/enter")
 			.permitAll()
 			.antMatchers("/api/v1/**")
 			.authenticated()
