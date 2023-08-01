@@ -10,16 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.VRoom.VRoomReq;
+import com.example.talktopia.api.request.VRoomReq;
 import com.example.talktopia.api.response.VRoomRes;
 import com.example.talktopia.api.service.ParticipantsService;
 import com.example.talktopia.api.service.VRoomService;
 import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import com.example.talktopia.api.request.VRoom.VRoomReq;
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/room")
