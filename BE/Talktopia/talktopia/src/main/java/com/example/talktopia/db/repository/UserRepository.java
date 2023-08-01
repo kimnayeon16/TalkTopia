@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	Optional<User> deleteByUserId(String userId); // 유저 삭제
 
 	Optional<User> findByUserNameAndUserEmail(String userName, String userEmail); // 유저 이름과 이메일로 아이디 찾기
+
+	Optional<User> findByUserNameAndUserEmailAndUserId(String userName, String userEmail, String userId);
 }

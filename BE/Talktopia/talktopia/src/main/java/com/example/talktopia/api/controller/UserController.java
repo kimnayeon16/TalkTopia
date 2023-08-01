@@ -19,6 +19,7 @@ import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserModifyRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.request.UserSearchIdRequest;
+import com.example.talktopia.api.request.UserSearchPwRequest;
 import com.example.talktopia.api.response.UserMyPageResponse;
 import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.api.response.UserCheckEmailResponse;
@@ -69,7 +70,7 @@ public class UserController {
 		@RequestBody UserCheckEmailRequest userCheckEmailRequest) throws
 		Exception {
 		UserCheckEmailResponse userCheckEmailResponse = new UserCheckEmailResponse();
-		userCheckEmailResponse.setCode(userMailService.sendSimpleMessage(userCheckEmailRequest.getUserEmail()));
+		userCheckEmailResponse.setCode(userMailService.sendSimpleMessage(userCheckEmailRequest.getUserEmail(), "회원가입"));
 		return ResponseEntity.ok().body(userCheckEmailResponse);
 	}
 
@@ -116,6 +117,12 @@ public class UserController {
 	@PostMapping("/searchId")
 	public ResponseEntity<UserSearchIdResponse> searchUserId(@RequestBody UserSearchIdRequest userSearchIdRequest) {
 		return ResponseEntity.ok().body(userService.searchId(userSearchIdRequest));
+	}
+
+	// 비밀번호 찾기
+	@PostMapping("/searchPw")
+	public ResponseEntity<Message> searchUserPw(@RequestBody UserSearchPwRequest userSearchPwRequest) throws Exception {
+		return ResponseEntity.ok().body(userService.searchPw(userSearchPwRequest));
 	}
 
 

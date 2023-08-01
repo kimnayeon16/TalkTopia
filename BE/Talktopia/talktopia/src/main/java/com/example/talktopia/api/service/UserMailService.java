@@ -53,6 +53,35 @@ public class UserMailService {
 		return message;
 	}
 
+	public MimeMessage searchPwMessage(String userEmail) throws MessagingException, UnsupportedEncodingException {
+
+		MimeMessage message = mailSender.createMimeMessage();
+
+		message.addRecipients(Message.RecipientType.TO, userEmail);// 보내는 대상
+		message.setSubject("TalkTopia 임시 비밀번호 전송");// 제목
+
+		String msgg = "";
+		msgg += "<div style='margin:100px;'>";
+		msgg += "<h1> 안녕하세요</h1>";
+		msgg += "<h1> 글로벌 화상 채팅 TalkTopia 입니다</h1>";
+		msgg += "<br>";
+		msgg += "<p>아래 임시 비밀번호로 로그인 후 비밀번호를 꼭 변경해주세요.<p>";
+		msgg += "<br>";
+		msgg += "<p>저희 서비스를 이용해 주셔서 감사합니다.<p>";
+		msgg += "<br>";
+		msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+		msgg += "<h3 style='color:blue;'>임시 비밀번호입니다.</h3>";
+		msgg += "<div style='font-size:130%'>";
+		msgg += "CODE : <strong>";
+		msgg += code + "</strong><div><br/> "; // 메일에 인증번호 넣기
+		msgg += "</div>";
+		message.setText(msgg, "utf-8", "html");// 내용, charset 타입, subtype
+		// 보내는 사람의 이메일 주소, 보내는 사람 이름
+		message.setFrom(new InternetAddress(adminEmail, "TalkTopia_Admin"));// 보내는 사람
+
+		return message;
+	}
+
 	public String createKey() {
 		StringBuffer key = new StringBuffer();
 		Random random = new Random();
@@ -80,12 +109,16 @@ public class UserMailService {
 	}
 
 	// 메일 발송
-	public String sendSimpleMessage(String userEmail) throws Exception {
+	public String sendSimpleMessage(String userEmail, String type) throws Exception {
+		MimeMessage message;
 
-		code = createKey(); // 랜덤 인증번호 생성
-
-		System.out.println("메일 발송 전");
-		MimeMessage message = createMessage(userEmail); // 메일 발송
+		if(type.equals("회원가입")) {
+			code = createKey(); // 랜덤 인증번호 생성
+			message = createMessage(userEmail); // 메일 발송
+		} else {
+			code = type;
+			message = searchPwMessage(userEmail); // 메일 발송
+		}
 		try {
 			mailSender.send(message);
 		} catch (MailException e) {
