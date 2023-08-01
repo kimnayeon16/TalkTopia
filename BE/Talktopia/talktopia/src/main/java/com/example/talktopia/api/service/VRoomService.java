@@ -107,7 +107,7 @@ public class VRoomService {
 
 		} catch (Exception e) {
 			// If error generate an error message and return it to client
-			throw new Exception("dddd");
+			throw new Exception("Failed to create OpenVidu session", e);
 		}
 
 	}
