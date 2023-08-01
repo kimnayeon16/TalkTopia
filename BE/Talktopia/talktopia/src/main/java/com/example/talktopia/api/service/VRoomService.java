@@ -164,6 +164,7 @@ public class VRoomService {
 				.vrSession(roomId)
 				.vrCreateTime(LocalDateTime.now())
 				.vrMaxCnt(maxCnt)
+				.vrCurrCnt(1)
 				.vrEnter(true)
 				.build();
 			vroomrepsitory.save(room);
