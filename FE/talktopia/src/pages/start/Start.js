@@ -32,10 +32,11 @@ function Start(){
         await axios
         .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
         .then((response) => {
+            console.log(response)
             navigate('/joinroom', {
                 state: {
                     myUserName: 'user1234',
-                    token: response
+                    token: response.data.token
                 }
             });
         })
