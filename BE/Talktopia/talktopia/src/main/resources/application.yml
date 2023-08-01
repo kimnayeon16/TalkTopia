@@ -44,5 +44,5 @@ logging:
 # OpenVidu
 openvidu:
   url: "https://talktopia.site:8443"
-  secret: "MY_SECRET"
+  secret: "root"
 
