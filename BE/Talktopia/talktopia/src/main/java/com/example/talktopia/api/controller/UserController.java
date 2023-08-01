@@ -101,7 +101,6 @@ public class UserController {
 		return ResponseEntity.ok().body(new Message("회원 탈퇴가 완료되었습니다."));
 	}
 
-<<<<<<< Updated upstream
 	// 회원 정보 수정
 	@PutMapping("/modify")
 	public ResponseEntity<Message> modifyUser(@RequestBody UserModifyRequest userModifyRequest) {
