@@ -2,6 +2,12 @@ import { useSelector } from "react-redux";
 import IsTokenValid from "../../utils/tokenUtils";
 import NewToken from "../../utils/newToken";
 import "../../App.css";
+import { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../../utils";
+import axios from "axios";
+
 
 function Home(){
     const user = useSelector((state) => state.userInfo);
@@ -17,6 +23,47 @@ function Home(){
         //원래 보내려고 했던 요청 보내기
     }
     
+    // 화상 채팅방 입장
+    let navigate = useNavigate();
+
+    const handleButtonClick = async () => {
+
+        const headers = {
+            'Content-Type' : 'application/json'
+        }
+
+        const requestBody = {
+            userId: user.userId,
+            vr_max_cnt: 2
+        };
+
+        console.log(requestBody);
+
+        const requestBodyJSON = JSON.stringify(requestBody);
+        await axios
+        .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
+        .then((response) => {
+            console.log(response.data.token)
+            navigate('/joinroom', {
+                state: {
+                    myUserName: user.userId,
+                    token: response.data.token
+                }
+            });
+        })
+        .catch((error) => {
+            console.log("에러 발생", error)
+        })
+    }
+
+    const buttonStyle = {
+        backgroundColor: 'red',
+        color: 'white',
+        padding: '10px 20px',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+    };
 
     return(
         <div>
@@ -25,6 +72,9 @@ function Home(){
             <p>{user.accessToken}</p>
             <p>{user.expiredDate}</p>
 
+            <button style={buttonStyle}
+                onClick={handleButtonClick}
+            >랜덤 2인</button>
 
         </div>
     )

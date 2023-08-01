@@ -34,7 +34,7 @@ function JoinLogin(){
     }
 
     //로그인 버튼 클릭 시
-    const onLogin = (e) => {
+    const onLogin = async (e) => {
         e.preventDefault();
 
         const requestBody = {
@@ -44,25 +44,29 @@ function JoinLogin(){
 
         const requestBodyJSON = JSON.stringify(requestBody);
 
-        axios
-        .post(`${BACKEND_URL}/api/v1/user/login`, requestBodyJSON, {headers})
-        .then((response)=>{
+        try {
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/login`, requestBodyJSON, {headers});
             console.log(response.data);
             dispatch(reduxUserInfo({
-                userId: response.data.userId,
-                accessToken: response.data.accessToken,
-                expiredDate: response.data.expiredDate
+              userId: response.data.userId,
+              accessToken: response.data.accessToken,
+              expiredDate: response.data.expiredDate
             }));
-
+        
             Cookies.set('refreshToken', response.data.refreshToken);
-
-            alert('로그인 성공');
+        
+            await Swal.fire({
+              icon: "success",
+              title: "만나서 반가워요!",
+              text: "오늘도 새로운 친구를 만나러 가볼까요?",
+              confirmButtonText: "확인",
+              confirmButtonColor: '#90dbf4',
+            });
+        
             navigate('/home');
-     
-        })
-        .catch((error)=>{
-            console.log("에러",error);
-        })
+          } catch (error) {
+            console.log("에러", error);
+          }
 
         console.log(user.userId)
         console.log(user.accessToken)
@@ -122,6 +126,7 @@ function JoinLogin(){
                 title: "아이디를 입력해주세요",
                 // showCancelButton: true,
                 confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
                 // cancelButtonText: "취소",
             })
         }else if(userIdJoin.length !== 0 && idValid){
@@ -137,6 +142,7 @@ function JoinLogin(){
                     icon: "success",
                     title: "사용가능한 아이디입니다.",
                     text: `다음 회원가입 절차를 진행해주세요!`,
+                    confirmButtonColor: '#90dbf4',
                     // confirmButtonText: "확인",
                 })
             })
@@ -147,6 +153,7 @@ function JoinLogin(){
                     title: "이미 사용 중인 아이디입니다.",
                     text: `다른 아이디를 입력해주세요!`,
                     confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
                 })
             })
         }else{
@@ -154,11 +161,9 @@ function JoinLogin(){
                 icon: "warning",
                 title: "아이디 입력 조건을 확인해주세요!",
                 confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
             })
         }
-
-       
-        
     }
 
     //비밀번호
@@ -249,7 +254,14 @@ function JoinLogin(){
             .then((response) =>{
              console.log(response.data.code);
              setEmailConfirmServer(response.data.code);
-    
+            //  Swal.fire({
+            //     icon: "success",
+            //     title: "이메일 인증에 성공했습니다.",
+            //     confirmButtonText: "확인",
+            //     timer: 1500,
+            //     timerProgressBar: true,
+            //     confirmButtonColor: '#90dbf4',
+            // })
             // 백으로부터 메세지가 올 것임
             console.log('성공');
             })
@@ -259,8 +271,9 @@ function JoinLogin(){
         }else{
             Swal.fire({
                 icon: "warning",
-                title: "빠짐없이 입력해주세요!",
+                title: "이메일을 빠짐없이 입력해주세요!",
                 confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
             })
         }
     }
@@ -272,28 +285,27 @@ function JoinLogin(){
         console.log("서버 인증", emailConfirmServer);
 
         if(emailConfirm === emailConfirmServer){
+            
             setEmailConfirmWindow(false);
             setEmailButton("이메일 인증");
             setUserEmailCorrect(true);
+            Swal.fire({
+                icon: "success",
+                title: "이메일 인증에 성공했습니다.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+            })
             
         }else{
-            // alert('인증 번호가 올바르지 않습니다.');
+            console.log("여기 안올겨?");
             Swal.fire({
                 icon: "warning",
                 title: "인증 번호가 올바르지 않습니다.",
                 confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
             })
         }
     }
-
-    const [isInputMode, setIsInputMode] = useState(false);
-
-    // "직접입력" 모드를 토글하는 함수
-    const handleSelectChange = (e) => {
-        const selectedValue = e.target.value;
-        setIsInputMode(selectedValue === ""); // 선택된 값이 빈 문자열이면 "직접입력" 모드로 설정
-        onEmailDomainHandler(e); // select 요소의 value 변경 핸들러 호출
-      };
 
     //언어
     const onLanHandler = (e) => {
@@ -336,8 +348,10 @@ function JoinLogin(){
                     confirmButtonText: "확인",
                     timer: 2000,
                     timerProgressBar: true,
+                    confirmButtonColor: '#90dbf4',
+                }).then((result) => {
+                    setChange(false);
                 })
-                 
                  console.log(response.data);
              } catch(error){
                  console.error("에러 발생",error);
@@ -348,6 +362,7 @@ function JoinLogin(){
                     icon: "warning",
                     title: "빠짐 없이 입력해주세요 😃",
                     confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
                 })
             //  alert("빠짐 없이 입력해주세요 😃");
             }
@@ -368,17 +383,15 @@ function JoinLogin(){
       return (
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
             <div className={`${style.form} ${style["sign-in"]}`}>
-                <h2>TalkTopia에 오신걸 환영해요! 🌏</h2>
-                <label>
-                    {/* <span>아이디</span> */}
-                    <input type="text" value={userId} onChange={onIdHandler} placeholder="아이디" />
-                    {/* <input type="text" value={userId} onChange={onIdHandler} /> */}
-                </label><br />
-                <label>
-                    {/* <span>비밀번호</span> */}
-                    <input type="password" value={userPw} onChange={onPwHandler} placeholder="비밀번호"/>
-                    {/* <input type="password" value={userPw} onChange={onPwHandler}/> */}
-                </label>
+                <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🌏</h2>
+                <div className={`${style.login}`}>
+                    <span className={`${style["login-sub"]}`}>아이디</span>
+                    <input type="text" value={userId} onChange={onIdHandler}/>
+                </div>
+                <div className={`${style.login}`}>
+                    <span className={`${style["login-sub"]}`}>비밀번호</span>
+                    <input type="password" value={userPw} onChange={onPwHandler}/>
+                </div>
                 
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
                 <button></button>
@@ -392,11 +405,11 @@ function JoinLogin(){
             <div className={style["sub-cont"]}>
                 <div className={style.img}>
                     <div className={`${style["img__text"]} ${style["m--up"]}`}>
-                        <h2>만나서 반가워요</h2>
+                        <h2 className={`${style["h2-Font"]}`}>만나서 반가워요</h2>
                         <p>새로운 친구들과 함께할 준비가 되셨나요? 😊<br/> 지금 로그인하고 TalkTopia의 다양한 서비스를 즐겨보세요!</p>
                     </div>
                     <div className={`${style["img__text"]} ${style["m--in"]}`}>
-                        <h2>처음이신가요?</h2>
+                        <h2 className={`${style["h2-Font"]}`}>처음이신가요?</h2>
                         <p>여러분의 새로운 시작을 환영합니다 💙 <br/> 가입하고 전세계의 새로운 친구들을 사겨보세요!</p>
                     </div>
                     <div className={style["img__btn"]} onClick={handleToggleSignUp}>
@@ -404,46 +417,60 @@ function JoinLogin(){
                         <span className={`${style["m--in"]} ${change ? "" : style.active}`}>로그인 하러가기</span>
                     </div>
                 </div>
+
                 <div className={`${style.form} ${style.sign} ${style.up}`}>
                     <h2 className={`${style["h2-Join"]}`}>새로운 모험이 시작됩니다! <br/> 함께 멋진 시간을 만들어가요! 🚀</h2>
-                    <label>
-                        <span>아이디</span>
-                        <input type="text" value={userIdJoin} onChange={onIdJoinHandler}></input><button className={`${style.buttonId}`} onClick={onCheckId}>중복확인</button>
-                        <div>
-                            {
-                                !idValid && userIdJoin.length >=0 && 
-                                (<div className={`${style.guide}`}>영문 또는 영문, 숫자 조합으로 6~12자리 입력해주세요.</div>)
-                            }
-                        </div><br/>
-                    </label><br />
-                    <label>
-                        <span>비밀번호</span>
-                        <input type="password" value={userPwJoin} onChange={onPwJoinHandler} ></input><br/>
-                        <div>
-                            {
-                                !pwValid && userPwJoin.length >=0 && 
-                                (<div className={`${style.guide}`}>영문, 숫자, 특수기호 조합으로 8~16자리 입력해주세요.</div>)
-                            }
-                        </div><br/>
-                    </label><br />
-                    <label>
-                        <span>비밀번호 확인</span>
-                        <input type="password" value={userPwConfirm} onChange={onConfirmPwHandler}></input><br/>
-                        <span className={`${style.guide}`}>{pwConfirmMsg}</span><br/><br/>
-                    </label><br />
-                    <label>
-                        <span>이름</span>
-                        <input type="text" value={userName} onChange={onNameHandler}></input>
-                    </label><br />
-                   
-                    <label>
-                        <span>이메일</span>
-                        <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} className={`${style["email-input"]}`}></input>
-                        <span>@</span>
+                    <div className={style["div-join-container-isButton"]}>
+                        <div className={style["div-join"]}>
+                            <span className={`${style["span-join"]}`}>아이디 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="text" value={userIdJoin} onChange={onIdJoinHandler} className={style["div-input"]}></input>
+                            <button className={`${style.buttonId}`} onClick={onCheckId}>중복 확인</button>
+                        </div>
+                    </div>
+                    <div>
                         {
+                            !idValid && userIdJoin.length >=0 && 
+                            (<><br/><div className={`${style.guide}`}>영문, 숫자 조합으로 6~12자리 입력해주세요.</div></>)
+                        }
+                    </div>
+                    <div className={style["div-join-container"]}>
+                        <div className={style["div-join"]}>
+                            <span className={`${style["span-join"]}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="password" value={userPwJoin} onChange={onPwJoinHandler} className={style["div-input"]}></input>
+                        </div>
+                    </div>
+                    <div>
+                        {
+                            !pwValid && userPwJoin.length >=0 &&
+                            (<><br/><div className={`${style.guide}`}>영문, 숫자, 특수기호 조합으로 8~16자리 입력해주세요.</div></>)
+                        }
+                    </div>
+                    <div className={style["div-join-container"]}>
+                        <div className={style["div-join"]}>
+                            <span className={`${style["span-join"]}`}>비밀번호 확인</span>
+                            <input type="password" value={userPwConfirm} onChange={onConfirmPwHandler} className={style["div-input"]}></input>
+                        </div>
+                    </div>
+                    <div>
+                        <br/><div className={`${style["guide-pass"]}`}>{pwConfirmMsg}</div>
+                    </div>
+                    <div className={style["div-join-container"]}>
+                        <div className={style["div-join"]}>
+                            <span className={`${style["span-join"]}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="text" value={userName} onChange={onNameHandler} className={style["div-input"]}></input>
+                        </div>
+                    </div>
+
+
+                    <div className={style["div-join-container-isButton"]}>
+                        <div className={style["div-join"]}>
+                            <span className={`${style["span-join"]}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} className={`${style["div-input-email"]} ${style["email-input"]}`}></input>
+                            <span>@</span>
+                            {
                             emailSelect === true ? 
                             <>
-                            <select className={`${style.selectEmail}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
+                            <select className={`${style.selectEmail} ${style["div-input-email"]}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
                                 <option value="default" disabled>선택하세요</option>
                                 <option value="">직접입력</option>
                                 <option value="gmail.com">gmail.com</option>
@@ -460,30 +487,40 @@ function JoinLogin(){
                             </>
                             :
                             <>
-                                <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler}></input>
-                                <p onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>X</p>
+                                <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler} className={`${style["div-input-email"]}`}></input>
+                                <p className={`${style["out-email"]}`} onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>✖</p>
+                                <button onClick={checkEmail} className={`${style.buttonId}`}>{emailButton}</button><br/>
                             </>
                             
                         }
-
+                        </div>
+                    </div>
                         {
-                            emailConfirmWindow === true ? 
+                            emailConfirmWindow === true ?
                             <>
-                                <p>이메일로 전송된 인증코드를 입력해주세요</p>
-                                {/* <input type="text"  onChange={onEmailVerify}></input> */}
-                                <input type="text" value={emailConfirm} onChange={onEmailVerify}></input>
-                                    <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
-                                    <p>입력 시간</p>
-                                </>
+                                <div className={style["div-join-container"]}>
+                                    <div className={style["div-join"]}>
+                                        <div className={`${style["guide-email"]}`}>이메일로 전송된 인증코드를 입력해주세요</div>
+                                    </div>
+                                </div>
+                                <div className={style["div-join-container-isButton-1"]}>
+                                    <div className={style["div-join"]}>
+                                        <input type="text" value={emailConfirm} onChange={onEmailVerify} className={style["div-input-email"]}></input>
+                                        <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
+                                    </div>
+                                </div>
+                                {/* <p>입력 시간</p> */}
+                            </>
                             : 
                             null
                         }
-                    </label><br />
-                    <label>
-                        <span>사용 언어</span><br/>
-                        <select className={`${style.selectLan}`} value={userLan} onChange={onLanHandler}>
+
+                    <div className={style["div-join-container"]}>
+                        <div className={style["div-join"]}>
+                            <span className={`${style["span-join"]}`}>사용 언어&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <select className={`${style.selectLan} ${style["div-input"]}`} value={userLan} onChange={onLanHandler}>
                             <option vaule="">선택하세요</option>
-                            <option value="한국어">한국어</option>
+                            <option value="한국어">  한국어</option>
                             <option value="독일어">독일어</option>
                             <option value="러시아어">러시아어</option>
                             <option value="스페인어">스페인어</option>
@@ -496,8 +533,9 @@ function JoinLogin(){
                             <option value="중국어">중국어</option>
                             <option value="힌두어">힌두어</option>
                         </select>
-                    </label><br />
-                    <button type="button" className={`${style.submit}`} onClick={onSingUp}>회원가입</button>
+                        </div>
+                    </div>
+                    <button type="button" className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
                 </div>
             </div>
         </div>

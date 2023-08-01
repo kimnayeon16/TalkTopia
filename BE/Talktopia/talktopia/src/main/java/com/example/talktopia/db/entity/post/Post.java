@@ -51,6 +51,4 @@ public class Post {
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<AnswerPost> answerPostList = new ArrayList<>();
 
-
-
 }

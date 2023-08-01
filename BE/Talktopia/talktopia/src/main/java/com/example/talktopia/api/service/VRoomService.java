@@ -80,6 +80,7 @@ public class VRoomService {
 
 	public VRoomRes enterRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
+		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
 		List<String> roomIds = vroomrepsitory.findAllIds();
 		String connRoomId=null;
 		int maxCnt = vRoomReq.getVr_max_cnt();
@@ -105,13 +106,17 @@ public class VRoomService {
 				if(!isNotfoundRoom)
 				{
 					connRoomId=roomId;
+					String token = this.mapSessions.get(connRoomId).createConnection(connectionProperties).getToken();
+
 					this.mapSessionToken.get(connRoomId).setCurCount(this.mapSessionToken.get(connRoomId).getCurCount()+1);
 					if(this.mapSessionToken.get(connRoomId).getCurCount()==this.mapSessionToken.get(connRoomId).getMaxCount()){
 						vRoom.setVrEnter(false);
 					}
+
 					participantsService.joinRoom(user,vRoom);
 					VRoomRes vRoomRes = new VRoomRes();
-					vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
+					vRoomRes.setToken(token);
+					//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
 					vRoomRes.setVr_session(roomId);
 					// Return the response to the client
 					// 토큰정보와 상태 정보 리턴
@@ -126,7 +131,7 @@ public class VRoomService {
 
 		//ConnectionProperties와 createConnectionProperties는 OpenVidu 라이브러리에서 사용되는 개체와 함수
 
-		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
+
 		try {
 			// Create a new OpenVidu Session
 			Session session = this.openVidu.createSession();
@@ -158,12 +163,14 @@ public class VRoomService {
 
 			MapSession mapSession = new MapSession(roomId,token, new ArrayList<>(),maxCnt,1);
 			mapSession.getLang().add(user.getLanguage().getLangNo());
+			this.mapSessions.put(roomId,session);
 			this.mapSessionToken.put(roomId,mapSession);
 
 			VRoom room = VRoom.builder()
 				.vrSession(roomId)
 				.vrCreateTime(LocalDateTime.now())
 				.vrMaxCnt(maxCnt)
+				.vrCurrCnt(1)
 				.vrEnter(true)
 				.build();
 			vroomrepsitory.save(room);
