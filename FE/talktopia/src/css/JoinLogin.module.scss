@@ -9,6 +9,7 @@
 //   background: #ededed;
 // }
 
+
 input, button {
   border: none;
   outline: none;
@@ -16,9 +17,25 @@ input, button {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
-$contW: 1480px;
+
+// // 768px 이하의 화면 크기에 대한 스타일
+// @media (max-width: 768px) {
+//   $contW: 100%; // 원하는 스타일 적용
+//   $imgW: 100%; // 원하는 스타일 적용
+//   $formW: 100%; // 원하는 스타일 적용
+// }
+
+// // 769px 이상의 화면 크기에 대한 스타일
+// @media (min-width: 769px) {
+//   $contW: 1517px; // 원하는 스타일 적용
+//   $imgW: 500px; // 원하는 스타일 적용
+//   $formW: $contW - $imgW; // 원하는 스타일 적용
+// }
+
+// $contW: 100%;
+$contW: 1517px;
 // $imgW: 260px;
-$imgW: 450px;
+$imgW: 500px;
 $formW: $contW - $imgW;
 $switchAT: 1.2s;
 
@@ -47,12 +64,13 @@ $diffRatio: ($contW - $imgW) / $contW;
   margin: 0 auto 100px;
   // background: LightSlateGray;
   // background-image: url('../../public/img/login5.jpg');
-  background-color: #dad2bc;
+  background-color: #dad2bc; 
 }
 
 .form {
   position: relative;
   width: $formW;
+  // width: 1000px;
   height: 100%;
   transition: transform $switchAT ease-in-out;
   padding: 50px 30px 0;
@@ -62,15 +80,17 @@ $diffRatio: ($contW - $imgW) / $contW;
   overflow: hidden;
   position: absolute;
   left: $formW;
+  // left: 1000;
   top: 0;
   width: $contW;
   height: 100%;
   padding-left: $imgW;
-  background: #fff;
+  background: #dad2bc;
   transition: transform $switchAT ease-in-out;
 
   @include signUpActive {
     transform: translate3d($formW * -1,0,0);
+    // transform: translate3d(1000 * -1,0,0);
   }
 }
 
@@ -103,7 +123,7 @@ button {
     width: $contW;
     height: 100%;
     // background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
-    background-image: url('../../public/img/login3.jpg');
+    background-image: url('../../public/img/login7.jpg');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
@@ -121,29 +141,33 @@ button {
   @include signUpActive {
     &:before {
       transform: translate3d($formW,0,0);
+      // transform: translate3d(1000,0,0);
     }
   }
 
   &__text {
+    font-family: 'Dovemayo_wild';
     z-index: 2;
     position: absolute;
     left: 0;
     top: 200px;
     width: 100%;
     padding: 0 20px;
+    margin-top:-100px;
     text-align: center;
     color: #fff;
     transition: transform $switchAT ease-in-out;
 
     h2 {
+      color: white;
       margin-bottom: 30px;
       font-weight: normal;
-      font-size: 32px;
+      font-size: 36px;
       font-weight: 700;
     }
 
     p {
-      font-size: 14px;
+      font-size: 20px;
       line-height: 1.5;
     }
 
@@ -164,6 +188,7 @@ button {
   }
 
   &__btn {
+    font-family: 'Dovemayo_wild';
     overflow: hidden;
     z-index: 2;
     position: relative;
@@ -175,7 +200,7 @@ button {
     text-transform: uppercase;
     font-size: 15px;
     cursor: pointer;
-    margin-top: 100px;
+    margin-top: 200px;
     
     &:after {
       content: '';
@@ -190,6 +215,7 @@ button {
     }
 
     span {
+      font-family: 'Dovemayo_wild';
       position: absolute;
       left: 0;
       top: 0;
@@ -218,70 +244,133 @@ button {
 }
 
 h2 {
+  font-family: 'EF_jejudoldam';
+  // color: #5e503f;
+  color: #432818;
+  margin-top: 40px;
+  margin-bottom: 70px;
   width: 100%;
   font-size: 26px;
   text-align: center;
 }
 
+.h2-Join {
+  margin-top: -25px;
+  margin-bottom: 0px;
+}
+
 label {
+  font-family: 'Dovemayo_wild';
   display: block;
   width: $inputW;
-  margin: 25px auto 0;
-  text-align: center;
+  margin: 25px auto -50px;
+  // text-align: center;
 
   span {
-    font-size: 12px;
-    color: #cfcfcf;
+    font-family: 'Dovemayo_wild';
+    font-size: 14px;
+    color: black;
+    text-align: left;
+    // color: #cfcfcf;
     text-transform: uppercase;
   }
 }
 
 input {
+  font-family: 'Dovemayo_wild'; 
   display: block;
   width: 100%;
+  height: 40px;
   margin-top: 5px;
-  padding-bottom: 5px;
+  margin-bottom: -20px;
+  // padding-bottom: 5px;
   font-size: 16px;
-  border-bottom: 1px solid rgba(0,0,0,0.4);
+  border-bottom: 2px solid #5e503f;
+  // border: 2px solid #5e503f;
   text-align: center;
+  // border-radius: 30px;
 }
 
 .forgot-pass {
+  font-family: 'Dovemayo_wild';
   margin-top: 15px;
   text-align: center;
   font-size: 12px;
-  color: #cfcfcf;
+  // color: #cfcfcf;
+  color: black;
 }
 
 .submit {
-  margin-top: 40px;
-  margin-bottom: 20px;
-  background: #d4af7a;
+  font-family: 'Dovemayo_wild';
+  height: 45px;
+  margin-top: 60px;
+  margin-bottom: 10px;
+  // background: #d4af7a;
+  background: #b08968;
   text-transform: uppercase;
 }
 
-.fb-btn {
-  border: 2px solid #d3dae9;
-  color: darken(#d3dae9, 20%);
+// .fb-btn {
+//   font-family: 'Dovemayo_wild';
+//   border: 2px solid #d3dae9;
+//   color: darken(#d3dae9, 20%);
+
+//   span {
+//     font-family: 'Dovemayo_wild';
+//     font-weight: bold;
+//     color: darken(#768cb6, 20%);
+//   }
+// }
+
+.ka-btn {
+  font-family: 'Dovemayo_wild';
+  height: 45px;
+  border: 2px solid #807249;
+  color: darken(#ebdc5b, 20%);
+  margin-bottom: 10px;
 
   span {
+    font-family: 'Dovemayo_wild';
     font-weight: bold;
-    color: darken(#768cb6, 20%);
+    color: darken(#807249, 20%);
+  }
+}
+
+.go-btn {
+  font-family: 'Dovemayo_wild';
+  height: 45px;
+  border: 2px solid #33a852;
+  color: #fabd13;
+  margin-bottom: 30px;
+
+  span {
+    font-family: 'Dovemayo_wild';
+    font-weight: bold;
+    color: #4285f3;
+  }
+
+  .span-red {
+    font-family: 'Dovemayo_wild';
+    font-weight: bold;
+    color: #ea4435;
   }
 }
 
 .sign-in {
+
   transition-timing-function: ease-out;
 
   @include signUpActive {
     transition-timing-function: ease-in-out;
     transition-duration: $switchAT;
+    // transform: translate3d(1000,0,0);
     transform: translate3d($formW,0,0);
   }
 }
 
 .sign-up {
   transform: translate3d($contW * -1,0,0);
+  // transform: translate3d(1000 * -1,0,0);
 
   @include signUpActive {
     transform: translate3d(0,0,0);
@@ -303,4 +392,91 @@ input {
     left: auto;
     right: 5px;
   }
+}
+
+.line {
+  font-family: 'Dovemayo_wild';
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color:rgba(0,0,0,0.35);
+  font-size:14px;
+  margin: 25px 330px;
+}
+
+.line::before {
+  content:"";
+  flex-grow: 1;
+  margin: 0px 16px;
+  background: rgba(0,0,0,0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+}
+
+.line::after {
+  content:"";
+  flex-grow: 1;
+  margin: 0px 16px;
+  background: rgba(0,0,0,0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+}
+
+.guide {
+  font-size: 10px;
+}
+
+.buttonId {
+  font-family: 'Dovemayo_wild';
+  color: #807249;
+  border: 1px solid #807249;
+  width: 90px;
+  height: 35px;
+  margin-top: -30px;
+  margin-left: 270px;
+}
+
+select {
+  width: 140px;
+  height: 30px;
+  background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+  background-size: 20px;
+  padding: 5px 30px 5px 10px;
+  border-radius: 4px;
+  outline: 0 none;
+  border: 1px solid #807249;
+  color: #553e19;
+}
+select option {
+  background: rgb(236, 227, 198);
+  color: #553e19;
+  padding: 3px 0;
+}
+
+.selectEmail {
+  font-family: 'Dovemayo_wild';
+  color: #807249;
+  border: 1px solid #807249;
+  width: 58%;
+  height: 35px;
+  margin-top: -500px;
+  margin-left: 110px;
+}
+
+.email-input{
+  font-family: 'Dovemayo_wild'; 
+  display: block;
+  width: 35%;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: -20px;
+  font-size: 16px;
+  border-bottom: 2px solid #5e503f;
+  text-align: center;
+}
+
+.selectLan {
+  width: 100%;
 }
