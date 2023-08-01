@@ -41,6 +41,8 @@ public class VRoomController {
 	@PostMapping("/enter")
 	public VRoomRes enterRoom(@RequestBody VRoomReq vRoomReq) throws
 		Exception {
+		log.info(vRoomReq.getUserId());
+		log.info(String.valueOf(vRoomReq.getVr_max_cnt()));
 		return vRoomService.enterRoom(vRoomReq);
 	}
 
