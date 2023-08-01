@@ -28,7 +28,6 @@ function Start(){
         };
 
         const requestBodyJSON = JSON.stringify(requestBody);
-
         await axios
         .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
         .then((response) => {
