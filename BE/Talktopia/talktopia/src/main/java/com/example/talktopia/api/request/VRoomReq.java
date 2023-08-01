@@ -1,4 +1,4 @@
-package com.example.talktopia.api.request.VRoom;
+package com.example.talktopia.api.request;
 
 import lombok.Getter;
 import lombok.Setter;
