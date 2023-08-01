@@ -15,12 +15,7 @@ import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< Updated upstream
-=======
 
-import com.example.talktopia.api.request.VRoom.VRoomReq;
-
->>>>>>> Stashed changes
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/room")
