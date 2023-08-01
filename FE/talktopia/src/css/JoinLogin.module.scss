@@ -64,7 +64,8 @@ $diffRatio: ($contW - $imgW) / $contW;
   margin: 0 auto 100px;
   // background: LightSlateGray;
   // background-image: url('../../public/img/login5.jpg');
-  background-color: #dad2bc; 
+  // background-color: #dad2bc; 
+  background-color: #EEE9DA;
 }
 
 .form {
@@ -244,6 +245,10 @@ button {
 }
 
 h2 {
+  font-family: 'Dovemayo_wild';
+}
+
+.h2-Font {
   font-family: 'EF_jejudoldam';
   // color: #5e503f;
   color: #432818;
@@ -255,18 +260,34 @@ h2 {
 }
 
 .h2-Join {
-  margin-top: -25px;
-  margin-bottom: 0px;
+  font-family: 'EF_jejudoldam';
+  margin-top: 0px;
+  margin-bottom: 30px;
 }
 
-label {
-  font-family: 'Dovemayo_wild';
-  display: block;
-  width: $inputW;
-  margin: 25px auto -50px;
-  // text-align: center;
+// label {
+//   font-family: 'Dovemayo_wild';
+//   display: block;
+//   width: $inputW;
+//   margin: 25px auto -30px;
+//   // text-align: center;
 
-  span {
+//   span {
+//     font-family: 'Dovemayo_wild';
+//     font-size: 14px;
+//     color: black;
+//     text-align: left;
+//     // color: #cfcfcf;
+//     text-transform: uppercase;
+//   }
+// }
+
+.login {
+  font-family: 'Dovemayo_wild';
+  width: $inputW;
+  margin: 25px auto 50px;
+
+  .login-sub {
     font-family: 'Dovemayo_wild';
     font-size: 14px;
     color: black;
@@ -286,7 +307,8 @@ input {
   // padding-bottom: 5px;
   font-size: 16px;
   // border-bottom: 2px solid #5e503f;
-  border: 2px solid #5e503f;
+  // border: 2px solid #5e503f;
+  border: 2px solid #baa487;
   text-align: center;
   border-radius: 30px;
 }
@@ -304,6 +326,16 @@ input {
   font-family: 'Dovemayo_wild';
   height: 45px;
   margin-top: 60px;
+  margin-bottom: 10px;
+  // background: #d4af7a;
+  background: #b08968;
+  text-transform: uppercase;
+}
+
+.submit-1 {
+  font-family: 'Dovemayo_wild';
+  height: 45px;
+  margin-top: 20px;
   margin-bottom: 10px;
   // background: #d4af7a;
   background: #b08968;
@@ -399,7 +431,7 @@ input {
   display: flex;
   flex-basis: 100%;
   align-items: center;
-  color:rgba(0,0,0,0.35);
+  color:rgba(46, 31, 19, 0.35);
   font-size:14px;
   margin: 25px 330px;
 }
@@ -424,27 +456,22 @@ input {
   line-height: 0px;
 }
 
-.guide {
-  font-size: 10px;
-}
-
 .buttonId {
   font-family: 'Dovemayo_wild';
   color: #807249;
   border: 1px solid #807249;
   width: 90px;
-  height: 35px;
-  margin-top: -30px;
-  margin-left: 270px;
+  height: 30px;
+  margin-left: 10px;
 }
 
 select {
   width: 140px;
-  height: 30px;
+  height: 35px;
   background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
   background-size: 20px;
   padding: 5px 30px 5px 10px;
-  border-radius: 4px;
+  border-radius: 30px;
   outline: 0 none;
   border: 1px solid #807249;
   color: #553e19;
@@ -479,4 +506,106 @@ select option {
 
 .selectLan {
   width: 100%;
+}
+
+.guide {
+  // display: flex;
+  // justify-content: center;
+  font-family: 'Dovemayo_wild'; 
+  color: #5e503f;
+  font-size: 12px;
+  margin-top: -50px;
+  margin-left: 60px;
+}
+
+.guide-pass {
+  font-family: 'Dovemayo_wild'; 
+  color: #5e503f;
+  font-size: 12px;
+  margin-top: -50px;
+  margin-left: -40px;
+}
+
+.guide-email {
+  font-family: 'Dovemayo_wild'; 
+  color: #5e503f;
+  font-size: 12px;
+  display: flex;
+  // justify-content: center;
+  margin-left: 100px;
+  margin-bottom: -40px;
+}
+
+.div-join-container {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.div-join-container-isButton {
+  display: flex;
+  margin-bottom: 20px;
+  // justify-content: center;
+  margin-left: 300px;
+}
+
+.div-join-container-isButton-1 {
+  display: flex;
+  margin-bottom: 20px;
+  margin-left: 420px;
+}
+
+.div-join {
+  // width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  // text-align: center;
+}
+
+
+.span-join {
+  font-family: 'Dovemayo_wild';
+  font-size: 14px;
+  color: black;
+  // margin-left: 10px;
+  margin-right: 20px;
+  // display: flex; /* 추가 */
+  align-items: center;
+  
+}
+
+.div-input {
+  font-family: 'Dovemayo_wild'; 
+  width: 270px;
+  height: 40px;
+  flex: 1; /* input이 가능한 최대 너비를 확보하여 한 줄에 표시 */
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-bottom: 2px solid #baa487;
+  border-radius: 0px;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.div-input-email {
+  font-family: 'Dovemayo_wild'; 
+  width: 130px;
+  height: 40px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-bottom: 2px solid #baa487;
+  border-radius: 0px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.out-email {
+  margin-top: 20px;
+  margin-left: -10px;
+  font-size: 14px;
 }
