@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reduxUserInfo } from "../../store.js";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 import style from "../../css/JoinLogin.module.scss";
 
 function JoinLogin(){
@@ -116,22 +117,48 @@ function JoinLogin(){
         e.preventDefault();
         //아이디가 빈 문자일 때
         if(userIdJoin === ""){
-            alert('아이디를 입력해주세요.');
+            Swal.fire({
+                icon: "warning",
+                title: "아이디를 입력해주세요",
+                // showCancelButton: true,
+                confirmButtonText: "확인",
+                // cancelButtonText: "취소",
+            })
+        }else if(userIdJoin.length !== 0 && idValid){
+            axios.get(`${BACKEND_URL}/api/v1/user/existId/${userIdJoin}`)
+            .then((response)=>{
+                setUserIdCorrect(true);
+                console.log(response);
+                console.log(response.data)
+                console.log(response.data.message);
+
+
+                Swal.fire({
+                    icon: "success",
+                    title: "사용가능한 아이디입니다.",
+                    text: `다음 회원가입 절차를 진행해주세요!`,
+                    confirmButtonText: "확인",
+                })
+            })
+            .catch((error)=>{
+                // console.error("에러발생",error);
+                Swal.fire({
+                    icon: "warning",
+                    title: "이미 사용 중인 아이디입니다.",
+                    text: `다른 아이디를 입력해주세요!`,
+                    confirmButtonText: "확인",
+                })
+            })
+        }else{
+            Swal.fire({
+                icon: "warning",
+                title: "아이디 입력 조건을 확인해주세요!",
+                confirmButtonText: "확인",
+            })
         }
+
        
-        axios.get(`${BACKEND_URL}/api/v1/user/existId/${userIdJoin}`)
-        .then((response)=>{
-            alert("사용가능한 아이디 입니다.");
-            setUserIdCorrect(true);
-            console.log(response);
-            console.log(response.data)
-            console.log(response.data.message);
-        })
-        .catch((error)=>{
-            alert("중복 아이디입니다.");
-            // console.log(error);
-            // console.error("에러발생",error);
-        })
+        
     }
 
     //비밀번호
@@ -280,9 +307,9 @@ function JoinLogin(){
             if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
              try{
                  const requestBody = {
-                     userId,
+                     userIdJoin,
                      userName,
-                     userPw,
+                     userPwJoin,
                      userEmail,
                      // userLan,
                  };
