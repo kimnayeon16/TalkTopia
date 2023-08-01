@@ -15,6 +15,7 @@ import com.example.talktopia.api.request.UserLoginRequest;
 import com.example.talktopia.api.request.UserModifyRequest;
 import com.example.talktopia.api.request.UserNewTokenRequest;
 import com.example.talktopia.api.request.UserSearchIdRequest;
+import com.example.talktopia.api.request.UserSearchPwRequest;
 import com.example.talktopia.api.response.UserJoinResponse;
 import com.example.talktopia.api.response.UserLoginResponse;
 import com.example.talktopia.api.response.UserMyPageResponse;
@@ -43,6 +44,7 @@ public class UserService {
 	private final TokenRepository tokenRepository;
 	private final LanguageRepository languageRepository;
 	private final ProfileImgRepository profileImgRepository;
+	private final UserMailService userMailService;
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
@@ -197,5 +199,30 @@ public class UserService {
 			userSearchIdRequest.getUserEmail()).orElseThrow(() -> new RuntimeException("존재하는 아이디가 없습니다."));
 
 		return new UserSearchIdResponse(searchUser.getUserId(), "아이디 입니다.");
+	}
+
+	public Message searchPw(UserSearchPwRequest userSearchPwRequest) throws Exception {
+		// 아이디, 이름, 이메일로 존재하는 사람인지 확인
+		User searchUser = userRepository.findByUserNameAndUserEmailAndUserId(userSearchPwRequest.getUserName(),
+				userSearchPwRequest.getUserEmail(), userSearchPwRequest.getUserId())
+			.orElseThrow(() -> new RuntimeException("존재하는 아이디가 없습니다."));
+
+		// tmpPw로 유저 정보 변경
+		String tmpPw = userMailService.createKey();
+
+		searchUser.update(searchUser.getUserNo(), userSearchPwRequest.getUserId(), tmpPw,
+			userSearchPwRequest.getUserName(), searchUser.getUserEmail(),
+			searchUser.getProfileImg(), searchUser.getLanguage());
+
+		// 비밀번호 인코딩
+		searchUser.hashPassword(bCryptPasswordEncoder);
+
+		userRepository.save(searchUser);
+
+		// pw 이메일 전송, type에 랜덤값이 될 코드 전달
+		userMailService.sendSimpleMessage(userSearchPwRequest.getUserEmail(), tmpPw);
+
+		return new Message("임시 비밀번호를 해당 이메일로 발송해드렸습니다.");
+
 	}
 }
