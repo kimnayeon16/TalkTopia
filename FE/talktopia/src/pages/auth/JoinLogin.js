@@ -115,17 +115,17 @@ function JoinLogin(){
     const onCheckId = (e) => {
         e.preventDefault();
         //아이디가 빈 문자일 때
-        if(userId === ""){
+        if(userIdJoin === ""){
             alert('아이디를 입력해주세요.');
         }
        
-        axios.get(`${BACKEND_URL}/api/v1/user/existId/${userId}`)
+        axios.get(`${BACKEND_URL}/api/v1/user/existId/${userIdJoin}`)
         .then((response)=>{
-            alert(response.data.msg);
+            alert("사용가능한 아이디 입니다.");
             setUserIdCorrect(true);
             console.log(response);
             console.log(response.data)
-            console.log(response.data.msg);
+            console.log(response.data.message);
         })
         .catch((error)=>{
             alert("중복 아이디입니다.");
