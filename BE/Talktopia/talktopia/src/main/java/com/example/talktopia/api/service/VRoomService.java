@@ -21,11 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class VRoomService {
-
-	private VRoomRepository vroomrepsitory;
-	private UserRepository userRepository;
-	private ParticipantsService participantsService;
-
 	private OpenVidu openVidu;
 
 	private Map<String, Session> mapSessions = new HashMap<>();
@@ -41,13 +36,17 @@ public class VRoomService {
 	// openvidu secret
 	private String SECRET;
 
+	private VRoomRepository vroomrepsitory;
+	private UserRepository userRepository;
+	private ParticipantsService participantsService;
+
 	public VRoomService() {
 	}
 
-	public VRoomService(String SECRET, String OPENVIDU_URL, VRoomRepository vroomrepsitory,
+	public VRoomService(String secret, String openvidu_url, VRoomRepository vroomrepsitory,
 		UserRepository userRepository, ParticipantsService participantsService) {
-		this.SECRET = SECRET;
-		this.OPENVIDU_URL = OPENVIDU_URL;
+		this.SECRET = secret;
+		this.OPENVIDU_URL = openvidu_url;
 		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
 		this.vroomrepsitory = vroomrepsitory;
 		this.userRepository = userRepository;
