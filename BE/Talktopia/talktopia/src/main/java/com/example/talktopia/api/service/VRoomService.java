@@ -5,11 +5,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.example.talktopia.api.request.VRoom.VRoomReq;
+import com.example.talktopia.api.request.VRoomReq;
 import com.example.talktopia.api.response.VRoomRes;
 import com.example.talktopia.common.util.RandomNumberUtil;
-import com.example.talktopia.db.entity.user.User;
-import com.example.talktopia.db.entity.vr.VRoom;
 import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
