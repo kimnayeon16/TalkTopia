@@ -73,7 +73,8 @@ public class User {
 	private Token token;
 
 	@Builder
-	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
+	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,
+		Language language) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userPw = userPw;

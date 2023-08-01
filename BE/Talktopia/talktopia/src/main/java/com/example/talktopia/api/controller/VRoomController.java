@@ -1,8 +1,5 @@
 package com.example.talktopia.api.controller;
 
-
-
-
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +15,12 @@ import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< Updated upstream
+=======
+
+import com.example.talktopia.api.request.VRoom.VRoomReq;
+
+>>>>>>> Stashed changes
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/room")
@@ -27,7 +30,6 @@ public class VRoomController {
 	private final VRoomRepository vRoomRepository;
 	private final UserRepository userRepository;
 	private final ParticipantsService participantsService;
-
 
 	public VRoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl,
 		VRoomRepository vRoomRepository, UserRepository userRepository,
@@ -47,17 +49,6 @@ public class VRoomController {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 //
 // // private OpenVidu openvidu;
