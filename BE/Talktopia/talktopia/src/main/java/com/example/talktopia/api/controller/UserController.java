@@ -132,7 +132,4 @@ public class UserController {
 	public ResponseEntity<Message> changeUserPw(@RequestBody UserChangePwRequest userChangePwRequest) {
 		return ResponseEntity.ok().body(userService.changeUserPw(userChangePwRequest));
 	}
-
-=======
->>>>>>> Stashed changes
 }
