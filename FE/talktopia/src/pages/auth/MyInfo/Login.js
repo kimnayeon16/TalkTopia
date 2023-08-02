@@ -1,9 +1,9 @@
 import {useState} from "react";
 import { Link } from "react-router-dom";
-import { BACKEND_URL } from "../../utils";
+import { BACKEND_URL } from "../../../utils";
 import {useSelector, useDispatch} from "react-redux";
 import axios from "axios";
-import { reduxUserInfo } from "../../store.js";
+import { reduxUserInfo } from "../../../store.js";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from 'js-cookie';
