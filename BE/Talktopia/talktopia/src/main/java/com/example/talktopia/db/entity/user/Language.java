@@ -22,7 +22,7 @@ public class Language {
 	@Column(name = "lang_no")
 	private long langNo;
 
-	@Column(length = 5, name = "lang_name")
+	@Column(length = 20, name = "lang_name")
 	private String langName;
 
 	@Column(length = 15, name = "lang_stt")
