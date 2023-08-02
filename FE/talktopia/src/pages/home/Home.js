@@ -11,6 +11,27 @@ import axios from "axios";
 
 function Home(){
     const user = useSelector((state) => state.userInfo);
+
+    const headers = {
+        'Content-Type' : 'application/json',
+        'Authorization' : `Bearer ${user.accessToken}`,
+    }
+
+    console.log(headers);
+
+
+
+    //로그아웃
+    const logout = () => {
+        axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, headers)
+            .then((response)=>{
+               console.log("로그아웃");
+            })
+            .catch((error)=>{
+                console.log(headers);
+                console.log("로그아웃 실패", error);
+            })
+    }
     
     
     //요청 보낼 때.
@@ -28,16 +49,15 @@ function Home(){
 
     const handleButtonClick = async () => {
 
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
+        // const headers = {
+        //     'Content-Type' : 'application/json'
+        // }
 
         const requestBody = {
             userId: user.userId,
             vr_max_cnt: 2
         };
-
-        console.log(requestBody);
+        
 
         const requestBodyJSON = JSON.stringify(requestBody);
         await axios
@@ -52,7 +72,7 @@ function Home(){
             });
         })
         .catch((error) => {
-            console.log("에러 발생", error)
+            console.log("에러 발생", error);
         })
     }
 
@@ -71,6 +91,8 @@ function Home(){
             <p>{user.userId}</p>
             <p>{user.accessToken}</p>
             <p>{user.expiredDate}</p>
+
+            <button style={buttonStyle} onClick={logout}>로그아웃</button><br/>
 
             <button style={buttonStyle}
                 onClick={handleButtonClick}
