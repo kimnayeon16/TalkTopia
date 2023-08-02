@@ -35,5 +35,5 @@ public class ChatRoom {
 	private List<SaveChatRoomContent> saveChatRoomContentsList = new ArrayList<SaveChatRoomContent>();
 
 	@OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-	private ChatRoomParticipants chatRoomParticipant;
+	private ChatRoomParticipants chatRoomParticipants;
 }
