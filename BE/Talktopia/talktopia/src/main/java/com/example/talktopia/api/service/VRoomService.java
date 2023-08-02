@@ -209,17 +209,25 @@ public class VRoomService {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		if(this.mapSessions.get(vRoomExitReq.getVrSession())!=null && this.mapSessionToken.get(vRoomExitReq.getToken())!=null){
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
+			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
 				this.mapSessions.remove(vRoomExitReq.getVrSession());
-				participantsRepository.deleteByUser_UserNoAndVRoom_VrSession(user.getUserNo(), vRoomExitReq.getVrSession());
+				participantsRepository.deleteByUser_UserNo(user.getUserNo());
+				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
 				return new Message("방을 나갔습니다.");
 			}
-			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
 			if(!vRoom.isVrEnter()){
 				vRoom.setVrEnter(true);
 			}
 			vroomrepsitory.save(vRoom);
+
+			//Vroom Id 찾는다.
+			//user Id 찾는다.
+			//OK
+			//이를통해서 참여자 DB를 삭제한다.
+			participantsRepository.deleteByUser_UserNo(user.getUserNo());
 			return new Message("방을 나갔습니다.");
 		}
 		return new Message("방을 찾을수가없는데요?");

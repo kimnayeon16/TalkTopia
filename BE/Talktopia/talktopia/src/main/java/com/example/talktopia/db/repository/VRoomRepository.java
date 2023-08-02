@@ -13,5 +13,7 @@ public interface VRoomRepository extends JpaRepository<VRoom, Long> {
 	List<String> findAllIds();
 
 	VRoom findByVrSession(String roomId);
+
+	void deleteByVrSession(String vrSession);
 }
 
