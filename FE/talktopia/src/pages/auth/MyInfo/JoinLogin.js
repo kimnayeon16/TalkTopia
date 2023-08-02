@@ -187,7 +187,7 @@ function JoinLogin(){
         setUserPwConfirm(e.target.value);
 
         if(e.target.value === userPwJoin){
-            setPwConfirmMsg("올바른 비밀번호입니다.");
+            setPwConfirmMsg("비밀번호가 일치합니다.");
             setUserPwCorrect(true);
         }else{
             setPwConfirmMsg("비밀번호가 일치하지 않습니다.");
@@ -456,7 +456,7 @@ function JoinLogin(){
                         </div>
                     </div>
                     <div>
-                        <br/><div className={`${style["guide-pass"]}`}>{pwConfirmMsg}</div>
+                        <br/><div className={`${style["guide-pass"]} ${userPwCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
                     </div>
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
