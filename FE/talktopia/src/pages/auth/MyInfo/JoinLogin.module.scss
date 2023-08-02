@@ -512,7 +512,7 @@ select option {
   // display: flex;
   // justify-content: center;
   font-family: 'Dovemayo_wild'; 
-  color: #5e503f;
+  color: #fa762f;
   font-size: 12px;
   margin-top: -50px;
   margin-left: 60px;
@@ -520,7 +520,15 @@ select option {
 
 .guide-pass {
   font-family: 'Dovemayo_wild'; 
-  color: #5e503f;
+  color: #fa762f;
+  font-size: 12px;
+  margin-top: -50px;
+  margin-left: -40px;
+}
+
+.guide-pass-correct {
+  font-family: 'Dovemayo_wild'; 
+  color: #5fc827;
   font-size: 12px;
   margin-top: -50px;
   margin-left: -40px;
