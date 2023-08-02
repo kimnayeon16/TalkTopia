@@ -39,7 +39,7 @@ services:
   redis:
     image: redis
     container_name: redis
-    hostname: redis
+    hostname: talktopia.site
     ports:
       - 6379:6379
     networks:
