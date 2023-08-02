@@ -14,12 +14,16 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Service;
 
+import com.example.talktopia.api.request.VRoomExitReq;
 import com.example.talktopia.api.request.VRoomReq;
 import com.example.talktopia.api.response.VRoomRes;
+import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.MapSession;
 import com.example.talktopia.common.util.RandomNumberUtil;
 import com.example.talktopia.db.entity.user.User;
+import com.example.talktopia.db.entity.vr.Participants;
 import com.example.talktopia.db.entity.vr.VRoom;
+import com.example.talktopia.db.repository.ParticipantsRepository;
 import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
@@ -41,7 +45,7 @@ public class VRoomService {
 	// 세션이름 ,세션 토큰, 유저 이메일
 	//private Map<String, Map<String, String>> mapSessionNamesTokensRand = new HashMap<>();
 	// 세션이름 <세션 토큰, 유저 이메일>
-	private Map<String, Map<String, String>> mapSessionNamesTokens = new HashMap<>();
+	//private Map<String, Map<String, String>> mapSessionNamesTokens = new HashMap<>();
 	// 유저 이름, <세션이름, 세션토큰>
 	//private Map<String, Map<String, String>> mapUserSession = new HashMap<>();
 
@@ -54,17 +58,20 @@ public class VRoomService {
 	private UserRepository userRepository;
 	private ParticipantsService participantsService;
 
+	private ParticipantsRepository participantsRepository;
+
 	public VRoomService() {
 	}
 
 	public VRoomService(String secret, String openvidu_url, VRoomRepository vroomrepsitory,
-		UserRepository userRepository, ParticipantsService participantsService) {
+		UserRepository userRepository, ParticipantsService participantsService, ParticipantsRepository participantsRepository) {
 		this.SECRET = secret;
 		this.OPENVIDU_URL = openvidu_url;
 		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
 		this.vroomrepsitory = vroomrepsitory;
 		this.userRepository = userRepository;
 		this.participantsService = participantsService;
+		this.participantsRepository = participantsRepository;
 	}
 
 
@@ -80,6 +87,9 @@ public class VRoomService {
 
 	public VRoomRes enterRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
+		if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
+			throw new Exception("이미 참여중인 방이 있습니다");
+		}
 		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
 		List<String> roomIds = vroomrepsitory.findAllIds();
 		String connRoomId=null;
@@ -109,6 +119,7 @@ public class VRoomService {
 					String token = this.mapSessions.get(connRoomId).createConnection(connectionProperties).getToken();
 
 					this.mapSessionToken.get(connRoomId).setCurCount(this.mapSessionToken.get(connRoomId).getCurCount()+1);
+					vRoom.setVrCurrCnt(this.mapSessionToken.get(connRoomId).getCurCount()+1);
 					if(this.mapSessionToken.get(connRoomId).getCurCount()==this.mapSessionToken.get(connRoomId).getMaxCount()){
 						vRoom.setVrEnter(false);
 					}
@@ -194,52 +205,23 @@ public class VRoomService {
 
 	}
 
-	// private JSONObject getErrorResponse(Exception e) throws JSONException {
-	// 	JSONObject json = new JSONObject();
-	// 	json.put("cause", e.getCause());
-	// 	json.put("error", e.getMessage());
-	// 	json.put("exception", e.getClass());
-	// 	return json;
-	// }
-
+	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
+		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
+		if(this.mapSessions.get(vRoomExitReq.getVrSession())!=null && this.mapSessionToken.get(vRoomExitReq.getToken())!=null){
+			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
+			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
+				this.mapSessions.remove(vRoomExitReq.getVrSession());
+				participantsRepository.deleteByUser_UserNoAndVRoom_VrSession(user.getUserNo(), vRoomExitReq.getVrSession());
+				return new Message("방을 나갔습니다.");
+			}
+			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
+			if(!vRoom.isVrEnter()){
+				vRoom.setVrEnter(true);
+			}
+			vroomrepsitory.save(vRoom);
+			return new Message("방을 나갔습니다.");
+		}
+		return new Message("방을 찾을수가없는데요?");
+	}
 }
-
-// public List<String> quickRoom() {
-// 	return vroomrepsitory.findAllIds();
-// }
-//
-// public VRoomRes getRoomRes(String minConnRoomId, String userId) throws Exception {
-//
-// 	VRoom vRoom1 = vroomrepsitory.findByVrSession(minConnRoomId);
-//
-// 	vRoom1.setVrCurrCnt(vRoom1.getVrCurrCnt() + 1);
-// 	if (vRoom1.getVrCurrCnt() == vRoom1.getVrMaxCnt()) {
-// 		vRoom1.setVrEnter(false);
-// 	}
-//
-// 	User user = userRepository.findByUserId(userId).orElseThrow(() -> new Exception("유저가없엉 ㅋ"));
-// 	participantsService.joinRoom(user, vRoom1);
-//
-// 	VRoomRes vRoom = new VRoomRes();
-// 	vRoom.setVr_session(minConnRoomId);
-// 	vRoom.setVr_enter(true);
-// 	vRoom.setVr_create_time(LocalDateTime.now());
-//
-// 	return vRoom;
-// }
-//
-// @Transactional
-// public void makeRoom(String roomId, final VRoomReq VRoomReq) throws Exception {
-// 	log.info(VRoomReq.getUserId());
-// 	User user = userRepository.findByUserId(VRoomReq.getUserId()).orElseThrow(() -> new Exception("유저가없엉"));
-// 	VRoom room = VRoom.builder()
-// 		.vrSession(roomId)
-// 		.vrCreateTime(LocalDateTime.now())
-// 		.vrMaxCnt(VRoomReq.getVr_max_cnt())
-// 		.vrEnter(true)
-// 		.build();
-//
-// 	vroomrepsitory.save(room);
-//
-// 	participantsService.joinRoom(user, room);
-// }
