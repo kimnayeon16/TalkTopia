@@ -24,7 +24,7 @@ services:
     depends_on:
       - server
     networks:
-        - talktopia_network
+      - talktopia_network
   nginx:
     image: ttp-nginx:latest
     container_name: ttp_nginx
@@ -34,6 +34,14 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - talktopia_network
+  redis:
+    image: redis
+    container_name: redis
+    hostname: redis
+    ports:
+      - 6379:6379
     networks:
       - talktopia_network
 networks:
