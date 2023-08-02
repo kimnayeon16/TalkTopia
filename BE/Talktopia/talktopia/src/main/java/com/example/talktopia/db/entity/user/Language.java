@@ -30,4 +30,7 @@ public class Language {
 
 	@Column(name = "lang_flag_img_url")
 	private String langFlagImgUrl;
+
+	@Column(length = 15, name = "lang_trans")
+	private String langTrans;
 }
