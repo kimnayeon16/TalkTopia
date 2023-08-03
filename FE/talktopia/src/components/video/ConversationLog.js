@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
+import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
 import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
@@ -8,7 +10,6 @@ function ConversationLog(props) {
     const chatScroll = useRef(null);
 
     const [messageList, setMessageList] = useState([]); // 받은 메세지들
-    // const [message, setMessage] = useState('');
 
     // WebSpeechApi관련 state
     const [transcript, setTranscript] = useState(""); // 자신이 말한 텍스트
@@ -79,17 +80,17 @@ function ConversationLog(props) {
             sendMessage(lastResult[0].transcript);  // 메세지 전달 함수 호출
         }
     };
-    // peech recognition 이벤트핸들러 끝
+    // speech recognition 이벤트핸들러 끝
 
     // 메세지 전달 함수
     const sendMessage = (finalTranscript) => {
         let newMfinalTranscript = finalTranscript.replace(/ +(?= )/g, '');
         if (newMfinalTranscript !== '' && newMfinalTranscript !== ' ') {
             const data = {
-                transcript: newMfinalTranscript, 
-                nickname: props.myUserName, 
-                streamId: props.mainStreamManager.stream.streamId,
-                lang: 'ko'
+                transcript: newMfinalTranscript,                    // stt 
+                nickname: props.myUserName,                         // 말한 사용자 이름
+                streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
+                lang: user.transLang                                // transcript source 언어
             };
             // Sender of the message (after 'session.connect')
             props.mainStreamManager.stream.session.signal({
@@ -112,13 +113,15 @@ function ConversationLog(props) {
         props.mainStreamManager.stream.session.on('signal:STT', (event) => {
             const data = JSON.parse(event.data);
             console.log(data,'-------------------------')
-            let newMessageList = ({
+            let messageData = ({
                 transcript: data.transcript,            // 전달받은 메세지
                 nickname: data.nickname,                // 전달한 사용자 이름
                 connectionId: event.from.connectionId,  // Connection object of the sender 
-                source: data.lang                       // 전달받은 메세지 언어
+                source: data.lang,                      // 전달받은 메세지 언어
+                translate: ''                           // 번역된 메세지 
             });
-            setMessageList((prev) => ([...prev, newMessageList]))
+            translationHandler(messageData);    // 번역 안할 때는 주석처리하면 됨.
+            // setMessageList((prev) => ([...prev, messageData]))
             scrollToBottom();
         });
 
@@ -127,16 +130,47 @@ function ConversationLog(props) {
         };
     }, []);
 
+    const translationHandler = async (newMessageList) => {
+        const data = {
+            'q': newMessageList.transcript,
+            'target': user.transLang,           // 번역할 언어
+            'source': newMessageList.source     // 전달 받은 텍스트 언어
+        };
+        console.log('translationHandler data', data)
+
+        const options = {
+            method: 'POST',
+            url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-RapidAPI-Key': REACT_APP_X_RAPID_API_KEY,
+                'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
+            },
+            data: data,
+        };
+            
+        try {
+            const response = await axios.request(options);
+            console.log('response data--', response.data);
+                  
+            // 이스케이프 문자열 디코딩
+            const parser = new DOMParser();
+            const decodedText = parser.parseFromString(response.data.data.translations[0].translatedText, 'text/html').body.textContent;
+            console.log('번역된 텍스트', decodedText)
+            newMessageList.translate = decodedText
+            setMessageList((prev) => ([...prev, newMessageList]))
+        } catch (error) {
+            console.error(error);
+            alert('번역에 실패하였습니다.');
+        }
+    };
+
     const scrollToBottom = () => {
         setTimeout(() => {
             try {
                 chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
             } catch (err) {}
         }, 20);
-    }
-
-    const translationHandler = () => {
-        return '변환된 언어'
     }
 
 
@@ -157,7 +191,7 @@ function ConversationLog(props) {
                                     </div>
                                     <div className={ `${style.msg_content }`}>
                                         <p className={ `${style.text }`}>{data.transcript}</p>
-                                        {/* <p>{translationHandler(data.transcript)}</p> */}
+                                        <p className={ `${style.text }`}>{data.translate}</p>
                                     </div>
                                 </div>
                             </div>
