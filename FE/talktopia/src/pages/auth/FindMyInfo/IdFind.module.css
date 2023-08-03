@@ -16,9 +16,11 @@
 }
 
 .title {
+    font-family: 'Dovemayo_wild';
     margin-top: 100px;
     margin-bottom: 20px;
     color: #012A4A;
+    font-size: 40px;
 }
 
 .p{
@@ -183,8 +185,8 @@
 
 @keyframes fadeInLeft {
     0% {
-        opacity: 0;
-        transform: translateX(-600%);
+        opacity: 0.5;
+        transform: translateX(-450%);
     }
     to {
         opacity: 1;
@@ -194,7 +196,7 @@
 
 
 .fade-in-box-1 {
-    width: 100px;
+    width: 120px;
     margin-left: -30px;
     margin-top: -30px;
     padding: 10px;

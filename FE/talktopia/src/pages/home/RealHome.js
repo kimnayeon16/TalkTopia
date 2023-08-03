@@ -7,7 +7,6 @@ import { BACKEND_URL } from '../../utils';
 
 function RealHome(){
     const user = useSelector((state) => state.userInfo);
-    let navigate = useNavigate();
 
     const headers = {
         'Content-Type' : 'application/json',
@@ -15,7 +14,6 @@ function RealHome(){
     }
 
     // console.log(headers);
-
 
 
     //로그아웃
@@ -29,6 +27,49 @@ function RealHome(){
                 console.log("로그아웃 실패", error);
             })
     }
+
+
+    // 화상 채팅방 입장
+    let navigate = useNavigate();
+
+    const handleButtonClick = async (e) => {
+        const headers = {
+            'Content-Type' : 'application/json'
+        }
+        console.log(e);
+
+        const requestBody = {
+            userId: user.userId,
+            vr_max_cnt: e
+        };
+        
+
+        const requestBodyJSON = JSON.stringify(requestBody);
+        await axios
+        .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
+        .then((response) => {
+            console.log(response.data.token)
+            navigate('/joinroom', {
+                state: {
+                    myUserName: user.userId,
+                    mySessionId: response.data.vrSession,
+                    token: response.data.token
+                }
+            });
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
+    }
+
+    const buttonStyle = {
+        backgroundColor: 'red',
+        color: 'white',
+        padding: '10px 20px',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+    };
 
     return(
         <div>
@@ -57,6 +98,18 @@ function RealHome(){
                 </Navbar.Collapse>
             </Container>
             </Navbar>
+            <div>
+                <p className={`${style.p}`}>세계를 하나로 잇는 깊은 바다처럼<br/>
+                    <span className={`${style.span}`}>TalkTopia</span>는 여러분의 여정을 시작할 특별한 항구가 될거에요. <br/>
+                    원하는 인원 수를 설정하여 <span className={`${style.span}`}>{user.userName}</span>님만의 특별한 항해를 떠날 수 있어요. 🚢 <br/>
+                    마음에 맞는 다양한 국적의 사람들과 행운 넘치는 시간을 보내길 기원할게요.🍀
+                </p>
+            </div>
+            <div className={`${style["button-together"]}`}>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(2)}}>랜덤 2인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(4)}}>랜덤 4인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(6)}}>랜덤 6인</button>
+            </div>
         </div>
     )
 }
