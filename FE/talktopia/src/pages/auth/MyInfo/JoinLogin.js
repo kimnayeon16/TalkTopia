@@ -35,7 +35,8 @@ function JoinLogin(){
 
     //로그인 버튼 클릭 시
     const onLogin = async (e) => {
-        e.preventDefault();
+        console.log("???");
+        // e.preventDefault();
 
         const requestBody = {
             userId,
@@ -334,7 +335,7 @@ function JoinLogin(){
                     userName,
                     userPwJoin,
                     userEmail,
-                    // userLan,
+                    userLan,
                 };
      
                 console.log(requestBody);
@@ -382,19 +383,26 @@ function JoinLogin(){
     };
 
     /////////////////////////////////////////////////////////////////////////////////
+    const onCheckEnter = (e) => {
+        // e.preventDefault();
+        if(e.key === 'Enter') {
+            console.log("들어오니")
+            onLogin();
+        }
+      }
 
       return (
         <div className={`${style.background}`}>
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
-            <div className={`${style.form} ${style["sign-in"]}`}>
+            <div className={`${style.form} ${style["sign-in"]}`} >
                 <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🌏</h2>
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>아이디</span>
-                    <input type="text" value={userId} onChange={onIdHandler}/>
+                    <input type="text" value={userId} onChange={onIdHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>비밀번호</span>
-                    <input type="password" value={userPw} onChange={onPwHandler}/>
+                    <input type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>

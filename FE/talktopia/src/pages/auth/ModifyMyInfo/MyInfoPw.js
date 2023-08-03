@@ -1,14 +1,17 @@
 import axios from "axios";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BACKEND_URL } from "../../../utils";
 
 function MyInfoPw(){
+    const user = useSelector((state) => state.userInfo);
+    let dispatch = useDispatch();
+
     const headers ={
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json',
+        'Authorization' : `Bearer ${user.accessToken}`,
     }
 
-    const user = useSelector((state) => state.userInfo);
 
     const [userPw,setUserPw] = useState("");
 
