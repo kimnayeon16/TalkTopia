@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 
 function ConversationLog(props) {
-
-    const chatScroll = React.createRef();
+    const chatScroll = useRef(null);
+    // const chatScroll = React.createRef();
 
     const [messageList, setMessageList] = useState([]); // 받은 메세지들
     // const [message, setMessage] = useState('');
@@ -136,23 +136,34 @@ function ConversationLog(props) {
 
     return (
         <>
-            <div>
-                <p>내가 말하고 있는 내용 : {transcript}</p>
-            </div>
-
-            <div ref={chatScroll}>
-                {messageList.map((data, i) => (
-                    <div key={i}>
-                        <div>
-                            <p>{data.nickname}</p>
-                        </div>
-                        <div>
-                            <p>{data.transcript}</p>
-                            <p>{translationHandler(data.transcript)}</p>
-                        </div>
+            <div id={`${ style.chatContainer }`}>
+                <div id={`${ style.chatComponent }`}>
+                    <div id={`${ style.chatToolbar }`}>
+                        <span>Conversation</span>
                     </div>
-                ))}
-            </div>  
+    
+                    <div className={`${ style.message_wrap }`} ref={chatScroll}>
+                        {messageList.map((data, i) => (
+                            <div key={`${i}-Conversation`}>
+                                <div className={ `${style.msg_detail }`}>
+                                    <div className={ `${style.msg_info }`}>
+                                        <p>{data.nickname}</p>
+                                    </div>
+                                    <div className={ `${style.msg_content }`}>
+                                        <p className={ `${style.text }`}>{data.transcript}</p>
+                                        <p>{translationHandler(data.transcript)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>  
+
+
+                    <div id={ `${style.transcriptInput }`}>
+                        <p>내가 말하고 있는 내용 : {transcript}</p>
+                    </div>
+                </div>
+            </div>
         </>
     )
 };
