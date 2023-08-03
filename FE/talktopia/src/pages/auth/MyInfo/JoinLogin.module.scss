@@ -301,7 +301,7 @@ h2 {
   }
 }
 
-input {
+.input {
   font-family: 'Dovemayo_wild'; 
   display: block;
   width: 100%;
@@ -487,7 +487,8 @@ select {
   color: #013A63;
 }
 select option {
-  background: rgb(236, 227, 198);
+  // background: rgb(236, 227, 198);
+  background: #f5ecb8;
   color: #013A63;
   padding: 3px 0;
 }
