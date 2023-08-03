@@ -217,6 +217,7 @@ public class VRoomService {
 			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
 				this.mapSessions.remove(vRoomExitReq.getVrSession());
+				this.mapSessionToken.remove(vRoomExitReq.getVrSession());
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
 				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
 				return new Message("방을 나갔습니다.");

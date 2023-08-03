@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,5 +39,13 @@ public class SaveChatRoomContent {
 		if(chatRoom != null){
 			chatRoom.getSaveChatRoomContentsList().add(this);
 		}
+	}
+
+	@Builder
+	public SaveChatRoomContent(long scrcNo, String scrcContent, String scrcSenderId, ChatRoom chatRoom) {
+		this.scrcNo = scrcNo;
+		this.scrcContent = scrcContent;
+		this.scrcSenderId = scrcSenderId;
+		this.chatRoom = chatRoom;
 	}
 }
