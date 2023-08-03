@@ -58,7 +58,8 @@ public class UserService {
 		isExistUser(userJoinRequest.getUserIdJoin());
 
 		// req -> toEntity -> save
-		User joinUser = userJoinRequest.toEntity(languageRepository.findByLangName(userJoinRequest.getUserLan()));
+		User joinUser = userJoinRequest.toEntity(languageRepository.findByLangStt(userJoinRequest.getUserLan()));
+		log.info("language: " + languageRepository.findByLangStt(userJoinRequest.getUserLan()).getLangTrans());
 		joinUser.hashPassword(bCryptPasswordEncoder);
 		userRepository.save(joinUser);
 		return new UserJoinResponse("회원 가입에 성공하였습니다.");
@@ -81,7 +82,7 @@ public class UserService {
 		Language lan = dbSearchUser.getLanguage();
 
 		Date now = new Date();
-		// 토큰 발행
+		// 토큰 발행f
 		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey,
 			new Date(now.getTime() + accessExpiredMs));
 		String refreshToken = JwtProvider.createRefreshToken(userLoginRequest.getUserId(), secretKey,
@@ -187,7 +188,7 @@ public class UserService {
 		updateUser.update(updateUser.getUserNo(), userModifyRequest.getUserId(), userModifyRequest.getUserPw(),
 			userModifyRequest.getUserName(), userModifyRequest.getUserEmail(),
 			profileImgRepository.findByImgUrl(userModifyRequest.getUserImgUrl()),
-			languageRepository.findByLangName(userModifyRequest.getUserLan()));
+			languageRepository.findByLangStt(userModifyRequest.getUserLan()));
 
 		// 비밀번호 인코딩
 		updateUser.hashPassword(bCryptPasswordEncoder);
