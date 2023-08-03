@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VRoomRes {
-	private String vr_session;
+	private String vrSession;
 	private String token;
 }
