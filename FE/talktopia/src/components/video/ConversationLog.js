@@ -7,6 +7,7 @@ import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
     const user = useSelector((state) => state.userInfo);
+    console.log(user)
     const chatScroll = useRef(null);
 
     const [messageList, setMessageList] = useState([]); // 받은 메세지들
@@ -120,7 +121,15 @@ function ConversationLog(props) {
                 source: data.lang,                      // 전달받은 메세지 언어
                 translate: ''                           // 번역된 메세지 
             });
-            translationHandler(messageData);    // 번역 안할 때는 주석처리하면 됨.
+
+             // 번역 안할 때는 주석처리하면 됨.
+            if (messageData.source !== user.transLang) {
+                translationHandler(messageData);
+            } else {
+                messageData.translate = data.transcript
+                setMessageList((prev) => ([...prev, messageData]))
+            }
+            
             // setMessageList((prev) => ([...prev, messageData]))
             scrollToBottom();
         });
