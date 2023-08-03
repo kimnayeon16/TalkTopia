@@ -61,7 +61,6 @@ Map<String, Object> account = (Map<String, Object>) attributes.get("profile");
         return User.builder()
             .userName(name)
             .userEmail(email)
-
-                .build();
+            .build();
     }
 }

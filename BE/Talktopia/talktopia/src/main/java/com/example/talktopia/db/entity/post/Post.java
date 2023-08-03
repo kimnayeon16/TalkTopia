@@ -20,6 +20,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.example.talktopia.db.entity.user.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -51,4 +52,19 @@ public class Post {
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<AnswerPost> answerPostList = new ArrayList<>();
 
+	@Builder
+	public Post(long pNo, String pContent, String pTitle, LocalDateTime pCreateTime, User user) {
+		this.pNo = pNo;
+		this.pContent = pContent;
+		this.pTitle = pTitle;
+		this.pCreateTime = pCreateTime;
+		setUser(user);
+	}
+
+	private void setUser(User user) {
+		this.user = user;
+		if (user != null) {
+			user.getPostList().add(this);
+		}
+	}
 }
