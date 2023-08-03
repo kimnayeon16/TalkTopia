@@ -119,7 +119,7 @@ public class VRoomService {
 					String token = this.mapSessions.get(connRoomId).createConnection(connectionProperties).getToken();
 
 					this.mapSessionToken.get(connRoomId).setCurCount(this.mapSessionToken.get(connRoomId).getCurCount()+1);
-					vRoom.setVrCurrCnt(this.mapSessionToken.get(connRoomId).getCurCount()+1);
+					vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()+1);
 					if(this.mapSessionToken.get(connRoomId).getCurCount()==this.mapSessionToken.get(connRoomId).getMaxCount()){
 						vRoom.setVrEnter(false);
 					}
