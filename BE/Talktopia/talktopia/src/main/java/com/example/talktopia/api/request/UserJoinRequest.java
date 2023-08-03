@@ -3,6 +3,7 @@ package com.example.talktopia.api.request;
 import com.example.talktopia.db.entity.user.Language;
 import com.example.talktopia.db.entity.user.ProfileImg;
 import com.example.talktopia.db.entity.user.User;
+import com.example.talktopia.db.entity.user.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class UserJoinRequest {
 			.userPw(userPwJoin)
 			.userName(userName)
 			.userEmail(userEmail)
+			.userRole(UserRole.USER)
 			.language(language)
 			.build();
 	}

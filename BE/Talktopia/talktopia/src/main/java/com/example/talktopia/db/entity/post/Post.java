@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,9 +25,11 @@ import com.example.talktopia.db.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "post")
 public class Post {
@@ -52,12 +56,15 @@ public class Post {
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<AnswerPost> answerPostList = new ArrayList<>();
 
+	@Enumerated(EnumType.STRING)
+	private PostType postType;
 	@Builder
-	public Post(long postNo, String postContent, String postTitle, LocalDateTime postCreateTime, User user) {
+	public Post(long postNo, String postContent, String postTitle, LocalDateTime postCreateTime, User user, PostType postType) {
 		this.postNo = postNo;
 		this.postContent = postContent;
 		this.postTitle = postTitle;
 		this.postCreateTime = postCreateTime;
+		this.postType=postType;
 		setUser(user);
 	}
 

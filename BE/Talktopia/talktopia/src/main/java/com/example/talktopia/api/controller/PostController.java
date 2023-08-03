@@ -2,7 +2,6 @@ package com.example.talktopia.api.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.RegistPostReq;
 import com.example.talktopia.api.response.PostListRes;
+import com.example.talktopia.api.response.PostRes;
 import com.example.talktopia.api.service.PostService;
 import com.example.talktopia.common.message.Message;
 
@@ -37,18 +37,14 @@ public class PostController {
 		return postService.registerPost(registPostReq);
 	}
 
-	@DeleteMapping("/list/delete")
+	@GetMapping("/list/delete")
 	public Message deletePost(@RequestParam("userId")String userId,@RequestParam("postNo")long postNo) throws Exception {
 		return postService.deletePost(userId,postNo);
 	}
 
-	// @PostMapping("/anwer")
-	// public ResponseEntity<?>
-	//
-	// @GetMapping("/list/detail/{userId}/{pNo}")
-	// public ResponseEntity<?>
-	//
-	// @GetMapping("/list/delete/{userId}/{pNo}")
-	// public ResponseEntity<?>
+	@GetMapping("/list/detail")
+	public PostRes detailPost(@RequestParam("userId")String userId,@RequestParam("postNo")long postNo) throws Exception {
+		return postService.detailPost(userId,postNo);
+	}
 
 }

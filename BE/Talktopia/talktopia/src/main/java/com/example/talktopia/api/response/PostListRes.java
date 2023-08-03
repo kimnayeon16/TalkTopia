@@ -8,6 +8,4 @@ import lombok.Setter;
 public class PostListRes {
 	long postNo;
 	String postTitle;
-	String postContent;
-
 }

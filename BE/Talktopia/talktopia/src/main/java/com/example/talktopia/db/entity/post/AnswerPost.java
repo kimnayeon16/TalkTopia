@@ -1,5 +1,7 @@
 package com.example.talktopia.db.entity.post;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,14 +34,14 @@ public class AnswerPost {
 
 	@CreatedDate
 	@Column(name = "content_create_time")
-	private String contentCreateTime;
+	private LocalDateTime contentCreateTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_no")
 	private Post post;
 
 	@Builder
-	public AnswerPost(long contentNo, String contentContent, String contentCreateTime, Post post) {
+	public AnswerPost(long contentNo, String contentContent, LocalDateTime contentCreateTime, Post post) {
 		this.contentNo = contentNo;
 		this.contentContent = contentContent;
 		this.contentCreateTime = contentCreateTime;

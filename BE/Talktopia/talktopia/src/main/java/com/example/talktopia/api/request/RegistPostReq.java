@@ -3,6 +3,7 @@ package com.example.talktopia.api.request;
 import java.time.LocalDateTime;
 
 import com.example.talktopia.db.entity.post.Post;
+import com.example.talktopia.db.entity.post.PostType;
 import com.example.talktopia.db.entity.user.User;
 
 import lombok.AllArgsConstructor;
@@ -21,8 +22,9 @@ public class RegistPostReq {
 	private String userId;
 
 
-	public Post toEntity(User user){
+	public Post toEntity(User user, PostType postType){
 		return Post.builder()
+			.postType(postType)
 			.postTitle(postTitle)
 			.postCreateTime(LocalDateTime.now())
 			.postContent(this.postTitle)
