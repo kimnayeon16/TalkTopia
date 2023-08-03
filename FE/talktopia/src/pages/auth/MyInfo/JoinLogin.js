@@ -50,8 +50,11 @@ function JoinLogin(){
             console.log(response.data);
             dispatch(reduxUserInfo({
               userId: response.data.userId,
+              userName: response.data.userName,
               accessToken: response.data.accessToken,
-              expiredDate: response.data.expiredDate
+              expiredDate: response.data.expiredDate,
+              sttLang: response.data.sttLang,
+              transLang: response.data.transLang,
             }));
         
             Cookies.set('refreshToken', response.data.refreshToken);
@@ -65,8 +68,14 @@ function JoinLogin(){
             });
         
             navigate('/home');
-            // navigate('/realhome');
           } catch (error) {
+            await Swal.fire({
+                icon: "warning",
+                title: "아이디 또는 비밀번호가 <br/> 일치하지 않습니다.",
+                text: "아이디, 비밀번호를 다시 확인해주세요.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+              });
             console.log("에러", error);
           }
 

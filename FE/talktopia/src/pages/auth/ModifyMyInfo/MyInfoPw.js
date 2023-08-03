@@ -9,7 +9,7 @@ function MyInfoPw(){
 
     const headers ={
         'Content-Type' : 'application/json',
-        'Authorization' : `Bearer ${user.accessToken}`,
+        'Authoziation' : `Bearer ${user.accessToken}`,
     }
 
 
@@ -21,14 +21,16 @@ function MyInfoPw(){
 
     const confirmPw = () => {
 
+        
         const requestBody = {
             userId : user.userId,
             userPw : userPw,
         };
-
+        
         const requestBodyJSON = JSON.stringify(requestBody);
+        console.log(requestBodyJSON);
 
-        axios.get(`${BACKEND_URL}/api/v1/user/MyPage/checkPw`, requestBodyJSON, headers)
+        axios.get(`${BACKEND_URL}/api/v1/user/myPage/checkPw`, requestBodyJSON, headers)
             .then((response)=>{
                 console.log("되나");
             })
