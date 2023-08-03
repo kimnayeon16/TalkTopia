@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
 @Table(name = "post")
 public class Post {

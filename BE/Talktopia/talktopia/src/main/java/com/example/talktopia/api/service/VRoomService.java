@@ -40,9 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 public class VRoomService {
 	private OpenVidu openVidu;
 
-	private Map<String, Session> mapSessions = new HashMap<>();
+	private final Map<String, Session> mapSessions = new HashMap<>();
 
-	private Map<String, MapSession> mapSessionToken = new HashMap<>();
+	private final Map<String, MapSession> mapSessionToken = new HashMap<>();
 	// 세션이름 ,세션 토큰, 유저 이메일
 	//private Map<String, Map<String, String>> mapSessionNamesTokensRand = new HashMap<>();
 	// 세션이름 <세션 토큰, 유저 이메일>
@@ -210,9 +210,7 @@ public class VRoomService {
 	@Transactional
 	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
-		log.info("getVrSession: " + this.mapSessions.get(vRoomExitReq.getVrSession()));
-		log.info("getToken: " + this.mapSessionToken.get(vRoomExitReq.getToken()));
-		if(this.mapSessions.get(vRoomExitReq.getVrSession())!=null && this.mapSessionToken.get(vRoomExitReq.getVrSession())!=null){
+		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null && this.mapSessionToken.get(vRoomExitReq.getVrSession()).getRoomId()!=null){
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
 			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
