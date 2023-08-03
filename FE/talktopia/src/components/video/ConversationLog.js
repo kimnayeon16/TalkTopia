@@ -119,6 +119,10 @@ function ConversationLog(props) {
             setMessageList((prev) => ([...prev, newMessageList]))
             scrollToBottom();
         });
+
+        return () => {
+            recognition.abort();
+        };
     }, []);
 
     const scrollToBottom = () => {
@@ -160,7 +164,7 @@ function ConversationLog(props) {
 
 
                     <div id={ `${style.transcriptInput }`}>
-                        <p>내가 말하고 있는 내용 : {transcript}</p>
+                        <p>{transcript}</p>
                     </div>
                 </div>
             </div>
