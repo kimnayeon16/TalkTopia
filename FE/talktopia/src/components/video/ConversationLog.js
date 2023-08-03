@@ -7,7 +7,6 @@ import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
     const user = useSelector((state) => state.userInfo);
-    console.log(user)
     const chatScroll = useRef(null);
 
     const [messageList, setMessageList] = useState([]); // 받은 메세지들
@@ -17,7 +16,7 @@ function ConversationLog(props) {
 
     const recognition = new window.webkitSpeechRecognition();
     recognition.continuous = true;
-    recognition.lang = user.sttLang;
+    recognition.lang = user.sttLang;    // 음성 인식되는 언어
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
 
@@ -90,8 +89,8 @@ function ConversationLog(props) {
             const data = {
                 transcript: newMfinalTranscript,                    // stt 
                 nickname: props.myUserName,                         // 말한 사용자 이름
-                streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
-                lang: user.transLang                                // transcript source 언어
+                // streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
+                lang: user.transLang                                // 번역 source 언어
             };
             // Sender of the message (after 'session.connect')
             props.mainStreamManager.stream.session.signal({
@@ -111,22 +110,21 @@ function ConversationLog(props) {
     useEffect(() => {
         recognition.start();    // 마운트 시 바로 음성 인식 되게
         // Receiver of the message (usually before calling 'session.connect')
-        props.mainStreamManager.stream.session.on('signal:STT', (event) => {
+        props.mainStreamManager.stream.session.on('signal:STT', async (event) => {
             const data = JSON.parse(event.data);
             console.log(data,'-------------------------')
             let messageData = ({
                 transcript: data.transcript,            // 전달받은 메세지
                 nickname: data.nickname,                // 전달한 사용자 이름
-                connectionId: event.from.connectionId,  // Connection object of the sender 
+                // connectionId: event.from.connectionId,  // Connection object of the sender 
                 source: data.lang,                      // 전달받은 메세지 언어
-                translate: ''                           // 번역된 메세지 
+                translate: '내가 말한 언어'              // 번역된 메세지 
             });
 
              // 번역 안할 때는 주석처리하면 됨.
-            if (messageData.source !== user.transLang) {
-                translationHandler(messageData);
-            } else {
-                messageData.translate = data.transcript
+            if (messageData.nickname !== props.myUserName) { // 메세지 보낸 사람이 본인이 아닌경우
+                await translationHandler(messageData);
+            } else if (messageData.nickname === props.myUserName) {
                 setMessageList((prev) => ([...prev, messageData]))
             }
             
@@ -140,33 +138,29 @@ function ConversationLog(props) {
     }, []);
 
     const translationHandler = async (newMessageList) => {
-        const data = {
-            'q': newMessageList.transcript,
-            'target': user.transLang,           // 번역할 언어
-            'source': newMessageList.source     // 전달 받은 텍스트 언어
-        };
-        console.log('translationHandler data', data)
+        const encodedParams = new URLSearchParams();
+        encodedParams.set('source_language', newMessageList.source) // 전달 받은 텍스트 언어
+        encodedParams.set('target_language', user.transLang)        // 번역할 언어
+        encodedParams.set('text', newMessageList.transcript)
+
+        console.log('translationHandler data', encodedParams)
 
         const options = {
             method: 'POST',
-            url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
+            url: 'https://text-translator2.p.rapidapi.com/translate',
             headers: {
                 'content-type': 'application/x-www-form-urlencoded',
                 'X-RapidAPI-Key': REACT_APP_X_RAPID_API_KEY,
-                'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
+                'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
             },
-            data: data,
+            data: encodedParams,
         };
             
         try {
             const response = await axios.request(options);
-            console.log('response data--', response.data);
-                  
-            // 이스케이프 문자열 디코딩
-            const parser = new DOMParser();
-            const decodedText = parser.parseFromString(response.data.data.translations[0].translatedText, 'text/html').body.textContent;
-            console.log('번역된 텍스트', decodedText)
-            newMessageList.translate = decodedText
+            newMessageList.translate = response.data.data.translatedText
+            
+            console.log('번역에 성공하였습니다.', newMessageList.translate)
             setMessageList((prev) => ([...prev, newMessageList]))
         } catch (error) {
             console.error(error);
