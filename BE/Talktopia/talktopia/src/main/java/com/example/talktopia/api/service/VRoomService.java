@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.VRoomExitReq;
 import com.example.talktopia.api.request.VRoomReq;
@@ -176,6 +177,7 @@ public class VRoomService {
 			mapSession.getLang().add(user.getLanguage().getLangNo());
 			this.mapSessions.put(roomId,session);
 			this.mapSessionToken.put(roomId,mapSession);
+			log.info(this.mapSessions.get(roomId).getSessionId());
 
 			VRoom room = VRoom.builder()
 				.vrSession(roomId)
@@ -205,10 +207,11 @@ public class VRoomService {
 
 	}
 
+	@Transactional
 	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
-		log.info("getVrSession: ", this.mapSessions.get(vRoomExitReq.getVrSession()));
-		log.info("getToken: ", this.mapSessionToken.get(vRoomExitReq.getToken()));
+		log.info("getVrSession: " + this.mapSessions.get(vRoomExitReq.getVrSession()));
+		log.info("getToken: " + this.mapSessionToken.get(vRoomExitReq.getToken()));
 		if(this.mapSessions.get(vRoomExitReq.getVrSession())!=null && this.mapSessionToken.get(vRoomExitReq.getVrSession())!=null){
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
 			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
