@@ -87,10 +87,6 @@ function JoinRoom() {
 
     // 세션 떠날 때 요청
     const leaveSessionHandler = async () => {
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
-
         const requestBody = {
             userId: myUserName,
             token: user.accesToken,
@@ -98,9 +94,9 @@ function JoinRoom() {
         };
         console.log(requestBody)
     
-        const requestBodyJSON = JSON.stringify(requestBody);
+        // const requestBodyJSON = JSON.stringify(requestBody);
         await axios
-        .get(`${BACKEND_URL}/api/v1/room/exit`, requestBodyJSON, {headers})
+        .get(`${BACKEND_URL}/api/v1/room/exit`, { requestBody },)
         .then((response) => {
             console.log(response)
         })
