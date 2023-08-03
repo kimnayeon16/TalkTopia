@@ -207,6 +207,8 @@ public class VRoomService {
 
 	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
+		log.info("getVrSession: ", this.mapSessions.get(vRoomExitReq.getVrSession()));
+		log.info("getToken: ", this.mapSessionToken.get(vRoomExitReq.getToken()));
 		if(this.mapSessions.get(vRoomExitReq.getVrSession())!=null && this.mapSessionToken.get(vRoomExitReq.getToken())!=null){
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
 			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
