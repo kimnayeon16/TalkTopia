@@ -73,9 +73,6 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Friend> friends = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Friend> friendOf = new ArrayList<>();
-
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Token token;
 
