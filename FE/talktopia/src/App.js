@@ -11,6 +11,8 @@ import StartReal from './pages/start/Start.js';
 import Join from './pages/auth/MyInfo/Join.js';
 import Login from './pages/auth/MyInfo/Login.js';
 import IdFind from './pages/auth/FindMyInfo/IdFind.js';
+import IdFindSuccess from './pages/auth/FindMyInfo/IdFindSuccess.js';
+import IdFindFail from './pages/auth/FindMyInfo/IdFindFail.js';
 import PasswordFind from './pages/auth/FindMyInfo/PasswordFind.js';
 import ChangePw from './pages/auth/ModifyMyInfo/ChangePw.js';
 import MyInfo from './pages/auth/ModifyMyInfo/MyInfo.js';
@@ -38,6 +40,8 @@ function App() {
         <Route path="/join" element={<Join/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/findId" element={<IdFind/>}/>
+        <Route path="/findId/success" element={<IdFindSuccess/>}/>
+        <Route path="/findId/fail" element={<IdFindFail/>}/>
         <Route path="/findPassword" element={<PasswordFind/>}/>
         <Route path="/changePw" element={<ChangePw/>}/>
         <Route path="/myinfo" element={<MyInfo/>}>

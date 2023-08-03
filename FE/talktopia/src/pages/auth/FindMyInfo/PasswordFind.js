@@ -65,11 +65,19 @@ function PasswordFind(){
       });
   };
 
+  const onCheckEnter = (e) => {
+    // e.preventDefault();
+    if(e.key === 'Enter') {
+        console.log("들어오니")
+        findPw();
+    }
+  }
+
   
     return(
         <div>
             {findMyPw === 2 && (
-                <PwFindMain userName={userName} userEmailPrefix={userEmailPrefix} onIdHandler={onIdHandler} onNameHandler={onNameHandler} onEmailPrefixHandler={onEmailPrefixHandler}
+                <PwFindMain onCheckEnter={onCheckEnter} userName={userName} userEmailPrefix={userEmailPrefix} onIdHandler={onIdHandler} onNameHandler={onNameHandler} onEmailPrefixHandler={onEmailPrefixHandler}
                 userEmailDomain={userEmailDomain} onEmailDomainHandler={onEmailDomainHandler} emailSelect={emailSelect} findPw={findPw} setFindMyPw={setFindMyPw} />
             )}
 
@@ -84,18 +92,18 @@ function PwFindMain(props) {
     return (
       <div>
         <span>아이디</span>
-        <input className={`${style["input-idfind"]}`} type="text" value={props.userId} onChange={props.onIdHandler} placeholder="아이디" ></input>
+        <input className={`${style["input-idfind"]}`} type="text" value={props.userId} onChange={props.onIdHandler} placeholder="아이디" onKeyPress={props.onCheckEnter}></input>
 
         <span>이름</span>
-        <input className={`${style["input-idfind"]}`} type="text" value={props.userName} onChange={props.onNameHandler} placeholder="이름" ></input>
+        <input className={`${style["input-idfind"]}`} type="text" value={props.userName} onChange={props.onNameHandler} placeholder="이름" onKeyPress={props.onCheckEnter}></input>
   
         <span>이메일</span>
-        <input className={`${style["input-idfind"]}`} type="text" value={props.userEmailPrefix} onChange={props.onEmailPrefixHandler} placeholder="이메일"></input>
+        <input className={`${style["input-idfind"]}`} type="text" value={props.userEmailPrefix} onChange={props.onEmailPrefixHandler} placeholder="이메일" onKeyPress={props.onCheckEnter}></input>
         <span>@</span>
         {props.emailSelect === true ? (
           <select
             value={props.userEmailDomain}
-            onChange={props.onEmailDomainHandler}
+            onChange={props.onEmailDomainHandler} onKeyPress={props.onCheckEnter}
           >
             <option value="default" disabled>
               선택하세요

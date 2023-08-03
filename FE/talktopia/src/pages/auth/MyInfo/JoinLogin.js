@@ -65,6 +65,8 @@ function JoinLogin(){
               text: "오늘도 새로운 친구를 만나러 가볼까요?",
               confirmButtonText: "확인",
               confirmButtonColor: '#90dbf4',
+              timer: 2000,
+              timerProgressBar: true,
             });
         
             navigate('/home');
@@ -75,6 +77,8 @@ function JoinLogin(){
                 text: "아이디, 비밀번호를 다시 확인해주세요.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
               });
             console.log("에러", error);
           }
@@ -141,6 +145,8 @@ function JoinLogin(){
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
                 // cancelButtonText: "취소",
+                timer: 2000,
+                timerProgressBar: true,
             })
         }else if(userIdJoin.length !== 0 && idValid){
             axios.get(`${BACKEND_URL}/api/v1/user/existId/${userIdJoin}`)
@@ -157,6 +163,8 @@ function JoinLogin(){
                     text: `다음 회원가입 절차를 진행해주세요!`,
                     confirmButtonColor: '#90dbf4',
                     // confirmButtonText: "확인",
+                    timer: 2000,
+                    timerProgressBar: true,
                 })
             })
             .catch((error)=>{
@@ -167,6 +175,8 @@ function JoinLogin(){
                     text: `다른 아이디를 입력해주세요!`,
                     confirmButtonText: "확인",
                     confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
                 })
             })
         }else{
@@ -175,6 +185,8 @@ function JoinLogin(){
                 title: "아이디 입력 조건을 확인해주세요!",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
             })
         }
     }
@@ -280,6 +292,8 @@ function JoinLogin(){
                 title: "이메일을 빠짐없이 입력해주세요!",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
             })
         }
     }
@@ -375,6 +389,8 @@ function JoinLogin(){
                     title: "빠짐 없이 입력해주세요 😃",
                     confirmButtonText: "확인",
                     confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
                 })
             //  alert("빠짐 없이 입력해주세요 😃");
             }
@@ -393,12 +409,12 @@ function JoinLogin(){
 
     /////////////////////////////////////////////////////////////////////////////////
     const onCheckEnter = (e) => {
-        // e.preventDefault();
         if(e.key === 'Enter') {
             console.log("들어오니")
             onLogin();
         }
       }
+
 
       return (
         <div className={`${style.background}`}>
@@ -407,11 +423,11 @@ function JoinLogin(){
                 <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🌏</h2>
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>아이디</span>
-                    <input type="text" value={userId} onChange={onIdHandler} onKeyPress={onCheckEnter}/>
+                    <input className={`${style.input}`} type="text" value={userId} onChange={onIdHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>비밀번호</span>
-                    <input type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
+                    <input className={`${style.input}`} type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
@@ -445,7 +461,7 @@ function JoinLogin(){
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>아이디 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="text" value={userIdJoin} onChange={onIdJoinHandler} className={style["div-input"]}></input>
-                            <button className={`${style.buttonId}`} onClick={onCheckId}>중복 확인</button>
+                            <button className={`${style.buttonId}`} onClick={onCheckId} >중복 확인</button>
                         </div>
                     </div>
                     <div>
@@ -463,7 +479,7 @@ function JoinLogin(){
                     <div>
                         {
                             !pwValid && userPwJoin.length >=0 &&
-                            (<><br/><div className={`${style.guide}`}>영문, 숫자, 특수기호 조합으로 8~16자리 입력해주세요.</div></>)
+                            (<><br/><div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div></>)
                         }
                     </div>
                     <div className={style["div-join-container"]}>
@@ -491,7 +507,7 @@ function JoinLogin(){
                             {
                             emailSelect === true ? 
                             <>
-                            <select className={`${style.selectEmail} ${style["div-input-email"]}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
+                            <select className={`${style.select} ${style.selectEmail} ${style["div-input-email"]}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
                                 <option value="default" disabled>선택하세요</option>
                                 <option value="">직접입력</option>
                                 <option value="gmail.com">gmail.com</option>
@@ -554,7 +570,7 @@ function JoinLogin(){
                             <option value="ja-JP">일본어</option>
                             <option value="fr-FR">프랑스어</option>
                             <option value="pt-PT">포르투칼어</option>
-                            <option value="pt-PT">중국어</option>
+                            <option value="zh-CN">중국어</option>
                             <option valye="pt-TW">대만어</option>
                             <option value="hi-IN">힌두어</option>
                         </select>
