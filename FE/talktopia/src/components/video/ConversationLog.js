@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useSelector } from "react-redux";
+
 import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
+    const user = useSelector((state) => state.userInfo);
     const chatScroll = useRef(null);
-    // const chatScroll = React.createRef();
 
     const [messageList, setMessageList] = useState([]); // 받은 메세지들
     // const [message, setMessage] = useState('');
@@ -13,7 +15,7 @@ function ConversationLog(props) {
 
     const recognition = new window.webkitSpeechRecognition();
     recognition.continuous = true;
-    recognition.lang = "ko-KR";
+    recognition.lang = user.sttLang;
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
 
@@ -155,7 +157,7 @@ function ConversationLog(props) {
                                     </div>
                                     <div className={ `${style.msg_content }`}>
                                         <p className={ `${style.text }`}>{data.transcript}</p>
-                                        <p>{translationHandler(data.transcript)}</p>
+                                        {/* <p>{translationHandler(data.transcript)}</p> */}
                                     </div>
                                 </div>
                             </div>
