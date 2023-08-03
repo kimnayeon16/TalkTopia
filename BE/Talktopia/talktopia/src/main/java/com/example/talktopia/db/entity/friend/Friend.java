@@ -35,18 +35,17 @@ public class Friend {
 	@JoinColumn(name = "fr_user_no", referencedColumnName = "user_no")
 	private User user;
 
-
 	@Builder
-	public Friend(long frNo, long frFriendNo, User user) {
-		this.frNo = frNo;
+	public Friend(long frFriendNo, User user) {
 		this.frFriendNo = frFriendNo;
-		setFriend(user);
+		setUser(user);
 	}
 
-	public void setFriend(User user) {
-		if (this.user != null) {
+	public void setUser(User user) {
+		if(this.user != null) {
 			this.user.getFriends().remove(this);
 		}
+
 		this.user = user;
 		user.getFriends().add(this);
 	}
