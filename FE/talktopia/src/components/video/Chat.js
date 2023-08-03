@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
+import style from './Chat.module.css';
 
 function Chat(props) {
 
     const [messageList, setMessageList] = useState([]);
     const [message, setMessage] = useState('');
-
-    const chatScroll = React.createRef();
+    const chatScroll = useRef(null);
 
     useEffect(() => {
         // Receiver of the message (usually before calling 'session.connect')
@@ -68,26 +67,45 @@ function Chat(props) {
 
     return (
         <>
-            <div id="messageInput">
-                <input
-                    placeholder="메세지를 보네세요"
-                    value={message}
-                    onChange={messageChangeHandler}
-                    onKeyPress={keyPressHandler}
-                />
-            </div>
-            <div ref={chatScroll}>
-                {messageList.map((data, i) => (
-                    <div key={i}>
-                        <div>
-                            <p> {data.nickname}</p>
-                        </div>
-                        <div>
-                            <p>{data.message}</p>
-                        </div>
+            <div id={`${ style.chatContainer }`}>
+                <div id={`${ style.chatComponent }`}>
+                    <div id={`${ style.chatToolbar }`}>
+                        <span>CHAT</span>
+                    </div>
+
+                    <div className={`${ style.message_wrap }`} ref={chatScroll}>
+                        {messageList.map((data, i) => (
+                            <div 
+                                key={`${i}-Chat`}
+                                id="remoteUsers"
+                            >
+                                <div className={ `${style.msg_detail }`}>
+                                    <div className={ `${style.msg_info }`}>
+                                        <p> {data.nickname}</p>
+                                    </div>
+                                    <div className={ `${style.msg_content }`}>
+                                        <span className={ `${style.triangle }`} />
+                                        <p className={ `${style.text }`}>{data.message}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                    </div>
+
+                    <div id={ `${style.messageInput }`}>
+                        <input
+                            placeholder="메세지를 보네세요"
+                            id={ `${style.chatInput }`}
+                            value={message}
+                            onChange={messageChangeHandler}
+                            onKeyPress={keyPressHandler}
+                        />
+                    </div>
                 </div>
-                ))}
-            </div>    
+
+
+            </div>
         </>
     )
 

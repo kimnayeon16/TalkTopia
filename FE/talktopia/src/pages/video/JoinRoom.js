@@ -5,13 +5,13 @@ import axios from 'axios';
 import UserVideoComponent from '../../components/video/UserVideoComponent'
 import Chat from '../../components/video/Chat'
 import ConversationLog from '../../components/video/ConversationLog';
+import { BACKEND_URL } from '../../utils';
 
 import style from './JoinRoom.module.css'
 
 // 세션 입장
 function JoinRoom() {
     const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
-    // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000/';
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -28,25 +28,21 @@ function JoinRoom() {
     const [videoEnabled, setVideoEnabled] = useState(true);
     const [audioEnabled, setAudioEnabled] = useState(true);
     const [openviduToken, setOpenviduToken] = useState(undefined);
+
     // 새로운 OpenVidu 객체 생성
     const [OV, setOV] = useState(<OpenVidu />);
-    // const OV = new OpenVidu();
 
     // 2) 화면 렌더링 시 최초 1회 실행
     useEffect(() => {
-        // if (location.state === null || location.state.roomId === null || location.state.myUserName === null) {
-        //     console.log("location.state의 정보가 없습니다.");
-        //     navigate("/");
-        //     return;
-        // };
+        if (location.state === null || location.state.myUserName === null || location.state.token === null) {
+            console.log("location.state의 정보가 없습니다.");
+            navigate("/home");
+            return;
+        };
 
-        // 이전 페이지에서 받아온 데이터 -> redux로 변경 필요 !!
-        // setMySessionId(location.state.roomId);
-        // setVideoEnabled(location.state.videoEnabled);
-        // setAudioEnabled(location.state.audioEnabled);
-        setMySessionId('test123456');
         setVideoEnabled(true);
         setAudioEnabled(true);
+        setMySessionId(location.state.mySessionId);
         setMyUserName(location.state.myUserName);
         setOpenviduToken(location.state.token);
 
@@ -54,11 +50,11 @@ function JoinRoom() {
         window.addEventListener('beforeunload', onBeforeUnload); 
         joinSession();  // 세션 입장
 
-        // return () => {
-        //     // 윈도우 객체에 화면 종료 이벤트 제거
-        //     window.removeEventListener('beforeunload', onBeforeUnload);
-        //     leaveSession(); // 세션 나가기
-        // };
+        return () => {
+            // 윈도우 객체에 화면 종료 이벤트 제거
+            window.removeEventListener('beforeunload', onBeforeUnload);
+            leaveSession(); // 세션 나가기
+        };
     }, []);
 
     // 페이지를 언로드하기 전에 leaveSession 메서드를 호출
@@ -67,12 +63,15 @@ function JoinRoom() {
     }
 
     // 세션 나가기
-    const leaveSession = () => {
+    const leaveSession = async () => {
+
         if (session) {
             session.disconnect();
+            await leaveSessionHandler();
         }
 
         // session, state 초기화
+        setOV(null);
         setMySessionId(undefined);
         setMyUserName('');
         setSession(undefined);
@@ -80,7 +79,30 @@ function JoinRoom() {
         setPublisher(undefined);
         setSubscribers([]);
 
-        navigate('/');
+        navigate('/home');
+    };
+
+    // 세션 떠날 때 요청
+    const leaveSessionHandler = async () => {
+        const headers = {
+            'Content-Type' : 'application/json'
+        }
+
+        const requestBody = {
+            userId: myUserName,
+            token: openviduToken,
+            vrSession: mySessionId
+        };
+    
+        const requestBodyJSON = JSON.stringify(requestBody);
+        await axios
+        .get(`${BACKEND_URL}/api/v1/room/exit/${mySessionId}`, requestBodyJSON, {headers})
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
     };
 
     // 세션 생성 및 세션에서 이벤트가 발생할 때의 동작을 지정 
@@ -92,19 +114,14 @@ function JoinRoom() {
         // Session 개체에서 추가된 subscriber를 subscribers 배열에 저장 
         mySession.on('streamCreated', (event) => {
             const subscriber = mySession.subscribe(event.stream, undefined);
-            setSubscribers((subscribers) => {   // 새 구독자에 대한 상태 업데이트
-                return([...subscribers, subscriber])
-            });
+            setSubscribers((subscribers) => [...subscribers, subscriber]);  // 새 구독자에 대한 상태 업데이트
+            console.log(JSON.parse(event.stream.streamManager.stream.connection.data).clientData, "님이 접속했습니다.");
         });
 
         // Session 개체에서 제거된 관련 subsrciber를 subsribers 배열에서 제거
         mySession.on('streamDestroyed', (event) => {
-            let newSubscribers = subscribers;
-            let index = newSubscribers.indexOf(event.stream.streamManager, 0);
-            if (index > -1 ) {
-                newSubscribers.splice(index, 1);
-                setSubscribers(newSubscribers);
-            };
+            setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber !== event.stream.streamManager))
+            console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.")
         });
 
         // 서버 측에서 예기치 않은 비동기 오류가 발생할 때 Session 개체에 의해 트리거 되는 이벤트
@@ -117,29 +134,10 @@ function JoinRoom() {
         setSession(mySession);
     };
 
-    // ==========================================
-    // getToken 부분은 백엔드에서 처리한다고함. -> token만 건네주는 느낌
-    // 토큰 생성
+    // 토큰 전달
     const getToken = async () => {
-        // const sessionId = await createSession(mySessionId);
-        // return await createToken(sessionId);
         return openviduToken
     };
-    // 서버에 요청하여 세션 생성
-    const createSession = async (sessionId) => {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions', { customSessionId: sessionId }, {
-            headers: { 'Content-Type': 'application/json', },
-        });
-        return response.data;
-    };
-    // 서버에 요청하여 토큰 생성
-    const createToken = async (sessionId) => {
-        const response = await axios.post(APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections', {}, {
-            headers: { 'Content-Type': 'application/json', },
-        });
-        return response.data;
-    };
-    // ==========================================
 
     // 사용자의 토큰으로 세션 연결 (session 객체 변경 시에만 실행)
     useEffect(() => {
@@ -196,26 +194,27 @@ function JoinRoom() {
     };
 
     return (
-        <div>
+        <>
             <div>
+                <h1>Room ID: {mySessionId}</h1>
                 {session !== undefined ? (
                     <div className={`${style.container}`}> 
-                        <div className={`${style.main}`}>
+                        <div className={`${style.main_side}`}>
                             {publisher !== undefined ? (
-                                <div>
-                                    <UserVideoComponent streamManager={publisher} />
+                                <div id="publisher">
+                                    <UserVideoComponent streamManager={ publisher } />
                                 </div>
                             ) : null}
+                            
                             {subscribers.map((sub, i) => (
-                                <div key={sub.i}>
-                                    <UserVideoComponent streamManager={sub} />
+                                <div key={`${i}-subscriber`} className='subscribers'>
+                                    <UserVideoComponent streamManager={ sub } />
                                 </div>
                             ))}
                         </div>
-
                         
                         {myUserName !== undefined && mainStreamManager !== undefined && (
-                            <div className={`${style.logs}`}>   
+                            <div className={`${style.right_side}`}>   
                                 <ConversationLog 
                                     myUserName={myUserName}
                                     mainStreamManager={mainStreamManager}
@@ -228,26 +227,24 @@ function JoinRoom() {
                         )}
                     </div>
                 ) : null}
+
+                <input
+                    type='button'
+                    onClick={toggleVideo}
+                    value={`비디오 ${videoEnabled ? "OFF" : "ON"}`}
+                />
+                <input
+                    type='button'
+                    onClick={toggleAudio}
+                    value={`마이크 ${audioEnabled ? "OFF" : "ON"}`}
+                />
+                <input 
+                    type='button'
+                    onClick={leaveSession}
+                    value="나가기"
+                />
             </div>
-
-            <h1>Room ID: {mySessionId}</h1>
-            <input
-                type='button'
-                onClick={toggleVideo}
-                value={`비디오 ${videoEnabled ? "OFF" : "ON"}`}
-            />
-            <input
-                type='button'
-                onClick={toggleAudio}
-                value={`마이크 ${audioEnabled ? "OFF" : "ON"}`}
-            />
-            <input 
-                type='button'
-                onClick={leaveSession}
-                value="나가기"
-            />
-
-        </div>
+        </>
     );
 }
 

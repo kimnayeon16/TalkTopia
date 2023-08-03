@@ -67,6 +67,7 @@ function Home(){
             navigate('/joinroom', {
                 state: {
                     myUserName: user.userId,
+                    mySessionId: response.data.vr_session,
                     token: response.data.token
                 }
             });
