@@ -63,9 +63,9 @@ $diffRatio: ($contW - $imgW) / $contW;
   height: 100vh;
   margin: 0 auto 100px;
   // background: LightSlateGray;
-  // background-image: url('../../public/img/login5.jpg');
+  // background-image: url('../../../../public/img/login88.png');
   // background-color: #dad2bc; 
-  background-color: #EEE9DA;
+  background: #bcd8da;
 }
 
 .form {
@@ -86,7 +86,8 @@ $diffRatio: ($contW - $imgW) / $contW;
   width: $contW;
   height: 100%;
   padding-left: $imgW;
-  background: #dad2bc;
+  // background: #dad2bc;
+  background: #bcd8da;
   transition: transform $switchAT ease-in-out;
 
   @include signUpActive {
@@ -124,7 +125,7 @@ button {
     width: $contW;
     height: 100%;
     // background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
-    background-image: url('../../../../public/img/login7.jpg');
+    background-image: url('../../../../public/img/login3.jpg');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
@@ -136,7 +137,9 @@ button {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    // background: rgba(0,0,0,0.6);
+    // background: rgba(16, 27, 85, 0.4);
+    background: rgba(0, 0, 0, 0.5);
   }
 
   @include signUpActive {
@@ -251,7 +254,7 @@ h2 {
 .h2-Font {
   font-family: 'EF_jejudoldam';
   // color: #5e503f;
-  color: #432818;
+  color: #012A4A;
   margin-top: 40px;
   margin-bottom: 70px;
   width: 100%;
@@ -260,8 +263,9 @@ h2 {
 }
 
 .h2-Join {
+  color: #012A4A;
   font-family: 'EF_jejudoldam';
-  margin-top: 0px;
+  margin-top: -5px;
   margin-bottom: 30px;
 }
 
@@ -308,7 +312,7 @@ input {
   font-size: 16px;
   // border-bottom: 2px solid #5e503f;
   // border: 2px solid #5e503f;
-  border: 2px solid #baa487;
+  border: 2px solid #013A63;
   text-align: center;
   border-radius: 30px;
 }
@@ -328,18 +332,22 @@ input {
   margin-top: 60px;
   margin-bottom: 10px;
   // background: #d4af7a;
-  background: #b08968;
+  background: #013A63;
   text-transform: uppercase;
 }
 
 .submit-1 {
+  position: fixed;
   font-family: 'Dovemayo_wild';
   height: 45px;
   margin-top: 20px;
+  margin-left: 350px;
   margin-bottom: 10px;
   // background: #d4af7a;
-  background: #b08968;
+  background: #013A63;
   text-transform: uppercase;
+  // left: 50%;
+  // transform: translateX(-50%);
 }
 
 // .fb-btn {
@@ -458,12 +466,14 @@ input {
 
 .buttonId {
   font-family: 'Dovemayo_wild';
-  color: #807249;
-  border: 1px solid #807249;
+  color: #013A63;
+  border: 1px solid #013A63;
   width: 90px;
   height: 30px;
   margin-left: 10px;
+  border-radius: 30px;
 }
+
 
 select {
   width: 140px;
@@ -473,19 +483,19 @@ select {
   padding: 5px 30px 5px 10px;
   border-radius: 30px;
   outline: 0 none;
-  border: 1px solid #807249;
-  color: #553e19;
+  border: 1px solid #013A63;
+  color: #013A63;
 }
 select option {
   background: rgb(236, 227, 198);
-  color: #553e19;
+  color: #013A63;
   padding: 3px 0;
 }
 
 .selectEmail {
   font-family: 'Dovemayo_wild';
-  color: #807249;
-  border: 1px solid #807249;
+  color: #013A63;
+  border: 1px solid #013A63;
   width: 58%;
   height: 35px;
   margin-top: -500px;
@@ -500,7 +510,7 @@ select option {
   margin-top: 5px;
   margin-bottom: -20px;
   font-size: 16px;
-  border-bottom: 2px solid #5e503f;
+  border-bottom: 2px solid #013A63;
   text-align: center;
 }
 
@@ -512,34 +522,35 @@ select option {
   // display: flex;
   // justify-content: center;
   font-family: 'Dovemayo_wild'; 
-  color: #fa762f;
+  color: #ed2752;
   font-size: 12px;
-  margin-top: -50px;
-  margin-left: 60px;
+  margin-top: -40px;
+  margin-left: 90px;
 }
 
 .guide-pass {
   font-family: 'Dovemayo_wild'; 
-  color: #fa762f;
+  color: #ed2752;
   font-size: 12px;
-  margin-top: -50px;
-  margin-left: -40px;
+  margin-top: -40px;
+  margin-left: 80px;
 }
 
 .guide-pass-correct {
   font-family: 'Dovemayo_wild'; 
-  color: #5fc827;
+  color: #45a91e;
   font-size: 12px;
-  margin-top: -50px;
-  margin-left: -40px;
+  margin-top: -40px;
+  margin-left: 80px;
 }
 
 .guide-email {
   font-family: 'Dovemayo_wild'; 
   color: #5e503f;
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   // justify-content: center;
+  margin-top: -40px;
   margin-left: 100px;
   margin-bottom: -40px;
 }
@@ -567,7 +578,7 @@ select option {
   // width: 100%;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   // text-align: center;
 }
 
@@ -591,7 +602,7 @@ select option {
   margin: 0;
   padding: 0;
   border: none;
-  border-bottom: 2px solid #baa487;
+  border-bottom: 2px solid #013A63;
   border-radius: 0px;
   font-size: 16px;
   text-align: center;
@@ -606,7 +617,7 @@ select option {
   margin: 0;
   padding: 0;
   border: none;
-  border-bottom: 2px solid #baa487;
+  border-bottom: 2px solid #013A63;
   border-radius: 0px;
   font-size: 16px;
   text-align: center;
