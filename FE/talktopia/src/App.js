@@ -4,31 +4,53 @@ import { Routes, Route } from 'react-router-dom';
 
 
 // Router
+//start
 import Start from './pages/start/Start.js';
-import Join from './pages/auth/Join.js';
-import Login from './pages/auth/Login.js';
+import StartReal from './pages/start/StartReal.js';
+//auth
+import Join from './pages/auth/MyInfo/Join.js';
+import Login from './pages/auth/MyInfo/Login.js';
+import IdFind from './pages/auth/FindMyInfo/IdFind.js';
+import PasswordFind from './pages/auth/FindMyInfo/PasswordFind.js';
+import ChangePw from './pages/auth/ModifyMyInfo/ChangePw.js';
+import MyInfo from './pages/auth/ModifyMyInfo/MyInfo.js';
+import MyInfoPw from './pages/auth/ModifyMyInfo/MyInfoPw.js';
+
+//home
 import Home from './pages/home/Home.js';
+import RealHome from './pages/home/RealHome.js';
+
+
 import Translation from './apis/translation/GoogleTranslator.js';
 import WebSpeechApi from './apis/stt/WebSpeechApi.js';
 import Sample from './apis/stt/Sample.js';
 import JoinRoom from './pages/video/JoinRoom.js';
 
-import Regist from './pages/auth/JoinLogin.js';
+import Regist from './pages/auth/MyInfo/JoinLogin.js';
 
 function App() {
   return (
     <div className="App">
       {/* router */}
       <Routes>
-        <Route path="/" element={<Start></Start>}></Route>
-        <Route path="/join" element={<Join></Join>}></Route>
-        <Route path="/login" element={<Login></Login>}></Route>
-        <Route path="/home" element={<Home></Home>}></Route>
-        <Route path="/translation" element={<Translation></Translation>}></Route>
-        <Route path="/stt" element={<WebSpeechApi></WebSpeechApi>}></Route>
-        <Route path="/sample" element={<Sample></Sample>}></Route>
-        <Route path="/regist" element={<Regist></Regist>}></Route>
-        <Route path="/joinroom" element={<JoinRoom></JoinRoom>}></Route>
+        <Route path="/" element={<Start/>}/>
+        <Route path="startreal" element={<StartReal/>}/>
+        <Route path="/join" element={<Join/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/findId" element={<IdFind/>}/>
+        <Route path="/findPassword" element={<PasswordFind/>}/>
+        <Route path="/changePw" element={<ChangePw/>}/>
+        <Route path="/myinfo" element={<MyInfo/>}>
+          {/* <Route path="passwordConfirm" element={<MyInfoPw/>}/> */}
+        </Route>
+        <Route path="/myinfo/passwordConfirm" element={<MyInfoPw/>}/>
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/realhome" element={<RealHome/>}/>
+        <Route path="/translation" element={<Translation/>}/>
+        <Route path="/stt" element={<WebSpeechApi/>}/>
+        <Route path="/sample" element={<Sample/>}/>
+        <Route path="/regist" element={<Regist/>}/>
+        <Route path="/joinroom" element={<JoinRoom/>}/>
       </Routes>
     </div>
   );

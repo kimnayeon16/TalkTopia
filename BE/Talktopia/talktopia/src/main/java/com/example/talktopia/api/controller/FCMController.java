@@ -21,7 +21,6 @@ public class FCMController {
 
 	private final FCMService fcmService;
 
-
 	@PostMapping("/saveFCM")
 	public void saveToken(@RequestBody FCMTokenReq fcmTokenReq) throws Exception {
 		fcmService.saveToken(fcmTokenReq);

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "../../utils";
+import { BACKEND_URL } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
-import { reduxUserInfo } from "../../store.js";
+import { reduxUserInfo } from "../../../store.js";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
-import style from "../../css/JoinLogin.module.scss";
+import style from "./JoinLogin.module.scss";
 
 function JoinLogin(){
     const headers ={
@@ -64,6 +64,7 @@ function JoinLogin(){
             });
         
             navigate('/home');
+            // navigate('/realhome');
           } catch (error) {
             console.log("에러", error);
           }
@@ -105,11 +106,12 @@ function JoinLogin(){
 
     //아이디 유효성
     const onIdJoinHandler = (e) => {
-        setUserIdJoin(e.target.value);
+        const value = e.target.value;
+        setUserIdJoin(value);
         //정규식
         const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/;
         //유효성 검사
-        if(regex.test(userIdJoin)){
+        if(regex.test(value)){
             setIdValid(true);
         }else{
             setIdValid(false);
@@ -168,11 +170,12 @@ function JoinLogin(){
 
     //비밀번호
     const onPwJoinHandler = (e) => {
-        setUserJoinPw(e.target.value);
+        const value = e.target.value;
+        setUserJoinPw(value);
         //정규식
         const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
         //유효성 검사
-        if(regex.test(userPwJoin)){
+        if(regex.test(value)){
             setPwValid(true);
         }else{
             setPwValid(false);
@@ -184,7 +187,7 @@ function JoinLogin(){
         setUserPwConfirm(e.target.value);
 
         if(e.target.value === userPwJoin){
-            setPwConfirmMsg("올바른 비밀번호입니다.");
+            setPwConfirmMsg("비밀번호가 일치합니다.");
             setUserPwCorrect(true);
         }else{
             setPwConfirmMsg("비밀번호가 일치하지 않습니다.");
@@ -315,31 +318,31 @@ function JoinLogin(){
         }
     }
 
-        //가입하기
-        const onSingUp = (e) => {
-            e.preventDefault();
+    //가입하기
+    const onSingUp = (e) => {
+        e.preventDefault();
+
+        console.log(userIdCorrect);
+        console.log(userPwCorrect);
+        console.log(userNameCorrect);
+        console.log(userEmailCorrect);
+        console.log(userLanCorrect);
      
-            console.log(userIdCorrect);
-            console.log(userPwCorrect);
-            console.log(userNameCorrect);
-            console.log(userEmailCorrect);
-            console.log(userLanCorrect);
+        if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
+            try{
+                const requestBody = {
+                    userIdJoin,
+                    userName,
+                    userPwJoin,
+                    userEmail,
+                    // userLan,
+                };
      
-            if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
-             try{
-                 const requestBody = {
-                     userIdJoin,
-                     userName,
-                     userPwJoin,
-                     userEmail,
-                     // userLan,
-                 };
+                console.log(requestBody);
      
-                 console.log(requestBody);
+                const requestBodyJSON = JSON.stringify(requestBody);
      
-                 const requestBodyJSON = JSON.stringify(requestBody);
-     
-                 const response = axios.post(`${BACKEND_URL}/api/v1/user/join`, requestBodyJSON, {headers});
+                const response = axios.post(`${BACKEND_URL}/api/v1/user/join`, requestBodyJSON, {headers});
                 //  alert("회원 가입 성공");
                  Swal.fire({
                     icon: "success",
@@ -381,6 +384,7 @@ function JoinLogin(){
 
 
       return (
+        <div className={`${style.background}`}>
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
             <div className={`${style.form} ${style["sign-in"]}`}>
                 <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🌏</h2>
@@ -398,9 +402,9 @@ function JoinLogin(){
                 <div className={`${style.line}`}>SNS계정으로 로그인</div>
                 <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button>
                 <button type="button" className={`${style["go-btn"]}`}><span>구글</span><span className={`${style["span-red"]}`}>로</span> 로그인</button>
-                <span className={style["forgot-pass"]}>아이디 찾기</span>
+                <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className={style["forgot-pass"]}>비밀번호 찾기</span>
+                <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>비밀번호 찾기</span>
             </div>
             <div className={style["sub-cont"]}>
                 <div className={style.img}>
@@ -452,7 +456,7 @@ function JoinLogin(){
                         </div>
                     </div>
                     <div>
-                        <br/><div className={`${style["guide-pass"]}`}>{pwConfirmMsg}</div>
+                        <br/><div className={`${style["guide-pass"]} ${userPwCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
                     </div>
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
@@ -519,25 +523,27 @@ function JoinLogin(){
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>사용 언어&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <select className={`${style.selectLan} ${style["div-input"]}`} value={userLan} onChange={onLanHandler}>
-                            <option vaule="">선택하세요</option>
-                            <option value="한국어">  한국어</option>
-                            <option value="독일어">독일어</option>
-                            <option value="러시아어">러시아어</option>
-                            <option value="스페인어">스페인어</option>
-                            <option value="영어">영어</option>
-                            <option value="이탈리아어">이탈리아어</option>
-                            <option value="인도네시아어">인도네시아어</option>
-                            <option value="일본어">일본어</option>
-                            <option value="프랑스어">프랑스어</option>
-                            <option value="포르투칼어">포르투칼어</option>
-                            <option value="중국어">중국어</option>
-                            <option value="힌두어">힌두어</option>
+                            <option value="" disabled>선택하세요</option>
+                            <option value="ko-KR">한국어</option>
+                            <option value="de-DE">독일어</option>
+                            <option value="ru-RU">러시아어</option>
+                            <option value="es-ES">스페인어</option>
+                            <option value="en-US">영어</option>
+                            <option value="it-IT">이탈리아어</option>
+                            <option value="id-ID">인도네시아어</option>
+                            <option value="ja-JP">일본어</option>
+                            <option value="fr-FR">프랑스어</option>
+                            <option value="pt-PT">포르투칼어</option>
+                            <option value="pt-PT">중국어</option>
+                            <option valye="pt-TW">대만어</option>
+                            <option value="hi-IN">힌두어</option>
                         </select>
                         </div>
                     </div>
                     <button type="button" className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
                 </div>
             </div>
+        </div>
         </div>
       );
       

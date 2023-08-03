@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import { useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../../utils";
+import { BACKEND_URL } from "../../../utils";
 
 function Join(){
     const headers ={

@@ -11,6 +11,27 @@ import axios from "axios";
 
 function Home(){
     const user = useSelector((state) => state.userInfo);
+
+    // const headers = {
+    //     'Content-Type' : 'application/json',
+    //     'Authorization' : `Bearer ${user.accessToken}`,
+    // }
+
+    // console.log(headers);
+
+
+
+    //로그아웃
+    // const logout = () => {
+    //     axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, headers)
+    //         .then((response)=>{
+    //            console.log("로그아웃");
+    //         })
+    //         .catch((error)=>{
+    //             console.log(headers);
+    //             console.log("로그아웃 실패", error);
+    //         })
+    // }
     
     
     //요청 보낼 때.
@@ -26,18 +47,17 @@ function Home(){
     // 화상 채팅방 입장
     let navigate = useNavigate();
 
-    const handleButtonClick = async () => {
-
+    const handleButtonClick = async (e) => {
         const headers = {
             'Content-Type' : 'application/json'
         }
+        console.log(e);
 
         const requestBody = {
             userId: user.userId,
-            vr_max_cnt: 2
+            vr_max_cnt: e
         };
-
-        console.log(requestBody);
+        
 
         const requestBodyJSON = JSON.stringify(requestBody);
         await axios
@@ -52,7 +72,7 @@ function Home(){
             });
         })
         .catch((error) => {
-            console.log("에러 발생", error)
+            console.log("에러 발생", error);
         })
     }
 
@@ -72,9 +92,19 @@ function Home(){
             <p>{user.accessToken}</p>
             <p>{user.expiredDate}</p>
 
+            {/* <button style={buttonStyle} onClick={logout}>로그아웃</button><br/> */}
+
             <button style={buttonStyle}
-                onClick={handleButtonClick}
+                onClick={()=>{handleButtonClick(2)}}
             >랜덤 2인</button>
+
+            <button style={buttonStyle}
+                            onClick={()=>{handleButtonClick(4)}}
+                        >랜덤 4인</button>
+
+            <button style={buttonStyle}
+                            onClick={()=>{handleButtonClick(6)}}
+                        >랜덤 6인</button>
 
         </div>
     )

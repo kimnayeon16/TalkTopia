@@ -124,7 +124,7 @@ button {
     width: $contW;
     height: 100%;
     // background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
-    background-image: url('../../public/img/login7.jpg');
+    background-image: url('../../../../public/img/login7.jpg');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
@@ -512,7 +512,7 @@ select option {
   // display: flex;
   // justify-content: center;
   font-family: 'Dovemayo_wild'; 
-  color: #5e503f;
+  color: #fa762f;
   font-size: 12px;
   margin-top: -50px;
   margin-left: 60px;
@@ -520,7 +520,15 @@ select option {
 
 .guide-pass {
   font-family: 'Dovemayo_wild'; 
-  color: #5e503f;
+  color: #fa762f;
+  font-size: 12px;
+  margin-top: -50px;
+  margin-left: -40px;
+}
+
+.guide-pass-correct {
+  font-family: 'Dovemayo_wild'; 
+  color: #5fc827;
   font-size: 12px;
   margin-top: -50px;
   margin-left: -40px;
@@ -608,4 +616,13 @@ select option {
   margin-top: 20px;
   margin-left: -10px;
   font-size: 14px;
+}
+
+.background{
+  // background-repeat: no-repeat;   
+  // background-position: top center;
+  // background-size: cover;
+  // background-attachment: fixed;
+  width: 100vh;
+  height: 100vh;
 }
