@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
     const chatScroll = useRef(null);
