@@ -1,7 +1,9 @@
 import { OpenVidu } from 'openvidu-browser';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import axios from 'axios';
+
 import UserVideoComponent from '../../components/video/UserVideoComponent'
 import Chat from '../../components/video/Chat'
 import ConversationLog from '../../components/video/ConversationLog';
@@ -11,7 +13,8 @@ import style from './JoinRoom.module.css'
 
 // 세션 입장
 function JoinRoom() {
-    const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
+    // const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? '' : 'https://demos.openvidu.io/';
+    const user = useSelector((state) => state.userInfo);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -93,7 +96,7 @@ function JoinRoom() {
 
         const requestBody = {
             userId: myUserName,
-            token: openviduToken,
+            token: user.accesToken,
             vrSession: mySessionId
         };
     
