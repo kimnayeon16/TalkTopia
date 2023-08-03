@@ -5,24 +5,27 @@ import java.time.LocalDateTime;
 import com.example.talktopia.db.entity.post.Post;
 import com.example.talktopia.db.entity.user.User;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistPostReq {
 
-	private String pTitle;
-	private String pContent;
+	private String postTitle;
+	private String postContent;
 	private String userId;
 
 
 	public Post toEntity(User user){
 		return Post.builder()
-			.pContent(pContent)
-			.pCreateTime(LocalDateTime.now())
-			.pTitle(pTitle)
+			.postTitle(postTitle)
+			.postCreateTime(LocalDateTime.now())
+			.postContent(this.postTitle)
 			.user(user)
 			.build();
 	}

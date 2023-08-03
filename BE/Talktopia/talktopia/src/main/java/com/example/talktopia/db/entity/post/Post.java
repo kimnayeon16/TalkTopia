@@ -32,18 +32,18 @@ public class Post {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "p_no")
-	private long pNo;
+	@Column(name = "post_no")
+	private long postNo;
 
-	@Column(length = 500, name = "p_content")
-	private String pContent;
+	@Column(length = 500, name = "post_content")
+	private String postContent;
 
-	@Column(name = "p_title")
-	private String pTitle;
+	@Column(name = "post_title")
+	private String postTitle;
 
 	@CreatedDate
-	@Column(name = "p_create_time")
-	private LocalDateTime pCreateTime;
+	@Column(name = "post_create_time")
+	private LocalDateTime postCreateTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_no")
@@ -53,11 +53,11 @@ public class Post {
 	private List<AnswerPost> answerPostList = new ArrayList<>();
 
 	@Builder
-	public Post(long pNo, String pContent, String pTitle, LocalDateTime pCreateTime, User user) {
-		this.pNo = pNo;
-		this.pContent = pContent;
-		this.pTitle = pTitle;
-		this.pCreateTime = pCreateTime;
+	public Post(long postNo, String postContent, String postTitle, LocalDateTime postCreateTime, User user) {
+		this.postNo = postNo;
+		this.postContent = postContent;
+		this.postTitle = postTitle;
+		this.postCreateTime = postCreateTime;
 		setUser(user);
 	}
 
