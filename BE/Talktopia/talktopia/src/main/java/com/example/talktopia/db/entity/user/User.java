@@ -61,6 +61,9 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private ProviderType providerType;
 
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Participants> participantsList = new ArrayList<>();
 
@@ -82,7 +85,7 @@ public class User {
 
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,
-		Language language) {
+		Language language, UserRole userRole) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userPw = userPw;
@@ -90,6 +93,7 @@ public class User {
 		this.userEmail = userEmail;
 		this.profileImg = profileImg;
 		this.language = language;
+		this.userRole =userRole;
 	}
 
 	public void update(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {

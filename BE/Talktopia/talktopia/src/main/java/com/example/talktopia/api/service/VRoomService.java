@@ -213,13 +213,14 @@ public class VRoomService {
 		log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
 		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null){
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
+			log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
 			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
 				this.mapSessions.remove(vRoomExitReq.getVrSession());
 				this.mapSessionToken.remove(vRoomExitReq.getVrSession());
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
 				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
-				return new Message("방을 나갔습니다.");
+				return new Message("방을 나가서 터졌습니다.");
 			}
 			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
