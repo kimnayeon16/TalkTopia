@@ -36,10 +36,14 @@ dependencies {
 
     testImplementation 'io.projectreactor:reactor-test'
 
+    // lombok
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // socckjs
+    implementation 'org.webjars:sockjs-client:1.1.2'
 }
 
 tasks.named('test') {
