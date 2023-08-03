@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.talktopia_chat.db.entity.ChatRoomParticipants;
 
 public interface ChatRoomParticipantsRepository extends JpaRepository<ChatRoomParticipants, Long> {
-	ChatRoomParticipantsRepository findBy(long crpNo);
+	ChatRoomParticipants findByCrpNo(long crpNo);
 
 	List<ChatRoomParticipants> findAll();
 

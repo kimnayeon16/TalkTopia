@@ -35,7 +35,8 @@ function JoinLogin(){
 
     //로그인 버튼 클릭 시
     const onLogin = async (e) => {
-        e.preventDefault();
+        console.log("???");
+        // e.preventDefault();
 
         const requestBody = {
             userId,
@@ -95,6 +96,7 @@ function JoinLogin(){
     const [emailConfirm, setEmailConfirm] = useState("");
     const [emailConfirmServer, setEmailConfirmServer] = useState("");
     const [emailButton, setEmailButton] = useState("이메일 인증");
+    const [isButtonDisabled, setButtonDisabled] = useState(false);
 
     //모든 정보가 입력됐을 때 회원가입 완료
     const [userIdCorrect, setUserIdCorrect] = useState(false);
@@ -257,14 +259,6 @@ function JoinLogin(){
             .then((response) =>{
              console.log(response.data.code);
              setEmailConfirmServer(response.data.code);
-            //  Swal.fire({
-            //     icon: "success",
-            //     title: "이메일 인증에 성공했습니다.",
-            //     confirmButtonText: "확인",
-            //     timer: 1500,
-            //     timerProgressBar: true,
-            //     confirmButtonColor: '#90dbf4',
-            // })
             // 백으로부터 메세지가 올 것임
             console.log('성공');
             })
@@ -290,13 +284,16 @@ function JoinLogin(){
         if(emailConfirm === emailConfirmServer){
             
             setEmailConfirmWindow(false);
-            setEmailButton("이메일 인증");
+            setEmailButton("인증 완료");
+            setButtonDisabled(true);
             setUserEmailCorrect(true);
             Swal.fire({
                 icon: "success",
                 title: "이메일 인증에 성공했습니다.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
             })
             
         }else{
@@ -304,8 +301,11 @@ function JoinLogin(){
             Swal.fire({
                 icon: "warning",
                 title: "인증 번호가 올바르지 않습니다.",
+                text: "다시 확인해주세요.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
             })
         }
     }
@@ -335,7 +335,7 @@ function JoinLogin(){
                     userName,
                     userPwJoin,
                     userEmail,
-                    // userLan,
+                    userLan,
                 };
      
                 console.log(requestBody);
@@ -380,21 +380,29 @@ function JoinLogin(){
 
     const handleToggleSignUp = () => {
         setChange((prevState) => !prevState);
-      };
+    };
 
+    /////////////////////////////////////////////////////////////////////////////////
+    const onCheckEnter = (e) => {
+        // e.preventDefault();
+        if(e.key === 'Enter') {
+            console.log("들어오니")
+            onLogin();
+        }
+      }
 
       return (
         <div className={`${style.background}`}>
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
-            <div className={`${style.form} ${style["sign-in"]}`}>
+            <div className={`${style.form} ${style["sign-in"]}`} >
                 <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🌏</h2>
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>아이디</span>
-                    <input type="text" value={userId} onChange={onIdHandler}/>
+                    <input type="text" value={userId} onChange={onIdHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>비밀번호</span>
-                    <input type="password" value={userPw} onChange={onPwHandler}/>
+                    <input type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
@@ -487,13 +495,16 @@ function JoinLogin(){
                                 <option value="nate.com">nate.com</option>
                                 <option value="hanmail.com">hanmail.com</option>
                             </select>
-                            <button onClick={checkEmail} className={`${style.buttonId}`}>{emailButton}</button><br/>
+                            <button onClick={checkEmail} className={`${style.buttonId}`} disabled={isButtonDisabled}>{emailButton}</button><br/>
+                            
                             </>
                             :
                             <>
                                 <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler} className={`${style["div-input-email"]}`}></input>
                                 <p className={`${style["out-email"]}`} onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>✖</p>
                                 <button onClick={checkEmail} className={`${style.buttonId}`}>{emailButton}</button><br/>
+                                
+                                {/* <p className={`${style.buttonId} ${style["buttonId-1"]}`}>인증 완료</p> */}
                             </>
                             
                         }
@@ -540,7 +551,7 @@ function JoinLogin(){
                         </select>
                         </div>
                     </div>
-                    <button type="button" className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
+                    <button className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
                 </div>
             </div>
         </div>

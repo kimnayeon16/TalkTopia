@@ -5,8 +5,8 @@ import { Routes, Route } from 'react-router-dom';
 
 // Router
 //start
-import Start from './pages/start/Start.js';
-import StartReal from './pages/start/StartReal.js';
+import Start from './pages/start/NoStart.js';
+import StartReal from './pages/start/Start.js';
 //auth
 import Join from './pages/auth/MyInfo/Join.js';
 import Login from './pages/auth/MyInfo/Login.js';
@@ -33,8 +33,8 @@ function App() {
     <div className="App">
       {/* router */}
       <Routes>
-        <Route path="/" element={<Start/>}/>
-        <Route path="startreal" element={<StartReal/>}/>
+        <Route path="/start" element={<Start/>}/>
+        <Route path="/" element={<StartReal/>}/>
         <Route path="/join" element={<Join/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/findId" element={<IdFind/>}/>
