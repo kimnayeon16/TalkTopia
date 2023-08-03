@@ -226,9 +226,11 @@ public class VRoomService {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
 		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null){
+			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
 			log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
-			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
 				this.mapSessions.remove(vRoomExitReq.getVrSession());
 				this.mapSessionToken.remove(vRoomExitReq.getVrSession());
@@ -236,6 +238,8 @@ public class VRoomService {
 				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
 				return new Message("방을 나가서 터졌습니다.");
 			}
+			int userlan = (int)user.getLanguage().getLangNo();
+			this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
 			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
 			if(!vRoom.isVrEnter()){
