@@ -2,8 +2,15 @@
 import OpenViduVideoComponent from './OvVideo';
 
 function VideoComponent (props) {
+    // const userName = JSON.parse(props.streamManager.stream.connection.data).clientData
+    let userName = '';
 
-    const userName = JSON.parse(props.streamManager.stream.connection.data).clientData
+    try {
+        const connectionData = JSON.parse(props.streamManager.stream.connection.data);
+        userName = connectionData.clientData;
+    } catch (error) {
+        console.error('Error parsing JSON data:', error);
+    }
 
     return (
         <>
