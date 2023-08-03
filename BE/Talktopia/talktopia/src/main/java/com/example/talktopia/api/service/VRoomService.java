@@ -98,8 +98,8 @@ public class VRoomService {
 		/************************** 참가할 방이 존재한다면 ****************************/
 		if(!roomIds.isEmpty()){
 
-			boolean isNotfoundRoom=false;
 			for(String  roomId : roomIds){
+				boolean isNotfoundRoom=false;
 				VRoom vRoom = vroomrepsitory.findByVrSession(roomId);
 				if(this.mapSessionToken.get(roomId).getMaxCount()!=maxCnt ||
 					this.mapSessionToken.get(roomId).getCurCount()>=maxCnt ||
@@ -114,27 +114,27 @@ public class VRoomService {
 						break;
 					}
 				}
-				if(!isNotfoundRoom)
-				{
-					connRoomId=roomId;
-					String token = this.mapSessions.get(connRoomId).createConnection(connectionProperties).getToken();
-
-					this.mapSessionToken.get(connRoomId).setCurCount(this.mapSessionToken.get(connRoomId).getCurCount()+1);
-					vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()+1);
-					if(this.mapSessionToken.get(connRoomId).getCurCount()==this.mapSessionToken.get(connRoomId).getMaxCount()){
-						vRoom.setVrEnter(false);
-					}
-
-					participantsService.joinRoom(user,vRoom);
-					VRoomRes vRoomRes = new VRoomRes();
-					vRoomRes.setToken(token);
-					//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
-					vRoomRes.setVrSession(roomId);
-					// Return the response to the client
-					// 토큰정보와 상태 정보 리턴
-					return vRoomRes;
-
+				if(isNotfoundRoom){
+					continue;
 				}
+				connRoomId=roomId;
+				String token = this.mapSessions.get(connRoomId).createConnection(connectionProperties).getToken();
+
+				this.mapSessionToken.get(connRoomId).setCurCount(this.mapSessionToken.get(connRoomId).getCurCount()+1);
+				vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()+1);
+				if(this.mapSessionToken.get(connRoomId).getCurCount()==this.mapSessionToken.get(connRoomId).getMaxCount()){
+					vRoom.setVrEnter(false);
+					vroomrepsitory.save(vRoom);
+				}
+
+				participantsService.joinRoom(user,vRoom);
+				VRoomRes vRoomRes = new VRoomRes();
+				vRoomRes.setToken(token);
+				//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
+				vRoomRes.setVrSession(roomId);
+				// Return the response to the client
+				// 토큰정보와 상태 정보 리턴
+				return vRoomRes;
 
 			}
 		}
