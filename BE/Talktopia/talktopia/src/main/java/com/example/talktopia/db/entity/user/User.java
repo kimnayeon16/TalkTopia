@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.talktopia.db.entity.friend.Friend;
+import com.example.talktopia.db.entity.post.Post;
 import com.example.talktopia.db.entity.vr.Participants;
 
 import lombok.Builder;
@@ -77,6 +78,9 @@ public class User {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Token token;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Post> postList = new ArrayList<>();
 
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,
