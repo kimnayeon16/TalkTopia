@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.talktopia_chat.db.entity.ChatRoom;
+import com.example.talktopia_chat.db.entity.SaveChatRoomContent;
 
-public interface SaveChatRoomContent extends JpaRepository<SaveChatRoomContent, Long> {
+public interface SaveChatRoomContentRepository extends JpaRepository<SaveChatRoomContent, Long> {
 	SaveChatRoomContent findByScrcNo(long scrcNo);
 
 	List<SaveChatRoomContent> findAll();
 
+	// SaveChatRoomContent save
 	// SaveChatRoomContent deleteByScrcNo(long scrcNo);
 }
 
