@@ -32,9 +32,6 @@ function JoinRoom() {
     const [audioEnabled, setAudioEnabled] = useState(true);
     const [openviduToken, setOpenviduToken] = useState(undefined);
 
-    console.log('publisher------', publisher)
-    console.log('subscribers------', subscribers)
-
     // 새로운 OpenVidu 객체 생성
     const [OV, setOV] = useState(<OpenVidu />);
 
@@ -99,10 +96,11 @@ function JoinRoom() {
             token: user.accesToken,
             vrSession: mySessionId
         };
+        console.log(requestBody)
     
         const requestBodyJSON = JSON.stringify(requestBody);
         await axios
-        .get(`${BACKEND_URL}/api/v1/room/exit/${mySessionId}`, requestBodyJSON, {headers})
+        .get(`${BACKEND_URL}/api/v1/room/exit`, requestBodyJSON, {headers})
         .then((response) => {
             console.log(response)
         })
@@ -151,7 +149,6 @@ function JoinRoom() {
     useEffect(() => {
         if (session && openviduToken) {
             getToken().then((token) => {
-                console.log(token)
                 // 첫 번째 매개변수는 OpenVidu deployment로 부터 얻은 토큰, 두 번째 매개변수는 이벤트의 모든 사용자가 검색할 수 있음.
                 session.connect(token, { clientData: myUserName })
                 .then(async () => {
