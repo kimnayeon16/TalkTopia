@@ -29,16 +29,19 @@ function JoinRoom() {
     const [audioEnabled, setAudioEnabled] = useState(true);
     const [openviduToken, setOpenviduToken] = useState(undefined);
 
+    console.log('publisher------', publisher)
+    console.log('subscribers------', subscribers)
+
     // 새로운 OpenVidu 객체 생성
     const [OV, setOV] = useState(<OpenVidu />);
 
     // 2) 화면 렌더링 시 최초 1회 실행
     useEffect(() => {
-        if (location.state === null || location.state.myUserName === null || location.state.token === null) {
-            console.log("location.state의 정보가 없습니다.");
-            navigate("/home");
-            return;
-        };
+        // if (location.state === null || location.state.myUserName === null || location.state.token === null) {
+        //     console.log("location.state의 정보가 없습니다.");
+        //     navigate("/home");
+        //     return;
+        // };
 
         setVideoEnabled(true);
         setAudioEnabled(true);
@@ -115,13 +118,15 @@ function JoinRoom() {
         mySession.on('streamCreated', (event) => {
             const subscriber = mySession.subscribe(event.stream, undefined);
             setSubscribers((subscribers) => [...subscribers, subscriber]);  // 새 구독자에 대한 상태 업데이트
-            console.log(JSON.parse(event.stream.streamManager.stream.connection.data).clientData, "님이 접속했습니다.");
+            console.log('사용자가 입장하였습니다.')
+            // console.log(JSON.parse(event.stream.streamManager.stream.connection.data).clientData, "님이 접속했습니다.");
         });
 
         // Session 개체에서 제거된 관련 subsrciber를 subsribers 배열에서 제거
         mySession.on('streamDestroyed', (event) => {
             setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber !== event.stream.streamManager))
-            console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.")
+            console.log('사용자가 나갔습니다.')
+            // console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.")
         });
 
         // 서버 측에서 예기치 않은 비동기 오류가 발생할 때 Session 개체에 의해 트리거 되는 이벤트
