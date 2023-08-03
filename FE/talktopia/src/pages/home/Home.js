@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import IsTokenValid from "../../utils/tokenUtils";
 import NewToken from "../../utils/newToken";
 import "../../App.css";
-import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
@@ -67,7 +66,6 @@ function Home(){
             navigate('/joinroom', {
                 state: {
                     myUserName: user.userId,
-                    mySessionId: response.data.vr_session,
                     token: response.data.token
                 }
             });
@@ -106,7 +104,8 @@ function Home(){
             <button style={buttonStyle}
                             onClick={()=>{handleButtonClick(6)}}
                         >랜덤 6인</button>
-
+            
+            <button style={buttonStyle} onClick={()=>{navigate('/start')}}>옛날 시작페이지</button>
         </div>
     )
 }
