@@ -95,6 +95,9 @@ public class VRoomService {
 		List<String> roomIds = vroomrepsitory.findAllIds();
 		String connRoomId=null;
 		int maxCnt = vRoomReq.getVr_max_cnt();
+		for(String roomId : roomIds){
+			log.info("roomId 나열해"+roomId);
+		}
 		/************************** 참가할 방이 존재한다면 ****************************/
 		if(!roomIds.isEmpty()){
 
@@ -104,6 +107,16 @@ public class VRoomService {
 				if(this.mapSessionToken.get(roomId).getMaxCount()!=maxCnt ||
 					this.mapSessionToken.get(roomId).getCurCount()>=maxCnt ||
 					!vRoom.isVrEnter()){
+					if(this.mapSessionToken.get(roomId).getMaxCount()!=maxCnt)
+					{
+						log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(roomId).getMaxCount());
+					}
+					else if(this.mapSessionToken.get(roomId).getCurCount()!=maxCnt){
+						log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(roomId).getCurCount());
+					}
+					else{
+						log.info("vRoom.isVrEnter(): ======"+vRoom.isVrEnter());
+					}
 					continue;
 				}
 				List<Long> checkLangs = this.mapSessionToken.get(roomId).getLang();
@@ -111,6 +124,7 @@ public class VRoomService {
 				for(Long checkLang : checkLangs){
 					if(checkLang==user.getLanguage().getLangNo()){
 						isNotfoundRoom=true;
+						log.info("isNotFoundRoom"+ checkLang+" "+user.getLanguage().getLangNo());
 						break;
 					}
 				}
