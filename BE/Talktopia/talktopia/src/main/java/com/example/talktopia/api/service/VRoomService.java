@@ -129,7 +129,7 @@ public class VRoomService {
 					VRoomRes vRoomRes = new VRoomRes();
 					vRoomRes.setToken(token);
 					//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
-					vRoomRes.setVr_session(roomId);
+					vRoomRes.setVrSession(roomId);
 					// Return the response to the client
 					// 토큰정보와 상태 정보 리턴
 					return vRoomRes;
@@ -194,7 +194,7 @@ public class VRoomService {
 			// Prepare the response with the tokeny
 			VRoomRes vRoomRes = new VRoomRes();
 			vRoomRes.setToken(token);
-			vRoomRes.setVr_session(roomId);
+			vRoomRes.setVrSession(roomId);
 			System.out.println(-2);
 			// Return the response to the client
 			// 토큰정보와 상태 정보 리턴
