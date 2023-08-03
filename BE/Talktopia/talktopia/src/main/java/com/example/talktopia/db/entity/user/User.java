@@ -70,6 +70,7 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private ReportedUser reportedUser;
 
+	// 양방향 매핑
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Friend> friends = new ArrayList<>();
 
@@ -109,5 +110,13 @@ public class User {
 	public User update(String name) {
 		this.userName=name;
 		return this;
+	}
+
+	// Friend와 연관관계 편의 메서드
+	public void addFriend(Friend friend) {
+		this.friends.add(friend);
+		if(friend.getUser() != this) {
+			friend.setUser(this);
+		}
 	}
 }
