@@ -13,8 +13,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserLoginResponse {
 	private String userId;
+	private String userName;
 	private String accessToken;
 	private String refreshToken;
 	private Date expiredDate;
+	private String sttLang;
+	private String transLang;
 }
 

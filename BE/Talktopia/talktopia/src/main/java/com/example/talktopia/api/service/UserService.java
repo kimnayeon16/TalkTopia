@@ -23,6 +23,7 @@ import com.example.talktopia.api.response.UserNewTokenResponse;
 import com.example.talktopia.api.response.UserSearchIdResponse;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.JwtProvider;
+import com.example.talktopia.db.entity.user.Language;
 import com.example.talktopia.db.entity.user.Token;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.repository.LanguageRepository;
@@ -77,6 +78,8 @@ public class UserService {
 		// 패스워드 확인
 		checkUserPw(userLoginRequest.getUserPw(), dbSearchUser.getUserPw());
 
+		Language lan = dbSearchUser.getLanguage();
+
 		Date now = new Date();
 		// 토큰 발행
 		String accessToken = JwtProvider.createAccessToken(userLoginRequest.getUserId(), secretKey,
@@ -85,8 +88,9 @@ public class UserService {
 			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, dbSearchUser); // refreshToken DB에 저장
 
-		return new UserLoginResponse(userLoginRequest.getUserId(), accessToken, refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration());
+		return new UserLoginResponse(userLoginRequest.getUserId(), dbSearchUser.getUserName(), accessToken,
+			refreshToken,
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans());
 
 	}
 
