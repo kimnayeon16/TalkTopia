@@ -1,7 +1,6 @@
 #chatContainer {
     position: absolute;
     z-index: 0;
-    top: 60%;
     width: 25%;
     height: 50%;
   }
@@ -106,7 +105,7 @@
   
   /* Start message from other user */
   
-  .message > .left .msg_detail .msg_info {
+  .message > .left .msg_detail .msg-info {
     text-align: left;
   }
   
@@ -119,11 +118,11 @@
     border: 1px solid #f0f0f094;
   }
   
-  .message.left .msg_detail .msg_content {
+  .message.left .msg_detail .msg-content {
     background-color: #f0f0f0;
     float: left;
   }
-  .message.left .msg_detail .msg_content span.triangle {
+  .message.left .msg_detail .msg-content span.triangle {
     background-color: #f0f0f0;
     border-bottom-width: 0;
     border-left-width: 0;
@@ -134,7 +133,7 @@
   
   /* Start my messages */
   
-  .message.right .msg_detail .msg_info {
+  .message.right .msg_detail .msg-info {
     text-align: right;
   }
   .message.right .user-img {
@@ -142,11 +141,11 @@
     border: 1px solid #c8ffe8ab;
   }
   
-  .message.right .msg_detail .msg_content {
+  .message.right .msg_detail .msg-content {
     background-color: #c8ffe8;
     float: right;
   }
-  .message.right .msg_detail .msg_content span.triangle {
+  .message.right .msg_detail .msg-content span.triangle {
     background-color: #c8ffe8;
     border-bottom-width: 0;
     border-left-width: 0;
@@ -155,7 +154,7 @@
   
   /* End my messages */
   
-  #messageInput {
+  #transcriptInput {
     position: absolute;
     bottom: 0px;
     width: 100%;
@@ -166,7 +165,7 @@
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
   }
-  #messageInput input {
+  #transcriptInput p {
     width: 90%;
     height: 100%;
     border: none;
