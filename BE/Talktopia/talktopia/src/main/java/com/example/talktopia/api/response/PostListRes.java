@@ -6,4 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostListRes {
+	long postNo;
+	String postTitle;
+	String postContent;
+
 }

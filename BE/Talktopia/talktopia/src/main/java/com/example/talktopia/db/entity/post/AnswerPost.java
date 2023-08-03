@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,24 +24,25 @@ public class AnswerPost {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "c_no")
-	private long cNo;
+	@Column(name = "content_no")
+	private long contentNo;
 
-	@Column(length = 500, name = "c_content")
-	private String cContent;
+	@Column(length = 500, name = "conent_content")
+	private String contentContent;
 
 	@CreatedDate
-	@Column(name = "c_create_time")
-	private String cCreateTime;
+	@Column(name = "content_create_time")
+	private String contentCreateTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_no")
 	private Post post;
 
 	@Builder
-	public AnswerPost(long cNo, String cContent, String cCreateTime, Post post) {
-		this.cNo = cNo;
-		this.cContent = cContent;
-		this.cCreateTime = cCreateTime;
+	public AnswerPost(long contentNo, String contentContent, String contentCreateTime, Post post) {
+		this.contentNo = contentNo;
+		this.contentContent = contentContent;
+		this.contentCreateTime = contentCreateTime;
 		setAnswerPost(post);
 	}
 
