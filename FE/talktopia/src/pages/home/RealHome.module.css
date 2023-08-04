@@ -46,6 +46,14 @@
     color: #012A4A;
 }
 
+.p-1{
+    font-family: 'Dovemayo_wild';
+    font-size: 32px;
+    margin-top: 250px;
+    margin-bottom: -200px;
+    color: #012A4A;
+}
+
 .span{
     font-size: 30px;
     font-weight: 500px;

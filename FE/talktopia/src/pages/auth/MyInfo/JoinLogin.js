@@ -569,9 +569,9 @@ function JoinLogin(){
                             <option value="ja-JP">일본어</option>
                             <option value="fr-FR">프랑스어</option>
                             <option value="pt-PT">포르투칼어</option>
-                            <option value="zh-CN">중국어</option>
-                            <option valye="pt-TW">대만어</option>
-                            <option value="hi-IN">힌두어</option>
+                            <option value="zh-CN">중국어 간체</option>
+                            <option valye="pt-TW">중국어 번체</option>
+                            <option value="hi-IN">힌디어</option>
                         </select>
                         </div>
                     </div>
