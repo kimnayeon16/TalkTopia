@@ -29,6 +29,7 @@ import Sample from './apis/stt/Sample.js';
 import JoinRoom from './pages/video/JoinRoom.js';
 
 import Regist from './pages/auth/MyInfo/JoinLogin.js';
+import FriendList from './pages/friend/FriendList';
 
 function App() {
   return (
@@ -55,6 +56,10 @@ function App() {
         <Route path="/sample" element={<Sample/>}/>
         <Route path="/regist" element={<Regist/>}/>
         <Route path="/joinroom" element={<JoinRoom/>}/>
+
+        {/* 친구목록 */}
+        <Route path="/friendList" element={<FriendList/>}/>
+
       </Routes>
     </div>
   );
