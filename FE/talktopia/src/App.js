@@ -14,6 +14,8 @@ import IdFind from './pages/auth/FindMyInfo/IdFind.js';
 import IdFindSuccess from './pages/auth/FindMyInfo/IdFindSuccess.js';
 import IdFindFail from './pages/auth/FindMyInfo/IdFindFail.js';
 import PasswordFind from './pages/auth/FindMyInfo/PasswordFind.js';
+import PasswordFindSuccess from './pages/auth/FindMyInfo/PasswordFindSuccess.js';
+import PasswordFindFail from './pages/auth/FindMyInfo/PasswordFindFail.js';
 import ChangePw from './pages/auth/ModifyMyInfo/ChangePw.js';
 import MyInfo from './pages/auth/ModifyMyInfo/MyInfo.js';
 import MyInfoPw from './pages/auth/ModifyMyInfo/MyInfoPw.js';
@@ -44,6 +46,8 @@ function App() {
         <Route path="/findId/success" element={<IdFindSuccess/>}/>
         <Route path="/findId/fail" element={<IdFindFail/>}/>
         <Route path="/findPassword" element={<PasswordFind/>}/>
+        <Route path="/findPassword/success" element={<PasswordFindSuccess/>}/>
+        <Route path="/findPassword/fail" element={<PasswordFindFail/>}/>
         <Route path="/changePw" element={<ChangePw/>}/>
         <Route path="/myinfo" element={<MyInfo/>}>
           {/* <Route path="passwordConfirm" element={<MyInfoPw/>}/> */}

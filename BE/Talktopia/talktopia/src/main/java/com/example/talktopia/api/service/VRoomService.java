@@ -89,7 +89,7 @@ public class VRoomService {
 	public VRoomRes enterRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
 		if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
-			throw new Exception("이미 참여중인 방이 있습니다");
+			exitRoomUser(vRoomReq);
 		}
 		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
 		List<String> roomIds = vroomrepsitory.findAllIds();
@@ -120,7 +120,11 @@ public class VRoomService {
 					continue;
 				}
 				List<Long> checkLangs = this.mapSessionToken.get(roomId).getLang();
+				for(Long checkLang : checkLangs){
 
+					log.info("현재 언어 : "+ checkLang+" 나의 언어 : "+user.getLanguage().getLangNo());
+
+				}
 				for(Long checkLang : checkLangs){
 					if(checkLang==user.getLanguage().getLangNo()){
 						isNotfoundRoom=true;
@@ -140,6 +144,10 @@ public class VRoomService {
 					vRoom.setVrEnter(false);
 					vroomrepsitory.save(vRoom);
 				}
+
+				List<Long> addLang =this.mapSessionToken.get(connRoomId).getLang();
+				addLang.add(user.getLanguage().getLangNo());
+				this.mapSessionToken.get(connRoomId).setLang(addLang);
 
 				participantsService.joinRoom(user,vRoom);
 				VRoomRes vRoomRes = new VRoomRes();
@@ -225,12 +233,32 @@ public class VRoomService {
 	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
-		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null){
-			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+		// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
 
+		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null ){
+			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+			participantsRepository.findByUser_UserId(user.getUserId()).orElseThrow(()-> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
 			log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
+			long userlan = user.getLanguage().getLangNo();
 
+			List<Long> langList = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+			for(long lang : langList){
+				log.info("LangList입니다 "+ lang);
+			}
+			//long indexToRemove = langList.indexOf(userlan);
+			if (userlan >= 0) {
+				langList.remove(userlan); // 해당 값을 삭제
+				log.info("indexToRemove입니다 "+ userlan);
+				this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
+				List<Long> tmp=this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+				for(long len : tmp){
+					log.info("지금 있는것 "+ len);
+				}
+			}
+
+
+			//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
 				this.mapSessions.remove(vRoomExitReq.getVrSession());
 				this.mapSessionToken.remove(vRoomExitReq.getVrSession());
@@ -238,8 +266,6 @@ public class VRoomService {
 				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
 				return new Message("방을 나가서 터졌습니다.");
 			}
-			int userlan = (int)user.getLanguage().getLangNo();
-			this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
 			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
 			if(!vRoom.isVrEnter()){
@@ -256,4 +282,101 @@ public class VRoomService {
 		}
 		return new Message("방을 찾을수가없는데요?");
 	}
-}
+
+	@Transactional
+	public void exitRoomUser(VRoomReq vRoomReq) throws Exception {
+		Participants participants = participantsRepository.findByUser_UserId(vRoomReq.getUserId()).orElseThrow(() ->
+			new Exception("participants가 존재하지않는데?"));
+		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가 없어"));
+		String vrSession =participants.getVRoom().getVrSession();
+		VRoom vRoom = vroomrepsitory.findByVrSession(vrSession);
+		if(this.mapSessions.get(vRoom.getVrSession()).getSessionId()!=null){
+			participantsRepository.findByUser_UserId(vRoomReq.getUserId()).orElseThrow(()-> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
+			this.mapSessionToken.get(vrSession).setCurCount(this.mapSessionToken.get(vrSession).getCurCount()-1);
+			long userlan = user.getLanguage().getLangNo();
+
+			List<Long> langList = this.mapSessionToken.get(vrSession).getLang();
+			for(long lang : langList){
+				log.info("LangList입니다 "+ lang);
+			}
+			//long indexToRemove = langList.indexOf(userlan);
+			if (userlan >= 0) {
+				langList.remove(userlan); // 해당 값을 삭제
+				log.info("indexToRemove입니다 "+ userlan);
+				this.mapSessionToken.get(vrSession).setLang(langList);
+				List<Long> tmp=this.mapSessionToken.get(vrSession).getLang();
+				for(long len : tmp){
+					log.info("지금 있는것 "+ len);
+				}
+			}
+				if(this.mapSessionToken.get(vrSession).getCurCount()<1){
+					this.mapSessions.remove(vrSession);
+					this.mapSessionToken.remove(vrSession);
+					participantsRepository.deleteByUser_UserNo(user.getUserNo());
+					vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
+					return;
+				}
+				//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+				vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
+				if(!vRoom.isVrEnter()){
+					vRoom.setVrEnter(true);
+				}
+				vroomrepsitory.save(vRoom);
+
+				//Vroom Id 찾는다.
+				//user Id 찾는다.
+				//OK
+				//이를통해서 참여자 DB를 삭제한다.
+				participantsRepository.deleteByUser_UserNo(user.getUserNo());
+				return;
+			}
+		}
+
+
+
+	}
+	// 		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null ){
+	// 	VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+	// 	participantsRepository.findByUser_UserId(user.getUserId()).orElseThrow(()-> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
+	// 	this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
+	// 	log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
+	// 	long userlan = user.getLanguage().getLangNo();
+	//
+	// 	List<Long> langList = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+	// 	for(long lang : langList){
+	// 		log.info("LangList입니다 "+ lang);
+	// 	}
+	// 	//long indexToRemove = langList.indexOf(userlan);
+	// 	if (userlan >= 0) {
+	// 		langList.remove(userlan); // 해당 값을 삭제
+	// 		log.info("indexToRemove입니다 "+ userlan);
+	// 		this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
+	// 		List<Long> tmp=this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+	// 		for(long len : tmp){
+	// 			log.info("지금 있는것 "+ len);
+	// 		}
+	// 	}
+	//
+	//
+	// 	//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
+	// 	if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
+	// 		this.mapSessions.remove(vRoomExitReq.getVrSession());
+	// 		this.mapSessionToken.remove(vRoomExitReq.getVrSession());
+	// 		participantsRepository.deleteByUser_UserNo(user.getUserNo());
+	// 		vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
+	// 		return new Message("방을 나가서 터졌습니다.");
+	// 	}
+	// 	//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+	// 	vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
+	// 	if(!vRoom.isVrEnter()){
+	// 		vRoom.setVrEnter(true);
+	// 	}
+	// 	vroomrepsitory.save(vRoom);
+	//
+	// 	//Vroom Id 찾는다.
+	// 	//user Id 찾는다.
+	// 	//OK
+	// 	//이를통해서 참여자 DB를 삭제한다.
+	// 	participantsRepository.deleteByUser_UserNo(user.getUserNo());
+	// 	return new Message("방을 나갔습니다.");
+	// }

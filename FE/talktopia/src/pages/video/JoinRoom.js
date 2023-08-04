@@ -82,7 +82,7 @@ function JoinRoom() {
         setPublisher(undefined);
         setSubscribers([]);
 
-        navigate('/home');
+        navigate('/realhome');
     };
 
     // 세션 떠날 때 요청
@@ -197,60 +197,114 @@ function JoinRoom() {
             publisher.publishAudio(enabled);
         }
     };
-
+    
     return (
         <>
-            <div>
-                <h1>Room ID: {mySessionId}</h1>
-                {session !== undefined ? (
-                    <div className={`${style.container}`}> 
-                        <div className={`${style.main_side}`}>
+            <h1>Room ID: {mySessionId}</h1>
+            {session !== undefined ? (
+                <div className={`${style.container}`}> 
+                    <div className={`${style.main_side}`}>
+                        <div className={`${style.video_call_wrapper}`}>
                             {publisher !== undefined ? (
-                                <div id="publisher">
-                                    <UserVideoComponent streamManager={ publisher } />
+                                <div className={`${style.video_participant}`}>
+                                    <UserVideoComponent streamManager={ publisher } className={`${style.video_participant}`}/>
                                 </div>
                             ) : null}
                             
                             {subscribers.map((sub, i) => (
-                                <div key={`${i}-subscriber`} className='subscribers'>
+                                <div key={`${i}-subscriber`} className={`${style.video_participant}`}>
                                     <UserVideoComponent streamManager={ sub } />
                                 </div>
                             ))}
                         </div>
-                        
-                        {myUserName !== undefined && mainStreamManager !== undefined && (
-                            <div className={`${style.right_side}`}>   
-                                <ConversationLog 
-                                    myUserName={myUserName}
-                                    mainStreamManager={mainStreamManager}
-                                />
-                                <Chat
-                                    myUserName={myUserName}
-                                    mainStreamManager={mainStreamManager}
-                                />
-                            </div>
-                        )}
-                    </div>
-                ) : null}
 
-                <input
-                    type='button'
-                    onClick={toggleVideo}
-                    value={`비디오 ${videoEnabled ? "OFF" : "ON"}`}
-                />
-                <input
-                    type='button'
-                    onClick={toggleAudio}
-                    value={`마이크 ${audioEnabled ? "OFF" : "ON"}`}
-                />
-                <input 
-                    type='button'
-                    onClick={leaveSession}
-                    value="나가기"
-                />
-            </div>
+                    </div>
+                    
+                    {myUserName !== undefined && mainStreamManager !== undefined && (
+                        <div className={`${style.right_side}`}>   
+                            <ConversationLog 
+                                myUserName={myUserName}
+                                mainStreamManager={mainStreamManager}
+                            />
+                            <Chat
+                                myUserName={myUserName}
+                                mainStreamManager={mainStreamManager}
+                            />
+                        </div>
+                    )}
+                </div>
+            ) : null}
+
+            <input
+                type='button'
+                onClick={toggleVideo}
+                value={`비디오 ${videoEnabled ? "OFF" : "ON"}`}
+            />
+            <input
+                type='button'
+                onClick={toggleAudio}
+                value={`마이크 ${audioEnabled ? "OFF" : "ON"}`}
+            />
+            <input 
+                type='button'
+                onClick={leaveSession}
+                value="나가기"
+            />
         </>
     );
+    // return (
+    //     <>
+    //         <div>
+    //             <h1>Room ID: {mySessionId}</h1>
+    //             {session !== undefined ? (
+    //                 <div className={`${style.container}`}> 
+    //                     <div className={`${style.main_side}`}>
+    //                         {publisher !== undefined ? (
+    //                             <div id="publisher">
+    //                                 <UserVideoComponent streamManager={ publisher } />
+    //                             </div>
+    //                         ) : null}
+                            
+    //                         {subscribers.map((sub, i) => (
+    //                             <div key={`${i}-subscriber`} className='subscribers'>
+    //                                 <UserVideoComponent streamManager={ sub } />
+    //                             </div>
+    //                         ))}
+    //                     </div>
+                        
+    //                     {myUserName !== undefined && mainStreamManager !== undefined && (
+    //                         <div className={`${style.right_side}`}>   
+    //                             <ConversationLog 
+    //                                 myUserName={myUserName}
+    //                                 mainStreamManager={mainStreamManager}
+    //                             />
+    //                             <Chat
+    //                                 myUserName={myUserName}
+    //                                 mainStreamManager={mainStreamManager}
+    //                             />
+    //                         </div>
+    //                     )}
+    //                 </div>
+    //             ) : null}
+
+    //             <input
+    //                 type='button'
+    //                 onClick={toggleVideo}
+    //                 value={`비디오 ${videoEnabled ? "OFF" : "ON"}`}
+    //             />
+    //             <input
+    //                 type='button'
+    //                 onClick={toggleAudio}
+    //                 value={`마이크 ${audioEnabled ? "OFF" : "ON"}`}
+    //             />
+    //             <input 
+    //                 type='button'
+    //                 onClick={leaveSession}
+    //                 value="나가기"
+    //             />
+    //         </div>
+    //     </>
+    // );
 }
 
 export default JoinRoom;

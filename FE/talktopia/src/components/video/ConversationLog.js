@@ -89,7 +89,7 @@ function ConversationLog(props) {
             const data = {
                 transcript: newMfinalTranscript,                    // stt 
                 nickname: props.myUserName,                         // 말한 사용자 이름
-                // streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
+                streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
                 lang: user.transLang                                // 번역 source 언어
             };
             // Sender of the message (after 'session.connect')
@@ -116,9 +116,9 @@ function ConversationLog(props) {
             let messageData = ({
                 transcript: data.transcript,            // 전달받은 메세지
                 nickname: data.nickname,                // 전달한 사용자 이름
-                // connectionId: event.from.connectionId,  // Connection object of the sender 
+                connectionId: event.from.connectionId,  // Connection object of the sender 
                 source: data.lang,                      // 전달받은 메세지 언어
-                translate: '내가 말한 언어'              // 번역된 메세지 
+                translate: ''              // 번역된 메세지 
             });
 
              // 번역 안할 때는 주석처리하면 됨.
@@ -187,14 +187,18 @@ function ConversationLog(props) {
     
                     <div className={`${ style.message_wrap }`} ref={chatScroll}>
                         {messageList.map((data, i) => (
-                            <div key={`${i}-Conversation`}>
+                            <div 
+                                key={`${i}-Conversation`}
+                                className={
+                                    `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
+                                }
+                            >
                                 <div className={ `${style.msg_detail }`}>
                                     <div className={ `${style.msg_info }`}>
                                         <p>{data.nickname}</p>
                                     </div>
                                     <div className={ `${style.msg_content }`}>
-                                        <p className={ `${style.text }`}>{data.transcript}</p>
-                                        <p className={ `${style.text }`}>{data.translate}</p>
+                                        <p className={ `${style.text }`}>{data.transcript} ( {data.translate} )</p>
                                     </div>
                                 </div>
                             </div>

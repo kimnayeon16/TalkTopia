@@ -113,7 +113,7 @@ function IdFind() {
 
 
     return (
-      <div>
+      <>
         <div className={`${style.background}`}>
           <h2 className={`${style.logo}`}>TalkTopia</h2>
           <h2 className={`${style.title}`}>아이디 찾기</h2>
@@ -150,10 +150,7 @@ function IdFind() {
             <button className={`${style.button}`} onClick={findId}>아이디 찾기</button>
           </div>
         </div>
-       </div>
-       
-
-       
+       </>
        );
       }
 

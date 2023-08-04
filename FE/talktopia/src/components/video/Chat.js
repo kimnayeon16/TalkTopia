@@ -78,13 +78,16 @@ function Chat(props) {
                             <div 
                                 key={`${i}-Chat`}
                                 id="remoteUsers"
+                                className={
+                                    `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
+                                }
                             >
                                 <div className={ `${style.msg_detail }`}>
                                     <div className={ `${style.msg_info }`}>
                                         <p> {data.nickname}</p>
                                     </div>
                                     <div className={ `${style.msg_content }`}>
-                                        <span className={ `${style.triangle }`} />
+                                        {/* <span className={ `${style.triangle }`} /> */}
                                         <p className={ `${style.text }`}>{data.message}</p>
                                     </div>
                                 </div>
