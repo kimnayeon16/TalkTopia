@@ -1,14 +1,19 @@
 package com.example.talktopia.api.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.FriendIdPwRequest;
 import com.example.talktopia.api.service.FriendService;
 import com.example.talktopia.common.message.Message;
+import com.example.talktopia.db.entity.friend.Friend;
 import com.example.talktopia.db.repository.FriendRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,7 @@ public class FriendController {
 
 	private final FriendRepository friendRepository;
 	private final FriendService friendService;
+	// private final ChatService chatService;
 
 	// 친구 추가
 	@PostMapping("/add")
@@ -35,4 +41,9 @@ public class FriendController {
 	// 	return ResponseEntity.ok().body(friendService.deleteFriend(friendIdPwRequest));
 	// }
 
+	// 친구 목록 반환
+	@GetMapping("/list/{userId}")
+	public ResponseEntity<List<Friend>> listFriend(@RequestParam("userId") String userId){
+		return ResponseEntity.ok().body(friendService.getFriends(userId));
+	}
 }
