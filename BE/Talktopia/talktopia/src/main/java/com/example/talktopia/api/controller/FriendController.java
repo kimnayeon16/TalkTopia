@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,8 @@ public class FriendController {
 
 	// 친구 목록 반환
 	@GetMapping("/list/{userId}")
-	public ResponseEntity<List<Friend>> listFriend(@RequestParam("userId") String userId){
+	public ResponseEntity<List<String>> listFriend(@PathVariable("userId") String userId){
+		log.info(userId);
 		return ResponseEntity.ok().body(friendService.getFriends(userId));
 	}
 }
