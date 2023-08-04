@@ -107,6 +107,9 @@ function Home(){
                         >랜덤 6인</button>
             
             <button style={buttonStyle} onClick={()=>{navigate('/start')}}>옛날 시작페이지</button>
+
+            <button style={buttonStyle} onClick={()=>{navigate('/friendList')}}>친구목록</button>
+
         </div>
     )
 }
