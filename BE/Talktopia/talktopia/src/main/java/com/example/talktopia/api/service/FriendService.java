@@ -1,5 +1,7 @@
 package com.example.talktopia.api.service;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -30,9 +32,11 @@ public class FriendService {
 		// partId 기준으로 추가
 		User friend = findUser(friendIdPwRequest.getPartId());
 
+		// userId로 no 찾기
+		long userNo = findUser(friendIdPwRequest.getUserId()).getUserNo();
 
 		// 중복 체크
-		if (isAlreadyFriend(user)) {
+		if (isAlreadyFriend(userNo)) {
 			throw new RuntimeException("중복된 친구입니다.");
 		}
 
@@ -82,11 +86,11 @@ public class FriendService {
 	}
 
 	// 중복 찾기
-	public boolean isAlreadyFriend(User user) {
-		List<Friend> friends = friendRepository.findByUser(user);
+	public boolean isAlreadyFriend(long userNo) {
+		List<Friend> friends = friendRepository.findByUser_UserNo(userNo);
 
 		for (Friend f : friends) {
-			if(f.getUser().getUserNo() == user.getUserNo()) {
+			if(f.getUser().getUserNo() == userNo) {
 				return true; // 이미 친구
 			}
 		}
@@ -94,8 +98,15 @@ public class FriendService {
 	}
 
 	// 친구목록 불러오기
-	public List<Friend> getFriends(String userId) {
+	public List<String> getFriends(String userId) {
 		User user = findUser(userId);
-		return friendRepository.findByUser(user);
+		List<Friend> arr = friendRepository.findByUser_UserNo(user.getUserNo());
+		List<String> res = new ArrayList<>();
+		for(Friend f : arr){
+			Long tmp= f.getFrFriendNo();
+			User user1 = userRepository.findByUserNo(tmp);
+			res.add(user1.getUserId());
+		}
+		return res;
 	}
 }

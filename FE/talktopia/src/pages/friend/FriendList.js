@@ -19,7 +19,7 @@ function RealHome() {
     axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
       .then((response) => {
         console.log(response.data);
-        setFriendList(response.data);
+        // setFriendList(response.data);
       })
       .catch((error) => {
         console.log(error);
