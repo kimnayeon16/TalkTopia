@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
+import { useEffect, useState } from 'react';
 
 function RealHome(){
     const user = useSelector((state) => state.userInfo);
@@ -12,6 +13,44 @@ function RealHome(){
         'Content-Type' : 'application/json',
         'Authorization' : `Bearer ${user.accessToken}`,
     }
+
+    const [mylang, setMylang] = useState("");
+
+    useEffect(()=>{
+        if(user.sttLang === `ko-KR`){
+            setMylang("한국어");
+        }else if(user.sttLang === `en-US`){
+            setMylang("영어");
+        }else if(user.sttLang === `de-DE`){
+            setMylang("독일어");
+        }else if(user.sttLang === `ru-RU`){
+            setMylang("러시아어");
+        }else if(user.sttLang === `es-ES`){
+            setMylang("스페인어");
+        }else if(user.sttLang === `it-IT`){
+            setMylang("이탈리아어");
+        }else if(user.sttLang === `id-ID`){
+            setMylang("인도네시아어");
+        }else if(user.sttLang === `ja-JP`){
+            setMylang("일본어");
+        }else if(user.sttLang === `fr-FR`){
+            setMylang("프랑스어");
+        }else if(user.sttLang === `zh-CN`){
+            setMylang("중국어 간체");
+        }else if(user.sttLang === `zh-TW`){
+            setMylang("중국어 번체");
+        }else if(user.sttLang === `pt-PT`){
+            setMylang("포르투갈어");
+        }else if(user.sttLang === `hi-IN`){
+            setMylang("힌디어");
+        }
+        
+    },[])
+
+
+
+
+
 
     // console.log(headers);
 
@@ -62,15 +101,6 @@ function RealHome(){
         })
     }
 
-    const buttonStyle = {
-        backgroundColor: 'red',
-        color: 'white',
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-    };
-
     return(
         <div>
            <Navbar collapseOnSelect expand="lg" className="bg-transparent fixed-top">
@@ -100,10 +130,11 @@ function RealHome(){
             </Navbar>
             <div>
                 <p className={`${style.p}`}>세계를 하나로 잇는 깊은 바다처럼<br/>
-                    <span className={`${style.span}`}>TalkTopia</span>는 여러분의 여정을 시작할 특별한 항구가 될거에요. <br/>
-                    원하는 인원 수를 설정하여 <span className={`${style.span}`}>{user.userName}</span>님만의 특별한 항해를 떠날 수 있어요. 🚢 <br/>
+                    <span className={`${style.span}`}>TalkTopia</span> 는 여러분의 여정을 시작할 특별한 항구가 될거에요. <br/>
+                    원하는 인원 수를 설정하여 <span className={`${style.span}`}>{user.userName}</span> 님만의 특별한 항해를 떠날 수 있어요. 🚢 <br/>
                     마음에 맞는 다양한 국적의 사람들과 행운 넘치는 시간을 보내길 기원할게요.🍀
                 </p>
+                <p className={`${style["p-1"]}`}>내가 사용할 언어 : {mylang}</p>
             </div>
             <div className={`${style["button-together"]}`}>
                 <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(2)}}>랜덤 2인</button>
