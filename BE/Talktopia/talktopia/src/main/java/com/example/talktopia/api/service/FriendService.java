@@ -92,4 +92,10 @@ public class FriendService {
 		}
 		return false; // 친구가 아님
 	}
+
+	// 친구목록 불러오기
+	public List<Friend> getFriends(String userId) {
+		User user = findUser(userId);
+		return friendRepository.findByUser(user);
+	}
 }
