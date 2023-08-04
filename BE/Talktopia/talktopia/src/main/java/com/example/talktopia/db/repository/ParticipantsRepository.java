@@ -1,5 +1,7 @@
 package com.example.talktopia.db.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +16,6 @@ public interface ParticipantsRepository extends JpaRepository<Participants, Long
 
 	@Transactional
 	void deleteByUser_UserNo(long userNo);
+
+	Optional<Participants> findByUser_UserId(String userId);
 }

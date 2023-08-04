@@ -120,7 +120,11 @@ public class VRoomService {
 					continue;
 				}
 				List<Long> checkLangs = this.mapSessionToken.get(roomId).getLang();
+				for(Long checkLang : checkLangs){
 
+					log.info("현재 언어 : "+ checkLang+" 나의 언어 : "+user.getLanguage().getLangNo());
+
+				}
 				for(Long checkLang : checkLangs){
 					if(checkLang==user.getLanguage().getLangNo()){
 						isNotfoundRoom=true;
@@ -140,6 +144,10 @@ public class VRoomService {
 					vRoom.setVrEnter(false);
 					vroomrepsitory.save(vRoom);
 				}
+
+				List<Long> addLang =this.mapSessionToken.get(connRoomId).getLang();
+				addLang.add(user.getLanguage().getLangNo());
+				this.mapSessionToken.get(connRoomId).setLang(addLang);
 
 				participantsService.joinRoom(user,vRoom);
 				VRoomRes vRoomRes = new VRoomRes();
@@ -225,18 +233,30 @@ public class VRoomService {
 	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
-		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null){
-			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+		// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
 
+		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null ){
+			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+			participantsRepository.findByUser_UserId(user.getUserId()).orElseThrow(()-> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
 			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
 			log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
-			int userlan = (int)user.getLanguage().getLangNo();
+			long userlan = user.getLanguage().getLangNo();
+
 			List<Long> langList = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
-			int indexToRemove = langList.indexOf(userlan);
-			if (indexToRemove >= 0) {
-				langList.remove(indexToRemove); // 해당 값을 삭제
-				this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
+			for(long lang : langList){
+				log.info("LangList입니다 "+ lang);
 			}
+			//long indexToRemove = langList.indexOf(userlan);
+			if (userlan >= 0) {
+				langList.remove(userlan); // 해당 값을 삭제
+				log.info("indexToRemove입니다 "+ userlan);
+				this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
+				List<Long> tmp=this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+				for(long len : tmp){
+					log.info("지금 있는것 "+ len);
+				}
+			}
+
 
 			//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
 			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
