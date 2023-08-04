@@ -35,7 +35,6 @@ function JoinLogin(){
 
     //로그인 버튼 클릭 시
     const onLogin = async (e) => {
-        console.log("???");
         // e.preventDefault();
 
         const requestBody = {
@@ -69,7 +68,7 @@ function JoinLogin(){
               timerProgressBar: true,
             });
         
-            navigate('/home');
+            navigate('/realhome');
           } catch (error) {
             await Swal.fire({
                 icon: "warning",

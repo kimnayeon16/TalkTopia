@@ -9,7 +9,6 @@ function PasswordFind(){
         'Content-Type' : 'application/json'
     }
 
-  const [findMyPw, setFindMyPw] = useState(2);
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState("");
@@ -55,12 +54,12 @@ function PasswordFind(){
     axios
       .post(`${BACKEND_URL}/api/v1/user/searchPw`, requestBodyJSON, { headers })
       .then((response) => {
-        setFindMyPw(1);
+        navigate('/findPassword/success');
         console.log('성공');
         console.log(response);
       })
       .catch((error) => {
-        setFindMyPw(0);
+        navigate('/findPassword/fail');
         console.log("에러 발생", error);
       });
   };
@@ -68,96 +67,48 @@ function PasswordFind(){
   const onCheckEnter = (e) => {
     // e.preventDefault();
     if(e.key === 'Enter') {
-        console.log("들어오니")
         findPw();
     }
   }
 
   
     return(
-        <div>
-            {findMyPw === 2 && (
-                <PwFindMain onCheckEnter={onCheckEnter} userName={userName} userEmailPrefix={userEmailPrefix} onIdHandler={onIdHandler} onNameHandler={onNameHandler} onEmailPrefixHandler={onEmailPrefixHandler}
-                userEmailDomain={userEmailDomain} onEmailDomainHandler={onEmailDomainHandler} emailSelect={emailSelect} findPw={findPw} setFindMyPw={setFindMyPw} />
-            )}
-
-            {findMyPw === 1 && <PwFindMainYes />}
-
-            {findMyPw === 0 && <PwFindMainNo setFindMyPw={setFindMyPw} />}
-    </div>
-    )
-}
-
-function PwFindMain(props) {
-    return (
-      <div>
-        <span>아이디</span>
-        <input className={`${style["input-idfind"]}`} type="text" value={props.userId} onChange={props.onIdHandler} placeholder="아이디" onKeyPress={props.onCheckEnter}></input>
-
-        <span>이름</span>
-        <input className={`${style["input-idfind"]}`} type="text" value={props.userName} onChange={props.onNameHandler} placeholder="이름" onKeyPress={props.onCheckEnter}></input>
-  
-        <span>이메일</span>
-        <input className={`${style["input-idfind"]}`} type="text" value={props.userEmailPrefix} onChange={props.onEmailPrefixHandler} placeholder="이메일" onKeyPress={props.onCheckEnter}></input>
-        <span>@</span>
-        {props.emailSelect === true ? (
-          <select
-            value={props.userEmailDomain}
-            onChange={props.onEmailDomainHandler} onKeyPress={props.onCheckEnter}
-          >
-            <option value="default" disabled>
-              선택하세요
-            </option>
-            <option value="">직접입력</option>
-            <option value="gmail.com">gmail.com</option>
-            <option value="hotmail.com">hotmail.com</option>
-            <option value="outlook.com">outlook.com</option>
-            <option value="yahoo.com">yahoo.com</option>
-            <option value="icloud.com">icloud.com</option>
-            <option value="naver.com">naver.com</option>
-            <option value="daum.net">daum.net</option>
-            <option value="nate.com">nate.com</option>
-            <option value="hanmail.com">hanmail.com</option>
-          </select>
-        ) : (
-          <>
-            <input
-              className={`${style["input-idfind"]}`}
-              type="text"
-              value={props.userEmailDomain}
-              onChange={props.onEmailDomainHandler}
-            ></input>
-            <p onClick={() => { props.setEmailSelect(true); props.setUserEmailDomain("default") }}>✖</p>
-          </>
-        )}
-        <button className={`${style["button-idFind"]}`} onClick={props.findPw}>비밀번호 찾기</button>
-      </div>
-    );
-  }
-
-//비밀번호 찾기 완료
-function PwFindMainYes() {
-    const navigate = useNavigate();
-    return (
-      <div>
-        <p>입력하신 이메일로 임시 비밀번호를 전송했습니다.</p>
-        <p>보안 상의 이유로 임시 비밀번호로 로그인 시 새로운 비밀번호를 설정해야합니다.</p>
-        <button className={`${style["button-idFind"]}`} onClick={() => navigate('/regist')}>로그인하러가기</button>
-      </div>
-    );
-}
-
-//비밀번호 찾기 실패
-function PwFindMainNo(props) {
-    const navigate = useNavigate();
-
-    return (
-        <div>
-        <p>입력하신 정보로 가입된 정보가 없습니다.</p>
-        <button className={`${style["button-idFind"]}`} onClick={() => navigate('/regist')}>로그인하러가기</button>
-        <button className={`${style["button-idFind"]}`} onClick={() => navigate('/findId')}>아이디 찾기</button>
-        <button className={`${style["button-idFind"]}`} onClick={() => {props.setFindMyPw(2)}}>비밀번호 찾기</button>
+      <div className={`${style.background}`}>
+        <h2 className={`${style.logo}`}>TalkTopia</h2>
+        <h2 className={`${style.title}`}>비밀번호 찾기</h2>
+        <div className={`${style["img-container"]}`}>
+            <img className={`${style["fade-in-box"]}`} src="/img/find1.png"></img>
+            <img className={`${style["fade-in-box-1"]}`} src="/img/find3.png"></img>
         </div>
+        <p className={`${style.p}`}>TalkTopia 가입 시 등록한 이름, 아이디와 이메일을 입력해주세요.</p>
+        <div className={`${style["parent-container"]}`}>
+          <input className={`${style.input}`} type="text" value={userId} onChange={onIdHandler} placeholder="아이디" onKeyPress={onCheckEnter}></input><br/>
+          <input className={`${style.input}`} type="text" value={userName} onChange={onNameHandler} placeholder="이름" onKeyPress={onCheckEnter}></input><br/>
+          <input className={`${style["input-email"]}`} type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} placeholder="이메일"></input>
+            <span className={`${style["input-email-1"]}`}>@</span>
+            {emailSelect === true ? (
+              <select className={`${style["input-email-2"]}`} value={userEmailDomain} onChange={onEmailDomainHandler} onKeyPress={onCheckEnter}>
+                <option value="default" disabled> 선택하세요 </option>
+                <option value="">직접입력</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="hotmail.com">hotmail.com</option>
+                <option value="outlook.com">outlook.com</option>
+                <option value="yahoo.com">yahoo.com</option>
+                <option value="icloud.com">icloud.com</option>
+                <option value="naver.com">naver.com</option>
+                <option value="daum.net">daum.net</option>
+                <option value="nate.com">nate.com</option>
+                <option value="hanmail.com">hanmail.com</option>
+              </select>
+            ) : (
+              <>
+                <input className={`${style["input-email"]}`} type="text" value={userEmailDomain} onChange={onEmailDomainHandler} onKeyPress={onCheckEnter}></input>
+                <span className={`${style.span}`} onClick={() => {setEmailSelect(true); setUserEmailDomain("default") }}>✖</span>
+              </>
+            )}
+        <button className={`${style.button}`} onClick={findPw}>비밀번호 찾기</button>
+        </div>
+    </div>
     );
 }
 
