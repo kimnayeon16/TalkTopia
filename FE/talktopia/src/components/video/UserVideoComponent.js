@@ -1,4 +1,4 @@
-// import style from './UserVideoComponent.module.css'
+import style from './UserVideoComponent.module.css'
 import OpenViduVideoComponent from './OvVideo';
 
 function VideoComponent (props) {
