@@ -14,9 +14,11 @@ function VideoComponent (props) {
 
     return (
         <>
+            <div className={`${style.nickname}`}>
+                <span>{userName}</span>
+            </div>
             {props.streamManager !== undefined ? (
-                <div className="streamcomponent">
-                    <div><p>{userName}</p></div>
+                <div>
                     <OpenViduVideoComponent streamManager={props.streamManager} />
                 </div>
             ) : null}
