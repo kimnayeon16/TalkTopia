@@ -105,7 +105,7 @@ span.triangle {
 
 /* Start message from other user */
 
-.message > .left .msg_detail .msg_info {
+.message > .left .msg_detail .msg-info {
   text-align: left;
 }
 

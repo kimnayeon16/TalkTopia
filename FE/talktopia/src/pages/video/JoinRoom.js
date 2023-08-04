@@ -82,7 +82,7 @@ function JoinRoom() {
         setPublisher(undefined);
         setSubscribers([]);
 
-        navigate('/home');
+        navigate('/realhome');
     };
 
     // 세션 떠날 때 요청

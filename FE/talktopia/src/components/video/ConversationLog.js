@@ -89,7 +89,7 @@ function ConversationLog(props) {
             const data = {
                 transcript: newMfinalTranscript,                    // stt 
                 nickname: props.myUserName,                         // 말한 사용자 이름
-                // streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
+                streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
                 lang: user.transLang                                // 번역 source 언어
             };
             // Sender of the message (after 'session.connect')
@@ -116,7 +116,7 @@ function ConversationLog(props) {
             let messageData = ({
                 transcript: data.transcript,            // 전달받은 메세지
                 nickname: data.nickname,                // 전달한 사용자 이름
-                // connectionId: event.from.connectionId,  // Connection object of the sender 
+                connectionId: event.from.connectionId,  // Connection object of the sender 
                 source: data.lang,                      // 전달받은 메세지 언어
                 translate: ''              // 번역된 메세지 
             });
