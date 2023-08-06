@@ -11,6 +11,8 @@ public interface ChatRoomParticipantsRepository extends JpaRepository<ChatRoomPa
 
 	List<ChatRoomParticipants> findAll();
 
-
+	// userId, friendId로 참여자정보 조회
+	ChatRoomParticipants findByCrpParticipantAndAndCrpParticipantOther(String crpParticipant,
+		String crpParticipantOther);
 }
 
