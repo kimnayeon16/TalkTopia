@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,4 +37,10 @@ public class ChatRoom {
 
 	@OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
 	private ChatRoomParticipants chatRoomParticipants;
+
+	@Builder
+	public ChatRoom(long crNo, String crId){
+		this.crNo = crNo;
+		this.crId = crId;
+	}
 }

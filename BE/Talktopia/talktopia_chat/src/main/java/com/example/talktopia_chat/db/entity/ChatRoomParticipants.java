@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,13 @@ public class ChatRoomParticipants {
 	@OneToOne
 	@JoinColumn(name="crp_cr_no")
 	private ChatRoom chatRoom;
+
+	@Builder
+	public ChatRoomParticipants(long crpNo, String crpParticipant, String crpParticipantOther,
+		ChatRoom chatRoom) {
+		this.crpNo = crpNo;
+		this.crpParticipant = crpParticipant;
+		this.crpParticipantOther = crpParticipantOther;
+		this.chatRoom = chatRoom;
+	}
 }

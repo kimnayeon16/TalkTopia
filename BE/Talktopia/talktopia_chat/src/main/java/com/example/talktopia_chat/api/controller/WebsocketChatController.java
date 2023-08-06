@@ -18,7 +18,7 @@ import com.example.talktopia_chat.api.service.ChatService;
  * */
 @Controller
 public class WebsocketChatController {
-	private ChatService chatService = new ChatService();
+	private ChatService chatService;
 
 	@Autowired
 	private SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
@@ -39,7 +39,7 @@ public class WebsocketChatController {
 		// 웹소켓 주소에 담긴 세션아이디를 long으로 변환
 		long crId = Long.parseLong(id);
 
-		// 채팅 내용 MySQL에 저장
+		// 채팅 내용 MySQL에 저장 (실험용)
 		chatService.saveIntoMySQL(chatRoomContentRequest, crId);
 
 		ChatRoomContentRequest res = chatRoomContentRequest;
