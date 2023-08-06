@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.AnswerPostReq;
-import com.example.talktopia.api.service.AnswerPostService;
+import com.example.talktopia.api.request.post.AnswerPostReq;
+import com.example.talktopia.api.service.post.AnswerPostService;
 import com.example.talktopia.common.message.Message;
 
 import lombok.RequiredArgsConstructor;
