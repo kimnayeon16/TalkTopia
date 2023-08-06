@@ -4,7 +4,7 @@ server:
 #  ssl:
 #    key-store: classpath:keystore.p12
 #    key-store-password: ssafy
-#    key-store-type: PKCS12
+#    key-store-type: PKCS127
 
 # Spring
 spring:
@@ -30,6 +30,17 @@ spring:
   security:
     jwt:
       secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+  #redis
+  redis:
+    host: talktopia.site
+    port: 6379
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        min-idle: 0
+#        max-active: 8
+#        max-wait: -1
 
 # log level
 logging:

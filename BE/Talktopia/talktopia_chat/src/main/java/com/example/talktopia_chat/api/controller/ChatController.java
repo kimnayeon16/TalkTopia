@@ -2,48 +2,60 @@ package com.example.talktopia_chat.api.controller;// package com.example.chattes
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia_chat.api.request.ChatRoomContentRequest;
+import com.example.talktopia_chat.api.request.EnterChatRequest;
+import com.example.talktopia_chat.api.response.EnterChatResponse;
 import com.example.talktopia_chat.api.service.ChatService;
+import com.example.talktopia_chat.api.service.SaveChatRoomContentRedisService;
 
-/**
- * ChatController는 채팅하는 것 자체를 담당함.
- * 웹소켓 기반으로 채팅
- * */
-@Controller
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/chat")
 public class ChatController {
-	private ChatService chatService = new ChatService();
+	private final ChatService chatService;
+	private final SaveChatRoomContentRedisService saveChatRoomContentRedisService;
 
-	@Autowired
-	private SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
+	/**
+	 * 참여자와 상대방의 채팅방 입장.
+	 * 채팅한 적 없을 시 채팅방 만들고 입장함.
+	 * @param enterChatRequest    userId, friendId
+	 * @return session + 대화내역
+	 * */
+	@PostMapping("/enter")
+	public ResponseEntity<EnterChatResponse> enterChat(@RequestBody EnterChatRequest enterChatRequest) {
+		System.out.println("/enter call");
+		String userId = enterChatRequest.getUserId();
+		String friendId = enterChatRequest.getFriendId();
+		System.out.println("user, friend: " + userId + ", " + friendId);
 
+		// userId와 friendId로 세션아이디 가져옴
+		String sessionId = chatService.enterChat(userId, friendId);
 
-	// 클라이언트가 send 하는 경로
-	//stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
-	// /app/send/{crId}
-	@MessageMapping("/send/{crId}")
-	// @SendTo("/topic/sub/{crId}")     // 메세지 전송하는곳
-	public void streamText(@Payload ChatRoomContentRequest chatRoomContentRequest,
-		@DestinationVariable("crId") String id) {
+		// 세션아이디로 대화내역 불러오기
+		EnterChatResponse enterChatResponse = saveChatRoomContentRedisService.getAllChat(sessionId);
 
-		System.out.println("sender: " + chatRoomContentRequest.getSender());
-		System.out.println("content: " + chatRoomContentRequest.getContent());
-		System.out.println("session id: "+id);
+		return ResponseEntity.ok().body(enterChatResponse);
+	}
 
-		// 웹소켓 주소에 담긴 세션아이디를 long으로 변환
-		long crId = Long.parseLong(id);
-
-		// 채팅 내용 MySQL에 저장
-		// chatService.saveIntoMySQL(chatRoomContentRequest, crId);
-
-		ChatRoomContentRequest res = chatRoomContentRequest;
-
-		template.convertAndSend("/topic/sub/" + id, res);
+	//굳이...?있어야되나
+	@GetMapping("/exit/{chatRoomNo}")
+	public void exitChat(@PathVariable("chatRoomNo") long chatRoomNo) {
 	}
 }

@@ -1,5 +1,8 @@
 package com.example.talktopia_chat.db.entity;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +35,11 @@ public class SaveChatRoomContent {
 
 	@Column(name = "scrc_sender_id", length = 50)
 	private String scrcSenderId;
+
+	// @CreatedDate
+	@Column(name="scrc_send_time")
+	private LocalDateTime scrcSendTime;
+
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="scrc_cr_no")

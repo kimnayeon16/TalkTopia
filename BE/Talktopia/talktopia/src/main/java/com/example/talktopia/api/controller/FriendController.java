@@ -37,10 +37,10 @@ public class FriendController {
 	}
 
 	// 친구 삭제
-	// @PostMapping("/delete")
-	// public ResponseEntity<Message> deleteFriend(@RequestBody FriendIdPwRequest friendIdPwRequest) {
-	// 	return ResponseEntity.ok().body(friendService.deleteFriend(friendIdPwRequest));
-	// }
+	@PostMapping("/delete")
+	public ResponseEntity<Message> deleteFriend(@RequestBody FriendIdPwRequest friendIdPwRequest) {
+		return ResponseEntity.ok().body(friendService.deleteFriend(friendIdPwRequest));
+	}
 
 	// 친구 목록 반환
 	@GetMapping("/list/{userId}")

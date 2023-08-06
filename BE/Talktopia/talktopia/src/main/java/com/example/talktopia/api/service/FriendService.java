@@ -43,12 +43,12 @@ public class FriendService {
 		// 양방향 셋팅
 		Friend newFriend = Friend.builder()
 			.frFriendNo(friend.getUserNo())
-			.user(friend)
+			.user(user)
 			.build();
 
 		Friend reverseFriend = Friend.builder()
 			.frFriendNo(user.getUserNo())
-			.user(user)
+			.user(friend)
 			.build();
 
 		friendRepository.save(newFriend);
@@ -57,27 +57,29 @@ public class FriendService {
 		return new Message("친구 등록이 완료되었습니다.");
 	}
 
-	// public Message deleteFriend(FriendIdPwRequest friendIdPwRequest) {
-	//
-	// 	User user = findUser(friendIdPwRequest.getUserId());
-	// 	User friend = findUser(friendIdPwRequest.getPartId());
-	//
-	// 	// 중복 체크
-	// 	if (!isAlreadyFriend(user)) {
-	// 		throw new RuntimeException("서로 친구가 아닙니다.");
-	// 	}
-	//
-	// 	// 양방향 관계에서 관계 해제
-	// 	user.getFriends().remove(userFriend);
-	// 	friend.getFriends().remove(friendUser);
-	//
-	// 	// 친구 엔티티 삭제
-	// 	friendRepository.delete(userFriend);
-	// 	friendRepository.delete(friendUser);
-	//
-	// 	return new Message("친구를 삭제하였습니다.");
-	//
-	// }
+	public Message deleteFriend(FriendIdPwRequest friendIdPwRequest) {
+
+		User user = findUser(friendIdPwRequest.getUserId());
+		User friend = findUser(friendIdPwRequest.getPartId());
+
+		Friend f1 = friendRepository.findByUser_UserNoAndFrFriendNo(user.getUserNo(), friend.getUserNo());
+		Friend f2 = friendRepository.findByUser_UserNoAndFrFriendNo(friend.getUserNo(), user.getUserNo());
+
+		// 친구 엔티티가 null인 경우 또는 이미 삭제된 경우
+		if (f1 == null || f2 == null) {
+			throw new RuntimeException("친구 삭제에 실패했습니다.");
+		}
+
+		// 양방향 관계에서 관계 해제
+		user.getFriends().remove(f1);
+		friend.getFriends().remove(f2);
+
+		// 친구 엔티티 삭제
+		friendRepository.delete(f1);
+		friendRepository.delete(f2);
+
+		return new Message("친구를 삭제하였습니다.");
+	}
 
 	// 유저 찾기
 	public User findUser(String userId) {
