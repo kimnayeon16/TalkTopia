@@ -27,13 +27,13 @@ public class RedisConfig {
 	}
 
 	@Bean
-	public RedisTemplate<Long, SaveChatRoomContent> redisTemplate() {
-		RedisTemplate<Long, SaveChatRoomContent> redisTemplate = new RedisTemplate<>();
+	public RedisTemplate<String, SaveChatRoomContent> redisTemplate() {
+		RedisTemplate<String, SaveChatRoomContent> redisTemplate = new RedisTemplate<>();
 
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 
-		// Long 타입 serizlize
-		redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Long.class));
+		// String 타입 serizlize
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		// SaveChatRoomContent를 Value Serializer로 설정
 		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(SaveChatRoomContent.class));
 		

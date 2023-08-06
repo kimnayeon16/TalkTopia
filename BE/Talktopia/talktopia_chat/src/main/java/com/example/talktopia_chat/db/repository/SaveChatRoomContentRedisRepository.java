@@ -7,7 +7,5 @@ import com.example.talktopia_chat.db.entity.SaveChatRoomContentRedis;
 
 public interface SaveChatRoomContentRedisRepository extends CrudRepository<SaveChatRoomContentRedis, Long> {
 
-	SaveChatRoomContentRepository findByScrcNo(Long scrcNo);
-
-	SaveChatRoomContentRepository findByChatRoom(ChatRoom chatRoom);
+	SaveChatRoomContentRepository findByScrcSession(String scrcSession);
 }

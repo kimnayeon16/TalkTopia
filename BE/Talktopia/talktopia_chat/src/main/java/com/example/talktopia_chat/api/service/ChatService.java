@@ -76,7 +76,7 @@ public class ChatService {
 			id2);
 		// chatRoomParticipants가 가진 chatroom 엔티티에서 세션아이디 반환.
 		try {
-			return chatRoomParticipants.getChatRoom().getCrId();
+			return chatRoomParticipants.getChatRoom().getCrSession();
 		}
 		catch (NullPointerException e){
 			return "";
@@ -95,7 +95,7 @@ public class ChatService {
 		// 고유한 세션아이디가 있는 채팅방 생성
 		String sessionId = RandomNumberUtil.getRandomNumber();
 		ChatRoom newChatRoom = ChatRoom.builder()
-			.crId(sessionId)
+			.crSession(sessionId)
 			.build();
 		newChatRoom = chatRoomRepository.save(newChatRoom);
 

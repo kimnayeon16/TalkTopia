@@ -1,15 +1,7 @@
 package com.example.talktopia_chat.db.entity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.springframework.data.redis.core.RedisHash;
 
@@ -22,20 +14,18 @@ import lombok.Getter;
 @RedisHash(value="save_chat_room_content", timeToLive = -1L)
 public class SaveChatRoomContentRedis {
 	@Id // keyspace:id
-	private long scrcNo; // scrcNp가 redis key.
+	private String scrcSession; // scrcSession(세션아이디)가 redis key.
 
-	private String scrcContent;
 	private String scrcSenderId;
+	private String scrcContent;
 	private LocalDateTime scrcSendTime;
-	private ChatRoom chatRoom;
 
 	@Builder
-	public SaveChatRoomContentRedis(long scrcNo, String scrcContent, String scrcSenderId,
-		LocalDateTime scrcSendTime, ChatRoom chatRoom) {
-		this.scrcNo = scrcNo;
+	public SaveChatRoomContentRedis(String scrcSession, String scrcContent, String scrcSenderId,
+		LocalDateTime scrcSendTime) {
+		this.scrcSession = scrcSession;
 		this.scrcContent = scrcContent;
 		this.scrcSenderId = scrcSenderId;
 		this.scrcSendTime = scrcSendTime;
-		this.chatRoom = chatRoom;
 	}
 }

@@ -11,7 +11,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 	ChatRoom findByCrNo(long crNo);
 
 	// 세션아이디로 조회
-	ChatRoom findByCrId(long crId);
+	ChatRoom findByCrSession(String crSession);
 
 	List<ChatRoom> findAll();
 
