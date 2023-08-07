@@ -247,9 +247,7 @@ public class UserService {
 		return new Message("로그아웃에 성공했습니다.");
 	}
 
-	// @Transactional
-	// public Message uploadFile(MultipartFile profile) {
-	// 	//
-	// 	// return
-	// }
+	public void uploadFile(MultipartFile profile) {
+	}
+
 }
