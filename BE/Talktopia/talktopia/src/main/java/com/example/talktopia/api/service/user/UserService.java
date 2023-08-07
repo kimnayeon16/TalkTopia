@@ -58,9 +58,10 @@ public class UserService {
 			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()));
 		joinUser.hashPassword(bCryptPasswordEncoder);
 
+		log.info("userId: " + joinUser.getUserId());
+		log.info("userEmail: " + joinUser.getUserEmail());
 		// DB에 넣기전 마지막 점검
-		userRepository.findByUserIdAndUserEmail(userInfoReq.getUserId(), userInfoReq.getUserEmail()).orElseThrow(() -> new RuntimeException("회원 아이디가 존재합니다."));
-
+		userRepository.findByUserIdAndUserEmail(joinUser.getUserId(), joinUser.getUserEmail()).ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
 		userRepository.save(joinUser);
 		return new Message("회원 가입에 성공하였습니다.");
 	}
