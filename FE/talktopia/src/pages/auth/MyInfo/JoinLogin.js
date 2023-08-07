@@ -295,16 +295,12 @@ function JoinLogin(){
                 timer: 1500,
                 timerProgressBar: true,
             })
-            
-            // const requestBody = {
-            //     userEmail
-            // };
-            // const requestBodyJSON = JSON.stringify(requestBody);
     
             await axios
             .get(`${BACKEND_URL}/api/v1/join/checkEmail/${userEmail}`, {headers})
             .then((response) =>{
-             setEmailConfirmServer(response.data.code);
+                console.log(response);
+                setEmailConfirmServer(response.data.message);
             })
             .catch((error) => {
             console.log("에러 발생", error);

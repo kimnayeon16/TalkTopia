@@ -1,0 +1,48 @@
+# application.yml
+server:
+  port: 7500
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-password: ssafy
+#    key-store-type: PKCS127
+
+# Spring
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://i9b204.p.ssafy.io:50000/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    username: root
+    password: q1w2e3r4
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # (create / create-drop / update / validate)
+
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  # JWT
+  security:
+    jwt:
+      secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+  #redis
+  redis:
+    host: talktopia.site
+    port: 6379
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        min-idle: 0
+#        max-active: 8
+#        max-wait: -1
+
+# log level
+logging:
+  level:
+    root: INFO

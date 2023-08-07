@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +19,7 @@ import javax.persistence.Table;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.talktopia.db.entity.friend.Friend;
+import com.example.talktopia.db.entity.post.Post;
 import com.example.talktopia.db.entity.vr.Participants;
 
 import lombok.Builder;
@@ -54,6 +57,13 @@ public class User {
 	@JoinColumn(name = "user_lang_no")
 	private Language language;
 
+	@Column(name = "provider_type")
+	@Enumerated(EnumType.STRING)
+	private ProviderType providerType;
+
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Participants> participantsList = new ArrayList<>();
 
@@ -63,17 +73,19 @@ public class User {
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private ReportedUser reportedUser;
 
+	// 양방향 매핑
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Friend> friends = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Friend> friendOf = new ArrayList<>();
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Token token;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Post> postList = new ArrayList<>();
+
 	@Builder
-	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
+	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,
+		Language language, UserRole userRole) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userPw = userPw;
@@ -81,6 +93,7 @@ public class User {
 		this.userEmail = userEmail;
 		this.profileImg = profileImg;
 		this.language = language;
+		this.userRole =userRole;
 	}
 
 	public void update(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
@@ -96,5 +109,18 @@ public class User {
 	public User hashPassword(PasswordEncoder passwordEncoder) {
 		this.userPw = passwordEncoder.encode(this.userPw);
 		return this;
+	}
+
+	public User update(String name) {
+		this.userName=name;
+		return this;
+	}
+
+	// Friend와 연관관계 편의 메서드
+	public void addFriend(Friend friend) {
+		this.friends.add(friend);
+		if(friend.getUser() != this) {
+			friend.setUser(this);
+		}
 	}
 }

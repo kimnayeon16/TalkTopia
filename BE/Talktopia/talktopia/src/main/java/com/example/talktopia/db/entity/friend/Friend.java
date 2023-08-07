@@ -28,28 +28,25 @@ public class Friend {
 	@Column(name = "fr_no")
 	private long frNo;
 
+	@Column(name = "fr_friend_no")
+	private long frFriendNo;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fr_user_no", referencedColumnName = "user_no")
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fr_friend_no", referencedColumnName = "user_no")
-	private User frUser;
-
 	@Builder
-	public Friend(long frNo, User user, User frUser) {
-		this.frNo = frNo;
-		setFriend(user);
-		setFriendOf(frUser);
+	public Friend(long frFriendNo, User user) {
+		this.frFriendNo = frFriendNo;
+		setUser(user);
 	}
 
-	public void setFriend(User user) {
+	public void setUser(User user) {
+		if(this.user != null) {
+			this.user.getFriends().remove(this);
+		}
+
 		this.user = user;
 		user.getFriends().add(this);
-	}
-
-	public void setFriendOf(User frUser) {
-		this.frUser = frUser;
-		frUser.getFriendOf().add(this);
 	}
 }

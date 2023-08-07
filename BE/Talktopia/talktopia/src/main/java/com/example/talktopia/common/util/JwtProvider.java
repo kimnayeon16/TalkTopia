@@ -1,7 +1,12 @@
 package com.example.talktopia.common.util;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.example.talktopia.db.repository.TokenRepository;
@@ -24,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtProvider {
 
+	@Value("${spring.security.jwt.secret}")
+	String secretkey;
 	// accessToken 생성
 	public static String createAccessToken(String userId, String secretKey, Date date) {
 		// Jwt에 정보 추가
@@ -35,6 +42,20 @@ public class JwtProvider {
 			.setIssuedAt(new Date())
 			.setExpiration(date)
 			.signWith(SignatureAlgorithm.HS256, secretKey) // 서명
+			.compact();
+	}
+
+	public String generateToken(Authentication authentication) {
+		String authorities = authentication.getAuthorities().stream()
+			.map(GrantedAuthority::getAuthority)
+			.collect(Collectors.joining(","));
+
+		//Access Token 생성
+		return Jwts.builder()
+			.setSubject(authentication.getName())
+			.claim("auth", authorities)
+			.setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 30))
+			.signWith(SignatureAlgorithm.HS256, secretkey)
 			.compact();
 	}
 

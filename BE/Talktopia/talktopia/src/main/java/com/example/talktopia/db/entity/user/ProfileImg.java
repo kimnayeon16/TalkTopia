@@ -26,4 +26,5 @@ public class ProfileImg {
 	@Column(name = "img_url")
 	private String imgUrl;
 
+
 }

@@ -13,9 +13,9 @@ function MyInfoPw(){
 
     let navigate = useNavigate();
 
-    const headers ={
+    const headers = {
         'Content-Type' : 'application/json',
-        'Authoziation' : `Bearer ${user.accessToken}`,
+        'Authorization' : `Bearer ${user.accessToken}`,
     }
 
 
@@ -26,18 +26,24 @@ function MyInfoPw(){
     }
 
     const confirmPw = () => {
-        const requestBody = {
-            userId : user.userId,
-            userPw : userPw,
-        };
+        // const requestBody = {
+        //     userId : user.userId,
+        //     userPw : userPw,
+        // };
 
-        console.log(requestBody);
-        
-        const requestBodyJSON = JSON.stringify(requestBody);
-        console.log(requestBodyJSON);
+        // const requestBodyJSON = JSON.stringify(requestBody);
 
 
-        axios.post(`${BACKEND_URL}/api/v1/myPage/checkPw`, requestBodyJSON, headers)
+        axios.post(`${BACKEND_URL}/api/v1/myPage/checkPw`, {
+            data: {
+                userId : user.userId,
+                userPw : userPw,
+            },
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${user.accessToken}`,
+            }
+            })
             .then((response)=>{
                 console.log("되나");
             })

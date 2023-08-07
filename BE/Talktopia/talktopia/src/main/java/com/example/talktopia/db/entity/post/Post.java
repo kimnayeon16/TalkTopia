@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,29 +22,32 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.example.talktopia.db.entity.user.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "post")
 public class Post {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "p_no")
-	private long pNo;
+	@Column(name = "post_no")
+	private long postNo;
 
-	@Column(length = 500, name = "p_content")
-	private String pContent;
+	@Column(length = 500, name = "post_content")
+	private String postContent;
 
-	@Column(name = "p_title")
-	private String pTitle;
+	@Column(name = "post_title")
+	private String postTitle;
 
 	@CreatedDate
-	@Column(name = "p_create_time")
-	private LocalDateTime pCreateTime;
+	@Column(name = "post_create_time")
+	private LocalDateTime postCreateTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_no")
@@ -51,6 +56,22 @@ public class Post {
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<AnswerPost> answerPostList = new ArrayList<>();
 
+	@Enumerated(EnumType.STRING)
+	private PostType postType;
+	@Builder
+	public Post(long postNo, String postContent, String postTitle, LocalDateTime postCreateTime, User user, PostType postType) {
+		this.postNo = postNo;
+		this.postContent = postContent;
+		this.postTitle = postTitle;
+		this.postCreateTime = postCreateTime;
+		this.postType=postType;
+		setUser(user);
+	}
 
-
+	private void setUser(User user) {
+		this.user = user;
+		if (user != null) {
+			user.getPostList().add(this);
+		}
+	}
 }

@@ -36,6 +36,7 @@ import Sample from './apis/stt/Sample.js';
 import JoinRoom from './pages/video/JoinRoom.js';
 
 
+import FriendList from './pages/friend/FriendList';
 
 function App() {
   return (
@@ -62,7 +63,6 @@ function App() {
         <Route path="/faq" element={<Faq/>}></Route>
         <Route path="/counsel" element={<Counsel/>}></Route>
 
-
         <Route path="/translation" element={<Translation/>}/>
         <Route path="/stt" element={<WebSpeechApi/>}/>
         <Route path="/sample" element={<Sample/>}/>
@@ -72,7 +72,9 @@ function App() {
         {/* 삭제할거 */}
         <Route path="/start" element={<NoStart/>}/>
         <Route path="/nohome" element={<NoHome/>}/>
-        
+
+        {/* 친구목록 */}
+        <Route path="/friendList" element={<FriendList/>}/>
       </Routes>
     </div>
   );

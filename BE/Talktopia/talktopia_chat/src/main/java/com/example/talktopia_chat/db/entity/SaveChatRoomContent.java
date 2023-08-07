@@ -1,0 +1,62 @@
+package com.example.talktopia_chat.db.entity;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor
+@Table(name = "save_chat_room_content")
+public class SaveChatRoomContent {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "scrc_no")
+	private long scrcNo;
+
+	@Column(name = "scrc_content", length = 255)
+	private String scrcContent;
+
+	@Column(name = "scrc_sender_id", length = 50)
+	private String scrcSenderId;
+
+	// @CreatedDate
+	@Column(name="scrc_send_time")
+	private LocalDateTime scrcSendTime;
+
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="scrc_cr_no")
+	private ChatRoom chatRoom;
+
+	private  void setChatRoom(ChatRoom chatRoom){
+		this.chatRoom = chatRoom;
+		if(chatRoom != null){
+			chatRoom.getSaveChatRoomContentsList().add(this);
+		}
+	}
+
+	@Builder
+	public SaveChatRoomContent(long scrcNo, String scrcContent, String scrcSenderId, ChatRoom chatRoom) {
+		this.scrcNo = scrcNo;
+		this.scrcContent = scrcContent;
+		this.scrcSenderId = scrcSenderId;
+		this.chatRoom = chatRoom;
+	}
+}
