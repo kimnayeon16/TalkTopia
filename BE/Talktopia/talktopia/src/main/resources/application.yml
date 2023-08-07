@@ -1,10 +1,10 @@
 # application.yml
 server:
   port: 8000
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: ssafy
-    key-store-type: PKCS12
+  #  ssl:
+  #    key-store: classpath:keystore.p12
+  #    key-store-password: ssafy
+  #    key-store-type: PKCS12
 
 # Spring
 spring:
@@ -52,4 +52,15 @@ openvidu:
   url: https://talktopia.site:8443/
   secret: root
 
+cloud:
+  aws:
+    s3:
+      bucket: talktopia
+    region:
+      static: ap-northeast-2 #Asia Pacific -> seoul
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIAUEUEPWDIUKIIYUTZ
+      secret-key: 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
 

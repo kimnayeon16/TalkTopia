@@ -6,21 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.VRoomExitReq;
 import com.example.talktopia.api.request.VRoomReq;
 import com.example.talktopia.api.response.VRoomRes;
-import com.example.talktopia.common.message.Message;
+import com.example.talktopia.common.message.RoomExitStatus;
 import com.example.talktopia.common.util.MapSession;
 import com.example.talktopia.common.util.RandomNumberUtil;
+import com.example.talktopia.common.util.RoomRole;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.entity.vr.Participants;
 import com.example.talktopia.db.entity.vr.VRoom;
@@ -149,11 +144,12 @@ public class VRoomService {
 				addLang.add(user.getLanguage().getLangNo());
 				this.mapSessionToken.get(connRoomId).setLang(addLang);
 
-				participantsService.joinRoom(user,vRoom);
+				participantsService.joinRoom(user,vRoom, RoomRole.GUEST);
 				VRoomRes vRoomRes = new VRoomRes();
 				vRoomRes.setToken(token);
 				//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
 				vRoomRes.setVrSession(roomId);
+				vRoomRes.setRoomRole(RoomRole.GUEST);
 				// Return the response to the client
 				// 토큰정보와 상태 정보 리턴
 				return vRoomRes;
@@ -209,7 +205,7 @@ public class VRoomService {
 				.vrEnter(true)
 				.build();
 			vroomrepsitory.save(room);
-			participantsService.joinRoom(user,room);
+			participantsService.joinRoom(user,room, RoomRole.HOST);
 
 			//            this.mapUserSession.put(userEmail, new HashMap<>());
 			//            this.mapUserSession.get(userEmail).put(sessionName, token);
@@ -217,6 +213,7 @@ public class VRoomService {
 			VRoomRes vRoomRes = new VRoomRes();
 			vRoomRes.setToken(token);
 			vRoomRes.setVrSession(roomId);
+			vRoomRes.setRoomRole(RoomRole.HOST);
 			System.out.println(-2);
 			// Return the response to the client
 			// 토큰정보와 상태 정보 리턴
@@ -230,7 +227,7 @@ public class VRoomService {
 	}
 
 	@Transactional
-	public Message exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
+	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
 		// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
@@ -264,7 +261,8 @@ public class VRoomService {
 				this.mapSessionToken.remove(vRoomExitReq.getVrSession());
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
 				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
-				return new Message("방을 나가서 터졌습니다.");
+				return RoomExitStatus.NO_ONE_IN_ROOM;
+				//return new Message("방을 나가서 터졌습니다.");
 			}
 			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
@@ -278,9 +276,12 @@ public class VRoomService {
 			//OK
 			//이를통해서 참여자 DB를 삭제한다.
 			participantsRepository.deleteByUser_UserNo(user.getUserNo());
-			return new Message("방을 나갔습니다.");
+			return RoomExitStatus.EXIT_SUCCESS;
+			//return new Message("방을 나갔습니다.");
 		}
-		return new Message("방을 찾을수가없는데요?");
+		//return new Message("방을 찾을수가없는데요?");
+		//new Exception("방을 찾을수가없습니다");
+		return RoomExitStatus.ROOM_NOT_FOUND;
 	}
 
 	@Transactional
@@ -314,7 +315,6 @@ public class VRoomService {
 					this.mapSessionToken.remove(vrSession);
 					participantsRepository.deleteByUser_UserNo(user.getUserNo());
 					vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
-					return;
 				}
 				//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 				vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
@@ -328,55 +328,8 @@ public class VRoomService {
 				//OK
 				//이를통해서 참여자 DB를 삭제한다.
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
-				return;
+
 			}
+
 		}
-
-
-
 	}
-	// 		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null ){
-	// 	VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
-	// 	participantsRepository.findByUser_UserId(user.getUserId()).orElseThrow(()-> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
-	// 	this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
-	// 	log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
-	// 	long userlan = user.getLanguage().getLangNo();
-	//
-	// 	List<Long> langList = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
-	// 	for(long lang : langList){
-	// 		log.info("LangList입니다 "+ lang);
-	// 	}
-	// 	//long indexToRemove = langList.indexOf(userlan);
-	// 	if (userlan >= 0) {
-	// 		langList.remove(userlan); // 해당 값을 삭제
-	// 		log.info("indexToRemove입니다 "+ userlan);
-	// 		this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
-	// 		List<Long> tmp=this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
-	// 		for(long len : tmp){
-	// 			log.info("지금 있는것 "+ len);
-	// 		}
-	// 	}
-	//
-	//
-	// 	//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
-	// 	if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
-	// 		this.mapSessions.remove(vRoomExitReq.getVrSession());
-	// 		this.mapSessionToken.remove(vRoomExitReq.getVrSession());
-	// 		participantsRepository.deleteByUser_UserNo(user.getUserNo());
-	// 		vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
-	// 		return new Message("방을 나가서 터졌습니다.");
-	// 	}
-	// 	//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
-	// 	vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
-	// 	if(!vRoom.isVrEnter()){
-	// 		vRoom.setVrEnter(true);
-	// 	}
-	// 	vroomrepsitory.save(vRoom);
-	//
-	// 	//Vroom Id 찾는다.
-	// 	//user Id 찾는다.
-	// 	//OK
-	// 	//이를통해서 참여자 DB를 삭제한다.
-	// 	participantsRepository.deleteByUser_UserNo(user.getUserNo());
-	// 	return new Message("방을 나갔습니다.");
-	// }

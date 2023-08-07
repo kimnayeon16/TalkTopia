@@ -48,8 +48,8 @@ public class VRoomController {
 		return vRoomService.enterRoom(vRoomReq);
 	}
 
-	@PostMapping("/exit")
-	public Message exitRoom(@RequestBody VRoomExitReq vRoomExitReq) throws Exception {
-		return vRoomService.exitRoom(vRoomExitReq);
-	}
+	// @PostMapping("/exit")
+	// public Message exitRoom(@RequestBody VRoomExitReq vRoomExitReq) throws Exception {
+	// 	return vRoomService.exitRoom(vRoomExitReq);
+	// }
 }
