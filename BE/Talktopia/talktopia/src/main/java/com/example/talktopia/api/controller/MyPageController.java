@@ -60,9 +60,18 @@ public class MyPageController {
 		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
 	}
 
-	@PutMapping("/upload")
-	public ResponseEntity<Message> uploadFile(@RequestBody MultipartFile profile) {
-		userService.uploadFile(profile);
-		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
+	@PutMapping("/profile/{userId}")
+	public ResponseEntity<Message> uploadFile(@RequestBody MultipartFile profile,@PathVariable("userId")String userId) throws
+		Exception {
+		return ResponseEntity.ok().body(userService.uploadFile(profile,userId));
+	}
+
+	@DeleteMapping("/profile/{userId}")
+	public Message deleteProfile(@PathVariable String userId) {
+		log.info("input email : {}", userId);
+		userService.deleteProfile(userId);
+		log.info("profile delete successfully");
+		return userService.deleteProfile(userId);
+
 	}
 }

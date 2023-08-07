@@ -25,9 +25,11 @@ import com.example.talktopia.db.entity.vr.Participants;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "user")
 public class User {

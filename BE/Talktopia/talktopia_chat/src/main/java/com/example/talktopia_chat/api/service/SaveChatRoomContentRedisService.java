@@ -2,6 +2,7 @@ package com.example.talktopia_chat.api.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class SaveChatRoomContentRedisService {
 	// 	this.redisTemplate = redisTemplate;
 	// }
 
+	// insert과정은 캐싱하지 않음으로서 새로운 메세지가 가면 select다시 하게 함(??)
 	public void saveChat(SaveChatRoomContentRedis saveChatRoomContentRedis) {
 		String scrcSession = saveChatRoomContentRedis.getScrcSession();
 
@@ -29,6 +31,9 @@ public class SaveChatRoomContentRedisService {
 	}
 
 	// public List<SaveChatRoomContentRedis> getAllChat(String scrcSession){
+
+	// 채팅 메세지를 캐싱하여 동일한 쿼리를 redis에 계속 실행할 필요 없음
+	@Cacheable(value="chatRoomContent", key="#scrcSession", cacheManager = "rcm")
 	public EnterChatResponse getAllChat(String scrcSession) {
 		Long size = redisTemplate.opsForList().size(scrcSession);
 
