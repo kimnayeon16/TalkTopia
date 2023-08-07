@@ -38,6 +38,10 @@ function JoinRoom() {
     // session값 useRef로 관리
     const sessionRef = useRef(undefined);
 
+    // session ID, user ID 값 useRef로 관리
+    const userDataeRef = useRef(undefined);
+
+
     // 2) 화면 렌더링 시 최초 1회 실행
     useEffect(() => {
         // if (location.state === null || location.state.myUserName === null || location.state.token === null) {
@@ -51,6 +55,9 @@ function JoinRoom() {
         setMySessionId(location.state.mySessionId);
         setMyUserName(location.state.myUserName);
         setOpenviduToken(location.state.token);
+
+        const userData = { mySessionId: location.state.mySessionId, myUserName: location.state.myUserName }
+        userDataeRef.current = userData
 
         // 윈도우 객체에 화면 종료 이벤트 추가
         window.addEventListener('beforeunload', onBeforeUnload); 
@@ -99,15 +106,15 @@ function JoinRoom() {
         }
 
         const requestBody = {
-            userId: myUserName,
+            userId: userDataeRef.current.myUserName,
             token: user.accessToken,
-            vrSession: mySessionId
+            vrSession: userDataeRef.current.mySessionId
         };
         console.log(requestBody)
     
         const requestBodyJSON = JSON.stringify(requestBody);
         await axios
-        .post(`${BACKEND_URL}/api/v1/room/exit`, requestBodyJSON, {headers})
+        .post(`${BACKEND_URL}/api/v1/room/exit/${userDataeRef.current.mySessionId}`, requestBodyJSON, {headers})
         .then((response) => {
             console.log(response)
         })
