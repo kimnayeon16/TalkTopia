@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.talktopia.api.request.user.UserIdPwReq;
 import com.example.talktopia.api.request.user.UserInfoReq;
@@ -56,6 +57,12 @@ public class MyPageController {
 	@PutMapping("/modify")
 	public ResponseEntity<Message> modifyUser(@RequestBody UserInfoReq userInfoReq) {
 		userService.modifyUser(userInfoReq);
+		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
+	}
+
+	@PutMapping("/upload")
+	public ResponseEntity<Message> uploadFile(@RequestBody MultipartFile profile) {
+		userService.uploadFile(profile);
 		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
 	}
 }

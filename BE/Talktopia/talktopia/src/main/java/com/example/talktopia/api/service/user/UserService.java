@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.request.user.UserIdPwReq;
@@ -246,4 +247,9 @@ public class UserService {
 		return new Message("로그아웃에 성공했습니다.");
 	}
 
+	// @Transactional
+	// public Message uploadFile(MultipartFile profile) {
+	// 	//
+	// 	// return
+	// }
 }
