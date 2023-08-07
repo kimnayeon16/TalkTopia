@@ -1,0 +1,74 @@
+.background{
+    background: #bcd8da;
+    background-position: top center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+.logo {
+    font-family: 'EF_jejudoldam';
+    padding-top: 150px;
+    color: #012A4A;
+    font-size: 40px;
+}
+
+.title {
+    font-family: 'Dovemayo_wild';
+    margin-top: 100px;
+    margin-bottom: 40px;
+    color: #012A4A;
+    font-size: 32px;
+}
+
+.p{
+    font-family: 'Dovemayo_wild';
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #012A4A;
+}
+
+.button {
+    font-family: 'Dovemayo_wild'; 
+    color: white;
+    background-color: #013A63;
+    width: 350px;
+    height: 50px;
+    font-size: 21px;
+    margin-top: 50px;
+    border-radius: 15px;
+}
+
+.div-join-container {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.div-join {
+    display: flex;
+    align-items: center;
+}
+
+.span-join {
+    font-family: 'Dovemayo_wild';
+    font-size: 14px;
+    color: black;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.input{
+    font-family: 'Dovemayo_wild';
+    width: 350px;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.5;
+    text-align: center;
+}

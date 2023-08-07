@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { reduxUserInfo } from "../../../store.js";
 import axios from "axios";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+
 import Swal from "sweetalert2";
 import style from "./JoinLogin.module.scss";
+import { setCookie } from "../../../cookie";
 
 function JoinLogin(){
     const headers ={
@@ -46,7 +48,6 @@ function JoinLogin(){
 
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/login`, requestBodyJSON, {headers});
-            console.log(response.data);
             dispatch(reduxUserInfo({
               userId: response.data.userId,
               userName: response.data.userName,
@@ -55,8 +56,19 @@ function JoinLogin(){
               sttLang: response.data.sttLang,
               transLang: response.data.transLang,
             }));
+
+            //로컬에 저장하기
+            const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang}
+            localStorage.setItem("UserInfo", JSON.stringify(UserInfo));
+
+            //쿠키에 저장하기
+            setCookie('refreshToken', response.data.refreshToken, {
+                path: '/',
+                secure: true,
+                // maxAge: 3000
+              })
         
-            Cookies.set('refreshToken', response.data.refreshToken);
+            // Cookies.set('refreshToken', response.data.refreshToken);
         
             await Swal.fire({
               icon: "success",
@@ -68,7 +80,7 @@ function JoinLogin(){
               timerProgressBar: true,
             });
         
-            navigate('/realhome');
+            navigate('/home');
           } catch (error) {
             await Swal.fire({
                 icon: "warning",
@@ -101,6 +113,7 @@ function JoinLogin(){
 
     const [idValid, setIdValid] = useState(false);
     const [pwValid, setPwValid] = useState(false);
+    const [emailValid, setEmailValid] = useState(false);
 
     //이메일 인증 확인
     const [emailSelect, setEmailSelect] = useState(true);
@@ -121,12 +134,15 @@ function JoinLogin(){
     //아이디 유효성
     const onIdJoinHandler = (e) => {
         const value = e.target.value;
+        setIdValid(false);
         setUserIdJoin(value);
+        setUserIdCorrect(false);
         //정규식
-        const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/;
+        const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*[!@#$%^&*()_+={}[\]:;<>,.?/~\\|-]).{6,12}$/;
         //유효성 검사
         if(regex.test(value)){
             setIdValid(true);
+            
         }else{
             setIdValid(false);
         }
@@ -148,13 +164,9 @@ function JoinLogin(){
                 timerProgressBar: true,
             })
         }else if(userIdJoin.length !== 0 && idValid){
-            axios.get(`${BACKEND_URL}/api/v1/user/existId/${userIdJoin}`)
+            axios.get(`${BACKEND_URL}/api/v1/join/existId/${userIdJoin}`)
             .then((response)=>{
                 setUserIdCorrect(true);
-                console.log(response);
-                console.log(response.data)
-                console.log(response.data.message);
-
 
                 Swal.fire({
                     icon: "success",
@@ -167,7 +179,6 @@ function JoinLogin(){
                 })
             })
             .catch((error)=>{
-                // console.error("에러발생",error);
                 Swal.fire({
                     icon: "warning",
                     title: "이미 사용 중인 아이디입니다.",
@@ -240,14 +251,27 @@ function JoinLogin(){
 
         if(em === "gmail.com" || em === "hotmail.com" || em === "outlook.com" || em === "yahoo.com" || em === "icloud.com" ||
         em === "naver.com" || em === "daum.net" || em === "nate.com" || em === "hanmail.com"){
-            // setEmailValid(true);
+            setEmailValid(true);
             setEmailSelect(true);
         }else{
             // setEmailValid(false);
             setEmailSelect(false);
         }
-
         setUserEmail(`${userEmailPrefix}@${e.target.value}`);
+    }
+
+    //이메일 직접 입력 유효성 검사
+    const onEmailDomainHandlerCheck = (e) => {
+        setUserEmailDomain(e.target.value);
+        const value = e.target.value;
+
+        const regex = /^[a-zA-Z]+\.[a-zA-Z]+$/;
+
+        if(regex.test(value)){
+             setEmailValid(true);
+        }else{
+           setEmailValid(false);
+        }
     }
 
     //이메일 인증코드 입력
@@ -258,29 +282,29 @@ function JoinLogin(){
     //이메일 인증 확인
     const checkEmail = async (e) => {
         e.preventDefault();
-
-        console.log("여기 안 오니?")
-
-        console.log(userEmailDomain);
-        console.log(userEmailDomain.length);
-        console.log(userEmailPrefix.length);
         
-        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0){
+        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0 && emailValid){
+            setCountdown(180);
+            setEmailButton("전송 완료");
             setEmailConfirmWindow(true);
+            Swal.fire({
+                icon: "success",
+                title: "입력하신 이메일 주소로 <br/> 인증번호가 발송됐습니다.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 1500,
+                timerProgressBar: true,
+            })
             
-            const requestBody = {
-                userEmail
-            };
-            const requestBodyJSON = JSON.stringify(requestBody);
-            console.log(requestBodyJSON);
+            // const requestBody = {
+            //     userEmail
+            // };
+            // const requestBodyJSON = JSON.stringify(requestBody);
     
             await axios
-            .post(`${BACKEND_URL}/api/v1/user/checkEmail`, requestBodyJSON, {headers})
+            .get(`${BACKEND_URL}/api/v1/join/checkEmail/${userEmail}`, {headers})
             .then((response) =>{
-             console.log(response.data.code);
              setEmailConfirmServer(response.data.code);
-            // 백으로부터 메세지가 올 것임
-            console.log('성공');
             })
             .catch((error) => {
             console.log("에러 발생", error);
@@ -288,7 +312,8 @@ function JoinLogin(){
         }else{
             Swal.fire({
                 icon: "warning",
-                title: "이메일을 빠짐없이 입력해주세요!",
+                title: "유효한 이메일이 아닙니다!",
+                text: "이메일을 맞게 입력했는지 확인해주세요.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
@@ -319,7 +344,6 @@ function JoinLogin(){
             })
             
         }else{
-            console.log("여기 안올겨?");
             Swal.fire({
                 icon: "warning",
                 title: "인증 번호가 올바르지 않습니다.",
@@ -331,6 +355,22 @@ function JoinLogin(){
             })
         }
     }
+
+    //이메일 유효시간
+    const [countdown, setCountdown] = useState(180);
+    useEffect(() => {
+        if (countdown > 0) {
+          const interval = setInterval(() => {
+            setCountdown((prevCountdown) => prevCountdown - 1);
+          }, 1000);
+    
+          return () => clearInterval(interval);
+        }
+
+        if(countdown === 0){
+            setEmailConfirmServer("aeirjalkcaki3jppj3okdkafjflamkfkreijrie");
+        }
+      }, [countdown]);
 
     //언어
     const onLanHandler = (e) => {
@@ -344,12 +384,9 @@ function JoinLogin(){
     const onSingUp = (e) => {
         e.preventDefault();
 
-        console.log(userIdCorrect);
-        console.log(userPwCorrect);
-        console.log(userNameCorrect);
-        console.log(userEmailCorrect);
-        console.log(userLanCorrect);
+        console.log(userIdCorrect , userPwCorrect, userNameCorrect, userEmailCorrect, userLanCorrect);
      
+        //입력한 정보들이 모두 유효할 경우
         if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
             try{
                 const requestBody = {
@@ -364,8 +401,7 @@ function JoinLogin(){
      
                 const requestBodyJSON = JSON.stringify(requestBody);
      
-                const response = axios.post(`${BACKEND_URL}/api/v1/user/join`, requestBodyJSON, {headers});
-                //  alert("회원 가입 성공");
+                const response = axios.post(`${BACKEND_URL}/api/v1/join`, requestBodyJSON, {headers});
                  Swal.fire({
                     icon: "success",
                     title: "회원 가입 성공",
@@ -381,17 +417,63 @@ function JoinLogin(){
              } catch(error){
                  console.error("에러 발생",error);
                  alert("회원가입 실패");
-             }   
-            }else{
+             }
+
+             setUserIdJoin("");
+             setUserJoinPw("");
+             setUserPwConfirm("");
+             setUserName("");
+             setUserEmailPrefix("");
+             setUserEmailDomain("default");
+             setUserEmail("");
+             setUserLan("");
+             setPwConfirmMsg("");
+             setEmailButton("이메일 인증");
+            }else if(!userIdCorrect){
                 Swal.fire({
                     icon: "warning",
-                    title: "빠짐 없이 입력해주세요 😃",
+                    title: "아이디 중복 확인을 해주세요.",
                     confirmButtonText: "확인",
                     confirmButtonColor: '#90dbf4',
                     timer: 2000,
                     timerProgressBar: true,
                 })
-            //  alert("빠짐 없이 입력해주세요 😃");
+            }else if(!userPwCorrect){
+                Swal.fire({
+                    icon: "warning",
+                    title: "비밀번호를 확인해주세요.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
+                })
+            }else if(!userNameCorrect){
+                Swal.fire({
+                    icon: "warning",
+                    title: "이름을 입력해주세요.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
+                })
+            }else if(!userEmailCorrect){
+                Swal.fire({
+                    icon: "warning",
+                    title: "이메일을 인증해주세요.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
+                })
+            }else if(!userLanCorrect){
+                Swal.fire({
+                    icon: "warning",
+                    title: "사용언어를 선택해주세요.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
+                })
             }
      
          }
@@ -409,7 +491,6 @@ function JoinLogin(){
     /////////////////////////////////////////////////////////////////////////////////
     const onCheckEnter = (e) => {
         if(e.key === 'Enter') {
-            console.log("들어오니")
             onLogin();
         }
       }
@@ -465,7 +546,7 @@ function JoinLogin(){
                     </div>
                     <div>
                         {
-                            !idValid && userIdJoin.length >=0 && 
+                            !idValid && userIdJoin.length >=0 &&
                             (<><br/><div className={`${style.guide}`}>영문, 숫자 조합으로 6~12자리 입력해주세요.</div></>)
                         }
                     </div>
@@ -524,7 +605,7 @@ function JoinLogin(){
                             </>
                             :
                             <>
-                                <input type="text" value={userEmailDomain} onChange={onEmailDomainHandler} className={`${style["div-input-email"]}`}></input>
+                                <input type="text" value={userEmailDomain} onChange={onEmailDomainHandlerCheck} className={`${style["div-input-email"]}`}></input>
                                 <p className={`${style["out-email"]}`} onClick={()=> {setEmailSelect(true); setUserEmailDomain("default")}}>✖</p>
                                 <button onClick={checkEmail} className={`${style.buttonId}`}>{emailButton}</button><br/>
                                 
@@ -537,18 +618,23 @@ function JoinLogin(){
                         {
                             emailConfirmWindow === true ?
                             <>
-                                <div className={style["div-join-container"]}>
+                                {/* <div className={style["div-join-container"]}>
                                     <div className={style["div-join"]}>
-                                        <div className={`${style["guide-email"]}`}>이메일로 전송된 인증코드를 입력해주세요</div>
+                                        <div className={`${style["guide-email"]}`}>이메일로 전송된 인증코드를 입력해주세요.</div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className={style["div-join-container-isButton-1"]}>
                                     <div className={style["div-join"]}>
-                                        <input type="text" value={emailConfirm} onChange={onEmailVerify} className={style["div-input-email"]}></input>
+                                        <input type="text" value={emailConfirm} onChange={onEmailVerify} className={style["div-input-email-1"]} placeholder="이메일로 전송된 인증코드를 입력해주세요."></input>
                                         <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
+                                        <button onClick={checkEmail} className={`${style.buttonId}`}>재전송</button>
                                     </div>
                                 </div>
-                                {/* <p>입력 시간</p> */}
+                                {countdown > 0 ? (
+                                    <p className={`${style.message}`}>남은 시간: {Math.floor(countdown / 60)}분 {countdown % 60}초</p>
+                                ) : (
+                                    <p className={`${style.message}`}>시간 초과</p>
+                                )}
                             </>
                             : 
                             null

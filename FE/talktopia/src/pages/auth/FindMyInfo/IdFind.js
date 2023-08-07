@@ -118,8 +118,8 @@ function IdFind() {
           <h2 className={`${style.logo}`}>TalkTopia</h2>
           <h2 className={`${style.title}`}>아이디 찾기</h2>
           <div className={`${style["img-container"]}`}>
-            <img className={`${style["fade-in-box"]}`} src="/img/find1.png"></img>
-            <img className={`${style["fade-in-box-1"]}`} src="/img/find2.png"></img>
+            <img className={`${style["fade-in-box"]}`} src="/img/find1.png" alt=""></img>
+            <img className={`${style["fade-in-box-1"]}`} src="/img/find2.png" alt=""></img>
           </div>
           <p className={`${style.p}`}>TalkTopia 가입 시 등록한 이름과 이메일을 입력해주세요.</p>
           <div className={`${style["parent-container"]}`}>
