@@ -176,43 +176,76 @@ function ConversationLog(props) {
         }, 20);
     }
 
-
     return (
         <>
-            <div id={`${ style.chatContainer }`}>
-                <div id={`${ style.chatComponent }`}>
-                    <div id={`${ style.chatToolbar }`}>
-                        <span>Conversation</span>
-                    </div>
-    
-                    <div className={`${ style.message_wrap }`} ref={chatScroll}>
-                        {messageList.map((data, i) => (
-                            <div 
-                                key={`${i}-Conversation`}
-                                className={
-                                    `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
-                                }
-                            >
-                                <div className={ `${style.msg_detail }`}>
-                                    <div className={ `${style.msg_info }`}>
-                                        <p>{data.nickname}</p>
-                                    </div>
-                                    <div className={ `${style.msg_content }`}>
-                                        <p className={ `${style.text }`}>{data.transcript} ( {data.translate} )</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>  
-
-
-                    <div id={ `${style.transcriptInput }`}>
-                        <p>{transcript}</p>
-                    </div>
-                </div>
+            <div className={style['convesation-title']}>
+                <p className={style['conversation-title-text']}>Conversation</p>
             </div>
+            <div className={style['conversation-div-line']}></div>
+    
+            <div className={style['message_wrap']} ref={chatScroll}>
+                {messageList.map((data, i) => (
+                    <div 
+                        key={`${i}-Conversation`}
+                        className={
+                            `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
+                        }
+                    >
+                        <div className={ `${style.msg_detail }`}>
+                            <div className={ `${style.msg_info }`}>
+                                <p>{data.nickname}</p>
+                            </div>
+                            <div className={ `${style.msg_content }`}>
+                                <p className={ `${style.text }`}>{data.transcript} ( {data.translate} )</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>  
+
+            <div className={style['stt-transript']}>
+                <p className={style['stt-transcript-text']}>{transcript}</p>
+            </div>
+ 
         </>
-    )
+    );
+
+    // return (
+    //     <>
+    //         <div id={`${ style.chatContainer }`}>
+    //             <div id={`${ style.chatComponent }`}>
+    //                 <div id={`${ style.chatToolbar }`}>
+    //                     <span>Conversation</span>
+    //                 </div>
+    
+    //                 <div className={`${ style.message_wrap }`} ref={chatScroll}>
+    //                     {messageList.map((data, i) => (
+    //                         <div 
+    //                             key={`${i}-Conversation`}
+    //                             className={
+    //                                 `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
+    //                             }
+    //                         >
+    //                             <div className={ `${style.msg_detail }`}>
+    //                                 <div className={ `${style.msg_info }`}>
+    //                                     <p>{data.nickname}</p>
+    //                                 </div>
+    //                                 <div className={ `${style.msg_content }`}>
+    //                                     <p className={ `${style.text }`}>{data.transcript} ( {data.translate} )</p>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     ))}
+    //                 </div>  
+
+
+    //                 <div id={ `${style.transcriptInput }`}>
+    //                     <p>{transcript}</p>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </>
+    // )
 };
 
 export default ConversationLog;
