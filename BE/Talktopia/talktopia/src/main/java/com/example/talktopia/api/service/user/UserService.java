@@ -57,6 +57,10 @@ public class UserService {
 		User joinUser = userInfoReq.toEntity(languageRepository.findByLangStt(userInfoReq.getUserLan()),
 			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()));
 		joinUser.hashPassword(bCryptPasswordEncoder);
+
+		// DB에 넣기전 마지막 점검
+		userRepository.findByUserIdAndUserEmail(userInfoReq.getUserId(), userInfoReq.getUserEmail()).orElseThrow(() -> new RuntimeException("회원 아이디가 존재합니다."));
+
 		userRepository.save(joinUser);
 		return new Message("회원 가입에 성공하였습니다.");
 	}
@@ -130,8 +134,10 @@ public class UserService {
 			.userPw(user.getUserPw())
 			.userEmail(user.getUserEmail())
 			.userName(user.getUserName())
+			.userLan(user.getLanguage().getLangStt())
+			.userProfileImgUrl(user.getProfileImg().getImgUrl())
 			.build();
-		// UserMyPageResponse res = userInfo;
+
 		return userMyPageRes;
 	}
 
@@ -171,8 +177,10 @@ public class UserService {
 
 	// 회원 탈퇴
 	@Transactional
-	public void deleteUser(String userId) {
+	public Message deleteUser(String userId) {
 		userRepository.deleteByUserId(userId).orElseThrow(() -> new RuntimeException("없는 회원입니다."));
+
+		return new Message("회원 탈퇴가 완료되었습니다.");
 	}
 
 	public void modifyUser(UserInfoReq userInfoReq) {
@@ -226,20 +234,14 @@ public class UserService {
 
 	}
 
-	// public Message changeUserPw(UserChangePwRequest userChangePwRequest) {
-	// 	// 유저 조회
-	// 	User searchUser = userRepository.findByUserId(userChangePwRequest.getUserId())
-	// 		.orElseThrow(() -> new RuntimeException("존재하는 아이디가 없습니다."));
-	//
-	// 	// 비밀번호 변경
-	// 	searchUser.update(searchUser.getUserNo(), userChangePwRequest.getUserId(),
-	// 		userChangePwRequest.getUserChangePw(), searchUser.getUserName(), searchUser.getUserEmail(),
-	// 		searchUser.getProfileImg(), searchUser.getLanguage());
-	//
-	// 	// 비밀번호 인코딩
-	// 	searchUser.hashPassword(bCryptPasswordEncoder);
-	// 	userRepository.save(searchUser);
-	//
-	// 	return new Message("비밀번호 수정완료.");
-	// }
+	@Transactional
+	public Message logout(String userId) {
+		// 회원 조회
+		User searchUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+
+		tokenRepository.deleteTokenByUserUserNo(searchUser.getUserNo());
+
+		return new Message("로그아웃에 성공했습니다.");
+	}
+
 }
