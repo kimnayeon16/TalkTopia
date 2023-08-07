@@ -1,55 +1,95 @@
-import { useSelector } from "react-redux";
-import IsTokenValid from "../../utils/tokenUtils";
-import NewToken from "../../utils/newToken";
-import "../../App.css";
-
-import { useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "../../utils";
-import axios from "axios";
-
+import { Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import style from './RealHome.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { BACKEND_URL } from '../../utils';
+import { useEffect, useState } from 'react';
+import { removeCookie } from '../../cookie';
+import { reduxUserInfo } from '../../store';
 
 function Home(){
     const user = useSelector((state) => state.userInfo);
+    let dispatch = useDispatch();
 
-    // const headers = {
-    //     'Content-Type' : 'application/json',
-    //     'Authorization' : `Bearer ${user.accessToken}`,
-    // }
+    const headers = {
+        'Content-Type' : 'application/json',
+        'Authorization': `Bearer ${user.accessToken}`
+    }
 
-    // console.log(headers);
+    const [mylang, setMylang] = useState("");
 
+    useEffect(()=>{
+        const lang = user.sttLang;
+        if(lang === `ko-KR`){
+            setMylang("한국어");
+        }else if(lang === `en-US`){
+            setMylang("영어");
+        }else if(lang === `de-DE`){
+            setMylang("독일어");
+        }else if(lang === `ru-RU`){
+            setMylang("러시아어");
+        }else if(lang === `es-ES`){
+            setMylang("스페인어");
+        }else if(lang === `it-IT`){
+            setMylang("이탈리아어");
+        }else if(lang === `id-ID`){
+            setMylang("인도네시아어");
+        }else if(lang === `ja-JP`){
+            setMylang("일본어");
+        }else if(lang === `fr-FR`){
+            setMylang("프랑스어");
+        }else if(lang === `zh-CN`){
+            setMylang("중국어 간체");
+        }else if(lang === `zh-TW`){
+            setMylang("중국어 번체");
+        }else if(lang === `pt-PT`){
+            setMylang("포르투갈어");
+        }else if(lang === `hi-IN`){
+            setMylang("힌디어");
+        }
+    })
+
+    useEffect(() => {
+        // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+        const storedUserInfo = localStorage.getItem('UserInfo');
+        if (storedUserInfo) {
+          const userInfo = JSON.parse(storedUserInfo);
+          // Redux 상태를 업데이트하는 액션 디스패치
+          dispatch(reduxUserInfo(userInfo));
+        }
+      }, [dispatch]);
 
 
     //로그아웃
-    // const logout = () => {
-    //     axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, headers)
-    //         .then((response)=>{
-    //            console.log("로그아웃");
-    //         })
-    //         .catch((error)=>{
-    //             console.log(headers);
-    //             console.log("로그아웃 실패", error);
-    //         })
-    // }
-    
-    
-    //요청 보낼 때.
-    if(IsTokenValid()){
-        //원래 보내려고 했던 요청 보내기
-        
-    }else{
-        //토큰 재발급
-        NewToken()
-        //원래 보내려고 했던 요청 보내기
-    }
-    
+    const logout = () => {
+        axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, {
+            params: {
+                name: user.userId
+            },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.accessToken}`
+            }
+          }).then((response)=>{
+            removeCookie('refreshToken');
+            localStorage.removeItem("UserInfo");
+            console.log("로그아웃");
+            
+            navigate('/');
+         })
+         .catch((error)=>{
+             console.log("로그아웃 실패", error);
+         })
+ }
+
     // 화상 채팅방 입장
     let navigate = useNavigate();
 
     const handleButtonClick = async (e) => {
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
+        // const headers = {
+        //     'Content-Type' : 'application/json'
+        // }
         console.log(e);
 
         const requestBody = {
@@ -76,17 +116,46 @@ function Home(){
         })
     }
 
-    const buttonStyle = {
-        backgroundColor: 'red',
-        color: 'white',
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-    };
-
     return(
         <div>
+           <Navbar collapseOnSelect expand="lg" className="bg-transparent fixed-top">
+            <Container>
+                <Navbar.Brand href="#home">TalkTopia</Navbar.Brand>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="me-auto"></Nav>
+                    <Nav>
+                        <NavDropdown title="사용자" id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="#action/3.1">이름</NavDropdown.Item>
+                            <NavDropdown.Item onClick={()=>{navigate('/myinfo/passwordConfirm')}}>내 정보 보기</NavDropdown.Item>
+                            <NavDropdown.Item onClick={logout}>로그아웃</NavDropdown.Item>
+                        </NavDropdown>
+                        <Nav.Link href="#memes">알림</Nav.Link>
+                        <NavDropdown title="사이트 언어 변경" id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="#action/3.1">한국어</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.2">영어</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown title="FAQ" id="collasible-nav-dropdown">
+                            <NavDropdown.Item onClick={()=>{navigate('/faq')}}>FAQ</NavDropdown.Item>
+                            <NavDropdown.Item onClick={()=>{navigate('/counsel')}}>1:1 문의</NavDropdown.Item>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+            </Navbar>
+            <div>
+                <p className={`${style.p}`}>세계를 하나로 잇는 깊은 바다처럼<br/>
+                    <span className={`${style.span}`}>TalkTopia</span> 는 여러분의 여정을 시작할 특별한 항구가 될거에요. <br/>
+                    원하는 인원 수를 설정하여 <span className={`${style.span}`}>{user.userName}</span> 님만의 특별한 항해를 떠날 수 있어요. 🚢 <br/>
+                    마음에 맞는 다양한 국적의 사람들과 행운 넘치는 시간을 보내길 기원할게요.🍀
+                </p>
+                <p className={`${style["p-1"]}`}>내가 사용할 언어 : {mylang}</p>
+            </div>
+            <div className={`${style["button-together"]}`}>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(2)}}>랜덤 2인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(4)}}>랜덤 4인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(6)}}>랜덤 6인</button>
+            </div>
             <h4>메인페이지</h4>
             <p>{user.userId}</p>
             <p>{user.accessToken}</p>
@@ -94,7 +163,7 @@ function Home(){
 
             {/* <button style={buttonStyle} onClick={logout}>로그아웃</button><br/> */}
 
-            <button style={buttonStyle}
+            {/* <button style={buttonStyle}
                 onClick={()=>{handleButtonClick(2)}}
             >랜덤 2인</button>
 
@@ -106,10 +175,9 @@ function Home(){
                             onClick={()=>{handleButtonClick(6)}}
                         >랜덤 6인</button>
             
-            <button style={buttonStyle} onClick={()=>{navigate('/start')}}>옛날 시작페이지</button>
+            <button style={buttonStyle} onClick={()=>{navigate('/start')}}>옛날 시작페이지</button> */}
 
-            <button style={buttonStyle} onClick={()=>{navigate('/friendList')}}>친구목록</button>
-
+            {/* <button style={buttonStyle} onClick={()=>{navigate('/friendList')}}>친구목록</button> */}
         </div>
     )
 }

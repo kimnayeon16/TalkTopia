@@ -2,7 +2,7 @@ import React from "react";
 import style from "./Start.module.css";
 import { useNavigate } from "react-router-dom";
 
-const StartReal = () => {
+const Start = () => {
 
   let navigate = useNavigate();
   
@@ -49,4 +49,4 @@ const StartReal = () => {
   );
 };  
 
-export default StartReal;
+export default Start;
