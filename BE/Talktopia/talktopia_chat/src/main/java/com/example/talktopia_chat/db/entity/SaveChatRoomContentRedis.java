@@ -1,7 +1,7 @@
 package com.example.talktopia_chat.db.entity;
 
 import java.time.LocalDateTime;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
 import org.springframework.data.redis.core.RedisHash;
 

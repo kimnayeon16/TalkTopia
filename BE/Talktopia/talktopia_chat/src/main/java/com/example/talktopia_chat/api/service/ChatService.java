@@ -26,15 +26,15 @@ public class ChatService {
 	/**
 	 * 대화내용 저장
 	 * @param chatRoomContentRequest    보낸사람, 내용
-	 * @param crId                        채팅방 세션아이디
+	 * @param crSession                        채팅방 세션아이디
 	 * */
-	public void saveIntoMySQL(ChatRoomContentRequest chatRoomContentRequest, long crId) {
+	public void saveIntoMySQL(ChatRoomContentRequest chatRoomContentRequest, String crSession) {
 
 		// saveChatRoomContent 생성
 		SaveChatRoomContent saveChatRoomContent = SaveChatRoomContent.builder()
 			.scrcSenderId(chatRoomContentRequest.getSender())
 			.scrcContent(chatRoomContentRequest.getContent())
-			.chatRoom(chatRoomRepository.findByCrId(crId))
+			.chatRoom(chatRoomRepository.findByCrSession(crSession))
 			.build();
 
 		SaveChatRoomContent saved = saveChatRoomContentRepository.save(saveChatRoomContent);
@@ -49,13 +49,15 @@ public class ChatService {
 		// 내가 participant일때 채팅방 찾아 세션 반환
 		String res = findParticipantsSession(userId, friendId);
 		log.info("내가 주인으로 참여한 채팅방은: "+res);
-		if (!res.equals(""))
+		// if (!res.equals(""))
+		if (res!=null)
 			return res;
 
 		// 내가 participant_other일 수도 있음
 		String res2 = findParticipantsSession(friendId, userId);
 		log.info("내가 other로 참여한 채팅방은: "+res2);
-		if (!res2.equals(""))
+		// if (!res2.equals(""))
+		if(res2!=null)
 			return res2;
 
 		// 채팅한 적이 없음
@@ -79,7 +81,7 @@ public class ChatService {
 			return chatRoomParticipants.getChatRoom().getCrSession();
 		}
 		catch (NullPointerException e){
-			return "";
+			return null;
 		}
 	}
 
