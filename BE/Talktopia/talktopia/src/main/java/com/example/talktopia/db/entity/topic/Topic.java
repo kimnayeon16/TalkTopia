@@ -1,4 +1,4 @@
-package com.example.talktopia.db.entity.user;
+package com.example.talktopia.db.entity.topic;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,20 +14,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "profile_images")
-public class ProfileImg {
+@Table(name="topic")
+public class Topic {
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "img_no")
-	private long imgNo;
+	@Column(name="topic_id")
+	private long topicId;
 
-	@Column(name = "img_url")
-	private String imgUrl;
+	@Column(length = 100, name = "topic_content")
+	private String topicConent;
 
 	@Builder
-	public ProfileImg(long imgNo, String imgUrl) {
-		this.imgNo = imgNo;
-		this.imgUrl = imgUrl;
+	public Topic(long topicId, String topicConent) {
+		this.topicId = topicId;
+		this.topicConent = topicConent;
 	}
 }

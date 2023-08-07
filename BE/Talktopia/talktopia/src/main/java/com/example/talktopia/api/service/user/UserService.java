@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.request.user.UserIdPwReq;
@@ -17,9 +18,11 @@ import com.example.talktopia.api.response.user.UserLoginRes;
 import com.example.talktopia.api.response.user.UserMyPageRes;
 import com.example.talktopia.api.response.user.UserNewTokenRes;
 import com.example.talktopia.api.response.user.UserSearchIdRes;
+import com.example.talktopia.api.service.profile.ProfileImgService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.user.Language;
+import com.example.talktopia.db.entity.user.ProfileImg;
 import com.example.talktopia.db.entity.user.Token;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.repository.LanguageRepository;
@@ -44,6 +47,10 @@ public class UserService {
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
+
+	private final ProfileImgService profileImgService;
+
+	final String dirName = "profile";
 
 	// Token validate Time
 	private Long accessExpiredMs = 30 * 60 * 1000L + 34200000;
@@ -246,4 +253,36 @@ public class UserService {
 		return new Message("로그아웃에 성공했습니다.");
 	}
 
+	public Message uploadFile(MultipartFile profile,String userId) throws Exception {
+		User user = userRepository.findByUserId(userId).orElseThrow(()-> new Exception("유저가 없어"));
+
+		String profileUrl = user.getProfileImg().getImgUrl();
+
+		if(profileUrl!=null){
+			profileImgService.delete(profileUrl);
+		}
+
+		ProfileImg url = profileImgService.upload(profile, dirName, userId);
+		log.info("profile image uploaded successfully");
+		user.setProfileImg(url);
+		userRepository.save(user);
+		log.info("user info changed successfully");
+
+		return new Message("등록되었습니다");
+	}
+
+	public Message deleteProfile(String userId) {
+
+		User user = userRepository.findByUserId(userId).orElseThrow();
+		// 프로필 사진 url 가져오기
+		String fileUrl = user.getProfileImg().getImgUrl();
+		log.info("fileUrl in S3: {}", fileUrl);
+		// S3에서 삭제하기
+		profileImgService.delete(fileUrl);
+		log.info("file deletion success in userService");
+		// DB 프로필 사진 삭제하기
+		user.setProfileImg(null);
+		userRepository.save(user);
+		return new Message("이미지가 삭제되었습니다");
+	}
 }

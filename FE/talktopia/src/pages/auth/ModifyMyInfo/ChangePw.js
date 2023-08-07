@@ -7,11 +7,12 @@ import Swal from "sweetalert2";
 
 function ChangePw(){
 
+    const user = useSelector((state) => state.userInfo);
+
     const headers = {
         'Content-Type' : 'application/json',
+        'Authoziation' : `Bearer ${user.accessToken}`,
     }
-
-    const user = useSelector((state) => state.userInfo);
 
     const [fakePw, setFakePw] = useState("");
     const [changePw, setChangePw] = useState("");
@@ -27,13 +28,13 @@ function ChangePw(){
 
     const requestBody = {
         userId: user.userId,
-        userChangePw : changePw
+        userPw : changePw
     };
     const requestBodyJSON = JSON.stringify(requestBody);
 
     const PwChange = () => {
         if(pwValid && userPwCorrect){
-            axios.put(`${BACKEND_URL}/api/v1/user/changePw`, requestBodyJSON, headers)
+            axios.post(`${BACKEND_URL}/api/v1/myPage/checkPw`, requestBodyJSON, headers)
                 .then((response)=>{
                    console.log("수정완료");
                 })
