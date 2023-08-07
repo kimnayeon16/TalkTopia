@@ -3,6 +3,7 @@ package com.example.talktopia.common.OAuth2;
 import java.util.Map;
 
 import com.example.talktopia.db.entity.user.User;
+import com.example.talktopia.db.entity.user.UserRole;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +62,7 @@ Map<String, Object> account = (Map<String, Object>) attributes.get("profile");
         return User.builder()
             .userName(name)
             .userEmail(email)
+            .userRole(UserRole.USER)
             .build();
     }
 }
