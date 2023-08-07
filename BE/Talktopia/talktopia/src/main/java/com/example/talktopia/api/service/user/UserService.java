@@ -143,6 +143,7 @@ public class UserService {
 
 	// 마이페이지 checkPw
 	public Message myPageCheckPw(UserIdPwReq userIdPwReq) {
+		log.info("userId " + userIdPwReq.getUserId());
 		User dbSearchUser = userRepository.findByUserId(userIdPwReq.getUserId())
 			.orElseThrow(() -> new RuntimeException("회원이 아닙니다."));
 
