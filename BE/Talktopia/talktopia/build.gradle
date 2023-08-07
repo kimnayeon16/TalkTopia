@@ -61,6 +61,8 @@ dependencies {
     // stomp-websocket
     implementation 'org.webjars:stomp-websocket:2.3.3'
 
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.385'
+
 }
 
 tasks.named('test') {

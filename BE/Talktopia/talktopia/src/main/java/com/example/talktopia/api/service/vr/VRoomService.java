@@ -9,17 +9,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD:BE/Talktopia/talktopia/src/main/java/com/example/talktopia/api/service/VRoomService.java
-import com.example.talktopia.api.request.VRoomExitReq;
-import com.example.talktopia.api.request.VRoomReq;
-import com.example.talktopia.api.response.VRoomRes;
 import com.example.talktopia.common.message.RoomExitStatus;
-=======
+
 import com.example.talktopia.api.request.vr.VRoomExitReq;
 import com.example.talktopia.api.request.vr.VRoomReq;
 import com.example.talktopia.api.response.vr.VRoomRes;
-import com.example.talktopia.common.message.Message;
->>>>>>> 977feca3c9d5d8ddadee13f20bb0403fbc05f5d9:BE/Talktopia/talktopia/src/main/java/com/example/talktopia/api/service/vr/VRoomService.java
 import com.example.talktopia.common.util.MapSession;
 import com.example.talktopia.common.util.RandomNumberUtil;
 import com.example.talktopia.common.util.RoomRole;

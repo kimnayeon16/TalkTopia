@@ -16,8 +16,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.example.talktopia.api.request.VRoomExitReq;
-import com.example.talktopia.api.service.VRoomService;
+import com.example.talktopia.api.request.vr.VRoomExitReq;
+import com.example.talktopia.api.service.vr.VRoomService;
 import com.example.talktopia.common.exception.ExceptionSample;
 import com.example.talktopia.common.message.RoomExitStatus;
 import com.example.talktopia.common.util.RoomRole;
