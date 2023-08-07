@@ -253,10 +253,12 @@ public class UserService {
 		return new Message("로그아웃에 성공했습니다.");
 	}
 
-	public Message uploadFile(MultipartFile profile,String userId) throws Exception {
+	public ProfileImg uploadFile(MultipartFile profile,String userId) throws Exception {
 		User user = userRepository.findByUserId(userId).orElseThrow(()-> new Exception("유저가 없어"));
 
-		String profileUrl = user.getProfileImg().getImgUrl();
+		String profileUrl = Optional.ofNullable(user.getProfileImg())
+			.map(ProfileImg::getImgUrl)
+			.orElse(null);
 
 		if(profileUrl!=null){
 			profileImgService.delete(profileUrl);
@@ -268,7 +270,7 @@ public class UserService {
 		userRepository.save(user);
 		log.info("user info changed successfully");
 
-		return new Message("등록되었습니다");
+		return url;
 	}
 
 	public Message deleteProfile(String userId) {

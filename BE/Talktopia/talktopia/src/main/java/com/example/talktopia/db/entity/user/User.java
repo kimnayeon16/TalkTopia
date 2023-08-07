@@ -51,7 +51,7 @@ public class User {
 	@Column(length = 45, name = "user_email")
 	private String userEmail;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_img_no")
 	private ProfileImg profileImg;
 
