@@ -1,44 +1,39 @@
-#chatContainer {
-  position: absolute;
-  z-index: 0;
-  top: 60%;
-  width: 25%;
-  height: 40%;
-}
-
-#chatToolbar {
-  height: 30px;
-  background-color: #3d3d3d;
+.chat-title {
+  height: 40px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   box-sizing: border-box;
   font-weight: bold;
-  font-size: 14px;
-  text-align: center;
+  font-size: 17px;
+  text-align: left;
+  background-color: rgb(255, 250, 250);
+  color: #362C2C;
   padding-top: 4px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  color: #ffffff;
+  padding-bottom: 4px;
+  display: flex;
+  align-items: center;
 }
 
-#chatComponent {
-  background-color: #b8b8b8;
-  position: absolute;
-  z-index: 99999;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  height: calc(100% - 30px);
-  width: calc(100% - 30px);
-  border-radius: 20px;
+.chat-title-text {
+  margin: 0;
+  padding-left: 20px;
 }
 
+.chat-div-line {
+  width: auto;
+  height: 1px;
+  text-align: center;
+  background: #362C2C;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+  
 .message_wrap {
   padding: 0 15px;
   height: calc(100% - 80px);
   overflow: auto;
 }
-
+  
 .msg_detail {
   width: 100%;
   display: inline-block;
@@ -48,7 +43,7 @@
   margin: 0;
   font-size: 15px;
 }
-
+  
 .msg_info p {
   font-size: 0.8em;
   color: #000000;
@@ -64,44 +59,15 @@
   width: auto;
   max-width: 80%;
 }
-
-span.triangle {
-  border-radius: 2px;
-  height: 8px;
-  width: 8px;
-  top: 12px;
-  display: block;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-  position: absolute;
-}
-
+  
 .text {
   word-break: break-all;color: #000000;
 }
-/* ------------------------------ */
-#closeButton {
-  position: absolute;
-  right: 0;
-  top: -8px;
-}
-
-
-
+ 
 .message {
   position: relative;
   padding: 7px 0;
 }
-.user-img {
-  position: absolute;
-  border-radius: 45px;
-  width: 60px;
-  height: 60px;
-  top: 15px;
-}
-
-
-
 
 
 /* Start message from other user */
@@ -110,20 +76,11 @@ span.triangle {
   text-align: left;
 }
 
-/* .message.left .msg_detail {
-  padding-left: 65px;
-} */
-
-.message.left .user-img {
-  left: -5px;
-  border: 1px solid #f0f0f094;
-}
-
 .message.left .msg_detail .msg_content {
   background-color: #f0f0f0;
   float: left;
 }
-.message.left .msg_detail .msg_content span.triangle {
+.message.left .msg_detail .msg_content {
   background-color: #f0f0f0;
   border-bottom-width: 0;
   border-left-width: 0;
@@ -137,58 +94,62 @@ span.triangle {
 .message.right .msg_detail .msg_info {
   text-align: right;
 }
-.message.right .user_img {
-  right: -5px;
-  border: 1px solid #c8ffe8ab;
-}
 
 .message.right .msg_detail .msg_content {
   background-color: #c8ffe8;
   float: right;
 }
-.message.right .msg_detail .msg_content span.triangle {
+.message.right .msg_detail .msg_content {
   background-color: #c8ffe8;
   border-bottom-width: 0;
   border-left-width: 0;
   right: -5px;
 }
-
-/* End my messages */
-
-#messageInput {
+  
+  /* End my messages */
+  
+.message-input-container {
   position: absolute;
   bottom: 0px;
   width: 100%;
-  background-color: #ffffff;
+  backdrop-filter: blur(20px);
   text-align: center;
   padding: 10px 0px;
   height: 30px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+  display: flex;
+  justify-content: space-evenly;
+
 }
-#messageInput input {
-  width: 90%;
+
+.message-input {
+  width: 80%;
   height: 100%;
   border: none;
   outline: none;
   font-size: 14px;
-  margin-left: -6%;
-  color: #000000;
+  color: #000000; 
+  background-color: #cacbe7;
+  border-radius: 8px;
 }
+ 
 
-#sendButton {
-  background-color: #81e9b0;
-  position: absolute;
-  right: 10px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  border: 1px solid #7ae2a9;
-  box-shadow: none !important;
-}
-#sendButton {
-  margin-left: 3px !important;
-  margin-bottom: 2px !important;
+.sendButton {
+  color: #fff;
+  background-color: #3d42df;
+  border-radius: 8px;
+  border: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 ::-webkit-scrollbar {

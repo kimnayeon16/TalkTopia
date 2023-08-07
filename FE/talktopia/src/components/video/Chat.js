@@ -67,50 +67,99 @@ function Chat(props) {
 
     return (
         <>
-            <div id={`${ style.chatContainer }`}>
-                <div id={`${ style.chatComponent }`}>
-                    <div id={`${ style.chatToolbar }`}>
-                        <span>CHAT</span>
-                    </div>
+            <div className={style['chat-title']}>
+                <p className={style['chat-title-text']}>Chat</p>
+            </div>
 
-                    <div className={`${ style.message_wrap }`} ref={chatScroll}>
-                        {messageList.map((data, i) => (
-                            <div 
-                                key={`${i}-Chat`}
-                                id="remoteUsers"
-                                className={
-                                    `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
-                                }
-                            >
-                                <div className={ `${style.msg_detail }`}>
-                                    <div className={ `${style.msg_info }`}>
-                                        <p> {data.nickname}</p>
-                                    </div>
-                                    <div className={ `${style.msg_content }`}>
-                                        {/* <span className={ `${style.triangle }`} /> */}
-                                        <p className={ `${style.text }`}>{data.message}</p>
-                                    </div>
-                                </div>
+            <div className={style['chat-div-line']}></div>
+
+
+            <div className={`${ style.message_wrap }`} ref={chatScroll}>
+                {messageList.map((data, i) => (
+                    <div 
+                        key={`${i}-Chat`}
+                        id="remoteUsers"
+                        className={
+                            `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
+                        }
+                    >
+                        <div className={ `${style.msg_detail }`}>
+                            <div className={ `${style.msg_info }`}>
+                                <p> {data.nickname}</p>
                             </div>
-                        ))}
-
+                            <div className={ `${style.msg_content }`}>
+                                <p className={ `${style.text }`}>{data.message}</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div id={ `${style.messageInput }`}>
-                        <input
-                            placeholder="메세지를 보네세요"
-                            id={ `${style.chatInput }`}
-                            value={message}
-                            onChange={messageChangeHandler}
-                            onKeyPress={keyPressHandler}
-                        />
-                    </div>
-                </div>
-
+                ))}
 
             </div>
+
+            <div className={style['message-input-container']}>
+                <input
+                    placeholder="메세지를 보내세요"
+                    className={style['message-input']}
+                    value={message}
+                    onChange={messageChangeHandler}
+                    onKeyPress={keyPressHandler}
+                />
+                <button className={style['sendButton']}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send" viewBox="0 0 24 24">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                </button>
+            </div>
+
         </>
-    )
+    );
+
+    // return (
+    //     <>
+    //         <div id={`${ style.chatContainer }`}>
+    //             <div id={`${ style.chatComponent }`}>
+    //                 <div id={`${ style.chatToolbar }`}>
+    //                     <span>CHAT</span>
+    //                 </div>
+
+    //                 <div className={`${ style.message_wrap }`} ref={chatScroll}>
+    //                     {messageList.map((data, i) => (
+    //                         <div 
+    //                             key={`${i}-Chat`}
+    //                             id="remoteUsers"
+    //                             className={
+    //                                 `${style.message} ${ data.connectionId !== props.mainStreamManager.session.connection.connectionId ? style.left : style.right }`
+    //                             }
+    //                         >
+    //                             <div className={ `${style.msg_detail }`}>
+    //                                 <div className={ `${style.msg_info }`}>
+    //                                     <p> {data.nickname}</p>
+    //                                 </div>
+    //                                 <div className={ `${style.msg_content }`}>
+    //                                     {/* <span className={ `${style.triangle }`} /> */}
+    //                                     <p className={ `${style.text }`}>{data.message}</p>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     ))}
+
+    //                 </div>
+
+    //                 <div id={ `${style.messageInput }`}>
+    //                     <input
+    //                         placeholder="메세지를 보네세요"
+    //                         id={ `${style.chatInput }`}
+    //                         value={message}
+    //                         onChange={messageChangeHandler}
+    //                         onKeyPress={keyPressHandler}
+    //                     />
+    //                 </div>
+    //             </div>
+
+
+    //         </div>
+    //     </>
+    // )
 
 };
 
