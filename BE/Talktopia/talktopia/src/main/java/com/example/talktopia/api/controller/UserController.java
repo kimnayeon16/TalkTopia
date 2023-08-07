@@ -35,9 +35,9 @@ public class UserController {
 
 	// Get =================================================================================================
 	// 로그아웃
-	@GetMapping("/logut/{userId}")
+	@GetMapping("/logout/{userId}")
 	public ResponseEntity<Message> logoutUser(@PathVariable String userId) {
-		return ResponseEntity.ok().body(new Message(userId + "가 로그아웃 되었습니다."));
+		return ResponseEntity.ok().body(userService.logout(userId));
 	}
 
 	// Post =================================================================================================

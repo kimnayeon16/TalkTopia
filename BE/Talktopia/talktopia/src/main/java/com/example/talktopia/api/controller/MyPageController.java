@@ -48,8 +48,8 @@ public class MyPageController {
 	// 회원 탈퇴
 	@DeleteMapping("/leave/{userId}")
 	public ResponseEntity<Message> deleteUser(@PathVariable("userId") String userId) {
-		userService.deleteUser(userId);
-		return ResponseEntity.ok().body(new Message("회원 탈퇴가 완료되었습니다."));
+
+		return ResponseEntity.ok().body(userService.deleteUser(userId));
 	}
 
 	// 회원 정보 수정

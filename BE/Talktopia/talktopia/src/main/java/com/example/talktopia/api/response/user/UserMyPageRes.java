@@ -1,5 +1,7 @@
 package com.example.talktopia.api.response.user;
 
+import com.example.talktopia.db.entity.user.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +19,7 @@ public class UserMyPageRes {
 	private String userName;
 	private String userPw;
 	private String userEmail;
-	// private String userLan;
+	private String userProfileImgUrl;
+	private String userLan;
+
 }
