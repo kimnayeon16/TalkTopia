@@ -2,17 +2,16 @@ package com.example.talktopia.api.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.VRoomExitReq;
-import com.example.talktopia.api.request.VRoomReq;
-import com.example.talktopia.api.response.VRoomRes;
-import com.example.talktopia.api.service.ParticipantsService;
-import com.example.talktopia.api.service.VRoomService;
+import com.example.talktopia.api.request.vr.VRoomExitReq;
+import com.example.talktopia.api.request.vr.VRoomReq;
+import com.example.talktopia.api.response.vr.VRoomRes;
+import com.example.talktopia.api.service.vr.ParticipantsService;
+import com.example.talktopia.api.service.vr.VRoomService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.repository.ParticipantsRepository;
 import com.example.talktopia.db.repository.UserRepository;

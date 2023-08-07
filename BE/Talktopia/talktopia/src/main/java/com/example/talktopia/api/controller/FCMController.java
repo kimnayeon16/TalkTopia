@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.FCMSendMessageReq;
-import com.example.talktopia.api.request.FCMTokenReq;
-import com.example.talktopia.api.service.FCMService;
+import com.example.talktopia.api.request.fcm.FCMSendMessageReq;
+import com.example.talktopia.api.request.fcm.FCMTokenReq;
+import com.example.talktopia.api.service.fcm.FCMService;
 import com.example.talktopia.common.message.Message;
 
 import lombok.RequiredArgsConstructor;

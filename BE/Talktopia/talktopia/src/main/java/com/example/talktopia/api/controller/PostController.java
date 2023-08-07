@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.RegistPostReq;
-import com.example.talktopia.api.response.PostListRes;
-import com.example.talktopia.api.response.PostRes;
-import com.example.talktopia.api.service.PostService;
+import com.example.talktopia.api.request.post.RegistPostReq;
+import com.example.talktopia.api.response.post.PostListRes;
+import com.example.talktopia.api.response.post.PostRes;
+import com.example.talktopia.api.service.post.PostService;
 import com.example.talktopia.common.message.Message;
 
 import lombok.RequiredArgsConstructor;
