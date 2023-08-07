@@ -50,6 +50,7 @@ public class ProfileImgService {
 		ProfileImg profileImg = ProfileImg.builder()
 			.imgUrl(uploadImageUrl)
 			.build();
+		log.info("이거인가?????"+uploadImageUrl);
 		return profileImg;
 	}
 

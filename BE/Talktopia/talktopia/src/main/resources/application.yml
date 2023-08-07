@@ -13,7 +13,10 @@ spring:
     url: jdbc:mysql://talktopia.site:50000/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
     username: root
     password: q1w2e3r4
-
+  profiles:
+    include:
+      - aws
+      - credentials
   # JPA
   jpa:
     hibernate:
@@ -61,6 +64,10 @@ cloud:
     stack:
       auto: false
     credentials:
-      access-key: AKIAUEUEPWDIUKIIYUTZ
-      secret-key: 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
-
+      access-key: AKIAUEUEPWDIUDY33S2W
+      secret-key: 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
+servlet:
+  multipart:
+    enabled: true
+    max-file-size: 20MB
+    max-request-size: 20MB

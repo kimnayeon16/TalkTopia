@@ -1,5 +1,8 @@
 package com.example.talktopia.api.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.talktopia.api.request.user.UserIdPwReq;
+import com.example.talktopia.api.request.user.UserImageRes;
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.response.user.UserMyPageRes;
 import com.example.talktopia.api.service.user.UserService;
 import com.example.talktopia.common.message.Message;
+import com.example.talktopia.db.entity.user.ProfileImg;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,9 +66,11 @@ public class MyPageController {
 	}
 
 	@PutMapping("/profile/{userId}")
-	public ResponseEntity<Message> uploadFile(@RequestBody MultipartFile profile,@PathVariable("userId")String userId) throws
+	public ResponseEntity<UserImageRes> uploadFile(@RequestBody MultipartFile profile,@PathVariable("userId")String userId) throws
 		Exception {
-		return ResponseEntity.ok().body(userService.uploadFile(profile,userId));
+		ProfileImg profileImg = userService.uploadFile(profile,userId);
+		UserImageRes userImageRes = new UserImageRes(profileImg.getImgUrl());
+		return ResponseEntity.ok().body(userImageRes);
 	}
 
 	@DeleteMapping("/profile/{userId}")
