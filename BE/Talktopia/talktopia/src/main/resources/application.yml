@@ -13,7 +13,10 @@ spring:
     url: jdbc:mysql://talktopia.site:50000/talktopia?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
     username: root
     password: q1w2e3r4
-
+  profiles:
+    include:
+      - aws
+      - credentials
   # JPA
   jpa:
     hibernate:
@@ -35,13 +38,7 @@ spring:
   security:
     jwt:
       secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 727366662123-ssmffmfcues9npf01m25l9fr8vndukqo.apps.googleusercontent.com
-            client-secret: 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
-            scope: profile, email
+      
 # log level
 logging:
   level:
@@ -52,4 +49,19 @@ openvidu:
   url: https://talktopia.site:8443/
   secret: root
 
-
+cloud:
+  aws:
+    s3:
+      bucket: talktopia
+    region:
+      static: ap-northeast-2 #Asia Pacific -> seoul
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIAUEUEPWDIUDY33S2W
+      secret-key: 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
+servlet:
+  multipart:
+    enabled: true
+    max-file-size: 20MB
+    max-request-size: 20MB

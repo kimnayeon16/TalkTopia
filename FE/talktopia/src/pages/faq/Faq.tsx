@@ -21,7 +21,7 @@ export default function Faq() {
       <h2>FAQ</h2>
       <span>FAQ</span>
       <span>1대1 문의하기</span>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             TalkTopia
@@ -34,7 +34,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2bh-content" id="panel2bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>TalkTopia</Typography>
           <Typography sx={{ color: 'text.secondary' }}>
@@ -47,7 +47,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel3bh-content"
@@ -67,7 +67,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel4bh-content"
@@ -84,7 +84,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel5bh-content" id="panel5bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             화상 채팅
@@ -97,7 +97,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel6bh-content" id="panel6bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             화상 채팅
@@ -110,7 +110,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel7bh-content" id="panel7bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
           계정 및 설정
@@ -123,7 +123,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel8'} onChange={handleChange('panel8')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel8'} onChange={handleChange('panel8')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel8bh-content" id="panel8bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             신고
@@ -136,7 +136,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel9'} onChange={handleChange('panel9')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel9'} onChange={handleChange('panel9')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel9bh-content" id="panel9bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
            오류
@@ -149,7 +149,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel10'} onChange={handleChange('panel10')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel10'} onChange={handleChange('panel10')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel10bh-content" id="panel10bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
           오류
@@ -168,7 +168,7 @@ export default function Faq() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === 'panel11'} onChange={handleChange('panel11')}>
+      <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel11'} onChange={handleChange('panel11')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel101bh-content" id="panel11bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
           오류

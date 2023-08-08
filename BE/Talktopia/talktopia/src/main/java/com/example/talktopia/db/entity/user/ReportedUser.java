@@ -1,16 +1,24 @@
 package com.example.talktopia.db.entity.user;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import com.example.talktopia.db.entity.user.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +38,42 @@ public class ReportedUser {
 	@Column(name = "ru_report_count")
 	private long ruReportCount;
 
+	@Column(name = "ru_reporter")
+	private String ruReporter;
+
+	@Column(name = "ru_bully")
+	private String ruBully;
+
+	@Column(name = "ru_body")
+	private String ruBody;
+
+	@CreatedDate
+	@Column(name = "rl_create_time")
+	private LocalDateTime ruCreateTime;
+
 	@OneToOne
 	@JoinColumn(name = "user_no")
 	private User user;
+
+	@OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL)
+	private List<Category> categoryList;
+
+	@Builder
+	public ReportedUser(long ruId, long ruReportCount, String ruReporter, String ruBully, String ruBody, User user,LocalDateTime ruCreateTime) {
+		this.ruId = ruId;
+		this.ruReportCount = ruReportCount;
+		this.ruReporter = ruReporter;
+		this.ruCreateTime=ruCreateTime;
+		this.ruBully = ruBully;
+		this.ruBody = ruBody;
+		setUserStatus(user);
+	}
+
+	public void setUserStatus(User user) {
+		this.user = user;
+		if (user != null) {
+			user.setReportedUser(this);
+		}
+	}
+
 }

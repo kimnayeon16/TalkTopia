@@ -1,5 +1,8 @@
 package com.example.talktopia.api.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.talktopia.api.request.user.UserIdPwReq;
+import com.example.talktopia.api.request.user.UserImageRes;
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.response.user.UserMyPageRes;
 import com.example.talktopia.api.service.user.UserService;
 import com.example.talktopia.common.message.Message;
+import com.example.talktopia.db.entity.user.ProfileImg;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,5 +63,22 @@ public class MyPageController {
 	public ResponseEntity<Message> modifyUser(@RequestBody UserInfoReq userInfoReq) {
 		userService.modifyUser(userInfoReq);
 		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
+	}
+
+	@PutMapping("/profile/{userId}")
+	public ResponseEntity<UserImageRes> uploadFile(@RequestBody MultipartFile profile,@PathVariable("userId")String userId) throws
+		Exception {
+		ProfileImg profileImg = userService.uploadFile(profile,userId);
+		UserImageRes userImageRes = new UserImageRes(profileImg.getImgUrl());
+		return ResponseEntity.ok().body(userImageRes);
+	}
+
+	@DeleteMapping("/profile/{userId}")
+	public Message deleteProfile(@PathVariable String userId) {
+		log.info("input email : {}", userId);
+		userService.deleteProfile(userId);
+		log.info("profile delete successfully");
+		return userService.deleteProfile(userId);
+
 	}
 }

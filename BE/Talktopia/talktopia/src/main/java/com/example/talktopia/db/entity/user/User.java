@@ -25,9 +25,11 @@ import com.example.talktopia.db.entity.vr.Participants;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "user")
 public class User {
@@ -49,7 +51,7 @@ public class User {
 	@Column(length = 45, name = "user_email")
 	private String userEmail;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_img_no")
 	private ProfileImg profileImg;
 
@@ -85,7 +87,7 @@ public class User {
 
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,
-		Language language, UserRole userRole) {
+		Language language, ProviderType providerType, UserRole userRole) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userPw = userPw;
@@ -93,16 +95,13 @@ public class User {
 		this.userEmail = userEmail;
 		this.profileImg = profileImg;
 		this.language = language;
-		this.userRole =userRole;
+		this.providerType = providerType;
+		this.userRole = userRole;
 	}
 
-	public void update(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
-		this.userNo = userNo;
-		this.userId = userId;
+	public void update(String userPw, String userName, Language language) {
 		this.userPw = userPw;
 		this.userName = userName;
-		this.userEmail = userEmail;
-		this.profileImg = profileImg;
 		this.language = language;
 	}
 

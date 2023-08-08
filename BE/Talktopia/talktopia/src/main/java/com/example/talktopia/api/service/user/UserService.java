@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.talktopia.api.request.user.GoogleReq;
+import com.example.talktopia.api.request.user.PutLangReq;
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.request.user.UserIdPwReq;
 import com.example.talktopia.api.request.user.UserNewTokenReq;
@@ -17,9 +20,11 @@ import com.example.talktopia.api.response.user.UserLoginRes;
 import com.example.talktopia.api.response.user.UserMyPageRes;
 import com.example.talktopia.api.response.user.UserNewTokenRes;
 import com.example.talktopia.api.response.user.UserSearchIdRes;
+import com.example.talktopia.api.service.profile.ProfileImgService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.common.util.JwtProvider;
 import com.example.talktopia.db.entity.user.Language;
+import com.example.talktopia.db.entity.user.ProfileImg;
 import com.example.talktopia.db.entity.user.Token;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.repository.LanguageRepository;
@@ -45,6 +50,10 @@ public class UserService {
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
 
+	private final ProfileImgService profileImgService;
+
+	final String dirName = "profile";
+
 	// Token validate Time
 	private Long accessExpiredMs = 30 * 60 * 1000L + 34200000;
 	private Long refreshExpiredMs = accessExpiredMs + 7 * 24 * 60 * 60 * 1000L;
@@ -58,9 +67,11 @@ public class UserService {
 			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()));
 		joinUser.hashPassword(bCryptPasswordEncoder);
 
+		log.info("userId: " + joinUser.getUserId());
+		log.info("userEmail: " + joinUser.getUserEmail());
 		// DB에 넣기전 마지막 점검
-		userRepository.findByUserIdAndUserEmail(userInfoReq.getUserId(), userInfoReq.getUserEmail()).orElseThrow(() -> new RuntimeException("회원 아이디가 존재합니다."));
-
+		userRepository.findByUserIdAndUserEmail(joinUser.getUserId(), joinUser.getUserEmail())
+			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
 		userRepository.save(joinUser);
 		return new Message("회원 가입에 성공하였습니다.");
 	}
@@ -91,7 +102,7 @@ public class UserService {
 
 		return new UserLoginRes(userIdPwReq.getUserId(), dbSearchUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans());
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans(), null);
 
 	}
 
@@ -143,6 +154,7 @@ public class UserService {
 
 	// 마이페이지 checkPw
 	public Message myPageCheckPw(UserIdPwReq userIdPwReq) {
+		log.info("userId " + userIdPwReq.getUserId());
 		User dbSearchUser = userRepository.findByUserId(userIdPwReq.getUserId())
 			.orElseThrow(() -> new RuntimeException("회원이 아닙니다."));
 
@@ -189,9 +201,7 @@ public class UserService {
 			.orElseThrow(() -> new RuntimeException("유효하지 않은 회원 정보입니다."));
 
 		// 2. 수정
-		updateUser.update(updateUser.getUserNo(), userInfoReq.getUserId(), userInfoReq.getUserPw(),
-			userInfoReq.getUserName(), userInfoReq.getUserEmail(),
-			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()),
+		updateUser.update(userInfoReq.getUserPw(), userInfoReq.getUserName(),
 			languageRepository.findByLangStt(userInfoReq.getUserLan()));
 
 		// 비밀번호 인코딩
@@ -218,9 +228,7 @@ public class UserService {
 		// tmpPw로 유저 정보 변경
 		String tmpPw = userMailService.createKey();
 
-		searchUser.update(searchUser.getUserNo(), userSearchPwReq.getUserId(), tmpPw,
-			userSearchPwReq.getUserName(), searchUser.getUserEmail(),
-			searchUser.getProfileImg(), searchUser.getLanguage());
+		searchUser.update(tmpPw, userSearchPwReq.getUserName(), searchUser.getLanguage());
 
 		// 비밀번호 인코딩
 		searchUser.hashPassword(bCryptPasswordEncoder);
@@ -244,4 +252,106 @@ public class UserService {
 		return new Message("로그아웃에 성공했습니다.");
 	}
 
+	public ProfileImg uploadFile(MultipartFile profile, String userId) throws Exception {
+		User user = userRepository.findByUserId(userId).orElseThrow(() -> new Exception("유저가 없어"));
+
+		String profileUrl = Optional.ofNullable(user.getProfileImg())
+			.map(ProfileImg::getImgUrl)
+			.orElse(null);
+
+		if (profileUrl != null) {
+			profileImgService.delete(profileUrl);
+		}
+
+		ProfileImg url = profileImgService.upload(profile, dirName, userId);
+		log.info("profile image uploaded successfully");
+		user.setProfileImg(url);
+		userRepository.save(user);
+		log.info("user info changed successfully");
+
+		return url;
+	}
+
+	public Message deleteProfile(String userId) {
+
+		User user = userRepository.findByUserId(userId).orElseThrow();
+		// 프로필 사진 url 가져오기
+		String fileUrl = user.getProfileImg().getImgUrl();
+		log.info("fileUrl in S3: {}", fileUrl);
+		// S3에서 삭제하기
+		profileImgService.delete(fileUrl);
+		log.info("file deletion success in userService");
+		// DB 프로필 사진 삭제하기
+		user.setProfileImg(null);
+		userRepository.save(user);
+		return new Message("이미지가 삭제되었습니다");
+	}
+
+	public UserLoginRes googleLogin(GoogleReq googleReq) {
+
+		// 1. 로그인 한다고 req들어옴
+
+		// 2. 이미 가입된 회원인지 아닌지 구별 - 이메일로 구별
+		Optional<User> optionalUser = userRepository.findByUserEmail(googleReq.getUserEmail());
+		User joinUser = null;
+		String sttLang = null;
+		String transLang = null;
+
+		// 3. 가입안되어있으면 가입 후 로그인
+		if(optionalUser.isEmpty()) {
+			log.info("isEmpty 시작");
+			joinUser = googleJoin(googleReq);
+			log.info("isEmpty 끝 " + joinUser);
+		} else {
+			joinUser = optionalUser.get();
+			sttLang = joinUser.getLanguage().getLangStt();
+			transLang = joinUser.getLanguage().getLangTrans();
+		}
+
+		// 4. 이미 가입되었으면 로그인 -> UserLoginRes에 msg추가 기본은 null, 추가 필요하면 "add"
+		Date now = new Date();
+		// 토큰 발행
+		String accessToken = JwtProvider.createAccessToken(joinUser.getUserId(), secretKey,
+			new Date(now.getTime() + accessExpiredMs));
+		String refreshToken = JwtProvider.createRefreshToken(joinUser.getUserId(), secretKey,
+			new Date(now.getTime() + refreshExpiredMs));
+		saveRefreshToken(refreshToken, joinUser); // refreshToken DB에 저장
+
+		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
+			refreshToken,
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add");
+
+	}
+
+	public User googleJoin(GoogleReq googleReq) {
+
+
+		// req -> toEntity -> save
+		// DB에 넣기전 마지막 점검
+		userRepository.findByUserEmail(googleReq.getUserEmail())
+			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
+		log.info("DB 넣기전 마지막 점검");
+		User joinUser = googleReq.toEntity();
+		userRepository.save(joinUser);
+
+		return joinUser;
+	}
+
+	// 추가 정보 넣기
+	@Transactional
+	public Message putLang(PutLangReq putLangReq) {
+
+		User searchUser = userRepository.findByUserEmail(putLangReq.getUserEmail()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
+
+		// 언어 꺼내기
+		Language language = languageRepository.findByLangStt(putLangReq.getUserLan());
+
+		searchUser.update(searchUser.getUserPw(), searchUser.getUserName(), language);
+
+		userRepository.save(searchUser);
+
+		return new Message("추가 정보 입력완료되었습니다.");
+
+
+	}
 }

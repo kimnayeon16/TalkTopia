@@ -3,12 +3,10 @@ package com.example.talktopia.api.request.fcm;
 import lombok.Getter;
 
 @Getter
-public class FCMSendMessageReq {
-
-	String friendId;
-
-	String vrSession;
+public class FCMSendFriendMessage {
 
 	String userId;
+
+	String friendId;
 
 }

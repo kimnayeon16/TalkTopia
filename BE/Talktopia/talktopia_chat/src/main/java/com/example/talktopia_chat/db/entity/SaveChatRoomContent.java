@@ -53,10 +53,12 @@ public class SaveChatRoomContent {
 	}
 
 	@Builder
-	public SaveChatRoomContent(long scrcNo, String scrcContent, String scrcSenderId, ChatRoom chatRoom) {
+	public SaveChatRoomContent(long scrcNo, String scrcContent, String scrcSenderId, LocalDateTime scrcSendTime,
+		ChatRoom chatRoom) {
 		this.scrcNo = scrcNo;
 		this.scrcContent = scrcContent;
 		this.scrcSenderId = scrcSenderId;
+		this.scrcSendTime = scrcSendTime;
 		this.chatRoom = chatRoom;
 	}
 }

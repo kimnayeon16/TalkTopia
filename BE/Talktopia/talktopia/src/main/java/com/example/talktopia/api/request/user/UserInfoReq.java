@@ -2,6 +2,7 @@ package com.example.talktopia.api.request.user;
 
 import com.example.talktopia.db.entity.user.Language;
 import com.example.talktopia.db.entity.user.ProfileImg;
+import com.example.talktopia.db.entity.user.ProviderType;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.entity.user.UserRole;
 
@@ -31,6 +32,7 @@ public class UserInfoReq {
 			.userEmail(userEmail)
 			.userRole(UserRole.USER)
 			.profileImg(profileImg)
+			.providerType(ProviderType.LOCAL)
 			.language(language)
 			.build();
 	}

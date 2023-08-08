@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../../utils";
-import { clientId } from "../../../utils";
+// import { clientId } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { reduxUserInfo } from "../../../store.js";
-import {gapi} from 'gapi-script';
+// import {gapi} from 'gapi-script';
 import axios from "axios";
 // import Cookies from "js-cookie";
 
 import Swal from "sweetalert2";
 import style from "./JoinLogin.module.scss";
 import { setCookie } from "../../../cookie";
-// import { GoogleOAuthProvider } from '@react-oauth/google'
-import { GoogleLogin } from '@react-oauth/google'
 import { motion } from "framer-motion";
+
+import {GoogleLogin} from "@react-oauth/google";
+import {GoogleOAuthProvider} from "@react-oauth/google";
+import jwtDecode from "jwt-decode";
+
+const clientId = '489570255387-1e0n394ptqvja97m2sl6rpf3bta0hjb0.apps.googleusercontent.com'
 
 function JoinLogin(){
     const headers ={
@@ -505,44 +509,6 @@ function JoinLogin(){
     }
     
     //소셜
-    useEffect(() => {
-        function start() {
-            gapi.client.init({
-                clientId,
-                scope: 'email',
-            });
-        }
-
-        gapi.load('client:auth2',start);
-    }, []);
-
-    const onSuccess = (response) => {
-        console.log(response);
-
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
-
-        const requestBody = {
-            userEmail: response.profileObj.email,
-            userName: response.profileObj.name,
-            userId: response.profileObj.googleId
-        };
-
-        const requestBodyJSON = JSON.stringify(requestBody);
-        console.log(requestBodyJSON);
-        axios.post("https://talktopia.site:10001/api/v1/social/google", requestBodyJSON, {headers})
-        .then(function (response) {
-            console.log(response);
-        }).catch(function (error) {
-            console.log(error);
-        })
-    };
-
-    const onFail = (response) => {
-        console.log(response);
-    };
-
 
       return (
         <motion.div
@@ -567,13 +533,44 @@ function JoinLogin(){
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
                 <button></button>
                 <div className={`${style.line}`}>SNS계정으로 로그인</div>
-                {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
+                <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
+                    onSuccess={(res) => {
+                        console.log(res);
+                        const decodeJwt = jwtDecode(res.credential);
+
+                        const headers = {
+                            'Content-Type': 'application/json'
+                          };
+                      
+                          const requestBody = {
+                            userEmail: decodeJwt.email,
+                            userName: decodeJwt.name,
+                            userId: decodeJwt.sub
+                          };
+                      
+                          const requestBodyJSON = JSON.stringify(requestBody);
+                          console.log(requestBodyJSON);
+                      
+                          axios.post(`https://talktopia.site:10001/api/v1/social/google`, requestBodyJSON, { headers })
+                            .then(function (response) {
+                              console.log(response);
+                            }).catch(function (error) {
+                              console.log(error);
+                            });
+                    }}
+                    onFailure={(err) => {
+                        console.log(err);
+                    }}
+                />
+            </GoogleOAuthProvider>
+                {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
+                {/* <GoogleLogin
                 clientId={clientId}
                 buttonText=""
                 onSuccess={onSuccess}
                 onFailure={onFail}
-            />
+            /> */}
                 {/* <button type="button" className={`${style["go-btn"]}`} onClick={navigate('/google')}><span>구글</span><span className={`${style["span-red"]}`}>로</span> 로그인</button> */}
                 <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>

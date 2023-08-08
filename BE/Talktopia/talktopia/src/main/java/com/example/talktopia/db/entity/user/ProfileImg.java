@@ -8,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "profile_images")
 public class ProfileImg {
 
@@ -26,5 +26,9 @@ public class ProfileImg {
 	@Column(name = "img_url")
 	private String imgUrl;
 
-
+	@Builder
+	public ProfileImg(long imgNo, String imgUrl) {
+		this.imgNo = imgNo;
+		this.imgUrl = imgUrl;
+	}
 }

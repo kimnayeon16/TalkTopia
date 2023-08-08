@@ -1,7 +1,7 @@
 package com.example.talktopia_chat.db.entity;
 
 import java.time.LocalDateTime;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
 import org.springframework.data.redis.core.RedisHash;
 
@@ -18,11 +18,11 @@ public class SaveChatRoomContentRedis {
 
 	private String scrcSenderId;
 	private String scrcContent;
-	private LocalDateTime scrcSendTime;
+	private String scrcSendTime;
 
 	@Builder
 	public SaveChatRoomContentRedis(String scrcSession, String scrcContent, String scrcSenderId,
-		LocalDateTime scrcSendTime) {
+		String scrcSendTime) {
 		this.scrcSession = scrcSession;
 		this.scrcContent = scrcContent;
 		this.scrcSenderId = scrcSenderId;
