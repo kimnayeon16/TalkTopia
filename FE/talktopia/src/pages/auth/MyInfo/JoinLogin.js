@@ -531,7 +531,7 @@ function JoinLogin(){
 
         const requestBodyJSON = JSON.stringify(requestBody);
         console.log(requestBodyJSON);
-        axios.post("https://talktopia.site:10001/api/v1/social/google", requestBodyJSON, {headers})
+        axios.post(`${BACKEND_URL}/api/v1/social/google`, requestBodyJSON, {headers})
         .then(function (response) {
             console.log(response);
         }).catch(function (error) {
