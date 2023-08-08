@@ -33,7 +33,7 @@ function ToolbarComponent(props) {
                 )}
 
                 {/* 친구 초대 */}
-                {props.roomType !== 'random' ? (
+                {props.roomType !== 'common' ? (
                     <button className={style['video-action-button']} onClick={props.inviteFriends}>
                         <FaUserFriends size="24" color="black" />
                     </button>
