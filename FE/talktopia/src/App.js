@@ -37,6 +37,7 @@ import JoinRoom from './pages/video/JoinRoom.js';
 
 
 import FriendList from './pages/friend/FriendList';
+import ChatWithFriend from './pages/friend/ChatWithFriend';
 
 import GoogleLoginButton from './pages/auth/MyInfo/GoogleLoginButton';
 
@@ -78,6 +79,7 @@ function App() {
 
         {/* 친구목록 */}
         <Route path="/friendList" element={<FriendList/>}/>
+        <Route path="/chat" element={<ChatWithFriend />} />
       </Routes>
     </div>
   );
