@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.talktopia.api.request.user.GoogleReq;
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.request.user.UserIdPwReq;
 import com.example.talktopia.api.request.user.UserNewTokenReq;
