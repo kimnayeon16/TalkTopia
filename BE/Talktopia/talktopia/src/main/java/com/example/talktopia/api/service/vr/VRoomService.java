@@ -229,60 +229,67 @@ public class VRoomService {
 
 	@Transactional
 	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
-		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
-		log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
-		// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
+		try {
+			User user = userRepository.findByUserId(vRoomExitReq.getUserId())
+				.orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
+			log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
+			// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
 
-		if(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId()!=null ){
-			VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
-			participantsRepository.findByUser_UserId(user.getUserId()).orElseThrow(()-> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
-			this.mapSessionToken.get(vRoomExitReq.getVrSession()).setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()-1);
-			log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
-			long userlan = user.getLanguage().getLangNo();
+			if (this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId() != null) {
+				VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+				participantsRepository.findByUser_UserId(user.getUserId())
+					.orElseThrow(() -> new Exception("삭제하려는 ID와 ROOM의 Id가 서로 다릅니다."));
+				this.mapSessionToken.get(vRoomExitReq.getVrSession())
+					.setCurCount(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount() - 1);
+				log.info(String.valueOf(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()));
+				long userlan = user.getLanguage().getLangNo();
 
-			List<Long> langList = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
-			for(long lang : langList){
-				log.info("LangList입니다 "+ lang);
-			}
-			//long indexToRemove = langList.indexOf(userlan);
-			if (userlan >= 0) {
-				langList.remove(userlan); // 해당 값을 삭제
-				log.info("indexToRemove입니다 "+ userlan);
-				this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
-				List<Long> tmp=this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
-				for(long len : tmp){
-					log.info("지금 있는것 "+ len);
+				List<Long> langList = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+				for (long lang : langList) {
+					log.info("LangList입니다 " + lang);
 				}
-			}
+				//long indexToRemove = langList.indexOf(userlan);
+				if (userlan >= 0) {
+					langList.remove(userlan); // 해당 값을 삭제
+					log.info("indexToRemove입니다 " + userlan);
+					this.mapSessionToken.get(vRoomExitReq.getVrSession()).setLang(langList);
+					List<Long> tmp = this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang();
+					for (long len : tmp) {
+						log.info("지금 있는것 " + len);
+					}
+				}
 
+				//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
+				if (this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount() < 1) {
+					this.mapSessions.remove(vRoomExitReq.getVrSession());
+					this.mapSessionToken.remove(vRoomExitReq.getVrSession());
+					participantsRepository.deleteByUser_UserNo(user.getUserNo());
+					vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
+					return RoomExitStatus.NO_ONE_IN_ROOM;
+					//return new Message("방을 나가서 터졌습니다.");
+				}
+				//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+				vRoom.setVrCurrCnt(vRoom.getVrCurrCnt() - 1);
+				if (!vRoom.isVrEnter()) {
+					vRoom.setVrEnter(true);
+				}
+				vroomrepsitory.save(vRoom);
 
-			//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
-			if(this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount()<1){
-				this.mapSessions.remove(vRoomExitReq.getVrSession());
-				this.mapSessionToken.remove(vRoomExitReq.getVrSession());
+				//Vroom Id 찾는다.
+				//user Id 찾는다.
+				//OK
+				//이를통해서 참여자 DB를 삭제한다.
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
-				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
-				return RoomExitStatus.NO_ONE_IN_ROOM;
-				//return new Message("방을 나가서 터졌습니다.");
+				return RoomExitStatus.EXIT_SUCCESS;
+				//return new Message("방을 나갔습니다.");
 			}
-			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
-			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
-			if(!vRoom.isVrEnter()){
-				vRoom.setVrEnter(true);
-			}
-			vroomrepsitory.save(vRoom);
-
-			//Vroom Id 찾는다.
-			//user Id 찾는다.
-			//OK
-			//이를통해서 참여자 DB를 삭제한다.
-			participantsRepository.deleteByUser_UserNo(user.getUserNo());
-			return RoomExitStatus.EXIT_SUCCESS;
-			//return new Message("방을 나갔습니다.");
+			//return new Message("방을 찾을수가없는데요?");
+			//new Exception("방을 찾을수가없습니다");
+			return RoomExitStatus.ROOM_NOT_FOUND;
+		}catch (Exception e) {
+			log.error("An error occurred in exitRoom method: " + e.getMessage(), e);
+			return RoomExitStatus.ROOM_SEARCH_ERROR; // 적절한 에러 상태를 반환하거나 처리
 		}
-		//return new Message("방을 찾을수가없는데요?");
-		//new Exception("방을 찾을수가없습니다");
-		return RoomExitStatus.ROOM_NOT_FOUND;
 	}
 
 	@Transactional
