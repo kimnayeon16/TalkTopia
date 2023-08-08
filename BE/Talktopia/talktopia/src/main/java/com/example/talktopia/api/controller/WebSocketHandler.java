@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.vr.VRoomExitReq;
 import com.example.talktopia.api.service.vr.VRoomService;
@@ -51,11 +52,13 @@ public class WebSocketHandler {
 	private Map<String, RoomRole> roomRoleHashMap = new HashMap<>();
 
 	@MessageMapping("/api/v1/room/exit/{vrSession}")
+	@Transactional
 	public void exitRoom(@Payload VRoomExitReq vRoomExitReq,
 		@DestinationVariable("vrSession") String vrSession) throws Exception {
 		log.info(vRoomExitReq.getVrSession());
 		log.info(vRoomExitReq.getToken());
 		log.info(vRoomExitReq.getUserId());
+
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
 		String newHostUserId = null;
 		//방이 찾아지지않을때
