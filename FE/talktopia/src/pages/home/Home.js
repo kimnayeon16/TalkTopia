@@ -86,35 +86,55 @@ function Home(){
     // 화상 채팅방 입장
     let navigate = useNavigate();
 
-    const handleButtonClick = async (e) => {
-        // const headers = {
-        //     'Content-Type' : 'application/json'
-        // }
-        console.log(e);
-
+    const enterCommonRoom = async (e) => {
         const requestBody = {
             userId: user.userId,
             vr_max_cnt: e
         };
-        
 
         const requestBodyJSON = JSON.stringify(requestBody);
         await axios
-        .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
+        .post(`${BACKEND_URL}/api/v1/room/enterCommon`, requestBodyJSON, {headers})
         .then((response) => {
             console.log(response.data.token)
             navigate('/joinroom', {
                 state: {
-                    myUserName: user.userId,
+                    // myUserName: user.userId,
                     mySessionId: response.data.vrSession,
-                    token: response.data.token
+                    token: response.data.token,
+                    roomType: 'common'
                 }
             });
         })
         .catch((error) => {
             console.log("에러 발생", error);
         })
-    }
+    };
+
+    const enterFriendRoom = async (e) => {
+        const requestBody = {
+            userId: user.userId,
+            vr_max_cnt: e
+        };
+
+        const requestBodyJSON = JSON.stringify(requestBody);
+        await axios
+        .post(`${BACKEND_URL}/api/v1/room/enterFriend`, requestBodyJSON, {headers})
+        .then((response) => {
+            console.log(response.data.token)
+            navigate('/joinroom', {
+                state: {
+                    // myUserName: user.userId,
+                    mySessionId: response.data.vrSession,
+                    token: response.data.token,
+                    roomType: 'friend'
+                }
+            });
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
+    };
 
     return(
         <div>
@@ -152,10 +172,10 @@ function Home(){
                 <p className={`${style["p-1"]}`}>내가 사용할 언어 : {mylang}</p>
             </div>
             <div className={`${style["button-together"]}`}>
-                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(2)}}>랜덤 2인</button>
-                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(4)}}>랜덤 4인</button>
-                <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(6)}}>랜덤 6인</button>
-                <button className={`${style["button-together-1"]}`} onClick={()=>{}}>방 만들기</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{enterCommonRoom(2)}}>랜덤 2인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{enterCommonRoom(4)}}>랜덤 4인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{enterCommonRoom(6)}}>랜덤 6인</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{enterFriendRoom(6)}}>방 만들기</button>
             </div>
 
             {/* <button style={buttonStyle} onClick={()=>{navigate('/friendList')}}>친구목록</button> */}

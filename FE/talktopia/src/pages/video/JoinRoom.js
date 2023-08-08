@@ -10,6 +10,7 @@ import UserVideoComponent from '../../components/video/UserVideoComponent'
 import ToolbarComponent from '../../components/video/ToolbarComponent';
 import Chat from '../../components/video/Chat'
 import ConversationLog from '../../components/video/ConversationLog';
+import ReportModalComponent from '../../components/video/ReportModalComponent';
 import { BACKEND_URL } from '../../utils';
 
 import style from './JoinRoom.module.css'
@@ -28,8 +29,9 @@ function JoinRoom() {
     const [subscribers, setSubscribers] = useState([]);
     const [mySessionId, setMySessionId] = useState(undefined);   
 
-    // 토큰 관리
+    // 토큰, 방 타입 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
+    const [roomType, setRoomType] = useState(undefined);
 
     // 새로운 OpenVidu 객체 생성
     const [OV, setOV] = useState(<OpenVidu />);
@@ -52,9 +54,11 @@ function JoinRoom() {
 
         setMySessionId(location.state.mySessionId);
         setOpenviduToken(location.state.token);
+        setRoomType(location.state.roomType);
 
         const state = {
-            userId: location.state.myUserName,
+            userId: user.userId,
+            userName: user.userName,
             isVideoActive: true,
             isAudioActive: true,
             streamManager: undefined,
@@ -62,7 +66,7 @@ function JoinRoom() {
         }
         setLocalUser((prev) => ({...prev, ...state}))
 
-        const userData = { mySessionId: location.state.mySessionId, myUserName: location.state.myUserName }
+        const userData = { mySessionId: location.state.mySessionId, myUserId: user.userId }
         userDataRef.current = userData
 
         // 웹 소켓 연결
@@ -116,7 +120,7 @@ function JoinRoom() {
     // 세션 떠날 때 요청
     const leaveSessionHandler = async () => {
         const exitRequest = {
-            userId: userDataRef.current.myUserName,
+            userId: userDataRef.current.myUserId,
             token: user.accessToken,
             vrSession: userDataRef.current.mySessionId
         };
@@ -158,7 +162,8 @@ function JoinRoom() {
             const clientData = JSON.parse(jsonParts[0]).clientData
             
             const newUser = {
-                userId: clientData,
+                userId: clientData.userId,
+                userName: clientData.userName,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
                 streamManager: subscriber,
@@ -196,7 +201,7 @@ function JoinRoom() {
         if (session && openviduToken) {
             getToken().then((token) => {
                 // 첫 번째 매개변수는 OpenVidu deployment로 부터 얻은 토큰, 두 번째 매개변수는 이벤트의 모든 사용자가 검색할 수 있음.
-                session.connect(token, { clientData: localUser.userId })
+                session.connect(token, { clientData: {userId: localUser.userId, userName: localUser.userName }})
                 .then(async () => {
                     // Get your own camera stream ---
                     // publisher 객체 생성
@@ -243,6 +248,26 @@ function JoinRoom() {
             localUser.streamManager.publishAudio(enabled);
         }
     };
+
+    // 모달 창
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false)
+    const [isReportUserId, setIsReportUserId] = useState(undefined)
+
+    const openReportModal = (userId) => {
+        console.log(userId)
+        console.log(isReportModalOpen)
+        setIsReportUserId(userId)
+        setIsReportModalOpen(true);
+    }
+
+    const closeReportModal = () => {
+        setIsReportModalOpen(false);
+    }
+
+    // 친구 초대 
+    const inviteFriends = () => {
+        console.log('친구 초대할거임.')
+    }
     
     return (
         <div>
@@ -253,7 +278,8 @@ function JoinRoom() {
                             <div className={style['video-call-wrapperr']}>
                                 <div className={style['video-participant']}>
                                     <UserVideoComponent 
-                                        userName={ localUser.userId }
+                                        userId={ localUser.userId }
+                                        userName={ localUser.userName }
                                         streamManager={ localUser.streamManager }
                                     />
                                 </div>
@@ -261,8 +287,10 @@ function JoinRoom() {
                                 {subscribers.map((sub, i) => (
                                     <div key={`${i}-subscriber`} className={style['video-participant']}>
                                         <UserVideoComponent 
-                                            userName={ localUser.userId }
+                                            userId={ sub.userId }
+                                            userName={ sub.userName }
                                             streamManager={ sub.streamManager }
+                                            openReportModal = { openReportModal }
                                         />
                                     </div>
                                 ))}
@@ -272,12 +300,14 @@ function JoinRoom() {
                         <div className={style['video-div-line']}></div>
 
                         <div className={style['video-action-container']}>
-                            <ToolbarComponent 
-                                videoEnabled={localUser.isVideoActive}
-                                audioEnabled={localUser.isAudioActive}
-                                toggleAudio={toggleAudio}
-                                toggleVideo={toggleVideo}
-                                leaveSession={leaveSession}
+                            <ToolbarComponent
+                                roomType={ roomType }
+                                videoEnabled={ localUser.isVideoActive }
+                                audioEnabled={ localUser.isAudioActive }
+                                toggleAudio={ toggleAudio }
+                                toggleVideo={ toggleVideo }
+                                inviteFriends={ inviteFriends }
+                                leaveSession={ leaveSession }
                             />
                         </div>
                     </div>
@@ -299,6 +329,15 @@ function JoinRoom() {
                         </div>
                     )}
 
+                </div>
+            ) : null}
+
+            {isReportModalOpen ? (
+                <div className={style['report-modal-window']}>
+                    <ReportModalComponent 
+                        reportUserId={ isReportUserId }
+                        closeReportModal={ closeReportModal }
+                    />
                 </div>
             ) : null}
         </div>
