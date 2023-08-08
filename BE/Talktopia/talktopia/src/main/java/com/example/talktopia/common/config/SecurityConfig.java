@@ -33,9 +33,9 @@ public class SecurityConfig {
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
 
-	private final JwtProvider jwtTokenProvider;
-	private final CustomOauth2UserService customOauth2UserService;
-	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+	// private final JwtProvider jwtTokenProvider;
+	// private final CustomOauth2UserService customOauth2UserService;
+	// private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 	// private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
 	@Bean
@@ -65,17 +65,17 @@ public class SecurityConfig {
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-			.and()
-			.oauth2Login()
-			.authorizationEndpoint().baseUri("/oauth2/authorize")
-			.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
-			.and()
-			.redirectionEndpoint()
-			.baseUri("/login/oauth2/code/**")
-			.and()
-			.userInfoEndpoint().userService(customOauth2UserService)
-			.and()
-			.successHandler(oAuth2AuthenticationSuccessHandler)
+			// .and()
+			// .oauth2Login()
+			// .authorizationEndpoint().baseUri("/oauth2/authorize")
+			// .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
+			// .and()
+			// .redirectionEndpoint()
+			// .baseUri("/login/oauth2/code/**")
+			// .and()
+			// .userInfoEndpoint().userService(customOauth2UserService)
+			// .and()
+			// .successHandler(oAuth2AuthenticationSuccessHandler)
 			//.failureHandler(oAuth2AuthenticationFailureHandler)
 			.and()
 			.addFilterBefore(new JwtFilter(jwtProvider, secretKey), UsernamePasswordAuthenticationFilter.class)
