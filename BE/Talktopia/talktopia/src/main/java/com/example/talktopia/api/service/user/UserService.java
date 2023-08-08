@@ -303,6 +303,8 @@ public class UserService {
 			log.info("isEmpty 시작");
 			joinUser = googleJoin(googleReq);
 			log.info("isEmpty 끝 " + joinUser);
+		} else {
+			joinUser = optionalUser.get();
 		}
 
 		// 4. 이미 가입되었으면 로그인 -> UserLoginRes에 msg추가 기본은 null, 추가 필요하면 "add"
