@@ -87,7 +87,7 @@ public class User {
 
 	@Builder
 	public User(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,
-		Language language, UserRole userRole) {
+		Language language, ProviderType providerType, UserRole userRole) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userPw = userPw;
@@ -95,7 +95,8 @@ public class User {
 		this.userEmail = userEmail;
 		this.profileImg = profileImg;
 		this.language = language;
-		this.userRole =userRole;
+		this.providerType = providerType;
+		this.userRole = userRole;
 	}
 
 	public void update(long userNo, String userId, String userPw, String userName, String userEmail, ProfileImg profileImg,Language language) {
