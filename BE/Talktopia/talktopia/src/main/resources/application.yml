@@ -38,13 +38,7 @@ spring:
   security:
     jwt:
       secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 431679451064-sh9bi9jkro47m6hcr89vv0mvr9u7vdtg.apps.googleusercontent.com
-            client-secret: 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
-            scope: profile, email
+      
 # log level
 logging:
   level:

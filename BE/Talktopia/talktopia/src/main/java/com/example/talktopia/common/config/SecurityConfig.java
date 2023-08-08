@@ -11,10 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.example.talktopia.api.service.oauth2.CustomOauth2UserService;
-import com.example.talktopia.common.OAuth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.example.talktopia.common.OAuth2.OAuth2AuthenticationSuccessHandler;
 import com.example.talktopia.common.util.JwtProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -32,16 +28,6 @@ public class SecurityConfig {
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
-
-	// private final JwtProvider jwtTokenProvider;
-	// private final CustomOauth2UserService customOauth2UserService;
-	// private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-	// private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-
-	@Bean
-	public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
-		return new HttpCookieOAuth2AuthorizationRequestRepository();
-	}
 
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
@@ -65,19 +51,6 @@ public class SecurityConfig {
 			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-			// .and()
-			// .oauth2Login()
-			// .authorizationEndpoint().baseUri("/oauth2/authorize")
-			// .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
-			// .and()
-			// .redirectionEndpoint()
-			// .baseUri("/login/oauth2/code/**")
-			// .and()
-			// .userInfoEndpoint().userService(customOauth2UserService)
-			// .and()
-			// .successHandler(oAuth2AuthenticationSuccessHandler)
-			//.failureHandler(oAuth2AuthenticationFailureHandler)
 			.and()
 			.addFilterBefore(new JwtFilter(jwtProvider, secretKey), UsernamePasswordAuthenticationFilter.class)
 			.build();
