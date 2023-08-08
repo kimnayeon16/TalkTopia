@@ -297,6 +297,8 @@ public class UserService {
 		// 2. 이미 가입된 회원인지 아닌지 구별 - 이메일로 구별
 		Optional<User> optionalUser = userRepository.findByUserEmail(googleReq.getUserEmail());
 		User joinUser = null;
+		String sttLang = null;
+		String transLang = null;
 
 		// 3. 가입안되어있으면 가입 후 로그인
 		if(optionalUser.isEmpty()) {
@@ -305,6 +307,8 @@ public class UserService {
 			log.info("isEmpty 끝 " + joinUser);
 		} else {
 			joinUser = optionalUser.get();
+			sttLang = joinUser.getLanguage().getLangStt();
+			transLang = joinUser.getLanguage().getLangTrans();
 		}
 
 		// 4. 이미 가입되었으면 로그인 -> UserLoginRes에 msg추가 기본은 null, 추가 필요하면 "add"
@@ -315,9 +319,6 @@ public class UserService {
 		String refreshToken = JwtProvider.createRefreshToken(joinUser.getUserId(), secretKey,
 			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, joinUser); // refreshToken DB에 저장
-
-		String sttLang = joinUser.getLanguage().getLangStt();
-		String transLang = joinUser.getLanguage().getLangTrans();
 
 		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
 			refreshToken,
