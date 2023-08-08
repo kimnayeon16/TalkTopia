@@ -1,5 +1,7 @@
 package com.example.talktopia.api.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.ReportReq;
@@ -27,39 +29,31 @@ public class ManageService {
 	private final ReporstListRepository reporstListRepository;
 	public Message reportUser(ReportReq reportReq) throws Exception {
 
-		if(existReporter(reportReq.getReporter())){
-			User user = userRepository.findByUserId(reportReq.getReportedUser()).orElseThrow(()->new Exception("지금 신고할려고했던 애가 없네"));
-			VRoom vRoom = vRoomRepository.findByVrSession(reportReq.getVrSession());
+		//1. 신고 유저가 존재하는가?
+		//1. 신고 당한유저가 존재하는가?
+		//1. 신고 유저와 신고 당한 유저는 같은 방에 존재하는가?
+		//1. 참여자 DB에 존재하는가?
 
-			Participants participants = participantsRepository.findByUser_UserNoAndVRoom_VrSession(user.getUserNo(),vRoom.getVrSession())
-				.orElseThrow(()-> new Exception("현재 신고하려는애가 참여자에 없습니다 즉 존재하지않습니다"));
+		//1. 신고 유저가 방에 있는가?
+		//2. 신고당한유저가 방에 있는가?
+		//3. 신고 당한 유저는 같은 방에서 신고를 당했었나?
+		//3-1. 신고를 당했으면  같은 방에있는 신고 유저가 신고를 했었나? -> 이건 안된다고 말해주자
+		//3-2. 신고를 당했지만 같은 방에있는 새로운 신고를 당한것인가? -> 신고해주자.
+		User user = userRepository.findByUserId(reportReq.getRuReporter()).orElseThrow(()->new Exception("신고하는 유저가 없습니다"));
+		String reporter = user.getUserId();
+		user = userRepository.findByUserId(reportReq.getRuBully()).orElseThrow(() -> new Exception("신고당하는 유저는 존재하지않습니다"));
+		String bully = user.getUserId();
 
-			ReportedUser reportedUser = reporstListRepository.findByUser_UserNo(participants.getUser().getUserNo());
+		//1.신고 유저와 신고 당한 유저는 같은 방에 존재하는가?
+		Participants participants = participantsRepository.findByUser_UserId(reporter).orElseThrow(()-> new Exception("방에 존재하지않는 유저"));
+		String reporterVRoom = participants.getVRoom().getVrSession();
+		participants = participantsRepository.findByUser_UserId(bully).orElseThrow(()-> new Exception("방에 존재하지않는 유저"));
+		String bullyVRoom = participants.getVRoom().getVrSession();
 
-			if(reportedUser!=null){
-				reportedUser.setRuReportCount(reportedUser.getRuReportCount()+1);
-				reporstListRepository.save(reportedUser);
-			}
-			else{
-				reportedUser = ReportedUser.builder()
-					.ruReportCount(1)
-					.user(user)
-					.build();
-				reporstListRepository.save(reportedUser);
-			}
-			return new Message("신고가 완료되었습니다");
-		}
-		throw new Exception("유저가 없는데 뭘찾으려고해 ㅋㅋ");
-
+		//if(reportReq.)
+		return new Message("야호");
 
 
 	}
 
-	private boolean existReporter(String reporter) throws Exception {
-
-		if(userRepository.existsByByUserId(reporter)){
-			return true;
-		}
-		return false;
-	}
 }
