@@ -19,5 +19,6 @@ public class UserLoginRes {
 	private Date expiredDate;
 	private String sttLang;
 	private String transLang;
+	private String msg;
 }
 

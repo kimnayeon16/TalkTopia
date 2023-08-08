@@ -26,7 +26,7 @@ public class SocialLoginController {
 
 	private final UserService userService;
 	@PostMapping("/google")
-	public ResponseEntity<Message> googleLogin(@RequestBody GoogleReq googleReq) {
-		return ResponseEntity.ok().body(new Message(googleReq.toString()));
+	public ResponseEntity<UserLoginRes> googleLogin(@RequestBody GoogleReq googleReq) {
+		return ResponseEntity.ok().body(userService.googleLogin(googleReq));
 	}
 }

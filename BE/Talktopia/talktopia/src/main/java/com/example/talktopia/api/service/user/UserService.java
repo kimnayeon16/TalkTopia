@@ -69,7 +69,8 @@ public class UserService {
 		log.info("userId: " + joinUser.getUserId());
 		log.info("userEmail: " + joinUser.getUserEmail());
 		// DB에 넣기전 마지막 점검
-		userRepository.findByUserIdAndUserEmail(joinUser.getUserId(), joinUser.getUserEmail()).ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
+		userRepository.findByUserIdAndUserEmail(joinUser.getUserId(), joinUser.getUserEmail())
+			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
 		userRepository.save(joinUser);
 		return new Message("회원 가입에 성공하였습니다.");
 	}
@@ -100,7 +101,7 @@ public class UserService {
 
 		return new UserLoginRes(userIdPwReq.getUserId(), dbSearchUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans());
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans(), null);
 
 	}
 
@@ -254,14 +255,14 @@ public class UserService {
 		return new Message("로그아웃에 성공했습니다.");
 	}
 
-	public ProfileImg uploadFile(MultipartFile profile,String userId) throws Exception {
-		User user = userRepository.findByUserId(userId).orElseThrow(()-> new Exception("유저가 없어"));
+	public ProfileImg uploadFile(MultipartFile profile, String userId) throws Exception {
+		User user = userRepository.findByUserId(userId).orElseThrow(() -> new Exception("유저가 없어"));
 
 		String profileUrl = Optional.ofNullable(user.getProfileImg())
 			.map(ProfileImg::getImgUrl)
 			.orElse(null);
 
-		if(profileUrl!=null){
+		if (profileUrl != null) {
 			profileImgService.delete(profileUrl);
 		}
 
@@ -287,5 +288,45 @@ public class UserService {
 		user.setProfileImg(null);
 		userRepository.save(user);
 		return new Message("이미지가 삭제되었습니다");
+	}
+
+	public UserLoginRes googleLogin(GoogleReq googleReq) {
+
+		// 1. 로그인 한다고 req들어옴
+
+		// 2. 이미 가입된 회원인지 아닌지 구별 - 이메일로 구별
+		Optional<User> optionalUser = userRepository.findByUserEmail(googleReq.getUserEmail());
+		User joinUser = null;
+
+		// 3. 가입안되어있으면 가입 후 로그인
+		if(optionalUser.isEmpty()) {
+			joinUser = googleJoin(googleReq);
+		}
+
+		// 4. 이미 가입되었으면 로그인 -> UserLoginRes에 msg추가 기본은 null, 추가 필요하면 "add"
+		Date now = new Date();
+		// 토큰 발행
+		String accessToken = JwtProvider.createAccessToken(joinUser.getUserId(), secretKey,
+			new Date(now.getTime() + accessExpiredMs));
+		String refreshToken = JwtProvider.createRefreshToken(joinUser.getUserId(), secretKey,
+			new Date(now.getTime() + refreshExpiredMs));
+		saveRefreshToken(refreshToken, joinUser); // refreshToken DB에 저장
+
+		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
+			refreshToken,
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), null, null, "add");
+
+	}
+
+	public User googleJoin(GoogleReq googleReq) {
+
+		User joinUser = googleReq.toEntity();
+		// req -> toEntity -> save
+		// DB에 넣기전 마지막 점검
+		userRepository.findByUserEmail(joinUser.getUserEmail())
+			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
+		userRepository.save(joinUser);
+
+		return joinUser;
 	}
 }
