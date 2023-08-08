@@ -152,6 +152,8 @@ function JoinRoom() {
         // Session 개체에서 추가된 subscriber를 subscribers 배열에 저장 
         mySession.on('streamCreated', (event) => {
             const subscriber = mySession.subscribe(event.stream, undefined);
+            console.log('JSON 에러 나는 부분', event.stream.connection.data)
+            console.log(typeof(event.stream.connection.data))
 
             const newUser = {
                 userId: JSON.parse(event.stream.connection.data).clientData,
