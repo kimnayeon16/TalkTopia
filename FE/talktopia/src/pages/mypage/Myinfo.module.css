@@ -45,6 +45,21 @@
     text-align: center;
 }
 
+.input-1 {
+    font-family: 'Dovemayo_wild';
+    width: 350px;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    /* border: 2px solid #013A63; */
+    /* text-align: center; */
+    border-radius: 15px;
+    background-color: rgb(150, 143, 143);
+    opacity: 0.5;
+    text-align: center;
+}
+
 .button {
     font-family: 'Dovemayo_wild'; 
     color: white;
@@ -54,4 +69,23 @@
     font-size: 21px;
     margin-top: 10px;
     border-radius: 15px;
+}
+
+
+.signup-profileImg-label {
+    width: 150px;
+    height: 30px;
+    /* margin: 5px 0 20px 0; */
+    margin: 0 auto;
+    font-weight: bold;
+    background-color: #9ebec1;
+    border-radius: 15px;
+    font-size: 13px;
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.signup-profileImg-input {
+    display: none;
 }

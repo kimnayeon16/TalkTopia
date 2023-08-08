@@ -126,7 +126,7 @@ function Home(){
                     <Nav className="me-auto"></Nav>
                     <Nav>
                         <NavDropdown title="사용자" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">이름</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.1">{user.userName}</NavDropdown.Item>
                             <NavDropdown.Item onClick={()=>{navigate('/myinfo/passwordConfirm')}}>내 정보 보기</NavDropdown.Item>
                             <NavDropdown.Item onClick={logout}>로그아웃</NavDropdown.Item>
                         </NavDropdown>
@@ -156,26 +156,6 @@ function Home(){
                 <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(4)}}>랜덤 4인</button>
                 <button className={`${style["button-together-1"]}`} onClick={()=>{handleButtonClick(6)}}>랜덤 6인</button>
             </div>
-            <h4>메인페이지</h4>
-            <p>{user.userId}</p>
-            <p>{user.accessToken}</p>
-            <p>{user.expiredDate}</p>
-
-            {/* <button style={buttonStyle} onClick={logout}>로그아웃</button><br/> */}
-
-            {/* <button style={buttonStyle}
-                onClick={()=>{handleButtonClick(2)}}
-            >랜덤 2인</button>
-
-            <button style={buttonStyle}
-                            onClick={()=>{handleButtonClick(4)}}
-                        >랜덤 4인</button>
-
-            <button style={buttonStyle}
-                            onClick={()=>{handleButtonClick(6)}}
-                        >랜덤 6인</button>
-            
-            <button style={buttonStyle} onClick={()=>{navigate('/start')}}>옛날 시작페이지</button> */}
 
             {/* <button style={buttonStyle} onClick={()=>{navigate('/friendList')}}>친구목록</button> */}
         </div>
