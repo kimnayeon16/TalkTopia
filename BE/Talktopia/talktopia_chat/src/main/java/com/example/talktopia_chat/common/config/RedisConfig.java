@@ -1,5 +1,6 @@
 package com.example.talktopia_chat.common.config;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,6 +15,7 @@ import com.example.talktopia_chat.db.entity.SaveChatRoomContent;
 import com.example.talktopia_chat.db.entity.SaveChatRoomContentRedis;
 
 @Configuration
+@EnableCaching
 public class RedisConfig {
 
 	@Value("${spring.redis.host}")

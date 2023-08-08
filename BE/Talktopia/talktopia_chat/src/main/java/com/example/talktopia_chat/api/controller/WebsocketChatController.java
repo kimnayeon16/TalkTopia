@@ -1,5 +1,8 @@
 package com.example.talktopia_chat.api.controller;// package com.example.chattest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -48,14 +51,14 @@ public class WebsocketChatController {
 		// chatService.saveIntoMySQL(chatRoomContentRequest, crId);
 
 		// 채팅 내용 Redis에 저장
-		saveChatRoomContentRedisService.saveChat(SaveChatRoomContentRedis.builder()
+		SaveChatRoomContentRedis content = SaveChatRoomContentRedis.builder()
 			.scrcSession(sessionId)
 			.scrcSenderId(chatRoomContentRequest.getSender())
 			.scrcContent(chatRoomContentRequest.getContent())
-			.build());
+			.scrcSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS")))
+			.build();
 
-		ChatRoomContentRequest res = chatRoomContentRequest;
-
-		template.convertAndSend("/topic/sub/" + sessionId, res);
+		saveChatRoomContentRedisService.saveChat(content);
+		template.convertAndSend("/topic/sub/" + sessionId, content);
 	}
 }
