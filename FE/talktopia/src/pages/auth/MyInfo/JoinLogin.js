@@ -552,7 +552,7 @@ function JoinLogin(){
                       
                           axios.post(`https://talktopia.site:10001/api/v1/social/google`, requestBodyJSON, { headers })
                             .then(function (response) {
-                            //   console.log(response);
+                              console.log(response);
                               console.log(response.data.sttLang);
 
                               dispatch(reduxUserInfo({
@@ -575,7 +575,7 @@ function JoinLogin(){
                                   // maxAge: 3000
                                 })
 
-                              if(response.data.sttLang === ""){
+                              if(response.data.sttLang === null){
                                 navigate('/snsRegist');
                               }else{
                                 Swal.fire({
