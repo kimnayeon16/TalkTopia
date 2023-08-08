@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { BACKEND_URL } from "./env";
 import { reduxUserInfo } from "../store";
 import axios from "axios";
-import Cookies from 'js-cookie';
+import { setCookie, getCookie } from "../cookie";
 
 function NewToken(){
     const headers ={
@@ -12,8 +12,7 @@ function NewToken(){
     const userId = useSelector((state) => state.userInfo.userId);
     let dispatch = useDispatch();
 
-    const refreshToken = getRefreshTokenFromCookie();
-
+    const refreshToken = getCookie('refreshToken');
 
 
     const requestBody = {
@@ -35,7 +34,11 @@ function NewToken(){
                 expiredDate: response.data.expiredDate
             }));
 
-            Cookies.set('refreshToken', response.data.refreshToken);
+            setCookie('refreshToken', response.data.refreshToken, {
+                path: '/',
+                secure: true,
+                // maxAge: 3000
+            })
         })
         .catch((error)=>{
             console.log("에러",error);

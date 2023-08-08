@@ -10,7 +10,7 @@ import { CookiesProvider } from 'react-cookie';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 // import { GoogleOAuthProvider } from '@react-oauth/google';
 // import 'bootstrap/dist/css/bootstrap.css';
-import { AnimatePresence } from "framer-motion";
+// import { AnimatePresence } from "framer-motion";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -19,11 +19,11 @@ root.render(
     <React.StrictMode>
       <CookiesProvider>
         <BrowserRouter>
-        <AnimatePresence>
+        {/* <AnimatePresence> */}
         <GoogleOAuthProvider clientId='301972417169-6t0f0ic0ojkaqa97pv0am6g45qv6rlqs.apps.googleusercontent.com'>
           <App />
           </GoogleOAuthProvider>
-          </AnimatePresence>
+          {/* </AnimatePresence> */}
         </BrowserRouter>
       </CookiesProvider>
     </React.StrictMode>

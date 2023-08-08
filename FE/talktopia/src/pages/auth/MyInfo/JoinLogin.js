@@ -11,9 +11,13 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import style from "./JoinLogin.module.scss";
 import { setCookie } from "../../../cookie";
-// import { GoogleOAuthProvider } from '@react-oauth/google'
-// import GoogleLogin from "react-google-login";
 import { motion } from "framer-motion";
+
+import {GoogleLogin} from "@react-oauth/google";
+import {GoogleOAuthProvider} from "@react-oauth/google";
+import jwtDecode from "jwt-decode";
+
+const clientId = '489570255387-1e0n394ptqvja97m2sl6rpf3bta0hjb0.apps.googleusercontent.com'
 
 function JoinLogin(){
     const headers ={
@@ -529,6 +533,37 @@ function JoinLogin(){
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
                 <button></button>
                 <div className={`${style.line}`}>SNS계정으로 로그인</div>
+                <GoogleOAuthProvider clientId={clientId}>
+                <GoogleLogin
+                    onSuccess={(res) => {
+                        console.log(res);
+                        const decodeJwt = jwtDecode(res.credential);
+
+                        const headers = {
+                            'Content-Type': 'application/json'
+                          };
+                      
+                          const requestBody = {
+                            userEmail: decodeJwt.email,
+                            userName: decodeJwt.name,
+                            userId: decodeJwt.sub
+                          };
+                      
+                          const requestBodyJSON = JSON.stringify(requestBody);
+                          console.log(requestBodyJSON);
+                      
+                          axios.post(`https://talktopia.site:10001/api/v1/social/google`, requestBodyJSON, { headers })
+                            .then(function (response) {
+                              console.log(response);
+                            }).catch(function (error) {
+                              console.log(error);
+                            });
+                    }}
+                    onFailure={(err) => {
+                        console.log(err);
+                    }}
+                />
+            </GoogleOAuthProvider>
                 {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
                 {/* <GoogleLogin
                 clientId={clientId}
