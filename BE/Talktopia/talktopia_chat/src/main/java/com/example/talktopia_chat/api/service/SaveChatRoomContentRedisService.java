@@ -7,10 +7,14 @@ import java.util.List;
 
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.talktopia_chat.api.response.EnterChatResponse;
+import com.example.talktopia_chat.api.response.PagingChatResponse;
 import com.example.talktopia_chat.common.util.ChatSetToListUtil;
 import com.example.talktopia_chat.common.util.DateFormatPattern;
 import com.example.talktopia_chat.db.entity.ChatRoom;
@@ -102,5 +106,4 @@ public class SaveChatRoomContentRedisService {
 			redisTemplate.opsForZSet().add(session, temp, sortBySendTime(temp.getScrcSendTime()));
 		}
 	}
-
 }

@@ -12,5 +12,4 @@ import lombok.Setter;
 public class ChatRoomContentRequest {
 	private String sender;
 	private String content;
-	private String sendTime;
 }
