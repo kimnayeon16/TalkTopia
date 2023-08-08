@@ -1,5 +1,6 @@
 package com.example.talktopia.api.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ public class VRoomController {
 	private final ParticipantsService participantsService;
 	private final ParticipantsRepository participantsRepository;
 
+	@Autowired
 	public VRoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl,
 		VRoomRepository vRoomRepository, UserRepository userRepository,
 		ParticipantsService participantsService, ParticipantsRepository participantsRepository) {
