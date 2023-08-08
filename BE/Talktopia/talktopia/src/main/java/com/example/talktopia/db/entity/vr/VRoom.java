@@ -7,12 +7,16 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import com.example.talktopia.common.util.VRoomType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -36,8 +40,9 @@ public class VRoom {
 	@Column(name = "vr_enter")
 	private boolean vrEnter;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "vr_type")
-	private boolean vrType;
+	private VRoomType vrType;
 
 	@CreatedDate
 	@Column(name = "vr_create_time")
@@ -54,7 +59,7 @@ public class VRoom {
 	private List<Participants> participantsList = new ArrayList<>();
 
 	@Builder
-	public VRoom(String vrSession, int vrMaxCnt, boolean vrEnter, boolean vrType, LocalDateTime vrCreateTime,
+	public VRoom(String vrSession, int vrMaxCnt, boolean vrEnter, VRoomType vrType, LocalDateTime vrCreateTime,
 		int vrCurrCnt, LocalDateTime vrCloseTime) {
 		this.vrSession = vrSession;
 		this.vrMaxCnt = vrMaxCnt;
