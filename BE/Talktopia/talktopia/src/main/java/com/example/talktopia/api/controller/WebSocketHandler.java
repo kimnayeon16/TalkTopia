@@ -30,8 +30,11 @@ import com.example.talktopia.db.repository.VRoomRepository;
 
 import io.openvidu.java.client.Session;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class WebSocketHandler {
 
 	@Autowired
@@ -50,6 +53,9 @@ public class WebSocketHandler {
 	@MessageMapping("/api/v1/room/exit/{vrSession}")
 	public void exitRoom(@Payload VRoomExitReq vRoomExitReq,
 		@DestinationVariable("vrSession") String vrSession) throws Exception {
+		log.info(vRoomExitReq.getVrSession());
+		log.info(vRoomExitReq.getToken());
+		log.info(vRoomExitReq.getUserId());
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
 		String newHostUserId = null;
 		//방이 찾아지지않을때
