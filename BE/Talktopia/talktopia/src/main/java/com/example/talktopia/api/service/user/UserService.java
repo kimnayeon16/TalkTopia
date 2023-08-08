@@ -339,7 +339,7 @@ public class UserService {
 
 	// 추가 정보 넣기
 	@Transactional
-	public Message putLang(PutLangReq putLangReq) {
+	public String putLang(PutLangReq putLangReq) {
 
 		User searchUser = userRepository.findByUserId(putLangReq.getUserId()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
 
@@ -350,7 +350,7 @@ public class UserService {
 
 		userRepository.save(searchUser);
 
-		return new Message("추가 정보 입력완료되었습니다.");
+		return language.getLangTrans();
 
 
 	}

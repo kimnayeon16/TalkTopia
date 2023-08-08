@@ -38,7 +38,7 @@ public class SocialLoginController {
 
 	//추가 정보 넣기
 	@PutMapping("/putLang")
-	public ResponseEntity<Message> putLang(@RequestBody PutLangReq putLangReq) {
+	public ResponseEntity<String> putLang(@RequestBody PutLangReq putLangReq) {
 		return ResponseEntity.ok().body(userService.putLang(putLangReq));
 	}
 }
