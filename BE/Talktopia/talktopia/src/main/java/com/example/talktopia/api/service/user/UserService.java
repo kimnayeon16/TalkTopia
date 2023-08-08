@@ -341,7 +341,7 @@ public class UserService {
 	@Transactional
 	public Message putLang(PutLangReq putLangReq) {
 
-		User searchUser = userRepository.findByUserEmail(putLangReq.getUserEmail()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
+		User searchUser = userRepository.findByUserId(putLangReq.getUserId()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
 
 		// 언어 꺼내기
 		Language language = languageRepository.findByLangStt(putLangReq.getUserLan());
