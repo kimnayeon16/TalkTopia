@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.vr.VRoomExitReq;
+import com.example.talktopia.api.request.vr.VRoomFriendReq;
 import com.example.talktopia.api.request.vr.VRoomReq;
 import com.example.talktopia.api.response.vr.VRoomRes;
 import com.example.talktopia.api.service.vr.ParticipantsService;
@@ -45,12 +46,27 @@ public class VRoomController {
 		this.vRoomService = vRoomService;
 	}
 
-	@PostMapping("/enter")
-	public VRoomRes enterRoom(@RequestBody VRoomReq vRoomReq) throws
+	@PostMapping("/enterCommon")
+	public VRoomRes enterCommon(@RequestBody VRoomReq vRoomReq) throws
 		Exception {
 		log.info(vRoomReq.getUserId());
 		log.info(String.valueOf(vRoomReq.getVr_max_cnt()));
-		return vRoomService.enterRoom(vRoomReq);
+		return vRoomService.enterCommonRoom(vRoomReq);
+	}
+
+	@PostMapping("/enterFriend")
+	public VRoomRes enterFriend(@RequestBody VRoomReq vRoomReq) throws
+		Exception {
+		log.info(vRoomReq.getUserId());
+		log.info(String.valueOf(vRoomReq.getVr_max_cnt()));
+		return vRoomService.enterFriendRoom(vRoomReq);
+	}
+
+	@PostMapping("/joinFriend")
+	public VRoomRes joinFriend(@RequestBody VRoomFriendReq vRoomFriendReq) throws
+		Exception {
+		log.info(vRoomFriendReq.getUserId());
+		return vRoomService.enterJoinRoom(vRoomFriendReq);
 	}
 
 	// @PostMapping("/exit")

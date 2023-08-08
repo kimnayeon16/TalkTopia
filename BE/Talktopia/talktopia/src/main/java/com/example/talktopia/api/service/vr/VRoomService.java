@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.talktopia.api.request.vr.VRoomFriendReq;
 import com.example.talktopia.common.message.RoomExitStatus;
 
 import com.example.talktopia.api.request.vr.VRoomExitReq;
@@ -20,6 +21,7 @@ import com.example.talktopia.api.response.vr.VRoomRes;
 import com.example.talktopia.common.util.MapSession;
 import com.example.talktopia.common.util.RandomNumberUtil;
 import com.example.talktopia.common.util.RoomRole;
+import com.example.talktopia.common.util.VRoomType;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.entity.vr.Participants;
 import com.example.talktopia.db.entity.vr.VRoom;
@@ -84,7 +86,7 @@ public class VRoomService {
 		return connectionProperties;
 	}
 
-	public VRoomRes enterRoom(VRoomReq vRoomReq) throws Exception {
+	public VRoomRes enterCommonRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
 		if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
 			exitRoomUser(vRoomReq);
@@ -104,7 +106,7 @@ public class VRoomService {
 				VRoom vRoom = vroomrepsitory.findByVrSession(roomId);
 				if(this.mapSessionToken.get(roomId).getMaxCount()!=maxCnt ||
 					this.mapSessionToken.get(roomId).getCurCount()>=maxCnt ||
-					!vRoom.isVrEnter()){
+					!vRoom.isVrEnter() || vRoom.getVrType().equals(VRoomType.FRIEND)){
 					if(this.mapSessionToken.get(roomId).getMaxCount()!=maxCnt)
 					{
 						log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(roomId).getMaxCount());
@@ -206,6 +208,7 @@ public class VRoomService {
 				.vrMaxCnt(maxCnt)
 				.vrCurrCnt(1)
 				.vrEnter(true)
+				.vrType(VRoomType.COMMON)
 				.build();
 			vroomrepsitory.save(room);
 			participantsService.joinRoom(user,room, RoomRole.HOST);
@@ -240,6 +243,132 @@ public class VRoomService {
 		}
 
 	}
+
+	public VRoomRes enterFriendRoom(VRoomReq vRoomReq) throws Exception {
+		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
+		if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
+			exitRoomUser(vRoomReq);
+		}
+
+		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
+		int maxCnt = vRoomReq.getVr_max_cnt();
+		try {
+
+			// Create a new OpenVidu Session
+			Session session = this.openVidu.createSession();
+			// Generate a new Connection with the recently created connectionProperties
+
+			// 커넥션 생성
+			String token = session.createConnection(connectionProperties).getToken();
+			//JSONObject responseJson = new JSONObject();
+			//JSONObject responseJson = new JSONObject();
+
+			String roomId = RandomNumberUtil.getRandomNumber();
+
+
+			//Session session 설명
+			//session은 OpenVidu 서버에 생성된 비디오 세션을 나타내는 객체
+			//
+			//token 설명
+			// String token = session.createConnection(connectionProperties).getToken();
+			// session.createConnection(connectionProperties)는 앞서 생성한 session에 사용자를 연결하기 위한 새로운 Connection을 생성
+			// 이때, connectionProperties에는 사용자의 연결 세션에 대한 설정이 담긴 ConnectionProperties 개체가 사용
+			// 그리고 이렇게 생성된 연결에 대해 getToken() 메서드를 호출하여 해당 연결에 대한 고유한 토큰을 얻을수있음.
+			// 이 토큰은 사용자가 실제로 서버와 통신할 때 사용되는 인증 수단으로 활용됨.
+
+			//String sessionName = createRandName(15); //15자리의 랜덤 문자열
+			while (mapSessionToken.get(roomId) != null) { // 중복 방지
+				roomId = RandomNumberUtil.getRandomNumber();
+			}
+
+
+			MapSession mapSession = new MapSession(roomId,token, new ArrayList<>(),maxCnt,1);
+			mapSession.getLang().add(user.getLanguage().getLangNo());
+			this.mapSessions.put(roomId,session);
+			this.mapSessionToken.put(roomId,mapSession);
+			log.info(this.mapSessions.get(roomId).getSessionId());
+
+			VRoom room = VRoom.builder()
+				.vrSession(roomId)
+				.vrCreateTime(LocalDateTime.now())
+				.vrMaxCnt(maxCnt)
+				.vrCurrCnt(1)
+				.vrEnter(true)
+				.vrType(VRoomType.FRIEND)
+				.build();
+			vroomrepsitory.save(room);
+			participantsService.joinRoom(user,room, RoomRole.HOST);
+
+			//            this.mapUserSession.put(userEmail, new HashMap<>());
+			//            this.mapUserSession.get(userEmail).put(sessionName, token);
+			// Prepare the response with the tokeny
+			VRoomRes vRoomRes = new VRoomRes();
+			vRoomRes.setToken(token);
+			vRoomRes.setVrSession(roomId);
+			vRoomRes.setRoomRole(RoomRole.HOST);
+			System.out.println(-2);
+			// Return the response to the client
+			// 토큰정보와 상태 정보 리턴
+			return vRoomRes;
+
+		} catch (Exception e) {
+			// If error generate an error message and return it to client
+			throw new Exception("file excepition",e);
+		}
+
+	}
+
+	public VRoomRes enterJoinRoom(VRoomFriendReq vRoomFriendReq) throws Exception {
+		User user = userRepository.findByUserId(vRoomFriendReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
+		// if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
+		// 	exitRoomUser(vRoomFriendReq);
+		// }
+		ConnectionProperties connectionProperties = createConnectionProperties(vRoomFriendReq.getUserId());
+
+
+		VRoom vRoom = vroomrepsitory.findByVrSession(vRoomFriendReq.getVrSession());
+		String connId = vRoom.getVrSession();
+		int maxCnt = vRoom.getVrMaxCnt();
+
+		if(this.mapSessionToken.get(connId).getMaxCount()!=maxCnt ||
+			this.mapSessionToken.get(connId).getCurCount()>=maxCnt ||
+			!vRoom.isVrEnter() || vRoom.getVrType().equals(VRoomType.FRIEND)){
+			if(this.mapSessionToken.get(connId).getMaxCount()!=maxCnt)
+			{
+				log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(connId).getMaxCount());
+			}
+			else if(this.mapSessionToken.get(connId).getCurCount()!=maxCnt){
+				log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(connId).getCurCount());
+			}
+			else{
+				log.info("vRoom.isVrEnter(): ======"+vRoom.isVrEnter());
+			}
+			throw new Exception("방이 꽉찼어요");
+		}
+		String token = this.mapSessions.get(connId).createConnection(connectionProperties).getToken();
+
+		this.mapSessionToken.get(connId).setCurCount(this.mapSessionToken.get(connId).getCurCount()+1);
+		vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()+1);
+		if(this.mapSessionToken.get(connId).getCurCount()==this.mapSessionToken.get(connId).getMaxCount()){
+			vRoom.setVrEnter(false);
+			vroomrepsitory.save(vRoom);
+		}
+
+		List<Long> addLang =this.mapSessionToken.get(connId).getLang();
+		addLang.add(user.getLanguage().getLangNo());
+		this.mapSessionToken.get(connId).setLang(addLang);
+
+		participantsService.joinRoom(user,vRoom, RoomRole.GUEST);
+		VRoomRes vRoomRes = new VRoomRes();
+		vRoomRes.setToken(token);
+		//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
+		vRoomRes.setVrSession(connId);
+		vRoomRes.setRoomRole(RoomRole.GUEST);
+		// Return the response to the client
+		// 토큰정보와 상태 정보 리턴
+		return vRoomRes;
+	}
+
 
 	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		try {
