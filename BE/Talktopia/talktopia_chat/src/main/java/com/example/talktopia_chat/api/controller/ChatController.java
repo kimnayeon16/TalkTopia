@@ -1,7 +1,9 @@
 package com.example.talktopia_chat.api.controller;// package com.example.chattest;
 
+import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia_chat.api.request.EnterChatRequest;
+import com.example.talktopia_chat.api.request.PagingChatRequest;
 import com.example.talktopia_chat.api.response.EnterChatResponse;
+import com.example.talktopia_chat.api.response.PagingChatResponse;
 import com.example.talktopia_chat.api.service.ChatService;
 import com.example.talktopia_chat.api.service.SaveChatRoomContentRedisService;
 
@@ -44,11 +48,19 @@ public class ChatController {
 		return ResponseEntity.ok().body(enterChatResponse);
 	}
 
-	@GetMapping("/more/{sessionId}")
-	public ResponseEntity<MoreChatResponse> moreChat(@PathVariable String sessionId){
-		System.out.println("/more/"+sessionId+" call");
+	/**
+	 * @param pagingChatRequest
+	 *     - sessionId
+	 *     - sendTime
+	 *
+	 * */
+	@PostMapping("/scroll")
+	public ResponseEntity<PagingChatResponse> pagingChat(@RequestBody PagingChatRequest pagingChatRequest) {
+		System.out.println("/scroll call");
 
 		// sessionId로 mysql에서 새 데이터 긁어오기
-		scrcService.
+		PagingChatResponse res = chatService.getPagingChat(pagingChatRequest.getSessionId(),
+			pagingChatRequest.getSendTime());
+		return ResponseEntity.ok(res);
 	}
 }
