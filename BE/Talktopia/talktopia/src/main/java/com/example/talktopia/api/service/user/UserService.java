@@ -300,7 +300,9 @@ public class UserService {
 
 		// 3. 가입안되어있으면 가입 후 로그인
 		if(optionalUser.isEmpty()) {
+			log.info("isEmpty 시작");
 			joinUser = googleJoin(googleReq);
+			log.info("isEmpty 끝 " + joinUser);
 		}
 
 		// 4. 이미 가입되었으면 로그인 -> UserLoginRes에 msg추가 기본은 null, 추가 필요하면 "add"
@@ -320,11 +322,13 @@ public class UserService {
 
 	public User googleJoin(GoogleReq googleReq) {
 
-		User joinUser = googleReq.toEntity();
+
 		// req -> toEntity -> save
 		// DB에 넣기전 마지막 점검
-		userRepository.findByUserEmail(joinUser.getUserEmail())
+		userRepository.findByUserEmail(googleReq.getUserEmail())
 			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
+		log.info("DB 넣기전 마지막 점검");
+		User joinUser = googleReq.toEntity();
 		userRepository.save(joinUser);
 
 		return joinUser;
