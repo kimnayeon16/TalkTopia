@@ -22,4 +22,6 @@ public interface ParticipantsRepository extends JpaRepository<Participants, Long
 
 	@Query("SELECT p FROM Participants p WHERE p.vRoom.vrSession = :vrSession")
 	List<Participants> findByVRoom_VrSession(@Param("vrSession")String vrSession);
+
+	Optional<Participants> findByUser_UserNoAndVRoom_VrSession(long userNo, String vrSession);
 }

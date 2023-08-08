@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	Optional<User> findByUserId(String userId); // 유저 아이디로 user 조회
 
+	boolean existsByByUserId(String userId); // 유저 아이디로 user 조회
+
 	List<User> findAll(); // 전체 조회
 
 	Optional<User> deleteByUserId(String userId); // 유저 삭제
