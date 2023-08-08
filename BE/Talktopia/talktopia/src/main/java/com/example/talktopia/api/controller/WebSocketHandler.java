@@ -34,7 +34,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequiredArgsConstructor
 @Slf4j
 public class WebSocketHandler {
 
@@ -45,9 +44,14 @@ public class WebSocketHandler {
 
 	private final ParticipantsRepository participantsRepository;
 
-	private final VRoomRepository vRoomRepository;
-
 	private final UserRepository userRepository;
+
+	@Autowired
+	public WebSocketHandler(VRoomService vRoomService,ParticipantsRepository participantsRepository,UserRepository userRepository) {
+		this.vRoomService = vRoomService;
+		this.participantsRepository =participantsRepository;
+		this.userRepository=userRepository;
+	}
 
 	private Map<String, RoomRole> roomRoleHashMap = new HashMap<>();
 
