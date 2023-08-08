@@ -57,8 +57,9 @@ public class WebsocketChatController {
 			.scrcContent(chatRoomContentRequest.getContent())
 			.scrcSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS")))
 			.build();
-
 		saveChatRoomContentRedisService.saveChat(content);
+
+		// 특정 sessionId를 가지는 채팅방에 broad casting
 		template.convertAndSend("/topic/sub/" + sessionId, content);
 	}
 }

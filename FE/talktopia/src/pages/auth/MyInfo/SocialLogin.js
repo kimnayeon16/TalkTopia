@@ -1,10 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from './SocialLogin.module.css';
+import axios from 'axios';
+import { BACKEND_URL } from '../../../utils';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { reduxUserInfo } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
 
 function SocialLogin(){
+    const user = useSelector((state) => state.userInfo);
+
+    const navigate = useNavigate();
+    let dispatch = useDispatch();
+
+    const headers = {
+        'Content-Type' : 'application/json',
+        'Authorization': `Bearer ${user.accessToken}`
+    }
     
     const [userLan, setUserLan] = useState("");
     const [userLanCorrect, setUserLanCorrect] = useState(false);
+
+    useEffect(() => {
+        // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+        const storedUserInfo = localStorage.getItem('UserInfo');
+        if (storedUserInfo) {
+          const userInfo = JSON.parse(storedUserInfo);
+          // Redux 상태를 업데이트하는 액션 디스패치
+          dispatch(reduxUserInfo(userInfo));
+        }
+      }, [dispatch]);
 
     const onLanHandler = (e) => {
         setUserLan(e.target.value);
@@ -14,7 +39,38 @@ function SocialLogin(){
     }
 
     const regist = (e) => {
-        //api 호출
+        if(userLanCorrect){
+            Swal.fire({
+                icon: "warning",
+                title: "사용 언어를 선택해주세요!",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
+              });
+        }else{
+            const requestBody = {
+                userEmail: user.userEmail,
+                userLang: userLan
+            }
+
+            const requestBodyJSON = JSON.stringify(requestBody);
+
+            axios
+            .put(`${BACKEND_URL}/api/v1/social/putLang`, requestBodyJSON, {headers})
+            .then((response) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "회원가입 성공!",
+                    text: "TalkTopia의 친구가 되어주셔서 감사합니다 👨🏾‍🤝‍👨🏻",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 2000,
+                    timerProgressBar: true,
+                  });
+                  navigate('/home');
+            })
+        }
     }
 
     return(
