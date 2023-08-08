@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.fcm.FCMSendMessageReq;
+import com.example.talktopia.api.request.fcm.FCMSendFriendMessage;
+import com.example.talktopia.api.request.fcm.FCMSendVroomMessage;
 import com.example.talktopia.api.request.fcm.FCMTokenReq;
-import com.example.talktopia.api.service.fcm.FCMService;
+import com.example.talktopia.api.service.fcm.FcmService;
 import com.example.talktopia.common.message.Message;
 
 import lombok.RequiredArgsConstructor;
@@ -19,16 +20,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/fcm")
 public class FCMController {
 
-	private final FCMService fcmService;
+	private final FcmService fcmService;
 
 	@PostMapping("/saveFCM")
 	public void saveToken(@RequestBody FCMTokenReq fcmTokenReq) throws Exception {
 		fcmService.saveToken(fcmTokenReq);
 	}
 
-	@PostMapping("/sendMessage")
-	public Message sendMessage(@RequestBody FCMSendMessageReq fcmSendMessageReq) throws Exception {
-		return fcmService.sendMessage(fcmSendMessageReq);
+	@PostMapping("/sendVroomMessage")
+	public Message sendVroomMessage(@RequestBody FCMSendVroomMessage fcmSendVroomMessage) throws Exception {
+		return fcmService.sendVroomMessage(fcmSendVroomMessage);
+	}
+
+	@PostMapping("/sendFriendMessage")
+	public Message sendFriendMessage(@RequestBody FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
+		return fcmService.sendFriendMessage(fcmSendFriendMessage);
 	}
 
 
