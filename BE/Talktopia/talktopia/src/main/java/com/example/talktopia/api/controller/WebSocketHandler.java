@@ -88,6 +88,9 @@ public class WebSocketHandler {
 
 			messagingTemplate.convertAndSend("/topic/room/" + vrSession,roomRoleHashMap);
 		}
+		else if(roomExitStatus.equals(ROOM_SEARCH_ERROR)){
+			log.info("무슨 문제지?");
+		}
 	}
 
 	private String chooseNewHost(String vrSession) throws Exception {
