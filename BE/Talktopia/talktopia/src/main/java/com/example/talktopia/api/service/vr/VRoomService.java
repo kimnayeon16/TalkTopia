@@ -230,6 +230,9 @@ public class VRoomService {
 	@Transactional
 	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		try {
+			log.info(vRoomExitReq.getUserId());
+			log.info(vRoomExitReq.getVrSession());
+			log.info(vRoomExitReq.getToken());
 			User user = userRepository.findByUserId(vRoomExitReq.getUserId())
 				.orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 			log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
