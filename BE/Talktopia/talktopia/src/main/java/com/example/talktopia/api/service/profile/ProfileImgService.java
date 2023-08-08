@@ -19,6 +19,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.talktopia.db.entity.user.ProfileImg;
+import com.example.talktopia.db.repository.ProfileImgRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProfileImgService {
 
 	private final AmazonS3Client amazonS3Client;
+
+	private final ProfileImgRepository profileImgRepository;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
@@ -50,6 +53,7 @@ public class ProfileImgService {
 		ProfileImg profileImg = ProfileImg.builder()
 			.imgUrl(uploadImageUrl)
 			.build();
+		profileImgRepository.save(profileImg);
 		log.info("이거인가?????"+uploadImageUrl);
 		return profileImg;
 	}
