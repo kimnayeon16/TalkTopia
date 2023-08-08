@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import axios from 'axios';
+import SockJS from 'sockjs-client'; // <-- 수정
+import Stomp from "stompjs";        // <-- 수정
 
 import UserVideoComponent from '../../components/video/UserVideoComponent'
 import ToolbarComponent from '../../components/video/ToolbarComponent';
@@ -14,32 +16,30 @@ import style from './JoinRoom.module.css'
 
 // 세션 입장
 function JoinRoom() {
-    const user = useSelector((state) => state.userInfo);
+    const user = useSelector((state) => state.userInfo);    // Redux 정보
 
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [localUser, setLocalUser] = useState(undefined);  // subscribers 요소에 들어갈 거임. 그러면서 publisher 역할도 함.
+
     // session, state 선언
-    const [mySessionId, setMySessionId] = useState(undefined);
-    const [myUserName, setMyUserName] = useState('');
     const [session, setSession] = useState(undefined)
-    const [mainStreamManager, setMainStreamManager] = useState(undefined);
-    const [publisher, setPublisher] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
-    
-    // video, audio 접근 권한
-    const [videoEnabled, setVideoEnabled] = useState(true);
-    const [audioEnabled, setAudioEnabled] = useState(true);
+    const [mySessionId, setMySessionId] = useState(undefined);   
+
+    // 토큰 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
 
     // 새로운 OpenVidu 객체 생성
     const [OV, setOV] = useState(<OpenVidu />);
 
-    // session값 useRef로 관리
-    const sessionRef = useRef(undefined);
+    const sessionRef = useRef(undefined);   // session값 ref
+    const userDataRef = useRef(undefined);  // session Id, user Id 값 ref
 
-    // session ID, user ID 값 useRef로 관리
-    const userDataeRef = useRef(undefined);
+    // socket 통신
+    const sockJs = new SockJS("https://talktopia:10001/ws");
+    const stomp = Stomp.over(sockJs);
 
 
     // 2) 화면 렌더링 시 최초 1회 실행
@@ -50,14 +50,28 @@ function JoinRoom() {
         //     return;
         // };
 
-        setVideoEnabled(true);
-        setAudioEnabled(true);
         setMySessionId(location.state.mySessionId);
-        setMyUserName(location.state.myUserName);
         setOpenviduToken(location.state.token);
 
+        const state = {
+            userId: location.state.myUserName,
+            isVideoActive: true,
+            isAudioActive: true,
+            streamManager: undefined,
+            connectionId: undefined
+        }
+        setLocalUser((prev) => ({...prev, ...state}))
+
         const userData = { mySessionId: location.state.mySessionId, myUserName: location.state.myUserName }
-        userDataeRef.current = userData
+        userDataRef.current = userData
+
+        // 웹 소켓 연결
+        stomp.connect({}, (frame) => {
+            stomp.subscribe(`/topic/room/${location.state.mySessionId}`, (message) => {
+                console.log("JSON.parse(message.body)", JSON.parse(message.body));
+            })
+        })
+
 
         // 윈도우 객체에 화면 종료 이벤트 추가
         window.addEventListener('beforeunload', onBeforeUnload); 
@@ -85,42 +99,46 @@ function JoinRoom() {
 
         // session, state 초기화
         setOV(null);
-        setMySessionId(undefined);
-        setMyUserName('');
+        setLocalUser(undefined);
         setSession(undefined);
-        setMainStreamManager(undefined);
-        setPublisher(undefined);
         setSubscribers([]);
-        setVideoEnabled(false);
-        setAudioEnabled(false); 
+        setMySessionId(undefined);
 
-        sessionRef.current = undefined ;
+        sessionRef.current = undefined;
+        userDataRef.current = undefined;
+        stomp.disconnect();
 
         navigate('/realhome');
     };
 
     // 세션 떠날 때 요청
     const leaveSessionHandler = async () => {
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
-
-        const requestBody = {
-            userId: userDataeRef.current.myUserName,
+        const exitRequest = {
+            userId: userDataRef.current.myUserName,
             token: user.accessToken,
-            vrSession: userDataeRef.current.mySessionId
+            vrSession: userDataRef.current.mySessionId
         };
-        console.log(requestBody)
+        stomp.send("/app/api/v1/room/exit/"+userDataRef.current.mySessionId, {}, JSON.stringify(exitRequest));
+        // const headers = {
+        //     'Content-Type' : 'application/json'
+        // }
+
+        // const requestBody = {
+        //     userId: userDataRef.current.myUserName,
+        //     token: user.accessToken,
+        //     vrSession: userDataRef.current.mySessionId
+        // };
+        // console.log(requestBody)
     
-        const requestBodyJSON = JSON.stringify(requestBody);
-        await axios
-        .post(`${BACKEND_URL}/api/v1/room/exit/${userDataeRef.current.mySessionId}`, requestBodyJSON, {headers})
-        .then((response) => {
-            console.log(response)
-        })
-        .catch((error) => {
-            console.log("에러 발생", error);
-        })
+        // const requestBodyJSON = JSON.stringify(requestBody);
+        // await axios
+        // .post(`${BACKEND_URL}/api/v1/room/exit/${userDataRef.current.mySessionId}`, requestBodyJSON, {headers})
+        // .then((response) => {
+        //     console.log(response)
+        // })
+        // .catch((error) => {
+        //     console.log("에러 발생", error);
+        // })
     };
 
     // 세션 생성 및 세션에서 이벤트가 발생할 때의 동작을 지정 
@@ -132,16 +150,23 @@ function JoinRoom() {
         // Session 개체에서 추가된 subscriber를 subscribers 배열에 저장 
         mySession.on('streamCreated', (event) => {
             const subscriber = mySession.subscribe(event.stream, undefined);
-            setSubscribers((subscribers) => [...subscribers, subscriber]);  // 새 구독자에 대한 상태 업데이트
-            console.log('사용자가 입장하였습니다.')
-            // console.log(JSON.parse(event.stream.streamManager.stream.connection.data).clientData, "님이 접속했습니다.");
+
+            const newUser = {
+                userId: JSON.parse(event.stream.connection.data).clientData,
+                isVideoActive: event.stream.videoActive,
+                isAudioActive: event.stream.audioActive,
+                streamManager: subscriber,
+                connectionId: event.stream.connection.connectionId
+            }
+
+            setSubscribers((prev) => [...prev, newUser]);   // 새 구독자에 대한 상태 업데이트
+            console.log(newUser.userId, "님이 접속했습니다.");
         });
 
         // Session 개체에서 제거된 관련 subsrciber를 subsribers 배열에서 제거
         mySession.on('streamDestroyed', (event) => {
-            setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber !== event.stream.streamManager))
-            console.log('사용자가 나갔습니다.')
-            // console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.")
+            setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber.streamManager !== event.stream.streamManager));
+            console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.");
         });
 
         // 서버 측에서 예기치 않은 비동기 오류가 발생할 때 Session 개체에 의해 트리거 되는 이벤트
@@ -165,15 +190,15 @@ function JoinRoom() {
         if (session && openviduToken) {
             getToken().then((token) => {
                 // 첫 번째 매개변수는 OpenVidu deployment로 부터 얻은 토큰, 두 번째 매개변수는 이벤트의 모든 사용자가 검색할 수 있음.
-                session.connect(token, { clientData: myUserName })
+                session.connect(token, { clientData: localUser.userId })
                 .then(async () => {
                     // Get your own camera stream ---
                     // publisher 객체 생성
                     let publisher = await OV.initPublisherAsync(undefined, {
                         audioSource: undefined,     // The source of audio. If undefined default microphone
                         videoSource: undefined,     // The source of video. If undefined default webcam
-                        publishAudio: audioEnabled, // Whether you want to start publishing with your audio unmuted or not
-                        publishVideo: videoEnabled, // Whether you want to start publishing with your video enabled or not
+                        publishAudio: localUser.isAudioActive, // Whether you want to start publishing with your audio unmuted or not
+                        publishVideo: localUser.isVideoActive, // Whether you want to start publishing with your video enabled or not
                         resolution: '640x480',      // The resolution of your video
                         frameRate: 30,              // The frame rate of your video
                         insertMode: 'APPEND',       // How the video is inserted in the target element 'video-container'
@@ -182,8 +207,7 @@ function JoinRoom() {
                     // Publish your stream ---
                     session.publish(publisher);
                     // Set the main video in the page to display our webcam and store our Publisher
-                    setPublisher(publisher);
-                    setMainStreamManager(publisher);
+                    setLocalUser((prev) => ({...prev, connectionId: publisher.stream.connection.connectionId, streamManager: publisher}));
                 })
                 .catch ((error) => {
                     console.log(error);
@@ -195,43 +219,42 @@ function JoinRoom() {
     }, [session]);
 
 
+
     // 내 웹캠 on/off (상대방도 화면 꺼지는지 확인 필요)
     const toggleVideo = () => {
-        if (publisher) {
-            const enabled = !videoEnabled;
-            setVideoEnabled(enabled);
-            publisher.publishVideo(enabled);
+        if (localUser.streamManager) {
+            const enabled = !localUser.isVideoActive;
+            setLocalUser((prev) => ({...prev, isVideoActive: enabled}));
+            localUser.streamManager.publishVideo(enabled);
         }
     };
 
     // 내 마이크 on/off (상대방도 음성 꺼지는지 확인 )
     const toggleAudio = () => {
-        if (publisher) {
-            const enabled = !audioEnabled;
-            setAudioEnabled(enabled);
-            publisher.publishAudio(enabled);
+        if (localUser.streamManager) {
+            const enabled = !localUser.isAudioActive;
+            setLocalUser((prev) => ({...prev, isAudioActive: enabled}));
+            localUser.streamManager.publishAudio(enabled);
         }
     };
     
     return (
         <div>
-            {sessionRef.current !== undefined && mainStreamManager != undefined ? (
+            {sessionRef.current !== undefined && localUser.streamManager != undefined ? (
                 <div className={style['app-container']}> 
                     <div className={style['app-main']}>
                         <div className={style['video-container']}>
                             <div className={style['video-call-wrapperr']}>
-                                {publisher !== undefined ? (
-                                    <div className={style['video-participant']}>
-                                        <UserVideoComponent 
-                                            streamManager={ publisher }
-                                        />
-                                    </div>
-                                ) : null}
+                                <div className={style['video-participant']}>
+                                    <UserVideoComponent 
+                                        streamManager={ localUser.streamManager }
+                                    />
+                                </div>
                                 
                                 {subscribers.map((sub, i) => (
                                     <div key={`${i}-subscriber`} className={style['video-participant']}>
                                         <UserVideoComponent 
-                                            streamManager={ sub }
+                                            streamManager={ sub.streamManager }
                                         />
                                     </div>
                                 ))}
@@ -242,8 +265,8 @@ function JoinRoom() {
 
                         <div className={style['video-action-container']}>
                             <ToolbarComponent 
-                                videoEnabled={videoEnabled}
-                                audioEnabled={audioEnabled}
+                                videoEnabled={localUser.isVideoActive}
+                                audioEnabled={localUser.isAudioActive}
                                 toggleAudio={toggleAudio}
                                 toggleVideo={toggleVideo}
                                 leaveSession={leaveSession}
@@ -251,18 +274,18 @@ function JoinRoom() {
                         </div>
                     </div>
                     
-                    {myUserName !== undefined && mainStreamManager !== undefined && (
+                    {localUser.userId !== undefined && localUser.streamManager !== undefined && (
                         <div className={style['right-side']}>
                             <div className={style['conversation-container']}>
                                 <ConversationLog 
-                                    myUserName={myUserName}
-                                    mainStreamManager={mainStreamManager}
+                                    myUserName={ localUser.userId }
+                                    mainStreamManager={ localUser.streamManager }
                                 />
                             </div>   
                             <div className={style['chat-container']}>
                                 <Chat
-                                    myUserName={myUserName}
-                                    mainStreamManager={mainStreamManager}
+                                    myUserName={ localUser.userId }
+                                    mainStreamManager={ localUser.streamManager }
                                 />
                             </div>
                         </div>
@@ -272,61 +295,6 @@ function JoinRoom() {
             ) : null}
         </div>
     );
-
-    // return (
-    //     <>
-    //         <h1>Room ID: {mySessionId}</h1>
-    //         {session !== undefined ? (
-    //             <div className={`${style.container}`}> 
-    //                 <div className={`${style.main_side}`}>
-    //                     <div className={`${style.video_call_wrapper}`}>
-    //                         {publisher !== undefined ? (
-    //                             <div className={`${style.video_participant}`}>
-    //                                 <UserVideoComponent streamManager={ publisher } className={`${style.video_participant}`}/>
-    //                             </div>
-    //                         ) : null}
-                            
-    //                         {subscribers.map((sub, i) => (
-    //                             <div key={`${i}-subscriber`} className={`${style.video_participant}`}>
-    //                                 <UserVideoComponent streamManager={ sub } />
-    //                             </div>
-    //                         ))}
-    //                     </div>
-
-    //                 </div>
-                    
-    //                 {myUserName !== undefined && mainStreamManager !== undefined && (
-    //                     <div className={`${style.right_side}`}>   
-    //                         <ConversationLog 
-    //                             myUserName={myUserName}
-    //                             mainStreamManager={mainStreamManager}
-    //                         />
-    //                         <Chat
-    //                             myUserName={myUserName}
-    //                             mainStreamManager={mainStreamManager}
-    //                         />
-    //                     </div>
-    //                 )}
-    //             </div>
-    //         ) : null}
-
-    //         <input
-    //             type='button'
-    //             onClick={toggleVideo}
-    //             value={`비디오 ${videoEnabled ? "OFF" : "ON"}`}
-    //         />
-    //         <input
-    //             type='button'
-    //             onClick={toggleAudio}
-    //             value={`마이크 ${audioEnabled ? "OFF" : "ON"}`}
-    //         />
-    //         <input 
-    //             type='button'
-    //             onClick={leaveSession}
-    //             value="나가기"
-    //         />
-    //     </>
-    // );
 }
 
 export default JoinRoom;
