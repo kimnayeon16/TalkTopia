@@ -233,8 +233,7 @@ public class VRoomService {
 			log.info(vRoomExitReq.getUserId());
 			log.info(vRoomExitReq.getVrSession());
 			log.info(vRoomExitReq.getToken());
-			User user = userRepository.findByUserId(vRoomExitReq.getUserId())
-				.orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
+			User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 			log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
 			// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
 
