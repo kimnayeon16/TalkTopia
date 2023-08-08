@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.example.talktopia.db.entity.user.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,4 +34,19 @@ public class ReportedUser {
 	@OneToOne
 	@JoinColumn(name = "user_no")
 	private User user;
+	
+	@Builder
+	public ReportedUser(long ruId, long ruReportCount, User user) {
+		this.ruId = ruId;
+		this.ruReportCount = ruReportCount;
+		setUserStatus(user);
+	}
+
+	public void setUserStatus(User user) {
+		this.user = user;
+		if (user != null) {
+			user.setReportedUser(this);
+		}
+	}
+
 }
