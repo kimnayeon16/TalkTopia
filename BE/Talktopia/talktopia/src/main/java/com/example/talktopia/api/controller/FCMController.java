@@ -1,8 +1,10 @@
 package com.example.talktopia.api.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.fcm.FCMSendFriendMessage;
@@ -18,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/fcm")
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET,
+	RequestMethod.OPTIONS})
 public class FCMController {
 
 	private final FcmService fcmService;
