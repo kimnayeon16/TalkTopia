@@ -23,23 +23,6 @@ public class ChatService {
 	private final SaveChatRoomContentRepository saveChatRoomContentRepository;
 	private final ChatRoomParticipantsRepository chatRoomParticipantsRepository;
 
-	/**
-	 * 대화내용 저장
-	 * @param chatRoomContentRequest    보낸사람, 내용
-	 * @param crSession                        채팅방 세션아이디
-	 * */
-	public void saveIntoMySQL(ChatRoomContentRequest chatRoomContentRequest, String crSession) {
-
-		// saveChatRoomContent 생성
-		SaveChatRoomContent saveChatRoomContent = SaveChatRoomContent.builder()
-			.scrcSenderId(chatRoomContentRequest.getSender())
-			.scrcContent(chatRoomContentRequest.getContent())
-			.chatRoom(chatRoomRepository.findByCrSession(crSession))
-			.build();
-
-		SaveChatRoomContent saved = saveChatRoomContentRepository.save(saveChatRoomContent);
-	}
-
 	// 1. 아이디로 채팅방 조회
 	// 2. 채팅한 적 있으면 세션아이디 반환
 	// 3. 채팅한 적 없으면 세션 생성 후 반환
@@ -75,7 +58,7 @@ public class ChatService {
 		// 내가 participant일때 채팅방 찾음
 		ChatRoomParticipants chatRoomParticipants = chatRoomParticipantsRepository.findByCrpParticipantAndAndCrpParticipantOther(
 			id1,
-			id2);
+			id2).orElseThrow(()->new RuntimeException(id1+"과 "+id2+"가 참여자인 채팅방이 없습니다."));
 		// chatRoomParticipants가 가진 chatroom 엔티티에서 세션아이디 반환.
 		try {
 			return chatRoomParticipants.getChatRoom().getCrSession();

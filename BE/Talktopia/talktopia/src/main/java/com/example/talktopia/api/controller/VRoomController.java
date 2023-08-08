@@ -25,20 +25,24 @@ import lombok.extern.slf4j.Slf4j;
 public class VRoomController {
 
 	private final VRoomService vRoomService;
-	private final VRoomRepository vRoomRepository;
-	private final UserRepository userRepository;
-	private final ParticipantsService participantsService;
-	private final ParticipantsRepository participantsRepository;
-
+	// private final VRoomRepository vRoomRepository;
+	// private final UserRepository userRepository;
+	// private final ParticipantsService participantsService;
+	// private final ParticipantsRepository participantsRepository;
+	//
+	// @Autowired
+	// public VRoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl,
+	// 	VRoomRepository vRoomRepository, UserRepository userRepository,
+	// 	ParticipantsService participantsService, ParticipantsRepository participantsRepository) {
+	// 	this.vRoomRepository = vRoomRepository;
+	// 	this.userRepository = userRepository;
+	// 	this.participantsService = participantsService;
+	// 	this.participantsRepository =participantsRepository;
+	// 	this.vRoomService = new VRoomService(secret, openviduUrl, vRoomRepository, userRepository, participantsService, participantsRepository);
+	// }
 	@Autowired
-	public VRoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl,
-		VRoomRepository vRoomRepository, UserRepository userRepository,
-		ParticipantsService participantsService, ParticipantsRepository participantsRepository) {
-		this.vRoomRepository = vRoomRepository;
-		this.userRepository = userRepository;
-		this.participantsService = participantsService;
-		this.participantsRepository =participantsRepository;
-		this.vRoomService = new VRoomService(secret, openviduUrl, vRoomRepository, userRepository, participantsService, participantsRepository);
+	public VRoomController(VRoomService vRoomService) {
+		this.vRoomService = vRoomService;
 	}
 
 	@PostMapping("/enter")

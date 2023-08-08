@@ -152,9 +152,13 @@ function JoinRoom() {
         // Session 개체에서 추가된 subscriber를 subscribers 배열에 저장 
         mySession.on('streamCreated', (event) => {
             const subscriber = mySession.subscribe(event.stream, undefined);
-
+            console.log('JSON 에러 나는 부분', event.stream.connection.data)
+            const jsonParts = event.stream.connection.data.split('%/%');
+            console.log('데이터 split한 부분', jsonParts)
+            const clientData = JSON.parse(jsonParts[0]).clientData
+            
             const newUser = {
-                userId: JSON.parse(event.stream.connection.data).clientData,
+                userId: clientData,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
                 streamManager: subscriber,
@@ -168,7 +172,7 @@ function JoinRoom() {
         // Session 개체에서 제거된 관련 subsrciber를 subsribers 배열에서 제거
         mySession.on('streamDestroyed', (event) => {
             setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber.streamManager !== event.stream.streamManager));
-            console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.");
+            // console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.");
         });
 
         // 서버 측에서 예기치 않은 비동기 오류가 발생할 때 Session 개체에 의해 트리거 되는 이벤트

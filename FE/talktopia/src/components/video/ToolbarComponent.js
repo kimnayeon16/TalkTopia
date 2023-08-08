@@ -13,7 +13,7 @@ function ToolbarComponent(props) {
             <div className={style['video-call-actions']}>
                 {props.audioEnabled ? (
                     <button className={`${style['video-action-button']}`} onClick={props.toggleAudio}>
-                        <BsMic size="24" />
+                        <BsMic size="24" color="black" />
                     </button>
                 ) : (
                     <button className={`${style['video-action-button']}`} onClick={props.toggleAudio}>
@@ -23,7 +23,7 @@ function ToolbarComponent(props) {
 
                 {props.videoEnabled ? (
                     <button className={style['video-action-button']} onClick={props.toggleVideo}>
-                        <FiCamera size="24" />
+                        <FiCamera size="24" color="black" />
                     </button>
                 ) : (
                     <button className={style['video-action-button']} onClick={props.toggleVideo}>
@@ -32,7 +32,7 @@ function ToolbarComponent(props) {
                 )}
 
                 <button className={style['video-action-button']} onClick={props.leaveSession}>
-                    <ImExit size="24" />
+                    <ImExit size="24" color="black" />
                 </button>
             </div>
         </>
