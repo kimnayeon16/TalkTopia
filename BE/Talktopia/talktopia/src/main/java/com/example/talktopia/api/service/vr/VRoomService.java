@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -227,13 +228,16 @@ public class VRoomService {
 
 	}
 
-	@Transactional
 	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		try {
-			log.info(vRoomExitReq.getUserId());
-			log.info(vRoomExitReq.getVrSession());
-			log.info(vRoomExitReq.getToken());
-			User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
+			log.info(":::::::::::::::"+vRoomExitReq.getUserId());
+			log.info(":::::::::::::::"+vRoomExitReq.getVrSession());
+			log.info(":::::::::::::::"+vRoomExitReq.getToken());
+			log.info(":::::::::::::::"+vRoomExitReq.getUserId().getClass().getName());
+			log.info(":::ddddddd::::"+this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
+			Optional<User> userd = userRepository.findByUserId(vRoomExitReq.getUserId());
+			User user = userd.get();
+			//User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 			log.info(this.mapSessions.get(vRoomExitReq.getVrSession()).getSessionId());
 			// 여기서 vRoomExitReq에 있는 userId와 방에있는 userId가 같은지 확인해야함
 
