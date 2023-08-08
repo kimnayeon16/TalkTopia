@@ -18,9 +18,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Notification;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FcmService {
 
 	private final FirebaseMessaging firebaseMessaging;
@@ -31,7 +33,7 @@ public class FcmService {
 
 	private final VRoomRepository vRoomRepository;
 	public void saveToken(FCMTokenReq fcmTokenReq) throws Exception {
-
+		log.info("fcmTokenReq: " + fcmTokenReq.getUserId());
 		User user = userRepository.findByUserId(fcmTokenReq.getUserId()).orElseThrow(()-> new Exception("유저가 없어0"));
 
 		Token token = tokenRepository.findByUserUserNo(user.getUserNo()).orElseThrow( () -> new Exception("DB에 없는데?"));
