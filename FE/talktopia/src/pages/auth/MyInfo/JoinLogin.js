@@ -9,6 +9,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import style from "./JoinLogin.module.scss";
 import { setCookie } from "../../../cookie";
+// import { GoogleOAuthProvider } from '@react-oauth/google'
+import { GoogleLogin } from '@react-oauth/google'
+
+const GOOGLE_REST_API_KEY = "301972417169-6t0f0ic0ojkaqa97pv0am6g45qv6rlqs.apps.googleusercontent.com";
 
 function JoinLogin(){
     const headers ={
@@ -130,6 +134,8 @@ function JoinLogin(){
     // eslint-disable-next-line
     const [userEmailCorrect, setUserEmailCorrect] = useState(false);
     const [userLanCorrect, setUserLanCorrect] = useState(false);
+
+   
 
     //아이디 유효성
     const onIdJoinHandler = (e) => {
@@ -377,43 +383,49 @@ function JoinLogin(){
     }
 
     //가입하기
-    const onSingUp = (e) => {
+    const onSingUp = async (e) => {
         e.preventDefault();
-
-        console.log(userIdCorrect , userPwCorrect, userNameCorrect, userEmailCorrect, userLanCorrect);
      
         //입력한 정보들이 모두 유효할 경우
         if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
             try{
                 const requestBody = {
-                    userIdJoin,
-                    userName,
-                    userPwJoin,
-                    userEmail,
-                    userLan,
+                    userId: userIdJoin,
+                    userName: userName,
+                    userPw: userPwJoin,
+                    userEmail: userEmail,
+                    userImgUrl: "test",
+                    userLan: userLan,
                 };
      
                 console.log(requestBody);
      
                 const requestBodyJSON = JSON.stringify(requestBody);
-     
-                const response = axios.post(`${BACKEND_URL}/api/v1/join`, requestBodyJSON, {headers});
-                 Swal.fire({
-                    icon: "success",
-                    title: "회원 가입 성공",
-                    text: `TalkTopia의 친구가 되어주셔서 감사합니다 👨🏾‍🤝‍👨🏻`,
-                    confirmButtonText: "확인",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    confirmButtonColor: '#90dbf4',
-                }).then((result) => {
-                    setChange(false);
+
+                console.log(requestBodyJSON);
+
+                axios
+                .post(`${BACKEND_URL}/api/v1/join`, requestBodyJSON, {headers})
+                .then((response) => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "회원 가입 성공",
+                        text: `TalkTopia의 친구가 되어주셔서 감사합니다 👨🏾‍🤝‍👨🏻`,
+                        confirmButtonText: "확인",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        confirmButtonColor: '#90dbf4',
+                    }).then((result) => {
+                        setChange(false);
+                    });
                 })
-                 console.log(response.data);
-             } catch(error){
+                .catch((error) => {
+                    console.log("에러발생",error);
+                })
+            }catch(error){
                  console.error("에러 발생",error);
                  alert("회원가입 실패");
-             }
+            }
 
              setUserIdJoin("");
              setUserJoinPw("");
@@ -425,54 +437,54 @@ function JoinLogin(){
              setUserLan("");
              setPwConfirmMsg("");
              setEmailButton("이메일 인증");
-            }else if(!userIdCorrect){
-                Swal.fire({
-                    icon: "warning",
-                    title: "아이디 중복 확인을 해주세요.",
-                    confirmButtonText: "확인",
-                    confirmButtonColor: '#90dbf4',
-                    timer: 2000,
-                    timerProgressBar: true,
-                })
-            }else if(!userPwCorrect){
-                Swal.fire({
-                    icon: "warning",
-                    title: "비밀번호를 확인해주세요.",
-                    confirmButtonText: "확인",
-                    confirmButtonColor: '#90dbf4',
-                    timer: 2000,
-                    timerProgressBar: true,
-                })
-            }else if(!userNameCorrect){
-                Swal.fire({
-                    icon: "warning",
-                    title: "이름을 입력해주세요.",
-                    confirmButtonText: "확인",
-                    confirmButtonColor: '#90dbf4',
-                    timer: 2000,
-                    timerProgressBar: true,
-                })
-            }else if(!userEmailCorrect){
-                Swal.fire({
-                    icon: "warning",
-                    title: "이메일을 인증해주세요.",
-                    confirmButtonText: "확인",
-                    confirmButtonColor: '#90dbf4',
-                    timer: 2000,
-                    timerProgressBar: true,
-                })
-            }else if(!userLanCorrect){
-                Swal.fire({
-                    icon: "warning",
-                    title: "사용언어를 선택해주세요.",
-                    confirmButtonText: "확인",
-                    confirmButtonColor: '#90dbf4',
-                    timer: 2000,
-                    timerProgressBar: true,
-                })
-            }
-     
-         }
+        }else if(!userIdCorrect){
+            Swal.fire({
+                icon: "warning",
+                title: "아이디 중복 확인을 해주세요.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
+            })
+        }else if(!userPwCorrect){
+            Swal.fire({
+                icon: "warning",
+                title: "비밀번호를 확인해주세요.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
+            })
+        }else if(!userNameCorrect){
+            Swal.fire({
+                icon: "warning",
+                title: "이름을 입력해주세요.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
+            })
+        }else if(!userEmailCorrect){
+            Swal.fire({
+                icon: "warning",
+                title: "이메일을 인증해주세요.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
+            })
+        }else if(!userLanCorrect){
+            Swal.fire({
+                icon: "warning",
+                title: "사용언어를 선택해주세요.",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
+            })
+        }
+    }
+
 
 
 
@@ -489,7 +501,15 @@ function JoinLogin(){
         if(e.key === 'Enter') {
             onLogin();
         }
-      }
+    }
+    
+    const onSuccess = (response) => {
+        console.log("성공", response);
+    };
+
+    const onFailure = (response) => {
+        console.log("실패", response);
+    }
 
 
       return (
@@ -509,8 +529,20 @@ function JoinLogin(){
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
                 <button></button>
                 <div className={`${style.line}`}>SNS계정으로 로그인</div>
-                <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button>
-                <button type="button" className={`${style["go-btn"]}`}><span>구글</span><span className={`${style["span-red"]}`}>로</span> 로그인</button>
+                {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
+
+               
+                    <GoogleLogin
+                            clientId={`${GOOGLE_REST_API_KEY}`}
+                            onSuccess={onSuccess}
+                            onFailure={onFailure}
+                            buttonText="구글로 로그인하기"
+                            cookiePolicy={"single_host_origin"}
+                            // isSignedin={false}
+                            responseType="code"
+                            redirectUri="https://www.google.com/"
+                    />
+                {/* <button type="button" className={`${style["go-btn"]}`} onClick={navigate('/google')}><span>구글</span><span className={`${style["span-red"]}`}>로</span> 로그인</button> */}
                 <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>비밀번호 찾기</span>
@@ -640,21 +672,21 @@ function JoinLogin(){
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>사용 언어&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <select className={`${style.selectLan} ${style["div-input"]}`} value={userLan} onChange={onLanHandler}>
-                            <option value="" disabled>선택하세요</option>
-                            <option value="ko-KR">한국어</option>
-                            <option value="de-DE">독일어</option>
-                            <option value="ru-RU">러시아어</option>
-                            <option value="es-ES">스페인어</option>
-                            <option value="en-US">영어</option>
-                            <option value="it-IT">이탈리아어</option>
-                            <option value="id-ID">인도네시아어</option>
-                            <option value="ja-JP">일본어</option>
-                            <option value="fr-FR">프랑스어</option>
-                            <option value="pt-PT">포르투칼어</option>
-                            <option value="zh-CN">중국어 간체</option>
-                            <option valye="pt-TW">중국어 번체</option>
-                            <option value="hi-IN">힌디어</option>
-                        </select>
+                                <option value="" disabled>선택하세요</option>
+                                <option value="ko-KR">한국어</option>
+                                <option value="de-DE">독일어</option>
+                                <option value="ru-RU">러시아어</option>
+                                <option value="es-ES">스페인어</option>
+                                <option value="en-US">영어</option>
+                                <option value="it-IT">이탈리아어</option>
+                                <option value="id-ID">인도네시아어</option>
+                                <option value="ja-JP">일본어</option>
+                                <option value="fr-FR">프랑스어</option>
+                                <option value="pt-PT">포르투칼어</option>
+                                <option value="zh-CN">중국어 간체</option>
+                                <option valye="pt-TW">중국어 번체</option>
+                                <option value="hi-IN">힌디어</option>
+                            </select>
                         </div>
                     </div>
                     <button className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>

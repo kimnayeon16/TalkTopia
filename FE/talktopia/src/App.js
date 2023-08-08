@@ -38,6 +38,8 @@ import JoinRoom from './pages/video/JoinRoom.js';
 
 import FriendList from './pages/friend/FriendList';
 
+import GoogleLoginButton from './pages/auth/MyInfo/GoogleLoginButton';
+
 function App() {
   return (
     <div className="App">
@@ -72,6 +74,7 @@ function App() {
         {/* 삭제할거 */}
         <Route path="/start" element={<NoStart/>}/>
         <Route path="/nohome" element={<NoHome/>}/>
+        <Route path="/google" element={<GoogleLoginButton/>}/>
 
         {/* 친구목록 */}
         <Route path="/friendList" element={<FriendList/>}/>
