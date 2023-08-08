@@ -20,7 +20,7 @@ public class GoogleReq {
 
 	public User toEntity() {
 		return User.builder()
-			.userName(userName)
+			.userName(userName.split(" ")[0])
 			.userEmail(userEmail)
 			.userId("google" + userId)
 			.providerType(ProviderType.GOOGLE)
