@@ -29,7 +29,7 @@ function SocialLogin(){
           // Redux 상태를 업데이트하는 액션 디스패치
           dispatch(reduxUserInfo(userInfo));
         }
-      }, [dispatch]);
+    }, [dispatch]);
 
     const onLanHandler = (e) => {
         setUserLan(e.target.value);
@@ -39,7 +39,7 @@ function SocialLogin(){
     }
 
     const regist = (e) => {
-        if(userLanCorrect){
+        if(!userLanCorrect){
             Swal.fire({
                 icon: "warning",
                 title: "사용 언어를 선택해주세요!",
@@ -50,11 +50,12 @@ function SocialLogin(){
               });
         }else{
             const requestBody = {
-                userEmail: user.userEmail,
-                userLang: userLan
+                userId: user.userId,
+                userLan: userLan
             }
-
             const requestBodyJSON = JSON.stringify(requestBody);
+
+            console.log(requestBodyJSON);
 
             axios
             .put(`${BACKEND_URL}/api/v1/social/putLang`, requestBodyJSON, {headers})
@@ -68,6 +69,7 @@ function SocialLogin(){
                     timer: 2000,
                     timerProgressBar: true,
                   });
+                  dispatch(reduxUserInfo({ ...user, sttLang: userLan }));
                   navigate('/home');
             })
         }
