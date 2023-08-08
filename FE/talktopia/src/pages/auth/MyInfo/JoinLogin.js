@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import style from "./JoinLogin.module.scss";
 import { setCookie } from "../../../cookie";
 // import { GoogleOAuthProvider } from '@react-oauth/google'
-import { GoogleLogin } from '@react-oauth/google'
+import GoogleLogin from "react-google-login";
 import { motion } from "framer-motion";
 
 function JoinLogin(){
