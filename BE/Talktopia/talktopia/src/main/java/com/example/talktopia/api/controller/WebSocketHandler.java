@@ -65,13 +65,16 @@ public class WebSocketHandler {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(user.getUserId());
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
+
+		log.info(roomExitStatus.toString());
 		String newHostUserId = null;
 		//방이 찾아지지않을때
-		if(roomExitStatus.equals(NO_ONE_IN_ROOM)){
-			messagingTemplate.convertAndSend("/topic/room/" +vrSession, "You Left the room");
-		}
-		//방이 Host가 바뀔때
-		else if(roomExitStatus.equals(EXIT_SUCCESS)) {
+		// if(roomExitStatus.equals(NO_ONE_IN_ROOM)){
+		// 	break;
+		// }
+		// //방이 Host가 바뀔때
+		// else
+		if(roomExitStatus.equals(EXIT_SUCCESS)) {
 			if (isHost(vRoomExitReq.getUserId())) {
 				newHostUserId = chooseNewHost(vrSession);
 				// messagingTemplate.convertAndSendToUser(newHostUserId, "/queue/role-change/" + vrSession,
