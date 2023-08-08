@@ -230,6 +230,19 @@ public class VRoomService {
 
 	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		try {
+			// mapSessions 순회
+			for (Map.Entry<String, Session> entry : mapSessions.entrySet()) {
+				String key = entry.getKey();
+				Session value = entry.getValue();
+				System.out.println("mapSessions - Key: " + key + ", Value: " + value);
+			}
+			log.info("아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
+			// mapSessionToken 순회
+			for (Map.Entry<String, MapSession> entry : mapSessionToken.entrySet()) {
+				String key = entry.getKey();
+				MapSession value = entry.getValue();
+				System.out.println("mapSessionToken - Key: " + key + ", Value: " + value);
+			}
 			log.info(":::::::::::::::"+vRoomExitReq.getUserId());
 			log.info(":::::::::::::::"+vRoomExitReq.getVrSession());
 			log.info(":::::::::::::::"+vRoomExitReq.getToken());
