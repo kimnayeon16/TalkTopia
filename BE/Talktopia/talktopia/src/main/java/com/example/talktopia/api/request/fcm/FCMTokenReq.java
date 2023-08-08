@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class FCMTokenReq {
 
-	String userId;
-	String token;
+	private String userId;
+	private String token;
 
 }
