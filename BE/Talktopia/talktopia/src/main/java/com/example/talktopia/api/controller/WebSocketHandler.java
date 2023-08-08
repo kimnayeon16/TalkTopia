@@ -58,7 +58,8 @@ public class WebSocketHandler {
 		log.info(vRoomExitReq.getVrSession());
 		log.info(vRoomExitReq.getToken());
 		log.info(vRoomExitReq.getUserId());
-
+		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
+		log.info(user.getUserId());
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
 		String newHostUserId = null;
 		//방이 찾아지지않을때
@@ -73,7 +74,7 @@ public class WebSocketHandler {
 				// 	"You are now the host");
 			}
 			List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
-			User user = userRepository.findByUserId(newHostUserId).orElseThrow(()->new Exception("유저가 없습니다"));
+			user = userRepository.findByUserId(newHostUserId).orElseThrow(()->new Exception("유저가 없습니다"));
 			long userId = user.getUserNo();
 			for(Participants parti : participants){
 				user = userRepository.findByUserNo(parti.getUser().getUserNo());
