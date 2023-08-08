@@ -316,9 +316,12 @@ public class UserService {
 			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, joinUser); // refreshToken DB에 저장
 
+		String sttLang = joinUser.getLanguage().getLangStt();
+		String transLang = joinUser.getLanguage().getLangTrans();
+
 		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), null, null, "add");
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add");
 
 	}
 
