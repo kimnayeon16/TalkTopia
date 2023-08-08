@@ -38,7 +38,7 @@ function JoinRoom() {
     const userDataRef = useRef(undefined);  // session Id, user Id 값 ref
 
     // socket 통신
-    const sockJs = new SockJS("https://talktopia:10001/ws");
+    const sockJs = new SockJS(`${BACKEND_URL}/ws`);
     const stomp = Stomp.over(sockJs);
 
 
