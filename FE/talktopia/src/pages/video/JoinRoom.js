@@ -80,7 +80,9 @@ function JoinRoom() {
         return () => {
             // 윈도우 객체에 화면 종료 이벤트 제거
             window.removeEventListener('beforeunload', onBeforeUnload);
-            leaveSession(); // 세션 나가기
+            if (sessionRef.current !== undefined) {
+                leaveSession(); // 세션 나가기
+            }
         };
     }, []);
 
@@ -108,7 +110,7 @@ function JoinRoom() {
         userDataRef.current = undefined;
         stomp.disconnect();
 
-        navigate('/realhome');
+        navigate('/home');
     };
 
     // 세션 떠날 때 요청
@@ -247,6 +249,7 @@ function JoinRoom() {
                             <div className={style['video-call-wrapperr']}>
                                 <div className={style['video-participant']}>
                                     <UserVideoComponent 
+                                        userName={ localUser.userId }
                                         streamManager={ localUser.streamManager }
                                     />
                                 </div>
@@ -254,6 +257,7 @@ function JoinRoom() {
                                 {subscribers.map((sub, i) => (
                                     <div key={`${i}-subscriber`} className={style['video-participant']}>
                                         <UserVideoComponent 
+                                            userName={ localUser.userId }
                                             streamManager={ sub.streamManager }
                                         />
                                     </div>

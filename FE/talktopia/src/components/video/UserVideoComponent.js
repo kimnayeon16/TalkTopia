@@ -6,24 +6,24 @@ import style from './UserVideoComponent.module.css'
 
 function VideoComponent (props) {
     // const userName = JSON.parse(props.streamManager.stream.connection.data).clientData
-    let userName = '';
+    // let userName = '';
 
-    try {
-        const connectionData = JSON.parse(props.streamManager.stream.connection.data);
-        userName = connectionData.clientData;
-    } catch (error) {
-        console.error('Error parsing JSON data:', error);
-    }
+    // try {
+    //     const connectionData = JSON.parse(props.streamManager.stream.connection.data);
+    //     userName = connectionData.clientData;
+    // } catch (error) {
+    //     console.error('Error parsing JSON data:', error);
+    // }
 
     const friendAdd = () => {
-        console.log(userName) // partId
+        console.log(props.userName) // partId
         // userId는 redux에서 가져오면 될듯
     }
 
     return (
         <>
             <div className={style['name-tag']}>
-                <span>{userName}</span>
+                <span>{props.userName}</span>
             </div>
             
             {props.streamManager !== undefined ? (
