@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class VRoomService {
-	private OpenVidu openVidu;
 
 	private Map<String, Session> mapSessions = new HashMap<>();
 
@@ -47,31 +48,31 @@ public class VRoomService {
 	// 유저 이름, <세션이름, 세션토큰>
 	//private Map<String, Map<String, String>> mapUserSession = new HashMap<>();
 
+
 	// openvidu url
-	private String OPENVIDU_URL;
-	// openvidu secret
-	private String SECRET;
+	private final VRoomRepository vroomrepsitory;
+	private final UserRepository userRepository;
+	private final ParticipantsService participantsService;
+	private final ParticipantsRepository participantsRepository;
 
-	private VRoomRepository vroomrepsitory;
-	private UserRepository userRepository;
-	private ParticipantsService participantsService;
+	// @Value("${openvidu.secret}")
+	// private String SECRET;
+	//
+	// @Value("${openvidu.url}")
+	// private String OPENVIDU_URL;
 
-	private ParticipantsRepository participantsRepository;
+	private OpenVidu openVidu;
 
-	public VRoomService() {
-	}
-
-	public VRoomService(String secret, String openvidu_url, VRoomRepository vroomrepsitory,
-		UserRepository userRepository, ParticipantsService participantsService, ParticipantsRepository participantsRepository) {
-		this.SECRET = secret;
-		this.OPENVIDU_URL = openvidu_url;
-		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
+	@Autowired
+	public VRoomService(VRoomRepository vroomrepsitory, UserRepository userRepository,
+		ParticipantsService participantsService, ParticipantsRepository participantsRepository,
+		@Value("${openvidu.url}") String openviduURL, @Value("${openvidu.secret}") String secret) {
 		this.vroomrepsitory = vroomrepsitory;
 		this.userRepository = userRepository;
 		this.participantsService = participantsService;
 		this.participantsRepository = participantsRepository;
+		this.openVidu = new OpenVidu(openviduURL, secret);
 	}
-
 
 	public ConnectionProperties createConnectionProperties(String userId) {
 		String serverData = "{\"serverData\": \"" + userId + "\"}";
@@ -354,26 +355,26 @@ public class VRoomService {
 					log.info("지금 있는것 "+ len);
 				}
 			}
-				if(this.mapSessionToken.get(vrSession).getCurCount()<1){
-					this.mapSessions.remove(vrSession);
-					this.mapSessionToken.remove(vrSession);
-					participantsRepository.deleteByUser_UserNo(user.getUserNo());
-					vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
-				}
-				//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
-				vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
-				if(!vRoom.isVrEnter()){
-					vRoom.setVrEnter(true);
-				}
-				vroomrepsitory.save(vRoom);
-
-				//Vroom Id 찾는다.
-				//user Id 찾는다.
-				//OK
-				//이를통해서 참여자 DB를 삭제한다.
+			if(this.mapSessionToken.get(vrSession).getCurCount()<1){
+				this.mapSessions.remove(vrSession);
+				this.mapSessionToken.remove(vrSession);
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
-
+				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
 			}
+			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
+			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
+			if(!vRoom.isVrEnter()){
+				vRoom.setVrEnter(true);
+			}
+			vroomrepsitory.save(vRoom);
+
+			//Vroom Id 찾는다.
+			//user Id 찾는다.
+			//OK
+			//이를통해서 참여자 DB를 삭제한다.
+			participantsRepository.deleteByUser_UserNo(user.getUserNo());
 
 		}
+
 	}
+}

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.talktopia.api.request.user.GoogleReq;
+import com.example.talktopia.api.request.user.PutLangReq;
 import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.request.user.UserIdPwReq;
 import com.example.talktopia.api.request.user.UserNewTokenReq;
@@ -200,9 +201,7 @@ public class UserService {
 			.orElseThrow(() -> new RuntimeException("유효하지 않은 회원 정보입니다."));
 
 		// 2. 수정
-		updateUser.update(updateUser.getUserNo(), userInfoReq.getUserId(), userInfoReq.getUserPw(),
-			userInfoReq.getUserName(), userInfoReq.getUserEmail(),
-			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()),
+		updateUser.update(userInfoReq.getUserPw(), userInfoReq.getUserName(),
 			languageRepository.findByLangStt(userInfoReq.getUserLan()));
 
 		// 비밀번호 인코딩
@@ -229,9 +228,7 @@ public class UserService {
 		// tmpPw로 유저 정보 변경
 		String tmpPw = userMailService.createKey();
 
-		searchUser.update(searchUser.getUserNo(), userSearchPwReq.getUserId(), tmpPw,
-			userSearchPwReq.getUserName(), searchUser.getUserEmail(),
-			searchUser.getProfileImg(), searchUser.getLanguage());
+		searchUser.update(tmpPw, userSearchPwReq.getUserName(), searchUser.getLanguage());
 
 		// 비밀번호 인코딩
 		searchUser.hashPassword(bCryptPasswordEncoder);
@@ -338,5 +335,23 @@ public class UserService {
 		userRepository.save(joinUser);
 
 		return joinUser;
+	}
+
+	// 추가 정보 넣기
+	@Transactional
+	public Message putLang(PutLangReq putLangReq) {
+
+		User searchUser = userRepository.findByUserEmail(putLangReq.getUserEmail()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
+
+		// 언어 꺼내기
+		Language language = languageRepository.findByLangStt(putLangReq.getUserLan());
+
+		searchUser.update(searchUser.getUserPw(), searchUser.getUserName(), language);
+
+		userRepository.save(searchUser);
+
+		return new Message("추가 정보 입력완료되었습니다.");
+
+
 	}
 }

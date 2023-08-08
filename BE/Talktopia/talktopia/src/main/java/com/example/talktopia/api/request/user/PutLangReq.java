@@ -1,4 +1,4 @@
-package com.example.talktopia_chat.api.request;
+package com.example.talktopia.api.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoomContentRequest {
-	private String sender;
-	private String content;
-	private String sendTime;
+public class PutLangReq {
+
+	private String userEmail;
+	private String userLan;
 }
