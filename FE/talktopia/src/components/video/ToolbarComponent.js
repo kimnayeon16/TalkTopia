@@ -2,7 +2,8 @@ import { FiCamera } from "react-icons/fi";          // video on
 import { FiCameraOff } from "react-icons/fi";       // Video off
 import { BsMic } from "react-icons/bs";             // Mic on
 import { BsMicMute } from "react-icons/bs";         // Mic off
-import { ImExit } from "react-icons/im";          // Leave
+import { ImExit } from "react-icons/im";            // Leave
+import { FaUserFriends } from "react-icons/fa";     // invite friend
 
 import style from "./ToolbarComponent.module.css"
 
@@ -30,6 +31,14 @@ function ToolbarComponent(props) {
                         <FiCameraOff size="24" color="grey"/>
                     </button>
                 )}
+
+                {/* 친구 초대 */}
+                {props.roomType !== 'random' ? (
+                    <button className={style['video-action-button']} onClick={props.inviteFriends}>
+                        <FaUserFriends size="24" color="black" />
+                    </button>
+                ) : null}
+
 
                 <button className={style['video-action-button']} onClick={props.leaveSession}>
                     <ImExit size="24" color="black" />

@@ -10,27 +10,19 @@ import { BACKEND_URL } from '../../utils';
 
 
 function VideoComponent (props) {
-    // const userName = JSON.parse(props.streamManager.stream.connection.data).clientData
-    // let userName = '';
 
-    // try {
-    //     const connectionData = JSON.parse(props.streamManager.stream.connection.data);
-    //     userName = connectionData.clientData;
-    // } catch (error) {
-    //     console.error('Error parsing JSON data:', error);
-    // }
     const user = useSelector((state) => state.userInfo);    // Redux 정보
-
 
     const friendAdd = async () => {
 
         const headers = {
-            'Content-Type' : 'application/json'
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
         }
 
         const requestBody = {
             userId: user.userId,        // 본인 아이디
-            partId: props.userName      // 친구추가하려는 아이디
+            partId: props.userId      // 친구추가하려는 아이디
         };
         const requestBodyJSON = JSON.stringify(requestBody);
 
@@ -44,8 +36,9 @@ function VideoComponent (props) {
         })
     }
 
-    const reportUser = () => {
-        console.log('모달창띄워야할듯')
+    const reportUser = (e) => {
+        e.preventDefault();
+        props.openReportModal(props.userId);
     }
 
     return (
