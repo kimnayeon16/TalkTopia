@@ -27,7 +27,7 @@ import MyInfoPw from './pages/mypage/MyInfoPw.js';
 import Leave from './pages/mypage/Leave.js';
 
 // faq
-import Faq from './pages/faq/Faq.js';
+import Faq from './pages/faq/Faq.tsx';
 import Counsel from './pages/faq/Counsel.js';
 
 import Translation from './apis/translation/GoogleTranslator.js';

@@ -1,52 +1,69 @@
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import style from './NoStart.module.css';
 
-import style from "./NoStart.module.css";
+const imagesData = [
+    process.env.PUBLIC_URL + '/img/cute1.png',
+    process.env.PUBLIC_URL + '/img/cute2.png',
+    process.env.PUBLIC_URL + '/img/cute3.png',
+    process.env.PUBLIC_URL + '/img/cute4.png',
+    // process.env.PUBLIC_URL + '/img/login1.jpg',
+    // process.env.PUBLIC_URL + '/img/login3.jpg',
+    // process.env.PUBLIC_URL + '/img/login6.jpg',
+    // process.env.PUBLIC_URL + '/img/login7.jpg',
+    // process.env.PUBLIC_URL + '/img/login8.jpg',
+    // process.env.PUBLIC_URL + '/img/login9.jpg',
+    // process.env.PUBLIC_URL + '/img/ocean1.jpg',
+    // process.env.PUBLIC_URL + '/img/ocean2.jpg',
+];
 
-import { BACKEND_URL } from "../../utils";
-import axios from "axios";
+const Gallery = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  let globalIndex = 0;
+  let last = { x: 0, y: 0 };
+  let images = [];
 
+  const handleMouseMove = (e) => {
+    if (distanceFromLast(e.clientX, e.clientY) > window.innerWidth / 20) {
+      const lead = images[globalIndex % images.length];
+      const tail = images[(globalIndex - 5) % images.length];
 
-function Start(){
-    let navigate = useNavigate();
-    // 화상 채팅 입장
-    const randomeForeEndter = async () => {
-        const headers = {
-            'Content-Type' : 'application/json'
-        }
+      activate(lead, e.clientX, e.clientY);
 
-        const requestBody = {
-            userId: 'user1234',
-            vr_max_cnt: 4
-        };
+      if (tail) tail.dataset.status = "inactive";
 
-        const requestBodyJSON = JSON.stringify(requestBody);
-        await axios
-        .post(`${BACKEND_URL}/api/v1/room/enter`, requestBodyJSON, {headers})
-        .then((response) => {
-            console.log(response.data.token)
-            navigate('/joinroom', {
-                state: {
-                    myUserName: 'user1234',
-                    token: response.data.token
-                }
-            });
-        })
-        .catch((error) => {
-            console.log("에러 발생", error)
-        })
+      globalIndex++;
     }
+  };
 
+  const distanceFromLast = (x, y) => {
+    return Math.hypot(x - last.x, y - last.y);
+  };
 
+  const activate = (image, x, y) => {
+    image.style.left = `${x}px`;
+    image.style.top = `${y}px`;
+    image.style.zIndex = globalIndex;
 
-    return(
-        <div>
-            <button className={`${style.button}`} onClick={()=>{navigate('/translation')}}>번역 입장</button><br/>
-            <button className={`${style.button}`} onClick={()=>{navigate('/stt')}}>음성 인식 입장</button><br/>
-            <button className={`${style.button}`} onClick={()=>{navigate('/sample')}}>샘플stt</button><br/>
-            <button className={`${style.button}`} onClick={randomeForeEndter}>화상채팅</button><br/>
-            <button className={`${style.button}`} onClick={()=>{navigate('/realhome')}}>이게 진짜 메인페이지</button>
-        </div>
-    )
-}
+    image.dataset.status = "active";
 
-export default Start;
+    last = { x, y };
+  };
+
+  const renderedImages = imagesData.map((imageUrl, index) => (
+    <img
+      key={index}
+      className={`${style.image} ${index === activeIndex ? style.active : style.inactive}`}
+      src={imageUrl}
+      alt={`Image ${index}`}
+      ref={(img) => images[index] = img}
+    />
+  ));
+
+  return (
+    <div className={style["gallery-container"]} onMouseMove={handleMouseMove}>
+      {renderedImages}
+    </div>
+  );
+};
+
+export default Gallery;

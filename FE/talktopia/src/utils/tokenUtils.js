@@ -15,7 +15,7 @@ function IsTokenValid(){
 
     //30초 이하로 남으면 재요청 날릴 것이기 때문에
     //30초를 더한 값을 현재 시간이라고 가정
-    const deadDate = new Date(currentTime.getTime() + 30*1000).toISOString();
+    const deadDate = new Date(currentTime.getTime() + 5 * 60 * 1000).toISOString();
     console.log("30초 뒤 시간: ", deadDate);
 
     //accesToken dead 시간, 현재시간(+30초) 비교하기

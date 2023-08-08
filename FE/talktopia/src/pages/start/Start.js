@@ -1,12 +1,19 @@
 import React from "react";
 import style from "./Start.module.css";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Start = () => {
 
   let navigate = useNavigate();
   
   return (
+    <motion.div
+   /* 2. 원하는 애니메이션으로 jsx를 감싸준다 */
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        exit={{opacity: 0}}
+        >
     <div className={`${style.background}`}>
         <h3 className={`${style.title}`}>TalkTopia</h3>
         <p className={`${style.intro}`}>하나의 세계, 하나의 화상채팅</p>
@@ -46,6 +53,7 @@ const Start = () => {
         </div>
         <button className={`${style.button}`} onClick={()=>{navigate('/regist')}}>TalkTopia로 떠나실래요? <span className={`${style.span}`}>⛵</span></button>
     </div>
+    </motion.div>
   );
 };  
 
