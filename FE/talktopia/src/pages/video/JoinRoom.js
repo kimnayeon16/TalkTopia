@@ -264,9 +264,20 @@ function JoinRoom() {
         setIsReportModalOpen(false);
     }
 
-    // 친구 초대 
-    const inviteFriends = () => {
-        console.log('친구 초대할거임.')
+    // 친구 초대 목록 조회
+    const inviteFriends = async () => {
+        const headers = {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+        }
+
+        axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
+        .then((response) => {
+            console.log("친구초대목록", response)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
     }
     
     return (
