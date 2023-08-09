@@ -8,6 +8,6 @@ import com.example.talktopia.db.entity.user.ProfileImg;
 @Repository
 public interface ProfileImgRepository extends JpaRepository<ProfileImg, Long> {
 
-	ProfileImg findByImgUrl(String imgUrl);
+	ProfileImg findByImgNo(long imgNo);
 
 }
