@@ -3,7 +3,7 @@ package com.example.talktopia_chat.common.util.scheduler;
 import java.util.List;
 import java.util.Set;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundZSetOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,11 +27,13 @@ public class WriteBackByRedisCapacityScheduler {
 	private final WriteBackRedisByKey writeBackRedisByKey;
 
 	// 1시간 마다 200사이즈 넘는 Redis -> MySQL
-	@Scheduled(cron = "0 0 0/1 * * *") // 1시간마다 실행
+	// @Scheduled(cron = "0 0 0/1 * * *") // 1시간마다 실행
+	@Scheduled(cron = "0 * * * * *") // 1분마다 실행
 	public void writeBack() {
 		log.info("writeBack 시작");
 
-		Set<String> allKeys = redisTemplate.keys("*");
+		// Set<String> allKeys = redisTemplate.keys("*");
+		Set<String> allKeys = redisTemplate.opsForZSet().scan()
 		for(String key : allKeys){
 			Long zSetSize = redisTemplate.opsForZSet().size(key);
 			if(zSetSize!=null && zSetSize>=200){
