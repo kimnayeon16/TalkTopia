@@ -12,7 +12,7 @@ import { BACKEND_URL } from '../../utils';
 function UserVideoComponent (props) {
 
     const user = useSelector((state) => state.userInfo);    // Redux 정보
-
+    console.log(user.userId, props.userId, user.userId !== props.userId)
     const friendAdd = async () => {
 
         const headers = {

@@ -35,6 +35,7 @@ function JoinRoom() {
 
     // Layout 및 참여자 수
     const [participantCount, setParticipantCount] = useState(1)
+    console.log(participantCount)
     const layoutPlan = {
         1: style.oneParticipant,
         2: style.twoParticipants,
