@@ -12,6 +12,8 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.example.talktopia.db.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserMailService {
 	private final JavaMailSender mailSender;
 	private final String adminEmail = "wbo1026@naver.com";
+	private final UserRepository userRepository;
 
 	private String code;
 
@@ -113,6 +116,9 @@ public class UserMailService {
 		MimeMessage message;
 
 		if(type.equals("회원가입")) {
+			userRepository.findByUserEmail(userEmail).ifPresent(user -> {
+				throw new RuntimeException("유저가 이미 존재합니다.");
+			});
 			code = createKey(); // 랜덤 인증번호 생성
 			message = createMessage(userEmail); // 메일 발송
 		} else {
