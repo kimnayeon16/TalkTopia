@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.talktopia.api.request.FCMFailMessage;
 import com.example.talktopia.api.request.fcm.FCMSendFriendMessage;
 import com.example.talktopia.api.request.fcm.FCMSendVroomMessage;
 import com.example.talktopia.api.request.fcm.FCMTokenReq;
@@ -39,6 +40,12 @@ public class FCMController {
 	@PostMapping("/sendFriendMessage")
 	public Message sendFriendMessage(@RequestBody FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
 		return fcmService.sendFriendMessage(fcmSendFriendMessage);
+	}
+
+	@PostMapping("/failFCMMessage")
+	public Message failFCMMessage(@RequestBody FCMFailMessage fcmFailMessage) throws Exception {
+		return fcmService.failFCMMessage(fcmFailMessage);
+
 	}
 
 
