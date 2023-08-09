@@ -60,6 +60,8 @@ function SocialLogin(){
             axios
             .put(`${BACKEND_URL}/api/v1/social/putLang`, requestBodyJSON, {headers})
             .then((response) => {
+                console.log(response);
+                console.log(response.data);
                 Swal.fire({
                     icon: "success",
                     title: "회원가입 성공!",
@@ -69,8 +71,22 @@ function SocialLogin(){
                     timer: 2000,
                     timerProgressBar: true,
                   });
-                  dispatch(reduxUserInfo({ ...user, sttLang: userLan }));
+                  dispatch(reduxUserInfo({ ...user, sttLang: userLan, transLang: response.data}));
+                  const userInfoJSON = localStorage.getItem("UserInfo");
+
+                  if (userInfoJSON) {
+                    // JSON 문자열을 객체로 변환
+                    const userInfo = JSON.parse(userInfoJSON);
+                  
+                    // sttLang 값을 변경하고 싶은 userLan 값으로 업데이트
+                    const newUserInfo = {
+                      ...userInfo,
+                      sttLang: userLan,
+                      transLang: response.data
+                    };
+                    localStorage.setItem("UserInfo", JSON.stringify(newUserInfo));
                   navigate('/home');
+                }
             })
         }
     }

@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 // Router
 //start
 import NoStart from './pages/start/NoStart.js';
+import NnoStart from './pages/start/NnoStart.js';
 import Start from './pages/start/Start.js';
 //auth
 import Regist from './pages/auth/MyInfo/JoinLogin.js';
@@ -72,7 +73,8 @@ function App() {
         <Route path="/bye" element={<Leave/>}/>
 
         {/* 삭제할거 */}
-        <Route path="/start" element={<NoStart/>}/>
+        <Route path="/start1" element={<NoStart/>}/>
+        <Route path="/start" element={<NnoStart/>}/>
         <Route path="/nohome" element={<NoHome/>}/>
         <Route path="/google" element={<GoogleLoginButton/>}/>
 
