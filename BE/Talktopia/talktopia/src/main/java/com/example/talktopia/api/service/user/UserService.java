@@ -64,7 +64,7 @@ public class UserService {
 
 		// req -> toEntity -> save
 		User joinUser = userInfoReq.toEntity(languageRepository.findByLangStt(userInfoReq.getUserLan()),
-			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()));
+			profileImgRepository.findByImgNo(2L));
 		joinUser.hashPassword(bCryptPasswordEncoder);
 
 		log.info("userId: " + joinUser.getUserId());
