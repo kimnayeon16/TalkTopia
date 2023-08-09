@@ -9,7 +9,7 @@ import style from './UserVideoComponent.module.css'
 import { BACKEND_URL } from '../../utils';
 
 
-function VideoComponent (props) {
+function UserVideoComponent (props) {
 
     const user = useSelector((state) => state.userInfo);    // Redux 정보
 
@@ -49,20 +49,25 @@ function VideoComponent (props) {
             
             {props.streamManager !== undefined ? (
                 <div>                
-                    <OpenViduVideoComponent streamManager={props.streamManager} />
+                    <OpenViduVideoComponent 
+                        streamManager={props.streamManager} 
+                        participantCount={ props.participantCount } 
+                    />
                 </div>
             ) : null}
 
-            <div className={style['participant-actions']}>
-                <button className={style['participant-actions-button']} onClick={ friendAdd }>
-                    <FaUserPlus size="14"/>
-                </button>
-                <button className={style['participant-actions-button']} onClick={ reportUser }>
-                    <FaUserTimes size="14"/>
-                </button>
-            </div>
+            {user.userId !== props.userId ? (
+                <div className={style['participant-actions']}>
+                    <button className={style['participant-actions-button']} onClick={ friendAdd }>
+                        <FaUserPlus size="14"/>
+                    </button>
+                    <button className={style['participant-actions-button']} onClick={ reportUser }>
+                        <FaUserTimes size="14"/>
+                    </button>
+                </div>
+            ) : null}
         </>
     );
 }
 
-export default VideoComponent;
+export default UserVideoComponent;

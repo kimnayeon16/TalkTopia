@@ -38,7 +38,7 @@ public class WriteBackRedisByKey {
 		// Redis에 저장된 키 값으로 ZSet조회 => list로 반환
 		List<SaveChatRoomContentRedis> chatList = ChatSetToListUtil.convert(sessionId, redisTemplate);
 
-		// ZSet의 값들을 SaveChatRoomContent 엔티티로 변환하여 MySQL에 저장
+		// chatList의 값들을 SaveChatRoomContent 엔티티로 변환하여 MySQL에 저장
 		List<SaveChatRoomContent> chatListIntoMySQL = new ArrayList<>();
 		for (SaveChatRoomContentRedis chat : chatList) {
 			SaveChatRoomContent scrc = convertToSaveChatRoomContent(chat);
