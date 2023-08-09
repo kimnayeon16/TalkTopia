@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -67,14 +68,13 @@ public class ChatService {
 	// 사용자 아이디로 채팅방 조회
 	public String findParticipantsSession(String id1, String id2) {
 		// 내가 participant일때 채팅방 찾음
-		ChatRoomParticipants chatRoomParticipants = chatRoomParticipantsRepository.findByCrpParticipantAndAndCrpParticipantOther(
+		Optional<ChatRoomParticipants> areThereParticipants = chatRoomParticipantsRepository.findByCrpParticipantAndAndCrpParticipantOther(
 			id1,
-			id2).orElseThrow(()->new RuntimeException(id1+"과 "+id2+"가 참여자인 채팅방이 없습니다."));
-		// chatRoomParticipants가 가진 chatroom 엔티티에서 세션아이디 반환.
-		try {
-			return chatRoomParticipants.getChatRoom().getCrSession();
-		}
-		catch (NullPointerException e){
+			id2);
+
+		if(areThereParticipants.isPresent()){
+			return areThereParticipants.get().getChatRoom().getCrSession();
+		} else{
 			return null;
 		}
 	}
