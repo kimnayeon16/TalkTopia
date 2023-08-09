@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { BACKEND_URL } from '../../utils';
+import { BACKEND_URL, BACKEND_URL_CHAT } from '../../utils';
+import ChatWindow from './ChatWindow';
 
-function RealHome() {
+function FriendList() {
   const user = useSelector((state) => state.userInfo);
 
   // State 생성
   const [friendList, setFriendList] = useState([]);
+   // 채팅창 표시 여부를 관리하는 상태
+   const [showChat, setShowChat] = useState(false);
+   const [selectedFriend, setSelectedFriend] = useState(null);
+   // 채팅방 session
+   const [sessionId, setSessionId] = useState("");
 
   const headers = {
     'Content-Type': 'application/json',
@@ -19,12 +25,30 @@ function RealHome() {
     axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
       .then((response) => {
         console.log(response.data);
-        // setFriendList(response.data);
+        setFriendList(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  // enter chat
+  const enterChat = (friendId) => {
+    const requestBody = {
+      "userId" :user.userId,
+      "friendId" : friendId
+    }
+    axios.post(`${BACKEND_URL_CHAT}/api/v1/chat/enter`, {requestBody}  ,{ headers })
+      .then((response) => {
+        console.log("enter chat:", response.data);
+        // setSessionId(response.data.sessionId);
+        setSelectedFriend(friendId);
+        setShowChat(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   useEffect(() => {
     getFriendList();
@@ -33,15 +57,22 @@ function RealHome() {
   return (
     <div>
       {
-        friendList.map((friend, i) => (
+        friendList.map((friendId, i) => (
           <div key={i}>
-            <p>{friend.id}</p>
-            {/* 기타 친구 정보를 화면에 출력하고 싶은 경우 추가 */}
+            <p>내 친구{friendId}:  <button id="chat" onClick={()=>{enterChat(friendId)}}>채팅하기</button> </p>
+            
           </div>
         ))
-      }
+
+    }
+    { /* 채팅창 렌더링 */}
+    {
+        showChat && selectedFriend &&
+         ( <ChatWindow friend={selectedFriend} className={showChat ? 'show-chat' : ''} /> )
+    }
     </div>
   );
 }
 
-export default RealHome;
+
+export default FriendList;

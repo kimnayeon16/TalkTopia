@@ -187,6 +187,7 @@ function Home(){
                 <button className={`${style["button-together-1"]}`} onClick={()=>{enterCommonRoom(4)}}>랜덤 4인</button>
                 <button className={`${style["button-together-1"]}`} onClick={()=>{enterCommonRoom(6)}}>랜덤 6인</button>
                 <button className={`${style["button-together-1"]}`} onClick={()=>{enterFriendRoom(6)}}>방 만들기</button>
+                <button className={`${style["button-together-1"]}`} onClick={()=>{navigate('/friendList')}}>친구 목록 보기</button>
             </div>
 
             {/* <button style={buttonStyle} onClick={()=>{navigate('/friendList')}}>친구목록</button> */}

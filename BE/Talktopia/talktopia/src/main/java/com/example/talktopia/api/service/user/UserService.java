@@ -64,14 +64,15 @@ public class UserService {
 
 		// req -> toEntity -> save
 		User joinUser = userInfoReq.toEntity(languageRepository.findByLangStt(userInfoReq.getUserLan()),
-			profileImgRepository.findByImgUrl(userInfoReq.getUserImgUrl()));
+			profileImgRepository.findByImgNo(2L));
 		joinUser.hashPassword(bCryptPasswordEncoder);
 
 		log.info("userId: " + joinUser.getUserId());
 		log.info("userEmail: " + joinUser.getUserEmail());
 		// DB에 넣기전 마지막 점검
-		userRepository.findByUserIdAndUserEmail(joinUser.getUserId(), joinUser.getUserEmail())
-			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
+		userRepository.findByUserEmail(joinUser.getUserEmail()).ifPresent(user -> {
+			throw new RuntimeException("회원 아이디가 존재합니다");
+		});
 		userRepository.save(joinUser);
 		return new Message("회원 가입에 성공하였습니다.");
 	}
@@ -339,9 +340,9 @@ public class UserService {
 
 	// 추가 정보 넣기
 	@Transactional
-	public Message putLang(PutLangReq putLangReq) {
+	public String putLang(PutLangReq putLangReq) {
 
-		User searchUser = userRepository.findByUserEmail(putLangReq.getUserEmail()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
+		User searchUser = userRepository.findByUserId(putLangReq.getUserId()).orElseThrow(() -> new RuntimeException("등록된 회원이 아닙니다."));
 
 		// 언어 꺼내기
 		Language language = languageRepository.findByLangStt(putLangReq.getUserLan());
@@ -350,7 +351,7 @@ public class UserService {
 
 		userRepository.save(searchUser);
 
-		return new Message("추가 정보 입력완료되었습니다.");
+		return language.getLangTrans();
 
 
 	}

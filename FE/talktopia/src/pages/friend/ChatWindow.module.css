@@ -1,0 +1,16 @@
+/* styles.css */
+.chat-window {
+    position: fixed;
+    top: 0;
+    right: -400px; /* 처음에는 화면 밖으로 위치 */
+    width: 400px;
+    height: 100%;
+    background-color: white;
+    transition: right 0.3s ease-in-out;
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .show-chat {
+    right: 0; /* 화면 내로 이동하여 표시 */
+  }
+  

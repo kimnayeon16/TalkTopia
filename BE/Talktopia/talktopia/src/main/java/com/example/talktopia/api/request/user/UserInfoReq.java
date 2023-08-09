@@ -21,7 +21,6 @@ public class UserInfoReq {
 	private String userPw;
 	private String userName;
 	private String userEmail;
-	private String userImgUrl;
 	private String userLan;
 
 	public User toEntity(Language language, ProfileImg profileImg) {

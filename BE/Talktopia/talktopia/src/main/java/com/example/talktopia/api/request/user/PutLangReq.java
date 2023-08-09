@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PutLangReq {
 
-	private String userEmail;
+	private String userId;
 	private String userLan;
 }

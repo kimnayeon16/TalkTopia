@@ -11,9 +11,9 @@ import lombok.Getter;
 @Getter
 // value는 redis의 keyspace
 // timeToLive는 만료시간이고 -1L은 만료시간 없음
-@RedisHash(value="save_chat_room_content", timeToLive = -1L)
+// @RedisHash(value="save_chat_room_content", timeToLive = -1L) <- redis repository안쓰면 필요X
 public class SaveChatRoomContentRedis {
-	@Id // keyspace:id
+	// @Id // keyspace:id
 	private String scrcSession; // scrcSession(세션아이디)가 redis key.
 
 	private String scrcSenderId;

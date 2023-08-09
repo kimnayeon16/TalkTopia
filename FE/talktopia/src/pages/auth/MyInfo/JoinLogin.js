@@ -416,7 +416,7 @@ function JoinLogin(){
                     userName: userName,
                     userPw: userPwJoin,
                     userEmail: userEmail,
-                    userImgUrl: "test",
+                    // userImgUrl: "test",
                     userLan: userLan,
                 };
      

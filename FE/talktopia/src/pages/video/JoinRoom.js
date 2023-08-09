@@ -33,6 +33,18 @@ function JoinRoom() {
     const [openviduToken, setOpenviduToken] = useState(undefined);
     const [roomType, setRoomType] = useState(undefined);
 
+    // Layout 및 참여자 수
+    const [participantCount, setParticipantCount] = useState(1)
+    console.log(participantCount)
+    const layoutPlan = {
+        1: style.oneParticipant,
+        2: style.twoParticipants,
+        3: style.threeParticipants,
+        4: style.fourParticipants,
+        5: style.fiveParticipants,
+        6: style.sixParticipants
+      };
+
     // 새로운 OpenVidu 객체 생성
     const [OV, setOV] = useState(<OpenVidu />);
 
@@ -125,26 +137,6 @@ function JoinRoom() {
             vrSession: userDataRef.current.mySessionId
         };
         stomp.send("/app/api/v1/room/exit/"+userDataRef.current.mySessionId, {}, JSON.stringify(exitRequest));
-        // const headers = {
-        //     'Content-Type' : 'application/json'
-        // }
-
-        // const requestBody = {
-        //     userId: userDataRef.current.myUserName,
-        //     token: user.accessToken,
-        //     vrSession: userDataRef.current.mySessionId
-        // };
-        // console.log(requestBody)
-    
-        // const requestBodyJSON = JSON.stringify(requestBody);
-        // await axios
-        // .post(`${BACKEND_URL}/api/v1/room/exit/${userDataRef.current.mySessionId}`, requestBodyJSON, {headers})
-        // .then((response) => {
-        //     console.log(response)
-        // })
-        // .catch((error) => {
-        //     console.log("에러 발생", error);
-        // })
     };
 
     // 세션 생성 및 세션에서 이벤트가 발생할 때의 동작을 지정 
@@ -172,11 +164,13 @@ function JoinRoom() {
 
             setSubscribers((prev) => [...prev, newUser]);   // 새 구독자에 대한 상태 업데이트
             console.log(newUser.userId, "님이 접속했습니다.");
+            setParticipantCount((prev) => (prev + 1))       // 참여자 수 증가
         });
 
         // Session 개체에서 제거된 관련 subsrciber를 subsribers 배열에서 제거
         mySession.on('streamDestroyed', (event) => {
             setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber.streamManager !== event.stream.streamManager));
+            setParticipantCount((prev) => (prev - 1))       // 참여자 수 감소
             // console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.");
         });
 
@@ -249,7 +243,7 @@ function JoinRoom() {
         }
     };
 
-    // 모달 창
+    // 신고 모달 창
     const [isReportModalOpen, setIsReportModalOpen] = useState(false)
     const [isReportUserId, setIsReportUserId] = useState(undefined)
 
@@ -264,9 +258,20 @@ function JoinRoom() {
         setIsReportModalOpen(false);
     }
 
-    // 친구 초대 
-    const inviteFriends = () => {
-        console.log('친구 초대할거임.')
+    // 친구 초대 목록 조회
+    const inviteFriends = async () => {
+        const headers = {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+        }
+
+        axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
+        .then((response) => {
+            console.log("친구초대목록", response)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
     }
     
     return (
@@ -276,20 +281,22 @@ function JoinRoom() {
                     <div className={style['app-main']}>
                         <div className={style['video-container']}>
                             <div className={style['video-call-wrapperr']}>
-                                <div className={style['video-participant']}>
+                                <div className={`${style['video-participant']} ${layoutPlan[participantCount]}`}>
                                     <UserVideoComponent 
                                         userId={ localUser.userId }
                                         userName={ localUser.userName }
                                         streamManager={ localUser.streamManager }
+                                        participantCount={ participantCount }
                                     />
                                 </div>
                                 
                                 {subscribers.map((sub, i) => (
-                                    <div key={`${i}-subscriber`} className={style['video-participant']}>
+                                    <div key={`${i}-subscriber`} className={`${style['video-participant']} ${layoutPlan[participantCount]}`}>
                                         <UserVideoComponent 
                                             userId={ sub.userId }
                                             userName={ sub.userName }
                                             streamManager={ sub.streamManager }
+                                            participantCount={ participantCount }
                                             openReportModal = { openReportModal }
                                         />
                                     </div>

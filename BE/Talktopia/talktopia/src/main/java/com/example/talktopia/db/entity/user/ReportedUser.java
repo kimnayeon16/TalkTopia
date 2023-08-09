@@ -1,6 +1,7 @@
 package com.example.talktopia.db.entity.user;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -48,24 +49,30 @@ public class ReportedUser {
 	private String ruBody;
 
 	@CreatedDate
-	@Column(name = "rl_create_time")
+	@Column(name = "ru_create_time")
 	private LocalDateTime ruCreateTime;
+
+	@CreatedDate
+	@Column(name = "ru_vr_session")
+	private String ruVrSession;
 
 	@OneToOne
 	@JoinColumn(name = "user_no")
 	private User user;
 
 	@OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL)
-	private List<Category> categoryList;
+	private List<Category> categoryList = new ArrayList<>();
 
 	@Builder
-	public ReportedUser(long ruId, long ruReportCount, String ruReporter, String ruBully, String ruBody, User user,LocalDateTime ruCreateTime) {
+	public ReportedUser(long ruId, long ruReportCount, String ruReporter, String ruBully, String ruBody,
+		User user,LocalDateTime ruCreateTime,String ruVrSession) {
 		this.ruId = ruId;
 		this.ruReportCount = ruReportCount;
 		this.ruReporter = ruReporter;
 		this.ruCreateTime=ruCreateTime;
 		this.ruBully = ruBully;
 		this.ruBody = ruBody;
+		this.ruVrSession=ruVrSession;
 		setUserStatus(user);
 	}
 
