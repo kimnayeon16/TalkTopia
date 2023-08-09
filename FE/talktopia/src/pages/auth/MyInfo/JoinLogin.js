@@ -293,25 +293,44 @@ function JoinLogin(){
         e.preventDefault();
         
         if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0 && emailValid){
-            setCountdown(180);
-            setEmailButton("전송 완료");
-            setEmailConfirmWindow(true);
-            Swal.fire({
-                icon: "success",
-                title: "입력하신 이메일 주소로 <br/> 인증번호가 발송됐습니다.",
-                confirmButtonText: "확인",
-                confirmButtonColor: '#90dbf4',
-                timer: 1500,
-                timerProgressBar: true,
-            })
+            // setCountdown(180);
+            // setEmailButton("전송 완료");
+            // setEmailConfirmWindow(true);
+            // Swal.fire({
+            //     icon: "success",
+            //     title: "입력하신 이메일 주소로 <br/> 인증번호가 발송됐습니다.",
+            //     confirmButtonText: "확인",
+            //     confirmButtonColor: '#90dbf4',
+            //     timer: 1500,
+            //     timerProgressBar: true,
+            // })
     
             await axios
             .get(`${BACKEND_URL}/api/v1/join/checkEmail/${userEmail}`, {headers})
             .then((response) =>{
+                setCountdown(180);
+                setEmailButton("전송 완료");
+                setEmailConfirmWindow(true);
+                Swal.fire({
+                    icon: "success",
+                    title: "입력하신 이메일 주소로 <br/> 인증번호가 발송됐습니다.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 1500,
+                    timerProgressBar: true,
+                })
                 console.log(response);
                 setEmailConfirmServer(response.data.message);
             })
             .catch((error) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "이미 존재하는 이메일입니다.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                    timer: 1500,
+                    timerProgressBar: true,
+                })
             console.log("에러 발생", error);
             })
         }else{

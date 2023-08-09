@@ -21,6 +21,7 @@ function Home(){
 
     useEffect(()=>{
         const lang = user.sttLang;
+        setMylang(lang);
         if(lang === `ko-KR`){
             setMylang("한국어");
         }else if(lang === `en-US`){
@@ -59,6 +60,16 @@ function Home(){
           dispatch(reduxUserInfo(userInfo));
         }
       }, [dispatch]);
+
+    //   useEffect(() => {
+    //     // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+    //     const storedUserInfo = localStorage.getItem('UserInfo');
+    //     if (storedUserInfo) {
+    //       const userInfo = JSON.parse(storedUserInfo);
+    //       // Redux 상태를 업데이트하는 액션 디스패치
+    //       dispatch(reduxUserInfo(userInfo));
+    //     }
+    //   }, []);
 
 
     //로그아웃
