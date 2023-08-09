@@ -36,10 +36,35 @@
 }
 
 .video-participant {
-  flex-basis: calc(33.3% - 20px);
+  /* flex-basis: calc(33.3% - 20px); */
   margin: 5px;
   position: relative;
 }
+
+.oneParticipant {
+  flex-basis: calc(100% - 20px);
+}
+
+.twoParticipants {
+  flex-basis: calc(50% - 20px);
+}
+
+.threeParticipants {
+  flex-basis: calc(40% - 20px);
+}
+
+.fourParticipants {
+  flex-basis: calc(40% - 20px);
+}
+
+.fiveParticipants {
+  flex-basis: calc(33.3% - 20px);
+}
+
+.sixParticipants {
+  flex-basis: calc(33.3% - 20px);
+}
+
 
 .video-div-line {
   height: 30px;
