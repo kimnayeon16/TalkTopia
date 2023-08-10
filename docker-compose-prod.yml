@@ -49,14 +49,14 @@ services:
       - 443:443
     networks:
       - talktopia_network
-  redis:
-    image: redis
-    container_name: redis
-    hostname: talktopia.site
-    ports:
-      - 6379:6379
-    networks:
-      - talktopia_network
+#  redis:
+#    image: redis
+#    container_name: redis
+#    hostname: talktopia.site
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - talktopia_network
 networks:
   talktopia_network:
     driver: bridge
