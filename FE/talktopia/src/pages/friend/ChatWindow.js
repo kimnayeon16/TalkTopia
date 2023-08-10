@@ -56,7 +56,7 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
 
     // 웹소켓 연결
     newStomp.connect({}, (frame) => {
-      console.log("웹소켓 연결 완료 stomp=>", stomp)
+      console.log("웹소켓 연결 완료 stomp=>", newStomp)
       newStomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
         showChatMsg(JSON.parse(message));  // subscribe결과 화면에 출력
       })

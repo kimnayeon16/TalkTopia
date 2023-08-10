@@ -38,7 +38,7 @@ public class SaveChatRoomContentRedisService {
 	 * */
 	// Redis에 저장된 캐시정보 갱신. 캐시가 없을 경우엔 생성함.
 	// value는 캐시 이름이고 key는 캐시할 키
-	@CachePut(value = "chats", key = "#saveChatRoomContentRedis.scrcSession", cacheManager = "rcm")
+	// @CachePut(value = "chats", key = "#saveChatRoomContentRedis.scrcSession", cacheManager = "rcm")
 	public void saveChat(SaveChatRoomContentRedis scrc) {
 		String scrcSession = scrc.getScrcSession();
 
@@ -59,7 +59,7 @@ public class SaveChatRoomContentRedisService {
 	 * ================ get chat =================
 	 * */
 	// 채팅 메세지를 캐싱하여 동일한 쿼리를 redis에 계속 실행할 필요 없음
-	@Cacheable(value = "chats", key = "#scrcSession", cacheManager = "rcm")
+	// @Cacheable(value = "chats", key = "#scrcSession", cacheManager = "rcm")
 	public EnterChatResponse getRedisChat(String scrcSession) {
 		
 		// ZSet에서 scrcSession을 키값으로 하는 데이터 리스트 반환
