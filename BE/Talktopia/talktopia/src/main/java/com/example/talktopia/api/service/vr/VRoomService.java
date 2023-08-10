@@ -370,6 +370,7 @@ public class VRoomService {
 	}
 
 
+	@Transactional
 	public RoomExitStatus exitRoom(VRoomExitReq vRoomExitReq) throws Exception {
 		try {
 			List<String> vRooms = vroomrepsitory.findAllIds();
