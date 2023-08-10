@@ -1,9 +1,13 @@
 import { useCallback, useState } from 'react'
+import axios from 'axios';
+import { useSelector } from "react-redux";
+import { BACKEND_URL } from '../../utils';
+
 import style from './InviteModalComponent.module.css'
 
 
-
 function InviteModalComponent(props) {
+    const user = useSelector((state) => state.userInfo);    // Redux 정보
     const checkBoxList = props.inviteFriendsList
 
     const [checkedList, setCheckedList] = useState([]);
@@ -27,9 +31,30 @@ function InviteModalComponent(props) {
         checkedItemHandler(value, e.target.checked);;
     }
 
-    const onSubmit = useCallback((e) => {
+    const onSubmit = useCallback(async (e) => {
         e.preventDefault();
         console.log('checkdList: ', checkedList)
+        
+        const headers = {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+        }
+
+        const requestBody = {
+            friendId: checkedList,
+            vrSession: props.vrSession,
+            userId: user.userId,        // 본인 아이디
+        };
+        const requestBodyJSON = JSON.stringify(requestBody);
+
+        await axios
+        .post(`${BACKEND_URL}/api/v1/fcm/sendVroomMessage`, requestBodyJSON, {headers})   // 여기부터 다시 수정해야함.
+        .then((response) => {
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
         // props.closeInviteModal();
     }, [checkedList]);
 

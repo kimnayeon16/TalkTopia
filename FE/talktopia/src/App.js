@@ -1,5 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
 
 
 // Router
@@ -42,7 +43,18 @@ import ChatWindow from './pages/friend/ChatWindow';
 import GoogleLoginButton from './pages/auth/MyInfo/GoogleLoginButton';
 import { AnimatePresence } from "framer-motion";
 
+// FCM
+import ServiceWorkerListener from './pages/auth/fcm/ServiceWorkerListener';
+
 function App() {
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
+  const handleMessage = (payload) => {
+    setModalContent(payload.notification.body); // 받는 내용
+    setShowModal(true);
+  };
+
   return (
     <div className="App">
       <AnimatePresence>
@@ -85,6 +97,8 @@ function App() {
         <Route path="/chat" element={<ChatWindow />} />
       </Routes>
       </AnimatePresence>
+
+      <ServiceWorkerListener onMessage={handleMessage} />
     </div>
   );
 }
