@@ -7,8 +7,12 @@ import org.springframework.data.redis.core.RedisHash;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 // value는 redis의 keyspace
 // timeToLive는 만료시간이고 -1L은 만료시간 없음
 // @RedisHash(value="save_chat_room_content", timeToLive = -1L) <- redis repository안쓰면 필요X
