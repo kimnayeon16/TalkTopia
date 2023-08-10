@@ -41,4 +41,14 @@ public class ChatRoomParticipants {
 		this.crpParticipantOther = crpParticipantOther;
 		this.chatRoom = chatRoom;
 	}
+
+	@Override
+	public String toString() {
+		return "ChatRoomParticipants{" +
+			"crpNo=" + crpNo +
+			", crpParticipant='" + crpParticipant + '\'' +
+			", crpParticipantOther='" + crpParticipantOther + '\'' +
+			", chatRoom=" + chatRoom +
+			'}';
+	}
 }

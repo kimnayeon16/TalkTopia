@@ -103,6 +103,7 @@ public class ChatService {
 			.crpParticipantOther(friendId)
 			.build();
 		newChatRoomParticipants = chatRoomParticipantsRepository.save(newChatRoomParticipants);
+		log.info("새로운 참여자정보: "+newChatRoomParticipants.toString());
 
 		// 세션아이디 반환
 		return sessionId;
