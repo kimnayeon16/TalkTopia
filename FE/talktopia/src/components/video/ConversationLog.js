@@ -83,12 +83,13 @@ function ConversationLog(props) {
     
         recognitionInstance.onend = function (event) {
             //Fired when the speech recognition service has disconnected.
-            if (recognitionEnableRef.current) {
-                recognitionInstance.start();
-                console.log('재연결 되었습니다.')
-            } else {
-                console.log('한 뭉탱이 인식이 끝났습니다.');
-            }
+            // if (recognitionEnableRef.current) {
+            //     recognitionInstance.start();
+            //     console.log('재연결 되었습니다.')
+            // } else {
+            //     console.log('한 뭉탱이 인식이 끝났습니다.');
+            // }
+            console.log('한 뭉탱이 인식이 끝났습니다.');
         }
     
         recognitionInstance.onnomatch = function (event) {

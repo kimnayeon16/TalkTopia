@@ -11,6 +11,7 @@ import ToolbarComponent from '../../components/video/ToolbarComponent';
 import Chat from '../../components/video/Chat'
 import ConversationLog from '../../components/video/ConversationLog';
 import ReportModalComponent from '../../components/video/ReportModalComponent';
+import InviteModalComponent from '../../components/video/InviteModalComponent';
 import { BACKEND_URL } from '../../utils';
 
 import style from './JoinRoom.module.css'
@@ -258,6 +259,10 @@ function JoinRoom() {
         setIsReportModalOpen(false);
     }
 
+    // 친구 초대 모달 창
+    const [inviteFriendsList, setInviteFriendsList] = useState(undefined);
+    const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
     // 친구 초대 목록 조회
     const inviteFriends = async () => {
         const headers = {
@@ -267,11 +272,15 @@ function JoinRoom() {
 
         axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
         .then((response) => {
-            console.log("친구초대목록", response)
+            setInviteFriendsList(response.data);     
+            setIsInviteModalOpen(true);
         })
         .catch((error) => {
             console.log("에러 발생", error);
         })
+    }
+    const closeInviteModal = () => {
+        setIsInviteModalOpen(false);
     }
     
     return (
@@ -345,6 +354,15 @@ function JoinRoom() {
                     <ReportModalComponent 
                         reportUserId={ isReportUserId }
                         closeReportModal={ closeReportModal }
+                    />
+                </div>
+            ) : null}
+
+            {isInviteModalOpen ? (
+                <div className={style['report-modal-window']}>
+                    <InviteModalComponent
+                        inviteFriendsList={ inviteFriendsList }
+                        closeInviteModal={ closeInviteModal }
                     />
                 </div>
             ) : null}
