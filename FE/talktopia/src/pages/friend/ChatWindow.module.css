@@ -1,16 +1,91 @@
 /* styles.css */
 .chat-window {
-    position: fixed;
-    top: 0;
-    right: -400px; /* 처음에는 화면 밖으로 위치 */
-    width: 400px;
-    height: 100%;
-    background-color: white;
+    width: 450px;
+    height: 500px;
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    color: rgb(59, 59, 59);
     transition: right 0.3s ease-in-out;
-    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
-  }
+    z-index: 1;
+    box-sizing: border-box;
+
+    /* blur */
+    background: rgba( 255, 255, 255, 0.25 );
+    backdrop-filter: blur( 7.5px );
+    -webkit-backdrop-filter: blur( 7.5px );
+
+    box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+    border-radius: 20px;
+}
+
+.chat >*{
+  /* border-radius: 20px; */
+  margin: 10px 0 ;
+}
+
+.hide-chat{
+  right: -450px; /* 처음에는 화면 밖으로 위치 */
+}
   
-  .show-chat {
+.show-chat {
     right: 0; /* 화면 내로 이동하여 표시 */
-  }
-  
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+
+.chat-header {
+  background-color: rgb(198, 198, 198);
+  word-break: break-all;
+  padding: 10px;
+  text-align: center;
+  flex: 0;
+}
+
+
+
+.chat-content{
+  background-color: yellow;
+  flex: 1;
+  overflow-y: scroll;
+
+}
+/* 스크롤바 */
+.chat-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chat-content::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  /* background-clip: padding-box; */
+  border: 2px solid transparent;
+}
+
+
+
+.chat-input {
+  background-color: bisque;
+  height: 30px;
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+.chat-input input{
+  grid-column: 1;
+}
+.chat-input button{
+  background-color: aqua;
+  grid-column: 2;
+}

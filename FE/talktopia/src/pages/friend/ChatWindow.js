@@ -4,43 +4,132 @@ import { useSelector } from 'react-redux';
 import { BACKEND_URL, BACKEND_URL_CHAT } from '../../utils';
 import SockJS from 'sockjs-client'; // <-- 수정
 import Stomp from "stompjs";        // <-- 수정
+import style from './ChatWindow.module.css';
+// import allStyle from './Friend.module.css';
 
-function ChatWindow({friend, sessionId}) {
+function ChatWindow({friend, sessionId, showChat, chatLog}) {
   const user = useSelector((state) => state.userInfo);
 
-  // State 생성
-  const [friendList, setFriendList] = useState([]);
+
+  /* state start */
+  const [chatMsg, setChatMsg] = useState("");
+  // 채팅 내용
+  const [chatLog2, setChatLog2] = useState(chatLog)
+  /* state end */
+
 
   const headers = {
     'Content-Type': 'application/json',
     // 'Authorization': `Bearer ${user.accessToken}`,
   };
 
-  // websocket 함수들
+
+  /* websocket start */
+  var sockJs;
+  var stomp;
+  // var sockJs= SockJS(`${BACKEND_URL_CHAT}/chat-server`); 
+  // var stomp = Stomp.over(sockJs);
+
   const connect = () =>{ 
-    var sockJs = SockJS(`${BACKEND_URL_CHAT}/chat-server`);
-    var stomp = Stomp.over(sockJs);
+    // 이전에 연결 돼있으면
+    if (stomp && stomp.connected ) {
+      stomp.disconnect(function(){
+        console.log("disconnect!")
+      }); // 이전 연결 끊기
+    }
 
-    // 웹 소켓 연결
-    stomp.connect({}, (frame) => {
+
+    sockJs = SockJS(`${BACKEND_URL_CHAT}/chat-server`);
+    stomp = Stomp.over(sockJs);
+
+
+    // 웹소켓 연결
+    return new Promise((resolve, reject)=>{
+      stomp.connect({}, (frame) => {
+        console.log("웹소켓 연결 완료")
         stomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
-            console.log("JSON.parse(message.body)", JSON.parse(message.body));
+          showChatMsg(JSON.parse(message));  // subscribe결과 화면에 출력
+          resolve(); //연결 완료 후 프로미스 resolve()
         })
+      })
     })
+  }
 
+  // 웹소켓 서버로 메세지 전달
+  const sendChatMsg = () =>{
+    if(stomp){
+      const sendMessage = {
+        "sender" : user.userId,
+        "content" : chatMsg
+      }
+      stomp.send(`/app/send/${sessionId}`, {}, JSON.stringify(sendMessage));
+    }
+  }
+  /* websocket end */
+
+
+  const showChatMsg = (message)=>{
+    const newChatLog = [...chatLog, message];
+    setChatLog2(newChatLog); // chatLog를 업데이트하고 화면을 다시 렌더링
   }
   
 
   useEffect(() => {
-    connect();
+    if(showChat && sessionId){
+        connect();
+    }
   }, []); // componentDidMount에서 한 번만 호출하도록 빈 배열 전달
 
-  // 여기에 채팅창 컴포넌트의 내용을 작성합니다.
+
+
   return (
-    <div className="chat-window">
+    <div className={`${style["chat-window"]}  ${style[showChat]}`}>
       {/* 채팅창 내용 */}
-      <h2>채팅창 컨텐츠</h2>
-      <input type='text' placeholder='뭐라도 입력'></input>
+      <div className={`${style["chat"]}`}>
+
+
+        <div className={`${style["chat-header"]}`}>
+          <h2>{friend}와의 채팅</h2>
+        </div>
+
+
+        <div id="chat-content" className={`${style["chat-content"]}`}>
+          {
+            chatLog.map((chat, i) => (
+              <div key={i} className={`${style["chat-msg-parent"]}`}>
+                {chat.scrcSender == user.userId &&
+                  // 채팅을 보낸사람이 나일때
+                  <div className={`${style["my-chat-msg"]}`}>
+                    <span>{chat.scrcSender}</span>
+                    <span>{chat.scrcSendTime}</span>
+                    <div className={`${style["chat-msg"]}`}>{chat.scrcContent}
+                    </div>
+                  </div>
+                }
+
+                {chat.scrcSender == user.userId &&  // 채팅을 보낸사람이 친구일때
+                  <div className={`${style["friend-chat-msg"]}`}>
+                    <span>{chat.scrcSender}</span>
+                    <span>{chat.scrcSendTime}</span>
+                    <div className={`${style["chat-msg"]}`}>{chat.scrcContent}
+                    </div>
+                  </div>
+                }
+              </div>
+            ))
+          }
+        </div>
+
+
+        <div className={`${style["chat-input"]}`}>
+          <input type='text' placeholder='채팅 입력...' 
+            onChange={e=>setChatMsg(e.target.value)}>
+          </input>
+          <button className={`${style["send-btn"]}`} onClick={sendChatMsg}>전송</button>
+        </div>
+
+
+      </div>
     </div>
   );
 }
