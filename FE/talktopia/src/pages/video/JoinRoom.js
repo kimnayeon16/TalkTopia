@@ -322,7 +322,8 @@ function JoinRoom() {
                     {localUser.userId !== undefined && localUser.streamManager !== undefined && (
                         <div className={style['right-side']}>
                             <div className={style['conversation-container']}>
-                                <ConversationLog 
+                                <ConversationLog
+                                    isAudioActive={ localUser.isAudioActive }
                                     myUserName={ localUser.userId }
                                     mainStreamManager={ localUser.streamManager }
                                 />

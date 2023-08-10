@@ -3,9 +3,12 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { BACKEND_URL, BACKEND_URL_CHAT } from '../../utils';
 import ChatWindow from './ChatWindow';
+import style from './FriendList.module.css';
 
 function FriendList() {
   const user = useSelector((state) => state.userInfo);
+
+
 
   // State 생성
   const [friendList, setFriendList] = useState([]);
@@ -14,13 +17,17 @@ function FriendList() {
    const [selectedFriend, setSelectedFriend] = useState(null);
    // 채팅방 session
    const [sessionId, setSessionId] = useState("");
+   // 채팅 내용
+   const [chatLog, setChatLog] = useState([])
 
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${user.accessToken}`,
   };
 
-  // 친구 목록을 불러오는 함수
+
+
+  /* 친구 목록 불러오기 */
   const getFriendList = () => {
     axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
       .then((response) => {
@@ -32,6 +39,8 @@ function FriendList() {
       });
   };
 
+
+
   // enter chat
   const enterChat = (friendId) => {
     const requestBody = {
@@ -41,7 +50,12 @@ function FriendList() {
     axios.post(`${BACKEND_URL_CHAT}/api/v1/chat/enter`, {requestBody}  ,{ headers })
       .then((response) => {
         console.log("enter chat:", response.data);
-        // setSessionId(response.data.sessionId);
+
+        /* enter response */
+        setSessionId(response.data.sessionId)
+        setChatLog(response.data.chatList) 
+
+        /* chatWindow 모달용 */
         setSelectedFriend(friendId);
         setShowChat(true);
       })
@@ -50,25 +64,29 @@ function FriendList() {
       });
   }
 
+
+
   useEffect(() => {
     getFriendList();
   }, []); // componentDidMount에서 한 번만 호출하도록 빈 배열 전달
 
-  return (
-    <div>
+
+
+  return ( 
+    <div className={`${style["friend-list-body"]}`}>
       {
         friendList.map((friendId, i) => (
           <div key={i}>
-            <p>내 친구{friendId}:  <button id="chat" onClick={()=>{enterChat(friendId)}}>채팅하기</button> </p>
-            
+            <p>내 친구{friendId}:  <button className={`${style["send-btn"]}`} onClick={()=>{enterChat(friendId)}}>채팅하기</button> </p>
           </div>
         ))
 
-    }
+       }
     { /* 채팅창 렌더링 */}
+    {/* <ChatWindow friend={selectedFriend} sessionId={sessionId}  showChat={showChat ? 'show-chat' : 'hide-chat'} chatLog={chatLog} /> */}
     {
-        showChat && selectedFriend &&
-         ( <ChatWindow friend={selectedFriend} className={showChat ? 'show-chat' : ''} /> )
+      showChat && selectedFriend 
+      &&(<ChatWindow friend={selectedFriend} sessionId={sessionId}  showChat={showChat ? 'show-chat' : 'hide-chat'} chatLog={chatLog} />)
     }
     </div>
   );
