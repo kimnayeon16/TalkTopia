@@ -9,12 +9,21 @@ import style from './ChatWindow.module.css';
 
 function ChatWindow({friend, sessionId, showChat, chatLog}) {
   const user = useSelector((state) => state.userInfo);
-
+  
+  useEffect(() => {
+    
+    if (showChat && sessionId && !stomp) { // !stomp : 웹소켓 연결 안됐을때만 connect
+      connect();
+    }
+  }, []); // componentDidMount에서 한 번만 호출하도록 빈 배열 전달
 
   /* state start */
   const [chatMsg, setChatMsg] = useState("");
   // 채팅 내용
   const [chatLog2, setChatLog2] = useState(chatLog)
+  // 웹소켓 전용 sockJs, stomp
+  const[sockJs, setSockJs] = useState();
+  const[stomp, setStomp] = useState();
   /* state end */
 
 
@@ -25,8 +34,6 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
 
 
   /* websocket start */
-  var sockJs;
-  var stomp;
   // var sockJs= SockJS(`${BACKEND_URL_CHAT}/chat-server`); 
   // var stomp = Stomp.over(sockJs);
 
@@ -39,25 +46,28 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
     }
 
 
-    sockJs = SockJS(`${BACKEND_URL_CHAT}/chat-server`);
-    stomp = Stomp.over(sockJs);
+    const newSockJs = new SockJS(`${BACKEND_URL_CHAT}/chat-server`);
+    setSockJs(newSockJs);
+    
+    const newStomp = Stomp.over(newSockJs);
+    setStomp(newStomp);
 
+    console.log("connect실행!! stomp=>", stomp)
 
     // 웹소켓 연결
-    return new Promise((resolve, reject)=>{
-      stomp.connect({}, (frame) => {
-        console.log("웹소켓 연결 완료")
-        stomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
-          showChatMsg(JSON.parse(message));  // subscribe결과 화면에 출력
-          resolve(); //연결 완료 후 프로미스 resolve()
-        })
+    newStomp.connect({}, (frame) => {
+      console.log("웹소켓 연결 완료 stomp=>", stomp)
+      newStomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
+        showChatMsg(JSON.parse(message));  // subscribe결과 화면에 출력
       })
     })
   }
 
   // 웹소켓 서버로 메세지 전달
   const sendChatMsg = () =>{
+    console.log("메세지 보내기 실행!! stomp=>", stomp)
     if(stomp){
+      console.log("메세지 보내기 진짜 된다!!!")
       const sendMessage = {
         "sender" : user.userId,
         "content" : chatMsg
@@ -74,11 +84,6 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
   }
   
 
-  useEffect(() => {
-    if(showChat && sessionId){
-        connect();
-    }
-  }, []); // componentDidMount에서 한 번만 호출하도록 빈 배열 전달
 
 
 

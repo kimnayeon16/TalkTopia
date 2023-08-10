@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import com.example.talktopia_chat.api.request.ChatRoomContentRequest;
 import com.example.talktopia_chat.api.service.ChatService;
 import com.example.talktopia_chat.api.service.SaveChatRoomContentRedisService;
+import com.example.talktopia_chat.common.util.DateFormatPattern;
 import com.example.talktopia_chat.db.entity.SaveChatRoomContentRedis;
 
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class WebsocketChatController {
 			.scrcSession(sessionId)
 			.scrcSenderId(chatRoomContentRequest.getSender())
 			.scrcContent(chatRoomContentRequest.getContent())
-			.scrcSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS")))
+			.scrcSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DateFormatPattern.get())))
 			.build();
 		saveChatRoomContentRedisService.saveChat(content);
 

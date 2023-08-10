@@ -47,7 +47,8 @@ function FriendList() {
       "userId" :user.userId,
       "friendId" : friendId
     }
-    axios.post(`${BACKEND_URL_CHAT}/api/v1/chat/enter`, {requestBody}  ,{ headers })
+    console.log("enter request body: ", requestBody)
+    axios.post(`${BACKEND_URL_CHAT}/api/v1/chat/enter`, JSON.stringify(requestBody)  ,{ headers })
       .then((response) => {
         console.log("enter chat:", response.data);
 
@@ -86,7 +87,11 @@ function FriendList() {
     {/* <ChatWindow friend={selectedFriend} sessionId={sessionId}  showChat={showChat ? 'show-chat' : 'hide-chat'} chatLog={chatLog} /> */}
     {
       showChat && selectedFriend 
-      &&(<ChatWindow friend={selectedFriend} sessionId={sessionId}  showChat={showChat ? 'show-chat' : 'hide-chat'} chatLog={chatLog} />)
+      &&(<ChatWindow
+        friend={selectedFriend}
+        sessionId={sessionId}
+        showChat={showChat ? 'show-chat' : 'hide-chat'}
+        chatLog={chatLog} />)
     }
     </div>
   );
