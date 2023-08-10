@@ -41,15 +41,10 @@ public class WebsocketChatController {
 	public void streamText(@Payload ChatRoomContentRequest chatRoomContentRequest,
 		@DestinationVariable("crId") String sessionId) {
 
+		System.out.println("=======================웹소켓컨트롤러=======================");
 		System.out.println("sender: " + chatRoomContentRequest.getSender());
 		System.out.println("content: " + chatRoomContentRequest.getContent());
 		System.out.println("session id: " + sessionId);
-
-		// 웹소켓 주소에 담긴 세션아이디를 long으로 변환
-		// long crId = Long.parseLong(id);
-
-		// // 채팅 내용 MySQL에 저장 (실험용)
-		// chatService.saveIntoMySQL(chatRoomContentRequest, crId);
 
 		// 채팅 내용 Redis에 저장
 		SaveChatRoomContentRedis content = SaveChatRoomContentRedis.builder()

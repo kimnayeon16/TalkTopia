@@ -86,8 +86,8 @@ public class SaveChatRoomContentRedisService {
 		// 찾아진 no로 채팅 로그들 데려옴
 		List<SaveChatRoomContent> saveChatRoomContentList = saveChatRoomContentRepository.findByChatRoom_crNo(
 			chatRoom.getCrNo());
-		if (saveChatRoomContentList.size() == 0)
-			new RuntimeException(session + "을 세션으로 하는 채팅방 로그가 없습니다.");
+		// if (saveChatRoomContentList.size() == 0)
+		// 	new RuntimeException(session + "을 세션으로 하는 채팅방 로그가 없습니다.");
 
 		// jpa entity => redis entity => redis에 저장
 		for (SaveChatRoomContent scrc : saveChatRoomContentList) {

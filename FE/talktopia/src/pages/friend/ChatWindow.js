@@ -7,7 +7,7 @@ import Stomp from "stompjs";        // <-- 수정
 import style from './ChatWindow.module.css';
 // import allStyle from './Friend.module.css';
 
-function ChatWindow({friend, sessionId, showChat, chatLog}) {
+function ChatWindow({friend, sessionId, showChat, chats}) {
   const user = useSelector((state) => state.userInfo);
   
   useEffect(() => {
@@ -16,11 +16,14 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
       connect();
     }
   }, []); // componentDidMount에서 한 번만 호출하도록 빈 배열 전달
+  useEffect(()=>{
+    setChatLog(chats)
+  }, [chats])
 
   /* state start */
   const [chatMsg, setChatMsg] = useState("");
   // 채팅 내용
-  const [chatLog2, setChatLog2] = useState(chatLog)
+  const [chatLog, setChatLog] = useState(chats)
   // 웹소켓 전용 sockJs, stomp
   const[sockJs, setSockJs] = useState();
   const[stomp, setStomp] = useState();
@@ -58,7 +61,9 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
     newStomp.connect({}, (frame) => {
       console.log("웹소켓 연결 완료 stomp=>", newStomp)
       newStomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
-        showChatMsg(JSON.parse(message));  // subscribe결과 화면에 출력
+        console.log(message)
+        // console.log("subscribe==>", JSON.parse(message));
+        // showChatMsg(JSON.parse(message));  // subscribe결과 화면에 출력
       })
     })
   }
@@ -80,11 +85,8 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
 
   const showChatMsg = (message)=>{
     const newChatLog = [...chatLog, message];
-    setChatLog2(newChatLog); // chatLog를 업데이트하고 화면을 다시 렌더링
+    setChatLog(newChatLog); // chatLog를 업데이트하고 화면을 다시 렌더링
   }
-  
-
-
 
 
   return (
@@ -99,23 +101,25 @@ function ChatWindow({friend, sessionId, showChat, chatLog}) {
 
 
         <div id="chat-content" className={`${style["chat-content"]}`}>
-          {
+          { chatLog && 
             chatLog.map((chat, i) => (
               <div key={i} className={`${style["chat-msg-parent"]}`}>
-                {chat.scrcSender == user.userId &&
+                {chat.scrcSenderId == user.userId &&
                   // 채팅을 보낸사람이 나일때
                   <div className={`${style["my-chat-msg"]}`}>
-                    <span>{chat.scrcSender}</span>
-                    <span>{chat.scrcSendTime}</span>
+                    <div>{chat.scrcSession}</div>
+                    <span>보낸사람 : <b>{chat.scrcSenderId}</b></span>
+                    <span className={`${style["chat-send-time"]}`}>{chat.scrcSendTime}</span>
                     <div className={`${style["chat-msg"]}`}>{chat.scrcContent}
                     </div>
                   </div>
                 }
 
-                {chat.scrcSender == user.userId &&  // 채팅을 보낸사람이 친구일때
+                {chat.scrcSenderId != user.userId &&  // 채팅을 보낸사람이 친구일때
                   <div className={`${style["friend-chat-msg"]}`}>
-                    <span>{chat.scrcSender}</span>
-                    <span>{chat.scrcSendTime}</span>
+                    <div>{chat.scrcSession}</div>
+                    <span>보낸사람 : <b>{chat.scrcSenderId}</b>  </span>
+                    <span className={`${style["chat-send-time"]}`}>{chat.scrcSendTime}</span>
                     <div className={`${style["chat-msg"]}`}>{chat.scrcContent}
                     </div>
                   </div>
