@@ -29,11 +29,11 @@ public class Participants {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long partId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vroom_id")
 	private VRoom vRoom;
 
