@@ -403,6 +403,7 @@ function JoinRoom() {
             {isInviteModalOpen ? (
                 <div className={style['report-modal-window']}>
                     <InviteModalComponent
+                        vrSession={ userDataRef.current.mySessionId }
                         inviteFriendsList={ inviteFriendsList }
                         closeInviteModal={ closeInviteModal }
                     />
