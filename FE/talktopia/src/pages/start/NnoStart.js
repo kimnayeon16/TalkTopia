@@ -6,15 +6,30 @@ function NnoStart(){
     const navigate = useNavigate();
 
     const [animatePenguin, setAnimatePenguin] = useState(false);
+    const [splash, setSplash] = useState(false);
 
     const handleButtonClick = () => {
         setAnimatePenguin(true);
-        // navigate('/regist');
-      };
+
+        setTimeout(() => {
+            setSplash(true);
+          }, 4000); // 10초 지연
+
+          setTimeout(() => {
+            setSplash(false);
+          }, 5000); // 10초 지연
+
+        setTimeout(() => {
+            navigate('/regist');
+          }, 5100); // 10초 지연
+    };
 
     return(
         <div className={`${style.background}`}>
-            <h2 className={`${style.h2}`}>바다 너머로, 더 넓은 세상을 만나보세요</h2>
+            <img className={`${style.cloud}`} src="/img/cloud1.png" alt=""/>
+            <img className={`${style.cloud2}`} src="/img/cloud2.png" alt=""/>
+            <h2 className={`${style.h2}`}>바다 속, 더 넓은 세상을 만나보세요</h2>
+            <p className={`${style.p}`}>다양한 국가의 사람들과 화상 채팅을 해보실래요?</p>
             <div className={`${style.content}`}>
                 <div className={style["content__container"]}>
                     <ul className={style["content__container__list"]}>
@@ -33,9 +48,13 @@ function NnoStart(){
                     </ul>
                 </div>
             </div>
-            <button className={`${style.button}`} onClick={handleButtonClick}>TalkTopia로 떠나실래요? <span className={`${style.span}`}>⛵</span></button>
-            {/* <img className={`${animatePenguin ? style.penguin : style.penguin1}`} src="/img/그림4.png" alt=""/> */}
-            <img className={`${style.penguin}`} src="/img/그림4.png" alt=""/>
+            <img className={`${style.cloud3}`} src="/img/cloud3.png" alt=""/>
+            <button className={`${style.button}`} onClick={handleButtonClick}>TalkTopia로 가기 <span className={`${style.span}`}>⛵</span></button>
+            <img className={`${animatePenguin ? style.penguin : style.penguin1}`} src="/img/그림4.png" alt=""/>
+            {/* <img className={`${style.penguin}`} src="/img/그림4.png" alt=""/> */}
+            <img className={`${style.wave}`} src="/img/boat3.png" alt=""/>
+            <img className={`${style.wave1}`} src="/img/boat5.png" alt=""/>
+            <img className={`${splash ? style.splash : style.splash1 }`} src="/img/splash.png" alt=""/>
         </div>
     )
 }
