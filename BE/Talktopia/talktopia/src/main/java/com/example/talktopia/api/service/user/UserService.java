@@ -103,7 +103,7 @@ public class UserService {
 
 		return new UserLoginRes(userIdPwReq.getUserId(), dbSearchUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans(), null);
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans(), null, dbSearchUser.getProfileImg().getImgUrl());
 
 	}
 
@@ -320,7 +320,7 @@ public class UserService {
 
 		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add");
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add", joinUser.getProfileImg().getImgUrl());
 
 	}
 

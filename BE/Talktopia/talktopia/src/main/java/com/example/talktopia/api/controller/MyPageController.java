@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,7 +67,7 @@ public class MyPageController {
 	}
 
 	@PutMapping("/profile/{userId}")
-	public ResponseEntity<UserImageRes> uploadFile(@RequestBody MultipartFile profile,@PathVariable("userId")String userId) throws
+	public ResponseEntity<UserImageRes> uploadFile(@RequestParam MultipartFile profile,@PathVariable("userId")String userId) throws
 		Exception {
 		ProfileImg profileImg = userService.uploadFile(profile,userId);
 		UserImageRes userImageRes = new UserImageRes(profileImg.getImgUrl());
