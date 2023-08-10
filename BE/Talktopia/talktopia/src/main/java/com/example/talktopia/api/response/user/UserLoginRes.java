@@ -20,5 +20,6 @@ public class UserLoginRes {
 	private String sttLang;
 	private String transLang;
 	private String msg;
+	private String profileUrl;
 }
 
