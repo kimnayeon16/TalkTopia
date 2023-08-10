@@ -1,6 +1,7 @@
 package com.example.talktopia.api.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,7 @@ public class ReminderService {
 				reminderResList.add(reminderRes);
 			}
 		}
+		Collections.reverse(reminderResList);
 		return ResponseEntity.ok(reminderResList);
 	}
 
