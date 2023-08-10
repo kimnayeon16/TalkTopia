@@ -4,6 +4,7 @@ import { BsMic } from "react-icons/bs";             // Mic on
 import { BsMicMute } from "react-icons/bs";         // Mic off
 import { ImExit } from "react-icons/im";            // Leave
 import { FaUserFriends } from "react-icons/fa";     // invite friend
+import { FiHash } from "react-icons/fi";            // 주제 제시
 
 import style from "./ToolbarComponent.module.css"
 
@@ -11,6 +12,13 @@ import style from "./ToolbarComponent.module.css"
 function ToolbarComponent(props) {
     return (
         <>
+            <div className={style['video-call-actions']}>
+                <button className={`${style['video-game-button']}`} >
+                    <FiHash size="24" color="black" />
+                    <p>주제 제시</p>
+                </button>  
+            </div>
+
             <div className={style['video-call-actions']}>
                 {props.audioEnabled ? (
                     <button className={`${style['video-action-button']}`} onClick={props.toggleAudio}>
