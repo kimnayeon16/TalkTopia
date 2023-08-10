@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.mail.Part;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.vr.VRoomExitReq;
+import com.example.talktopia.api.response.ParticipantDTO;
 import com.example.talktopia.api.service.vr.VRoomService;
 import com.example.talktopia.common.exception.ExceptionSample;
 import com.example.talktopia.common.message.RoomExitStatus;
@@ -73,19 +75,23 @@ public class WebSocketHandler {
 				newHostUserId = chooseNewHost(vrSession);
 
 				List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
+				List<ParticipantDTO> participantDTOs = participants.stream()
+					.map(participant -> new ParticipantDTO(participant.getUser().getUserId(), participant.getRoomRole()))
+					.collect(Collectors.toList());
+				// List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
 
-				long userId = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"))
-					.getUserNo();
-				// long userId = user.getUserNo();
-				for (Participants parti : participants) {
-					user = userRepository.findByUserNo(parti.getUser().getUserNo());
-					if (user.getUserNo() == userId) {
-						roomRoleHashMap.put(user.getUserId(), RoomRole.HOST);
-					} else {
-						roomRoleHashMap.put(user.getUserId(), RoomRole.GUEST);
-					}
-				}
-				messagingTemplate.convertAndSend("/topic/room/" + vrSession, roomRoleHashMap);
+				// long userId = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"))
+				// 	.getUserNo();
+				// // long userId = user.getUserNo();
+				// for (Participants parti : participants) {
+				// 	user = userRepository.findByUserNo(parti.getUser().getUserNo());
+				// 	if (user.getUserNo() == userId) {
+				// 		roomRoleHashMap.put(user.getUserId(), RoomRole.HOST);
+				// 	} else {
+				// 		roomRoleHashMap.put(user.getUserId(), RoomRole.GUEST);
+				// 	}
+				// }
+				messagingTemplate.convertAndSend("/topic/room/" + vrSession, participantDTOs);
 			}
 			else{
 				messagingTemplate.convertAndSend("/topic/room/" + vrSession, vRoomExitReq.getUserId()+"님이 나가셨습니다");
@@ -101,15 +107,20 @@ public class WebSocketHandler {
 		if (participantsOptional.isEmpty()) {
 			throw new Exception("방이 터졌습니다");
 		}
-		log.info("바뀌어"+participantsOptional.get(0).getUser().getUserId());
-		log.info("바뀌어"+participantsOptional.get(0).toString());
-		log.info("바뀌어"+participantsOptional.get(0).getRoomRole().toString());
-		// participantsList를 활용하여 원하는 작업 수행
-		participantsOptional.get(0).setRoomRole(RoomRole.HOST);
-		log.info("바뀜!!!"+participantsOptional.get(0).getRoomRole().toString());
-		participantsRepository.save(participantsOptional.get(0));
+		Participants participant = participantsOptional.get(0);
 
-		return participantsOptional.get(0).getUser().getUserId();
+		// participantsOptional.get(0).setRoomRole(RoomRole.HOST);
+		participant.setRoomRole(RoomRole.HOST);
+		participantsRepository.save(participant);
+		// log.info("바뀌어"+participantsOptional.get(0).getUser().getUserId());
+		// log.info("바뀌어"+participantsOptional.get(0).toString());
+		// log.info("바뀌어"+participantsOptional.get(0).getRoomRole().toString());
+		// // participantsList를 활용하여 원하는 작업 수행
+		// participantsOptional.get(0).setRoomRole(RoomRole.HOST);
+		// log.info("바뀜!!!"+participantsOptional.get(0).getRoomRole().toString());
+		// participantsRepository.save(participantsOptional.get(0));
+
+		return participant.getUser().getUserId();
 
 	}
 
