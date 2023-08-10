@@ -67,7 +67,7 @@ public class MyPageController {
 	}
 
 	@PutMapping("/profile/{userId}")
-	public ResponseEntity<UserImageRes> uploadFile(@RequestParam MultipartFile profile,@PathVariable("userId")String userId) throws
+	public ResponseEntity<UserImageRes> uploadFile(@RequestParam("profile") MultipartFile profile,@PathVariable("userId")String userId) throws
 		Exception {
 		ProfileImg profileImg = userService.uploadFile(profile,userId);
 		UserImageRes userImageRes = new UserImageRes(profileImg.getImgUrl());
