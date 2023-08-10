@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.example.talktopia.db.entity.user.ReportedUser;
 
 @Repository
-public interface ReporstListRepository extends JpaRepository<ReportedUser, Long> {
+public interface ReportListRepository extends JpaRepository<ReportedUser, Long> {
 	ReportedUser findByUser_UserNo(long userNo);
 
 	@Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM ReportedUser r WHERE r.ruVrSession = :vrSession AND r.ruBully = :bully AND r.ruReporter = :reporter")
