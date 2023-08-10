@@ -51,9 +51,11 @@
 
 
 .chat-content{
-  background-color: yellow;
+  background-color: rgb(207, 207, 207);
   flex: 1;
   overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px;
 
 }
 /* 스크롤바 */
@@ -88,4 +90,27 @@
 .chat-input button{
   background-color: aqua;
   grid-column: 2;
+}
+
+
+/* 채팅메세지 */
+.chat-msg-parent{
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
+.my-chat-msg *{
+  color: darkblue;
+}
+.friend-chat-msg{
+  color:red;
+}
+.chat-msg{
+  border : 1px solid red;
+  font-size: larger;
+  word-break: break-all;
+}
+.chat-send-time{
+  color: gray;
+  font-size : small;
+  float: right;
 }

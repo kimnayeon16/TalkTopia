@@ -18,7 +18,7 @@ function FriendList() {
    // 채팅방 session
    const [sessionId, setSessionId] = useState("");
    // 채팅 내용
-   const [chatLog, setChatLog] = useState([])
+   const [chats, setChats] = useState([])
 
   const headers = {
     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ function FriendList() {
 
         /* enter response */
         setSessionId(response.data.sessionId)
-        setChatLog(response.data.chatList) 
+        setChats(response.data.chatList) 
 
         /* chatWindow 모달용 */
         setSelectedFriend(friendId);
@@ -91,7 +91,7 @@ function FriendList() {
         friend={selectedFriend}
         sessionId={sessionId}
         showChat={showChat ? 'show-chat' : 'hide-chat'}
-        chatLog={chatLog} />)
+        chats={chats} />)
     }
     </div>
   );
