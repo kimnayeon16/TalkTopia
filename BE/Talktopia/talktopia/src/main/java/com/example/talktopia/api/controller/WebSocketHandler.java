@@ -64,24 +64,30 @@ public class WebSocketHandler {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(user.getUserId());
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
-		String newHostUserId = null;
+		String newHostUserId;
+
+		//방이 존재하는데 한명만 나간상태
 		if(roomExitStatus.equals(EXIT_SUCCESS)) {
+			//이거는 방장일때 권한을 넘겨줘야해
 			if (isHost(vRoomExitReq.getUserId(),vRoomExitReq)) {
 				newHostUserId = chooseNewHost(vrSession);
-			}
-			List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
-			user = userRepository.findByUserId(newHostUserId).orElseThrow(()->new Exception("유저가 없습니다"));
-			long userId = user.getUserNo();
-			for(Participants parti : participants){
-				user = userRepository.findByUserNo(parti.getUser().getUserNo());
-				if(user.getUserNo()==userId){
-					roomRoleHashMap.put(user.getUserId(),RoomRole.HOST);
+
+				List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
+				user = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"));
+				long userId = user.getUserNo();
+				for (Participants parti : participants) {
+					user = userRepository.findByUserNo(parti.getUser().getUserNo());
+					if (user.getUserNo() == userId) {
+						roomRoleHashMap.put(user.getUserId(), RoomRole.HOST);
+					} else {
+						roomRoleHashMap.put(user.getUserId(), RoomRole.GUEST);
+					}
 				}
-				else{
-					roomRoleHashMap.put(user.getUserId(),RoomRole.GUEST);
-				}
+				messagingTemplate.convertAndSend("/topic/room/" + vrSession, roomRoleHashMap);
 			}
-			messagingTemplate.convertAndSend("/topic/room/" + vrSession,roomRoleHashMap);
+			else{
+				messagingTemplate.convertAndSend("/topic/room/" + vrSession, vRoomExitReq.getUserId()+"님이 나가셨습니다");
+			}
 		}
 		else if(roomExitStatus.equals(ROOM_SEARCH_ERROR)){
 			log.info("무슨 문제지?");
