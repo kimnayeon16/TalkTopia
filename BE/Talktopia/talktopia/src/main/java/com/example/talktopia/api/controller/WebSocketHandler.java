@@ -73,8 +73,10 @@ public class WebSocketHandler {
 				newHostUserId = chooseNewHost(vrSession);
 
 				List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
-				user = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"));
-				long userId = user.getUserNo();
+
+				long userId = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"))
+					.getUserNo();
+				// long userId = user.getUserNo();
 				for (Participants parti : participants) {
 					user = userRepository.findByUserNo(parti.getUser().getUserNo());
 					if (user.getUserNo() == userId) {
@@ -99,8 +101,12 @@ public class WebSocketHandler {
 		if (participantsOptional.isEmpty()) {
 			throw new Exception("방이 터졌습니다");
 		}
+		log.info("바뀌어"+participantsOptional.get(0).getUser().getUserId());
+		log.info("바뀌어"+participantsOptional.get(0).toString());
+		log.info("바뀌어"+participantsOptional.get(0).getRoomRole().toString());
 		// participantsList를 활용하여 원하는 작업 수행
 		participantsOptional.get(0).setRoomRole(RoomRole.HOST);
+		log.info("바뀜!!!"+participantsOptional.get(0).getRoomRole().toString());
 		participantsRepository.save(participantsOptional.get(0));
 
 		return participantsOptional.get(0).getUser().getUserId();
