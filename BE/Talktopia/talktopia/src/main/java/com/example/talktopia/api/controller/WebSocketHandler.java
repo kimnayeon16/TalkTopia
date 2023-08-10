@@ -66,7 +66,7 @@ public class WebSocketHandler {
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
 		String newHostUserId = null;
 		if(roomExitStatus.equals(EXIT_SUCCESS)) {
-			if (isHost(vRoomExitReq.getUserId())) {
+			if (isHost(vRoomExitReq.getUserId(),vRoomExitReq)) {
 				newHostUserId = chooseNewHost(vrSession);
 			}
 			List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
@@ -101,10 +101,9 @@ public class WebSocketHandler {
 
 	}
 
-	private boolean isHost(String userId) throws Exception {
+	private boolean isHost(String userId,VRoomExitReq vRoomExitReq) throws Exception {
 		userRepository.findByUserId(userId).orElseThrow(() -> new ExceptionSample("유저가 없엉 ㅋ"));
-		Participants participants = participantsRepository.findByUser_UserId(userId).orElseThrow(()->new Exception("없는데??"));
-		if(participants.getRoomRole().equals(RoomRole.HOST)){
+		if(vRoomExitReq.getRoomRole().equals(RoomRole.HOST)){
 			return true;
 		}
 		return false;
