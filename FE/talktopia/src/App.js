@@ -55,6 +55,11 @@ function App() {
     setShowModal(true);
   };
 
+  const handleConfirmClick = () => {
+    console.log("확인 버튼이 클릭되었습니다.");
+    setShowModal(false);
+  };
+
   return (
     <div className="App">
       <AnimatePresence>
@@ -99,6 +104,15 @@ function App() {
       </AnimatePresence>
 
       <ServiceWorkerListener onMessage={handleMessage} />
+      {showModal && (
+        <div className="fcm-modal">
+          <div className="fcm-modal-content">
+            {modalContent}
+            <button className="fcm-modal-content-button" onClick={handleConfirmClick}>확인</button>
+            <button className="fcm-modal-content-button" onClick={() => setShowModal(false)}>닫기</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
