@@ -55,6 +55,7 @@ public class WebsocketChatController {
 			.build();
 		saveChatRoomContentRedisService.saveChat(content);
 
+		System.out.println("subscribe 주소: /topic/sub/"+sessionId);
 		// 특정 sessionId를 가지는 채팅방에 broad casting
 		template.convertAndSend("/topic/sub/" + sessionId, content);
 	}

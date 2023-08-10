@@ -37,6 +37,7 @@ spring:
   redis:
     host: talktopia.site
     port: 6379
+    password : q1w2e3r4
 #    jedis:
 #      pool:
 #        max-idle: 8
