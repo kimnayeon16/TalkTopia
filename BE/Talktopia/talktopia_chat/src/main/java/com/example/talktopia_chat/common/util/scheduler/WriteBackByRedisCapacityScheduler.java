@@ -29,8 +29,8 @@ public class WriteBackByRedisCapacityScheduler {
 	private final ChatRoomRepository chatRoomRepository;
 
 	// 1시간 마다 200사이즈 넘는 Redis -> MySQL
-	// @Scheduled(cron = "0 0 0/1 * * *") // 1시간마다 실행
-	@Scheduled(cron = "0 * * * * *") // 1분마다 실행
+	@Scheduled(cron = "0 0 0/1 * * *") // 1시간마다 실행
+	// @Scheduled(cron = "0 * * * * *") // 1분마다 실행
 	public void writeBack() {
 		log.info("writeBack 시작");
 
