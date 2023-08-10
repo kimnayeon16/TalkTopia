@@ -332,7 +332,8 @@ public class UserService {
 		userRepository.findByUserEmail(googleReq.getUserEmail())
 			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
 		log.info("DB 넣기전 마지막 점검");
-		User joinUser = googleReq.toEntity();
+		ProfileImg profileImg = profileImgRepository.findByImgNo(2L);
+		User joinUser = googleReq.toEntity(profileImg);
 		userRepository.save(joinUser);
 
 		return joinUser;
