@@ -56,7 +56,6 @@ public class WebSocketHandler {
 	private Map<String, RoomRole> roomRoleHashMap = new HashMap<>();
 
 	@MessageMapping("/api/v1/room/exit/{vrSession}")
-	@Transactional
 	public void exitRoom(@Payload VRoomExitReq vRoomExitReq,
 		@DestinationVariable("vrSession") String vrSession) throws Exception {
 		log.info(vRoomExitReq.getVrSession());
@@ -66,16 +65,9 @@ public class WebSocketHandler {
 		log.info(user.getUserId());
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
 		String newHostUserId = null;
-		//방이 찾아지지않을때
-		// if(roomExitStatus.equals(NO_ONE_IN_ROOM)){
-		// 	messagingTemplate.convertAndSend("/topic/room/" +vrSession, "You Left the room");
-		// }
-		//방이 Host가 바뀔때
 		if(roomExitStatus.equals(EXIT_SUCCESS)) {
 			if (isHost(vRoomExitReq.getUserId())) {
 				newHostUserId = chooseNewHost(vrSession);
-				// messagingTemplate.convertAndSendToUser(newHostUserId, "/queue/role-change/" + vrSession,
-				// 	"You are now the host");
 			}
 			List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
 			user = userRepository.findByUserId(newHostUserId).orElseThrow(()->new Exception("유저가 없습니다"));
@@ -89,11 +81,6 @@ public class WebSocketHandler {
 					roomRoleHashMap.put(user.getUserId(),RoomRole.GUEST);
 				}
 			}
-			// messagingTemplate.convertAndSendToUser(vRoomExitReq.getUserId(), "/queue/exit-message/" + vrSession,
-			// 	"You have left the room");
-
-			// 방에 있는 모든 인원에게 메시지 전송
-
 			messagingTemplate.convertAndSend("/topic/room/" + vrSession,roomRoleHashMap);
 		}
 		else if(roomExitStatus.equals(ROOM_SEARCH_ERROR)){
@@ -124,3 +111,17 @@ public class WebSocketHandler {
 	}
 
 }
+
+//방이 찾아지지않을때
+// if(roomExitStatus.equals(NO_ONE_IN_ROOM)){
+// 	messagingTemplate.convertAndSend("/topic/room/" +vrSession, "You Left the room");
+// }
+//방이 Host가 바뀔때
+
+// messagingTemplate.convertAndSendToUser(newHostUserId, "/queue/role-change/" + vrSession,
+// 	"You are now the host");
+
+// messagingTemplate.convertAndSendToUser(vRoomExitReq.getUserId(), "/queue/exit-message/" + vrSession,
+// 	"You have left the room");
+
+// 방에 있는 모든 인원에게 메시지 전송
