@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { reduxUserInfo } from "../../../store.js";
 // import {gapi} from 'gapi-script';
 import axios from "axios";
-// import Cookies from "js-cookie";
 
 import Swal from "sweetalert2";
 import style from "./JoinLogin.module.scss";
@@ -308,6 +307,7 @@ function JoinLogin(){
             await axios
             .get(`${BACKEND_URL}/api/v1/join/checkEmail/${userEmail}`, {headers})
             .then((response) =>{
+                console.log(response);
                 setCountdown(180);
                 setEmailButton("전송 완료");
                 setEmailConfirmWindow(true);
@@ -524,36 +524,37 @@ function JoinLogin(){
             onLogin();
         }
     }
-    
-    //소셜
 
       return (
         <motion.div
-   /* 2. 원하는 애니메이션으로 jsx를 감싸준다 */
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        exit={{opacity: 0}}
+    /* 2. 원하는 애니메이션으로 jsx를 감싸준다 */
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 20 }}
+    transition={{ duration: 0.3 }}
         >
         <div className={`${style.background}`}>
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
             <div className={`${style.form} ${style["sign-in"]}`} >
-                <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🌏</h2>
+                <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🐬</h2>
                 <div className={`${style.login}`}>
+                
                     <span className={`${style["login-sub"]}`}>아이디</span>
                     <input className={`${style.input}`} type="text" value={userId} onChange={onIdHandler} onKeyPress={onCheckEnter}/>
                 </div>
+                
                 <div className={`${style.login}`}>
                     <span className={`${style["login-sub"]}`}>비밀번호</span>
                     <input className={`${style.input}`} type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
                 <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
-                <button></button>
+                {/* <button></button> */}
                 <div className={`${style.line}`}>SNS계정으로 로그인</div>
+                <div  className={`${style.google}`}>
                 <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
                     onSuccess={(res) => {
-                        // console.log(res);
                         const decodeJwt = jwtDecode(res.credential);
 
                         const headers = {
@@ -618,7 +619,16 @@ function JoinLogin(){
                         console.log(err);
                     }}
                 />
-            </GoogleOAuthProvider>
+                </GoogleOAuthProvider>
+                <img className={`${style.fish1}`} src="/img/fish1.png" alt=""></img>
+                <img className={`${style.fish2}`} src="/img/fish2.png" alt=""></img>
+                <img className={`${style.fish3}`} src="/img/fish3.png" alt=""></img>
+                <img className={`${style.bubble1}`} src="/img/bubble3.png" alt=""></img>
+                <img className={`${style.bubble2}`} src="/img/bubble2.png" alt=""></img>
+                <img className={`${style.bubble4}`} src="/img/bubble3.png" alt=""></img>
+                <img className={`${style.bubble5}`} src="/img/bubble1.png" alt=""></img>
+                <img className={`${style.bubble6}`} src="/img/bubble2.png" alt=""></img>
+                </div>
                 {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
                                 <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -641,7 +651,7 @@ function JoinLogin(){
                 </div>
 
                 <div className={`${style.form} ${style.sign} ${style.up}`}>
-                    <h2 className={`${style["h2-Join"]}`}>새로운 모험이 시작됩니다! <br/> 함께 멋진 시간을 만들어가요! 🚀</h2>
+                    <h2 className={`${style["h2-Join"]}`}>새로운 모험이 시작됩니다! <br/> 🌊 함께 멋진 시간을 만들어가요! </h2>
                     <div className={style["div-join-container-isButton"]}>
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>아이디 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -767,6 +777,15 @@ function JoinLogin(){
                         </div>
                     </div>
                     <button className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
+
+                    <img className={`${style.friend11}`} src="/img/friend11.png" alt=""></img>
+                {/* <img className={`${style.friend12}`} src="/img/friend12.png" alt=""></img>
+                <img className={`${style.friend12}`} src="/img/fish5.png" alt=""></img> */}
+                <img className={`${style.fish6}`} src="/img/fish6.png" alt=""></img>
+                <img className={`${style.fish7}`} src="/img/fish7.png" alt=""></img>
+                <img className={`${style.bubble3}`} src="/img/bubble3.png" alt=""></img>
+                <img className={`${style.bubble7}`} src="/img/bubble2.png" alt=""></img>
+                <img className={`${style.bubble8}`} src="/img/bubble3.png" alt=""></img>
                 </div>
             </div>
         </div>

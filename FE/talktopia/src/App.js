@@ -2,7 +2,6 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 
-
 // Router
 //start
 import NoStart from './pages/start/NoStart.js';
@@ -41,10 +40,12 @@ import FriendList from './pages/friend/FriendList';
 import ChatWindow from './pages/friend/ChatWindow';
 
 import GoogleLoginButton from './pages/auth/MyInfo/GoogleLoginButton';
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   return (
     <div className="App">
+      <AnimatePresence>
       {/* router */}
       <Routes>
         {/* start */}
@@ -83,6 +84,7 @@ function App() {
         <Route path="/friendList" element={<FriendList/>}/>
         <Route path="/chat" element={<ChatWindow />} />
       </Routes>
+      </AnimatePresence>
     </div>
   );
 }
