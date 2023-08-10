@@ -113,6 +113,7 @@ function Home(){
                     // myUserName: user.userId,
                     mySessionId: response.data.vrSession,
                     token: response.data.token,
+                    roomRole: response.data.roomRole,
                     roomType: 'common'
                 }
             });
@@ -138,6 +139,7 @@ function Home(){
                     // myUserName: user.userId,
                     mySessionId: response.data.vrSession,
                     token: response.data.token,
+                    roomRole: response.data.roomRole,
                     roomType: 'friend'
                 }
             });

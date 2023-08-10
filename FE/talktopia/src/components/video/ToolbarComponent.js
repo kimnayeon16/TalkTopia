@@ -10,13 +10,34 @@ import style from "./ToolbarComponent.module.css"
 
 
 function ToolbarComponent(props) {
+
+    const handleTopicbutton = () => {
+        if (props.roomRole === 'HOST') {
+            props.openTopicbar();
+        } 
+    }
+
     return (
         <>
             <div className={style['video-call-actions']}>
-                <button className={`${style['video-game-button']}`} >
-                    <FiHash size="24" color="black" />
-                    <p>주제 제시</p>
-                </button>  
+                {props.isTopicbar ? (
+                    <>
+                        <button className={`${style['video-game-button']}`} >
+                            <FiHash size="24" color="black" />
+                            <p>랜덤 생성</p>
+                        </button>  
+                        <button className={`${style['video-game-button']}`} onClick={props.closeTopicbar} >
+                            <FiHash size="24" color="black" />
+                            <p>주제 종료</p>
+                        </button>  
+                    </>
+                ) : (
+                    <button className={`${style['video-game-button']}`} onClick={handleTopicbutton} >
+                        <FiHash size="24" color="black" />
+                        <p>주제 제시</p>
+                    </button>  
+                )}
+
             </div>
 
             <div className={style['video-call-actions']}>

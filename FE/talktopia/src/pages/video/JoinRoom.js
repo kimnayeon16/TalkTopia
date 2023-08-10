@@ -72,6 +72,7 @@ function JoinRoom() {
         const state = {
             userId: user.userId,
             userName: user.userName,
+            roomRole: location.state.roomRole,
             isVideoActive: true,
             isAudioActive: true,
             streamManager: undefined,
@@ -79,7 +80,11 @@ function JoinRoom() {
         }
         setLocalUser((prev) => ({...prev, ...state}))
 
-        const userData = { mySessionId: location.state.mySessionId, myUserId: user.userId }
+        const userData = { 
+            mySessionId: location.state.mySessionId, 
+            myUserId: user.userId,
+            roomRole: location.state.roomRole
+        }
         userDataRef.current = userData
 
         // 웹 소켓 연결
@@ -88,6 +93,9 @@ function JoinRoom() {
                 console.log("JSON.parse(message.body)", JSON.parse(message.body));
             })
         })
+
+        // 주제 목록 불러오기
+        getTopicList();
 
 
         // 윈도우 객체에 화면 종료 이벤트 추가
@@ -135,7 +143,8 @@ function JoinRoom() {
         const exitRequest = {
             userId: userDataRef.current.myUserId,
             token: user.accessToken,
-            vrSession: userDataRef.current.mySessionId
+            vrSession: userDataRef.current.mySessionId,
+            roomRole: userDataRef.current.roomRole
         };
         stomp.send("/app/api/v1/room/exit/"+userDataRef.current.mySessionId, {}, JSON.stringify(exitRequest));
     };
@@ -149,14 +158,13 @@ function JoinRoom() {
         // Session 개체에서 추가된 subscriber를 subscribers 배열에 저장 
         mySession.on('streamCreated', (event) => {
             const subscriber = mySession.subscribe(event.stream, undefined);
-            console.log('JSON 에러 나는 부분', event.stream.connection.data)
             const jsonParts = event.stream.connection.data.split('%/%');
-            console.log('데이터 split한 부분', jsonParts)
             const clientData = JSON.parse(jsonParts[0]).clientData
             
             const newUser = {
                 userId: clientData.userId,
                 userName: clientData.userName,
+                roomRole: clientData.roomRole,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
                 streamManager: subscriber,
@@ -196,7 +204,11 @@ function JoinRoom() {
         if (session && openviduToken) {
             getToken().then((token) => {
                 // 첫 번째 매개변수는 OpenVidu deployment로 부터 얻은 토큰, 두 번째 매개변수는 이벤트의 모든 사용자가 검색할 수 있음.
-                session.connect(token, { clientData: {userId: localUser.userId, userName: localUser.userName }})
+                session.connect(token, { clientData: {
+                    userId: localUser.userId, 
+                    userName: localUser.userName,
+                    roomRole: localUser.roomRole  
+                }})
                 .then(async () => {
                     // Get your own camera stream ---
                     // publisher 객체 생성
@@ -249,8 +261,6 @@ function JoinRoom() {
     const [isReportUserId, setIsReportUserId] = useState(undefined)
 
     const openReportModal = (userId) => {
-        console.log(userId)
-        console.log(isReportModalOpen)
         setIsReportUserId(userId)
         setIsReportModalOpen(true);
     }
@@ -282,7 +292,35 @@ function JoinRoom() {
     const closeInviteModal = () => {
         setIsInviteModalOpen(false);
     }
-    
+
+    // 주제 리스트
+    const [topicList, setTopicList] = useState(undefined);      // 토픽 리스트 저장
+    const getTopicList = () => {
+        const headers = {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+        }
+
+        axios.get(`${BACKEND_URL}/api/v1/topic/start`, { headers })
+        .then((response) => {
+            setTopicList(response.data);     
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        }) 
+    }
+
+    // 주제 시작 및 종료시 Toolbar 버튼 변경
+    const [isTopicbar, setIsTopicbar] = useState(false)
+    const openTopicbar = () => {
+        setIsTopicbar(true)
+    }
+    const closeTopicbar = () => {
+        setIsTopicbar(false)
+    }
+
+
     return (
         <div>
             {sessionRef.current !== undefined && localUser.streamManager != undefined ? (
@@ -324,6 +362,10 @@ function JoinRoom() {
                                 toggleVideo={ toggleVideo }
                                 inviteFriends={ inviteFriends }
                                 leaveSession={ leaveSession }
+                                isTopicbar={ isTopicbar }
+                                openTopicbar= { openTopicbar }
+                                closeTopicbar={ closeTopicbar }
+                                roomRole={ localUser.roomRole }
                             />
                         </div>
                     </div>
