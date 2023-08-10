@@ -16,6 +16,11 @@ import {GoogleLogin} from "@react-oauth/google";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
 
+import ServiceWorkerListener from '../fcm/ServiceWorkerListener';
+import getFCMToken from '../fcm/getToken';
+import sendTokenToServer from '../fcm/sendTokenToServer';
+import NotificationAccordion from '../fcm/NotificationAccordion';
+
 const clientId = '489570255387-1e0n394ptqvja97m2sl6rpf3bta0hjb0.apps.googleusercontent.com'
 
 function JoinLogin(){
@@ -65,8 +70,23 @@ function JoinLogin(){
               transLang: response.data.transLang,
             }));
 
+            //fcm 토큰 발급
+            const token = await getFCMToken();
+            
+            try {
+                if (token) {
+                await sendTokenToServer(response.data.userId, token);
+                dispatch(reduxUserInfo({
+                    fcmToken: token,
+                    }));
+                }
+            } catch (error) {
+                console.error("Error initializing FCM:", error);
+            }
+            
+
             //로컬에 저장하기
-            const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang}
+            const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang, fcmToken: token}
             localStorage.setItem("UserInfo", JSON.stringify(UserInfo));
 
             //쿠키에 저장하기

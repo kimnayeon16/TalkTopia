@@ -28,7 +28,7 @@ function NnoStart(){
         <div className={`${style.background}`}>
             <img className={`${style.cloud}`} src="/img/cloud1.png" alt=""/>
             <img className={`${style.cloud2}`} src="/img/cloud2.png" alt=""/>
-            <h2 className={`${style.h2}`}>바다 속, 더 넓은 세상을 만나보세요</h2>
+            <h2 className={`${style.h2}`}>TalkTopia로 넓은 세상을 만나보세요</h2>
             <p className={`${style.p}`}>다양한 국가의 사람들과 화상 채팅을 해보실래요?</p>
             <div className={`${style.content}`}>
                 <div className={style["content__container"]}>
@@ -49,7 +49,7 @@ function NnoStart(){
                 </div>
             </div>
             <img className={`${style.cloud3}`} src="/img/cloud3.png" alt=""/>
-            <button className={`${style.button}`} onClick={handleButtonClick}>TalkTopia로 가기 <span className={`${style.span}`}>⛵</span></button>
+            <button className={`${style.button}`} onClick={handleButtonClick}><span className={`${style.span}`}>💻</span> TalkTopia로 가기 <span className={`${style.span}`}>⛵</span></button>
             <img className={`${animatePenguin ? style.penguin : style.penguin1}`} src="/img/그림4.png" alt=""/>
             {/* <img className={`${style.penguin}`} src="/img/그림4.png" alt=""/> */}
             <img className={`${style.wave}`} src="/img/boat3.png" alt=""/>

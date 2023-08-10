@@ -77,6 +77,19 @@ function MyInfoPw(){
             <p className={`${style.p}`}>안심하고 정보를 업데이트하실 수 있도록 최선을 다하겠습니다.</p>
             <input className={`${style.input}`} type="password" value={userPw} onChange={onUserPwHandle} placeholder="비밀번호 확인" onKeyPress={onCheckEnter}></input>
             <button className={`${style.button}`} onClick={confirmPw}>확인</button>
+            <img className={`${style.turtle}`} src="/img/turtle.png" alt=""></img>
+            <img className={`${style.grass2}`} src="/img/grass2.png" alt=""></img>
+            <img className={`${style.grass5}`} src="/img/grass5.png" alt=""></img>
+            <img className={`${style.fish4}`} src="/img/fish4.png" alt=""></img>
+            <img className={`${style.fish33}`} src="/img/fish33.png" alt=""></img>
+            <img className={`${style.fish34}`} src="/img/fish34.png" alt=""></img>
+            <img className={`${style.friend14}`} src="/img/friend14.png" alt=""></img>
+            <img className={`${style.bubble1}`} src="/img/bubble1.png" alt=""></img>
+            <img className={`${style.bubble2}`} src="/img/bubble2.png" alt=""></img>
+            <img className={`${style.bubble3}`} src="/img/bubble3.png" alt=""></img>
+            <img className={`${style.bubble1}`} src="/img/bubble1.png" alt=""></img>
+            <img className={`${style.bubble2}`} src="/img/bubble2.png" alt=""></img>
+            <img className={`${style.bubble3}`} src="/img/bubble3.png" alt=""></img>
         </div>
     )
 }

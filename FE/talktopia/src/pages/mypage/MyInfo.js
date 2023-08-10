@@ -191,9 +191,9 @@ function MyInfo(){
             <p className={`${style.p}`}>아이디</p>
             <input type="text" value={userId1} className={`${style["input-1"]}`} readOnly></input>
             <p className={`${style.p}`}>비밀번호</p>
-            <p>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p>
+            <p className={`${style.guide}`}>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p>
             <input type="password" value={userPw} className={`${style.input}`} onChange={onPwHandler}></input>
-            <div>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
+            <div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
             <p className={`${style.p}`}>이름</p>
             <input type="text" value={userName} className={`${style.input}`} onChange={onNameHandler}></input>
             <p className={`${style.p}`}>이메일</p>
