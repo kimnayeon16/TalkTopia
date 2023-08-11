@@ -1,0 +1,557 @@
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.tooltip-container:hover .tooltip {
+  opacity: 1;
+}
+.coral-container1:hover ,
+.coral-container4:hover  {
+  display: none; 
+  
+  /* 마우스 오버 시 .disppear 클래스 요소가 보이도록 함 */
+}
+
+.crab-container1:hover .crab{
+    animation: mycrabFloat 1s ease-in-out forwards;
+}
+
+.crab-floating {
+    animation: crabFloat 1s ease-in-out forwards;
+  }
+/* 게 내려가는 이벤트 */
+.crab-un-floating{
+  animation: crabUnFloat 1s ease-in-out 5000s forwards;
+}
+
+.waterDrop1 {
+width: 50px;
+height: 50px;
+background-image: url('./../../../public/img/bubble/bubble1.png');
+background-size: cover;
+position: absolute;
+opacity: 0.3;
+animation: highbounce 5s infinite ease-in-out;
+}
+.waterDrop2 {
+width: 50px;
+height: 50px;
+background-image: url('./../../../public/img/bubble/bubble2.png');
+background-size: cover;
+position: absolute;
+opacity: 0.3;
+animation: lowbounce 5s infinite ease-in-out;
+}
+.waterDrop3 {
+width: 50px;
+height: 50px;
+background-image: url('./../../../public/img/bubble/bubble3.png');
+background-size: cover;
+position: absolute;
+opacity: 0.3;
+animation: bounce 5s infinite ease-in-out;
+}
+/* ------------------------ body 구간 -------------------- */
+.body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('./../../../public/img/background/sea.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index: 0;
+}
+
+.fishgroup{
+  position: absolute;
+  top: 85%;
+  right: 20%;
+}
+.fishContainer {
+  position: absolute;
+  top: calc(90% - 25px);
+  animation: swim 18s linear infinite, bounce 2s ease-in-out infinite;
+  animation-fill-mode: forwards;
+}
+.fishContainer1 {
+  position: relative;
+  top: 50%;
+  animation: swim 13s linear infinite, bounce 2s ease-in-out infinite;
+}
+.fish {
+  width: 100px;
+  height: 100px;
+  background-image: url('./../../../public/img/main/fish.png'); /* 물고기 이미지 경로로 변경 */
+  background-size: cover;
+}
+.fish1 {
+  width: 100px;
+  height: 100px;
+  background-image: url('./../../../public/img/main/fish.png'); /* 물고기 이미지 경로로 변경 */
+  background-size: cover;
+  margin-left: 50px;
+  margin-bottom: -250px; /* 이미지를 왼쪽으로 10px 이동 */
+}
+
+
+.bearGroup{
+  position: absolute;
+  top: 25%;
+  right: 20%;
+  
+}
+/* ------------------------ container 구간 -------------------- */
+.bearContainer1 {
+  position: absolute;
+  top: 30%;
+  right: 0;
+  animation: bearswim1 10s ease-in-out infinite, bounce 2s ease-in-out infinite;
+}
+.bearContainer2 {
+  position: relative;
+  top: 40%;
+  right: 0;
+  animation: bearswim2 10s ease-in-out infinite, bounce 2s ease-in-out infinite;
+  transform: scaleX(-1);
+  
+}
+.bearContainer3 {
+  position: relative;
+  top: 50%;
+  right: 0;
+  animation: bearswim3 16s ease-in-out infinite, bounce 2s ease-in-out infinite;
+}
+.bearContainer4 {
+  position: absolute;
+  top: 80%;
+  right: 0;
+  animation: bearswim4 8s ease-in-out infinite, bounce 2s ease-in-out infinite;
+}
+
+.bear {
+  width: 200px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/bear.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+}
+
+.penguinGroup{
+  position: absolute;
+  top: 44%;
+  left: 20%;
+}
+
+.peng1Container {
+  position: absolute; 
+  top: calc(15% - 25px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, bounce 2s ease-in-out infinite;
+}
+
+.peng1 {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/peng.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  
+}
+.peng2Container {
+  position: absolute;
+  top: calc(23% - 50px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, bounce 5s ease-in-out infinite;
+}
+
+.peng2 {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/peng.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+}
+
+.friendGroup{
+  position: absolute;
+  top: 75%;
+  right: 50%;
+}
+
+.nimoContainer {
+  position: absolute;
+  top: calc(23% - 50px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, lowbounce 5s ease-in-out infinite;
+}
+
+.nimo {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/nimo.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  transform: scaleX(-1);
+}
+
+.doriContainer {
+  position: absolute;
+  top: calc(23% - 50px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, highbounce 5s ease-in-out infinite;
+}
+
+.dori {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/dori.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  margin-left: -120px; /* 이미지를 왼쪽으로 10px 이동 */
+}
+
+
+
+.whaleGroup{
+  position: absolute;
+  top: 25%;
+  right: 50%;
+}
+
+.whiteContainer {
+  position: absolute;
+  top: calc(23% - 50px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, lowbounce 5s ease-in-out infinite;
+}
+
+.whitewhale {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/whitewhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  transform: scaleX(-1);
+  margin-left: -120px; /* 이미지를 왼쪽으로 10px 이동 */
+}
+.whitewhale2 {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/whitewhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  margin-left: -120px; /* 이미지를 왼쪽으로 10px 이동 */
+  transform: scaleX(1);
+  margin-top: -30px;
+}
+
+.blueContainer {
+  position: absolute;
+  top: calc(23% - 50px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, lowbounce 5s ease-in-out infinite;
+}
+
+.bluewhale {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/bluewhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  transform: scaleX(-1);
+  margin-left: -50px; /* 이미지를 왼쪽으로 10px 이동 */
+}
+.bluewhale2{
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/bluewhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  transform: scaleX(1);
+  margin-left: -50px; /* 이미지를 왼쪽으로 10px 이동 */
+  margin-top: -30px;
+}
+.pinkContainer {
+  position: absolute;
+  top: calc(23% - 50px);
+  left: 100%;
+  animation: pengswim2 10s ease-in-out alternate infinite, lowbounce 5s ease-in-out infinite;
+}
+
+.pinkwhale {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/pinkwhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  transform: scaleX(-1);
+}
+.pinkwhale2 {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/pinkwhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  transform: scaleX(1);
+  margin-top: -30px;
+  
+}
+
+.coralGroup{
+  position: absolute;
+  top: calc(90% - 25px);
+  right: 50%;
+}
+.coralContainer1{
+  position: absolute;
+  margin-left: 590px;
+  left: 100%;
+  }
+.coralContainer2{
+  position: absolute;
+  margin-left: -750px;
+  left: 100%;
+  }
+  .coralContainer3{
+  position: absolute;
+  margin-left: -500px;
+  left:100%;
+  }
+  .coralContainer4{
+  position: absolute;
+  margin-left: 650px;
+  left:100%;
+  }
+
+  .stoneContainer1{
+  position: absolute;
+  margin-left: -300px;
+  left:100%;
+  }
+  .stoneContainer2{
+  position: absolute;
+  margin-left: -600px;
+  left:100%;
+  }
+  .stoneContainer3{
+  position: absolute;
+  margin-left: 150px;
+  left:100%;
+  }
+  .stone1{
+      width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/grass2.png');
+  }
+
+  .stone2{
+      width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/stone2.png');
+  }
+
+  .stone3{
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/stone3.png');
+  }
+  .coral1{
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/coral1.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  z-index: 20;
+  position: relative;
+}
+  .coral2{
+      width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/friend14.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  }
+  .coral3{
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/coral3.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  }
+  .coral4{
+      width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-image: url('./../../../public/img/grass/grass5.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  z-index: 20;
+  position: relative;
+}
+
+  .friendList{
+  position: absolute;
+  top: calc(90% - 25px);
+  right: 50%;
+  z-index: 9;
+  }
+.crabContainer1{
+  position: fixed;
+  right: 2%;
+  bottom: 0;
+  z-index: 9;
+  }
+  .crab{
+  width: 150px;
+  height: 200px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/crab-sign.png'); /* 두 번째 물고기 이미지 경로로 변경 */
+  z-index: 9;
+  position: relative;
+}
+.up {
+  width: 150px;
+  height: 200px;
+  background-size: cover;
+  background-image: url('./../../../public/img/main/crab-sign.png');
+  animation: moveUpAndDown 10s;
+}
+
+/* ------------------------ keyframe 구간 -------------------- */
+
+@keyframes swim {
+  0% {
+    left: 250%;
+  }
+  100% {
+    left: -1500px; /* 물고기 이미지의 너비만큼 빼주세요 */
+  }
+}
+@keyframes pengswim1 {
+  0%, 100% {
+    left: 250px; /* 시작 위치 */
+    transform: scaleX(-1);
+  }
+  50% {
+    left: calc(30% - 50px); /* 화면 중간으로 이동 */
+    transform: scaleX(-1);
+  }
+  
+}
+@keyframes pengswim2 {
+0% {
+  left: 0%; /* 시작 위치 */
+
+}
+100% {
+  left: calc(30% - 50px); /* 화면 중간으로 이동 */
+
+}
+}
+
+@keyframes bearswim1 {
+  0%, 100% {
+    left: 100px; /* 시작 위치 */
+  }
+  50% {
+    left: calc(60% - 100px); /* 화면 중간으로 이동 */
+  
+  }
+}
+
+@keyframes bearswim2 {
+  0%, 100% {
+    left: 30px; /* 시작 위치 */
+  }
+  50% {
+      left: calc(30%);
+  }
+}
+@keyframes bearswim3 {
+  0%, 100% {
+    left: 50px; /* 시작 위치 */
+  }
+  50% {
+    left: calc(40% - 10px); /* 화면 중간으로 이동 */
+  
+  }
+}
+@keyframes bearswim4 {
+  0%, 100% {
+    left: 90px; /* 시작 위치 */
+  }
+  50% {
+    left: calc(50% - 35px); /* 화면 중간으로 이동 */
+  
+  }
+}
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+@keyframes highbounce {
+  0%, 100% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes lowbounce {
+  0%, 100% {
+    transform: translateY(-30px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+
+@keyframes crabFloat  {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-60px); /* 떠오르게 할 거리 */
+  }
+}
+
+@keyframes mycrabFloat  {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100px); /* 떠오르게 할 거리 */
+  }
+}
+@keyframes crabUnFloat  {
+  0% {
+    transform: translateY(-60px);
+  }
+  100% {
+    transform: translateY(0); /* 떠오르게 할 거리 */
+  }
+}
+
+@keyframes moveUpAndDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-100px); /* Move up */
+  }
+}

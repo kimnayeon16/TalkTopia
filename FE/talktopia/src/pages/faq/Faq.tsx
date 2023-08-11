@@ -4,11 +4,14 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useNavigate, NavigateFunction } from 'react-router-dom';
 
 import style from "./Faq.module.css";
 
 export default function Faq() {
   const [expanded, setExpanded] = React.useState<string | false>(false);
+
+  const navigate: NavigateFunction = useNavigate();
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -19,14 +22,14 @@ export default function Faq() {
     <>
     <div className={`${style.background}`}>
       <h2>FAQ</h2>
-      <span>FAQ</span>
-      <span>1대1 문의하기</span>
+      <span onClick={()=>{navigate('/faq')}}>FAQ</span>
+      <span onClick={()=>{navigate('/counsel')}}>1대1 문의하기</span>
       <Accordion className={`${style.accordion}`} style={{ margin: '0 auto' }} expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             TalkTopia
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q1. talktopia를 어떻게 사용하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>talktopia를 어떻게 사용하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -38,7 +41,7 @@ export default function Faq() {
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2bh-content" id="panel2bh-header">
           <Typography sx={{ width: '15%', flexShrink: 0 }}>TalkTopia</Typography>
           <Typography sx={{ color: 'text.secondary' }}>
-            Q2. 화상채팅 앱에서 글로벌 사용자들과 어떻게 연결되나요?
+            화상채팅 앱에서 글로벌 사용자들과 어떻게 연결되나요?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -57,7 +60,7 @@ export default function Faq() {
           언어
           </Typography>
           <Typography sx={{ color: 'text.secondary' }}>
-            Q3. Talktopia가 지원하는 언어는 몇 개인가요?
+            Talktopia가 지원하는 언어는 몇 개인가요?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -75,7 +78,7 @@ export default function Faq() {
         >
           <Typography sx={{ width: '15%', flexShrink: 0 }}>화상 채팅</Typography>
           <Typography sx={{ color: 'text.secondary' }}>
-            Q4. 화상채팅에 참여하는 사람의 수에 제한이 있나요?
+            화상채팅에 참여하는 사람의 수에 제한이 있나요?
           </Typography>
         </AccordionSummary>
         <AccordionDetails sx={{width: '20%'}}>
@@ -89,7 +92,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             화상 채팅
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q5. 어떻게 화상 채팅방을 생성하거나 참여하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>어떻게 화상 채팅방을 생성하거나 참여하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -102,7 +105,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             화상 채팅
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q6. 채팅방에서 채팅 기록을 확인할 수 있나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>채팅방에서 채팅 기록을 확인할 수 있나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -115,7 +118,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
           계정 및 설정
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q7. 개인 정보는 어떻게 변경하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>개인 정보는 어떻게 변경하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -128,7 +131,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
             신고
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q8. 다른 유저가 부적절한 행동을 했을 때 어떻게 해야하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>다른 유저가 부적절한 행동을 했을 때 어떻게 해야하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -141,7 +144,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
            오류
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q9. 화상채팅 중에 비디오 또는 오디오가 동작하지 않을 때는 어떻게 해야 하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>화상채팅 중에 비디오 또는 오디오가 동작하지 않을 때는 어떻게 해야 하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -154,7 +157,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
           오류
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q10. 상대방의 소리가 들리지 않는데 어떻게 해야 하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>상대방의 소리가 들리지 않는데 어떻게 해야 하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
@@ -173,7 +176,7 @@ export default function Faq() {
           <Typography sx={{ width: '15%', flexShrink: 0 }}>
           오류
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>Q11. 상대방에게 소리 전달이 되지 않는데 어떻게 해야 하나요?</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>상대방에게 소리 전달이 되지 않는데 어떻게 해야 하나요?</Typography>
         </AccordionSummary>
         <AccordionDetails >
           <Typography sx={{textAlign: 'left', marginLeft: '15%', marginRight: '10%'}}>
