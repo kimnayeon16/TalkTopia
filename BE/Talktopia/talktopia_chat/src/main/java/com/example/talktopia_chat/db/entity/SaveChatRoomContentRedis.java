@@ -24,12 +24,17 @@ public class SaveChatRoomContentRedis {
 	private String scrcContent;
 	private String scrcSendTime;
 
+	// cache-through할 때 db로부터 캐싱된 값인지 알리는 필드.
+	// cache-through 후 write-back할 때 db로부터 불러진 데이터가 중복저장되는 것을 피하기 위함
+	private boolean scrcCached;
+
 	@Builder
-	public SaveChatRoomContentRedis(String scrcSession, String scrcContent, String scrcSenderId,
-		String scrcSendTime) {
+	public SaveChatRoomContentRedis(String scrcSession, String scrcSenderId, String scrcContent,
+		String scrcSendTime, boolean scrcCached) {
 		this.scrcSession = scrcSession;
-		this.scrcContent = scrcContent;
 		this.scrcSenderId = scrcSenderId;
+		this.scrcContent = scrcContent;
 		this.scrcSendTime = scrcSendTime;
+		this.scrcCached = scrcCached;
 	}
 }

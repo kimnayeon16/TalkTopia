@@ -4,17 +4,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.talktopia_chat.api.response.EnterChatResponse;
-import com.example.talktopia_chat.api.response.PagingChatResponse;
 import com.example.talktopia_chat.common.util.ChatSetToListUtil;
 import com.example.talktopia_chat.common.util.DateFormatPattern;
 import com.example.talktopia_chat.db.entity.ChatRoom;
@@ -42,12 +37,12 @@ public class SaveChatRoomContentRedisService {
 	public void saveChat(SaveChatRoomContentRedis scrc) {
 		String scrcSession = scrc.getScrcSession();
 
-		// 순서가 있는 Set으로 저장. sort기준은 sortBySendTime
-		redisTemplate.opsForZSet().add(scrcSession, scrc, sortBySendTime(scrc.getScrcSendTime()));
+		// 순서가 있는 Set으로 저장. sort기준은 timeToDoubleForSort
+		redisTemplate.opsForZSet().add(scrcSession, scrc, timeToDoubleForSort(scrc.getScrcSendTime()));
 	}
 
 	// sendTime을 double로 만들어 zSet 정렬에 씀
-	public Double sortBySendTime(String sendTime) {
+	public Double timeToDoubleForSort(String sendTime) {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DateFormatPattern.get());
 		LocalDateTime localDateTime = LocalDateTime.parse(sendTime, dateTimeFormatter);
 		return ((Long)localDateTime.atZone(ZoneId.systemDefault()) // LocalDateTime을 시스템의 기본 타임존으로 함
@@ -80,19 +75,21 @@ public class SaveChatRoomContentRedisService {
 	 * */
 	public void cacheThrough(String session) {
 		// scrcSession으로 채팅방 no 찾음
-		ChatRoom chatRoom = chatRoomRepository.findByCrSession(session)
-			.orElseThrow(() -> new RuntimeException(session + "을 세션으로 하는 채팅방이 없습니다."));
+		Optional<ChatRoom> chatRoom = chatRoomRepository.findByCrSession(session);
+		if(chatRoom.isEmpty()){
+			return;
+		}
 
 		// 찾아진 no로 채팅 로그들 데려옴
 		List<SaveChatRoomContent> saveChatRoomContentList = saveChatRoomContentRepository.findByChatRoom_crNo(
-			chatRoom.getCrNo());
-		// if (saveChatRoomContentList.size() == 0)
-		// 	new RuntimeException(session + "을 세션으로 하는 채팅방 로그가 없습니다.");
+			chatRoom.get().getCrNo());
+
 
 		// jpa entity => redis entity => redis에 저장
+		int size = 1;
 		for (SaveChatRoomContent scrc : saveChatRoomContentList) {
 			// 최신 30개 데이터 유지
-			if (saveChatRoomContentList.size() == 30)
+			if (size == 30)
 				break;
 
 			SaveChatRoomContentRedis temp = SaveChatRoomContentRedis.builder()
@@ -101,9 +98,11 @@ public class SaveChatRoomContentRedisService {
 				.scrcContent(scrc.getScrcContent())
 				// LocalDate to String
 				.scrcSendTime(scrc.getScrcSendTime().format(DateTimeFormatter.ofPattern(DateFormatPattern.get())))
+				.scrcCached(true)
 				.build();
 
-			redisTemplate.opsForZSet().add(session, temp, sortBySendTime(temp.getScrcSendTime()));
+			redisTemplate.opsForZSet().add(session, temp, timeToDoubleForSort(temp.getScrcSendTime()));
+			size++;
 		}
 	}
 }
