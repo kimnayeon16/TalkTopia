@@ -32,13 +32,20 @@ function MyInfo(){
     const [pwConfirmMsg, setPwConfirmMsg] = useState('');
     const [userPwCorrect, setUserPwCorrect] = useState(false);
 
+    const [userId, setUserIdd] = useState('');
+    const [userAccessToken, setUserAccessToken] = useState('');
+
     useEffect(()=>{
         const userInfoString = localStorage.getItem("UserInfo");
         const userInfo = JSON.parse(userInfoString);
-        const userId = userInfo.userId;
+        setUserIdd(userInfo.userId);
+        setUserAccessToken(userInfo.userAccessToken);
 
         axios.get(`${BACKEND_URL}/api/v1/myPage/${userId}`, {
-            headers: headers
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userInfo.accessToken}`
+            }
         })
         .then((response)=>{
             console.log(response.data);
@@ -121,7 +128,7 @@ function MyInfo(){
               {
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${user.accessToken}`,
+                  'Authorization': `Bearer ${userAccessToken}`,
                 },
               })
             .then((response) => {   
@@ -153,7 +160,7 @@ function MyInfo(){
             cancelButtonColor: '#ee5561',
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${BACKEND_URL}/api/v1/myPage/leave/${user.userId}`, {
+                axios.delete(`${BACKEND_URL}/api/v1/myPage/leave/${userId}`, {
                     params: {
                         name: user.userId
                     },
@@ -193,10 +200,10 @@ function MyInfo(){
         console.log(formData);
 
         try{
-            const response = await axios.put(`${BACKEND_URL}/api/v1/myPage/profile/${userId1}`, formData, {
+            const response = await axios.put(`${BACKEND_URL}/api/v1/myPage/profile/${userId}`, formData, {
                 headers : {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${user.accessToken}`
+                    'Authorization': `Bearer ${userAccessToken}`
                 },
             });
             setUserImgUrl(response.data.imageUrl);
