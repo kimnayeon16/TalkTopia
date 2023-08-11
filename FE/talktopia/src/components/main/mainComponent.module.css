@@ -576,13 +576,13 @@ animation: bounce 5s infinite ease-in-out;
 /* 펭귄 모달 */
 .speech-bubble {
   width: 250px;
-  height: 100px;
+  height: 110px;
 	position: relative;
 	background: #9ad1d6;
 	border-radius: 15px;
   margin-left: 130px;
   margin-top: -60px;
-  padding-top: 10px;
+  padding-top: 15px;
 }
 
 .speech-bubble:after {
@@ -603,13 +603,13 @@ animation: bounce 5s infinite ease-in-out;
 /* 친구 모달 */
 .speech-bubble1 {
 	width: 300px;
-  height: 100px;
+  height: 120px;
 	position: relative;
 	background: #9ad1d6;
 	border-radius: 15px;
-  margin-left: 300px;
-  margin-top: -60px;
-  padding-top: 10px;
+  margin-left: 270px;
+  margin-top: 10px;
+  padding-top: 15px;
 }
 
 .speech-bubble1:after {
@@ -629,13 +629,13 @@ animation: bounce 5s infinite ease-in-out;
 
 .speech-bubble2{
   width: 300px;
-  height: 100px;
+  height: 120px;
 	position: relative;
 	background: #9ad1d6;
 	border-radius: 15px;
   margin-left: 140px;
   margin-top: -120px;
-  padding-top: 10px;
+  padding-top: 15px;
 }
 
 .speech-bubble2:after {
@@ -655,13 +655,13 @@ animation: bounce 5s infinite ease-in-out;
 
 .speech-bubble3 {
   width: 300px;
-  height: 100px;
+  height: 120px;
 	position: relative;
 	background: #9ad1d6;
 	border-radius: 15px;
-  margin-left: -400px;
+  margin-left: -350px;
   margin-top: -10px;
-  padding-top: 10px;
+  padding-top: 15px;
 }
 
 .speech-bubble3:after {
