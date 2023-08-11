@@ -12,11 +12,13 @@ public class PostRes {
 	long postNo;
 	String postTitle;
 	String postContent;
+	int postCount;
 	List<AnswerPostRes> answerPosts;
 	@Builder
-	public PostRes(long postNo, String postTitle, String postContent, List<AnswerPostRes> answerPosts) {
+	public PostRes(long postNo, String postTitle, String postContent, int postCount, List<AnswerPostRes> answerPosts) {
 		this.postNo = postNo;
 		this.postTitle = postTitle;
+		this.postCount=postCount;
 		this.postContent = postContent;
 		this.answerPosts=answerPosts;
 	}
