@@ -24,8 +24,10 @@ import com.example.talktopia.common.util.RoomRole;
 import com.example.talktopia.common.util.VRoomType;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.entity.vr.Participants;
+import com.example.talktopia.db.entity.vr.SaveVRoom;
 import com.example.talktopia.db.entity.vr.VRoom;
 import com.example.talktopia.db.repository.ParticipantsRepository;
+import com.example.talktopia.db.repository.SaveVRoomRepository;
 import com.example.talktopia.db.repository.UserRepository;
 import com.example.talktopia.db.repository.VRoomRepository;
 
@@ -57,6 +59,8 @@ public class VRoomService {
 	private final ParticipantsService participantsService;
 	private final ParticipantsRepository participantsRepository;
 
+	private final SaveVRoomRepository saveVRoomRepository;
+
 	// @Value("${openvidu.secret}")
 	// private String SECRET;
 	//
@@ -68,11 +72,13 @@ public class VRoomService {
 	@Autowired
 	public VRoomService(VRoomRepository vroomrepsitory, UserRepository userRepository,
 		ParticipantsService participantsService, ParticipantsRepository participantsRepository,
+		SaveVRoomRepository saveVRoomRepository,
 		@Value("${openvidu.url}") String openviduURL, @Value("${openvidu.secret}") String secret) {
 		this.vroomrepsitory = vroomrepsitory;
 		this.userRepository = userRepository;
 		this.participantsService = participantsService;
 		this.participantsRepository = participantsRepository;
+		this.saveVRoomRepository =saveVRoomRepository;
 		this.openVidu = new OpenVidu(openviduURL, secret);
 	}
 
@@ -235,6 +241,10 @@ public class VRoomService {
 				MapSession value = entry.getValue();
 				System.out.println("Before mapSessionToken - Key: " + key + ", Value: " + value);
 			}
+
+			///////////////// VROOM 이식 /////////////////////////
+			saveVroom(roomId);
+			////////////////////////////////////////////////////
 			return vRoomRes;
 
 		} catch (Exception e) {
@@ -428,6 +438,7 @@ public class VRoomService {
 
 				//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
 				if (this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount() < 1) {
+					deleteSaveVroom(vRoomExitReq.getVrSession());
 					this.mapSessions.remove(vRoomExitReq.getVrSession());
 					this.mapSessionToken.remove(vRoomExitReq.getVrSession());
 					participantsRepository.deleteByUser_UserNo(user.getUserNo());
@@ -507,4 +518,19 @@ public class VRoomService {
 		}
 
 	}
+
+	private void saveVroom(String roomId) {
+		SaveVRoom saveVRoom = SaveVRoom.builder()
+			.svrCreateTime(LocalDateTime.now())
+			.svrSession(roomId)
+			.build();
+		saveVRoomRepository.save(saveVRoom);
+	}
+
+	private void deleteSaveVroom(String vrSession) {
+		SaveVRoom saveVRoom = saveVRoomRepository.findBySvrSession(vrSession);
+		saveVRoom.setSvrCloseTime(LocalDateTime.now());
+		saveVRoomRepository.save(saveVRoom);
+	}
+
 }

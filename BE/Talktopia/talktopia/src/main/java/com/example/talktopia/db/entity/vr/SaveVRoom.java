@@ -20,11 +20,14 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "save_video_room")
 public class SaveVRoom {
@@ -48,11 +51,13 @@ public class SaveVRoom {
 	@OneToOne(mappedBy = "saveVRoom", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private SaveVRoomChatLog saveVRoomChatLog;
 
-	// @OneToMany(mappedBy = "saveVroom")
-	// List<ReportList> reportLists = new ArrayList<>();
-	// //... getter, setter
-	//
-	// @OneToMany(mappedBy = "saveVroom")
-	// List<SaveVRoomChat> saveVRoomChats = new ArrayList<>();
-	// //... getter, setter
+	@Builder
+	public SaveVRoom(long svrNo, LocalDateTime svrCreateTime, LocalDateTime svrCloseTime, String svrSession,
+		SaveVRoomChatLog saveVRoomChatLog) {
+		this.svrNo = svrNo;
+		this.svrCreateTime = svrCreateTime;
+		this.svrCloseTime = svrCloseTime;
+		this.svrSession = svrSession;
+		this.saveVRoomChatLog = saveVRoomChatLog;
+	}
 }
