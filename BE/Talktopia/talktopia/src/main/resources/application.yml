@@ -38,7 +38,10 @@ spring:
   security:
     jwt:
       secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
-      
+  redis:
+    host: talktopia.site
+    port: 6379
+    password: q1w2e3r4
 # log level
 logging:
   level:

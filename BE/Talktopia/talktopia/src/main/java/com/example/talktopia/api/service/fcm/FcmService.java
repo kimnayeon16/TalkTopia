@@ -1,6 +1,8 @@
 package com.example.talktopia.api.service.fcm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.example.talktopia.api.request.FCMFailMessage;
 import com.example.talktopia.api.request.fcm.FCMSendFriendMessage;
 import com.example.talktopia.api.request.fcm.FCMSendVroomMessage;
 import com.example.talktopia.api.request.fcm.FCMTokenReq;
+import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.user.Reminder;
 import com.example.talktopia.db.entity.user.Token;
@@ -41,6 +44,8 @@ public class FcmService {
 	private final VRoomRepository vRoomRepository;
 
 	private final ReminderRepository reminderRepository;
+
+	private final UserStatusService userStatusService;
 	public void saveToken(FCMTokenReq fcmTokenReq) throws Exception {
 		log.info("fcmTokenReq: " + fcmTokenReq.getUserId());
 		User user = userRepository.findByUserId(fcmTokenReq.getUserId()).orElseThrow(()-> new Exception("유저가 없어0"));
@@ -56,15 +61,27 @@ public class FcmService {
 	public Message sendVroomMessage(FCMSendVroomMessage fcmSendVroomMessage) throws Exception {
 
 		int friendSize = fcmSendVroomMessage.getFriendId().size();
-		String title = "초대 알림이 왔습니다.";
-		String body = fcmSendVroomMessage.getUserId()+" 님이 화상채팅방에 초대하셨습니다.";
+		List<String> notInviteList = new ArrayList<>();
+
 		if(friendSize>0) {
 			for (int i = 0; i < friendSize; i++) {
 				User user = userRepository.findByUserId(fcmSendVroomMessage.getFriendId().get(i))
 					.orElseThrow(() -> new Exception("유저가없엉"));
+				if(!userStatusService.getUserStatus(user.getUserId()).equals("ONLINE")){
 
-				if (user.getToken().getTFcm() != null) {
-
+					String body = fcmSendVroomMessage.getUserId()+" 님이 초대를 하셨지만 해당 고객께서 다른 용무중이셨습니다.";
+					Reminder reminder = Reminder.builder()
+						.rmContent(body)
+						.rmType("화상채팅방 초대")
+						.user(user)
+						.rmRead(false)
+						.build();
+					reminderRepository.save(reminder);
+					notInviteList.add(user.getUserId());
+				}
+				else if (user.getToken().getTFcm() != null) {
+					String title = "초대 알림이 왔습니다.";
+					String body = fcmSendVroomMessage.getUserId()+" 님이 화상채팅방에 초대하셨습니다.";
 					VRoom vRoom = vRoomRepository.findByVrSession(fcmSendVroomMessage.getVrSession());
 					Map<String, String> data = new HashMap<>();
 					data.put("vrSession", vRoom.getVrSession());
@@ -93,6 +110,23 @@ public class FcmService {
 					reminderRepository.save(reminder);
 
 				}
+			}
+			if(notInviteList.size()>0){
+				User user = userRepository.findByUserId(fcmSendVroomMessage.getUserId()).orElseThrow(()->new Exception("노 유저"));
+				StringBuilder body = new StringBuilder();
+				for(String list : notInviteList){
+					body.append(list).append("님 ");
+				}
+				Notification notification = Notification.builder()
+					.setTitle("초대를 받지 않는 인원들이 존재합니다")
+					.setBody(body.toString())
+					.build();
+
+				com.google.firebase.messaging.Message message = com.google.firebase.messaging.Message.builder()
+					.setToken(user.getToken().getTFcm())
+					.setNotification(notification)
+					.build();
+				firebaseMessaging.send(message);
 			}
 			return new Message("알림을 전송했습니다");
 		}

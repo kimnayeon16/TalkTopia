@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.friend.FriendIdPwReq;
+import com.example.talktopia.api.request.friend.FriendReq;
+import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.friend.Friend;
 import com.example.talktopia.db.entity.user.User;
@@ -22,6 +24,7 @@ public class FriendService {
 
 	private final FriendRepository friendRepository;
 	private final UserRepository userRepository;
+	private final UserStatusService userStatusService;
 
 	// 친구 추가
 	public Message addFriend(FriendIdPwReq friendIdPwReq) {
@@ -99,14 +102,19 @@ public class FriendService {
 	}
 
 	// 친구목록 불러오기
-	public List<String> getFriends(String userId) {
+	public List<FriendReq> getFriends(String userId) {
 		User user = findUser(userId);
 		List<Friend> arr = friendRepository.findByUser_UserNo(user.getUserNo());
-		List<String> res = new ArrayList<>();
+		List<FriendReq> res = new ArrayList<>();
 		for(Friend f : arr){
 			Long tmp= f.getFrFriendNo();
 			User user1 = userRepository.findByUserNo(tmp);
-			res.add(user1.getUserId());
+			String userStatus = userStatusService.getUserStatus(userId);
+			FriendReq friendReq = FriendReq.builder()
+				.userId(user1.getUserId())
+				.userStatus(userStatus)
+				.build();
+			res.add(friendReq);
 		}
 		return res;
 	}
