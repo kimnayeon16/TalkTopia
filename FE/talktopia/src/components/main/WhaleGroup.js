@@ -68,7 +68,7 @@ const WhaleGroup = () => {
           join ?
           <div className={`${style["speech-bubble2"]}`}>
             <p className={`${style.message}`}>랜덤 4인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={enterFriendRoom(4)}>참여하기</button>
+            <button className={`${style.button}`} onClick={() => {enterFriendRoom(4)}}>참여하기</button>
           </div>
           : null
         }
