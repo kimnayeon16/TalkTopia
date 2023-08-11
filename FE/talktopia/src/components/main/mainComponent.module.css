@@ -90,13 +90,14 @@ animation: bounce 5s infinite ease-in-out;
 .fishContainer {
   position: absolute;
   top: calc(90% - 25px);
-  animation: swim 18s linear infinite, bounce 2s ease-in-out infinite;
+  animation: swim 28s linear infinite, bounce 2s ease-in-out infinite;
   animation-fill-mode: forwards;
 }
 .fishContainer1 {
-  position: relative;
-  top: 50%;
-  animation: swim 13s linear infinite, bounce 2s ease-in-out infinite;
+  position: absolute;
+  top: -500px;
+  animation: swim 15s linear infinite, bounce 2s ease-in-out infinite;
+  animation-fill-mode: forwards;
 }
 .fish {
   width: 100px;
@@ -554,4 +555,125 @@ animation: bounce 5s infinite ease-in-out;
   50% {
     transform: translateY(-100px); /* Move up */
   }
+}
+
+/* 안내 메세지 및 버튼 */
+.message{
+  font-family: 'Dovemayo_wild';
+  margin: 0;
+  font-size: 20px;
+}
+
+.button{
+  width: 100px;
+  background-color: white;
+  font-family: 'Dovemayo_wild';
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+
+/* 펭귄 모달 */
+.speech-bubble {
+  width: 250px;
+  height: 100px;
+	position: relative;
+	background: #9ad1d6;
+	border-radius: 15px;
+  margin-left: 130px;
+  margin-top: -60px;
+  padding-top: 10px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 25px solid transparent;
+	border-right-color: #9ad1d6;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -12.5px;
+	margin-left: -25px;
+}
+
+/* 친구 모달 */
+.speech-bubble1 {
+	width: 300px;
+  height: 100px;
+	position: relative;
+	background: #9ad1d6;
+	border-radius: 15px;
+  margin-left: 300px;
+  margin-top: -60px;
+  padding-top: 10px;
+}
+
+.speech-bubble1:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 25px solid transparent;
+	border-right-color: #9ad1d6;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -12.5px;
+	margin-left: -25px;
+}
+
+.speech-bubble2{
+  width: 300px;
+  height: 100px;
+	position: relative;
+	background: #9ad1d6;
+	border-radius: 15px;
+  margin-left: 140px;
+  margin-top: -120px;
+  padding-top: 10px;
+}
+
+.speech-bubble2:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 25px solid transparent;
+	border-right-color: #9ad1d6;
+	border-left: 0;
+	border-top: 0;
+	margin-top: -12.5px;
+	margin-left: -25px;
+}
+
+.speech-bubble3 {
+  width: 300px;
+  height: 100px;
+	position: relative;
+	background: #9ad1d6;
+	border-radius: 15px;
+  margin-left: -400px;
+  margin-top: -10px;
+  padding-top: 10px;
+}
+
+.speech-bubble3:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 25px solid transparent;
+	border-left-color: #9ad1d6;
+	border-right: 0;
+	margin-top: -25px;
+	margin-right: -25px;
 }

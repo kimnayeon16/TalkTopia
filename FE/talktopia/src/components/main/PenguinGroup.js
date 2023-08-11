@@ -1,26 +1,26 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import style from './mainComponent.module.css';
 
 
 const PenguinGroup = () => {
-  useEffect(() => {
-    // PenguinGroup 관련 액션을 여기에 작성하세요.
-  }, []);
 
   return (
     <div className={style.penguinGroup}>
       <div className={style.peng1Container}>
         <div className={style.peng1}>
-          <div className={style.tooltipContainer}>
-            <div className={style.tooltip}>Penguin group tooltip 1</div>
+          <div className={style.tooltipContainer}/>
+        </div>
+        <div>
+          <div className={`${style["speech-bubble"]}`}>
+            <p className={`${style.message}`}>랜덤 2인 방에 참여하세요!</p>
+            <button className={`${style.button}`}>참여하기</button>
           </div>
         </div>
       </div>
       <div className={style.peng2Container}>
         <div className={style.peng2}>
-          <div className={style.tooltipContainer}>
-            <div className={style.tooltip}>Penguin group tooltip 2</div>
-          </div>
+          {/* <div className={style.tooltipContainer}>
+          </div> */}
         </div>
       </div>
     </div>

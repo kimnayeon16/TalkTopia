@@ -11,9 +11,9 @@ const FishGroup = () => {
       <div className={style.fishContainer}>
         <div className={style.fish}></div>
       </div>
-      {/* <div className={style.fishContainer1}>
+      <div className={style.fishContainer1}>
         <div className={style.fish1}></div>
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -1,35 +1,41 @@
 .title{
+    position: fixed;
     font-family: 'EF_jejudoldam';
     color: #012A4A;
-    font-size: 30px;
+    font-size: 35px;
+    margin-left: -1250px;
+    margin-bottom: 650px;
 }
 
 .user{
     width:55px;
     position: fixed;
-    top: 11px;
+    top: 20px;
     right: 290px;
+    z-index: 10;
 }
 
 .dding{
     width:60px;
     position: fixed;
-    top: 8px;
+    top: 17px;
     right: 190px;
 }
 
 .earth{
     width:50px;
     position: fixed;
-    top: 15px;
+    top: 24px;
     right: 100px;
+    z-index: 10;
 }
 
 .faq{
     width:50px;
     position: fixed;
-    top: 15px;
+    top: 24px;
     right: 20px;
+    z-index: 10;
 }
 
 .meModal{
@@ -37,8 +43,8 @@
     font-size: 17px;
     width: 160px;
     height: 210px;
-    margin-top: -410px;
-    margin-left: 700px;
+    margin-top: -390px;
+    margin-left: 900px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.9;
@@ -54,8 +60,8 @@
     font-size: 17px;
     width: 120px;
     height: 90px;
-    margin-top: -520px;
-    margin-left: 1080px;
+    margin-top: -510px;
+    margin-left: 1280px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.9;
@@ -71,8 +77,8 @@
     font-size: 17px;
     width: 100px;
     height: 90px;
-    margin-top: -530px;
-    margin-left: 1220px;
+    margin-top: -520px;
+    margin-left: 1420px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.9;
