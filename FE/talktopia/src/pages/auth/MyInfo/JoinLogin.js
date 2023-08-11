@@ -61,6 +61,7 @@ function JoinLogin(){
 
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/login`, requestBodyJSON, {headers});
+            console.log("엥",response);
             dispatch(reduxUserInfo({
               userId: response.data.userId,
               userName: response.data.userName,
@@ -68,6 +69,7 @@ function JoinLogin(){
               expiredDate: response.data.expiredDate,
               sttLang: response.data.sttLang,
               transLang: response.data.transLang,
+              profileUrl: response.data.profileUrl,
             }));
 
             //fcm 토큰 발급
@@ -86,7 +88,7 @@ function JoinLogin(){
             
 
             //로컬에 저장하기
-            const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang, fcmToken: token}
+            const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang, fcmToken: token, profileUrl: response.data.profileUrl}
             localStorage.setItem("UserInfo", JSON.stringify(UserInfo));
 
             //쿠키에 저장하기
@@ -497,7 +499,7 @@ function JoinLogin(){
                 timer: 2000,
                 timerProgressBar: true,
             })
-        }else if(!userNameCorrect){
+        }else if(!userNameCorrect || /\s/.test(userName)){
             Swal.fire({
                 icon: "warning",
                 title: "이름을 입력해주세요.",
@@ -640,17 +642,17 @@ function JoinLogin(){
                     }}
                 />
                 </GoogleOAuthProvider>
-                <img className={`${style.fish1}`} src="/img/fish1.png" alt=""></img>
-                <img className={`${style.fish2}`} src="/img/fish2.png" alt=""></img>
-                <img className={`${style.fish3}`} src="/img/fish3.png" alt=""></img>
-                <img className={`${style.bubble1}`} src="/img/bubble3.png" alt=""></img>
-                <img className={`${style.bubble2}`} src="/img/bubble2.png" alt=""></img>
-                <img className={`${style.bubble4}`} src="/img/bubble3.png" alt=""></img>
-                <img className={`${style.bubble5}`} src="/img/bubble1.png" alt=""></img>
-                <img className={`${style.bubble6}`} src="/img/bubble2.png" alt=""></img>
+                <img className={`${style.fish1}`} src="/img/fish/fish1.png" alt=""></img>
+                <img className={`${style.fish2}`} src="/img/fish/fish2.png" alt=""></img>
+                <img className={`${style.fish3}`} src="/img/fish/fish3.png" alt=""></img>
+                <img className={`${style.bubble1}`} src="/img/bubble/bubble3.png" alt=""></img>
+                <img className={`${style.bubble2}`} src="/img/bubble/bubble2.png" alt=""></img>
+                <img className={`${style.bubble4}`} src="/img/bubble/bubble3.png" alt=""></img>
+                <img className={`${style.bubble5}`} src="/img/bubble/bubble1.png" alt=""></img>
+                <img className={`${style.bubble6}`} src="/img/bubble/bubble2.png" alt=""></img>
                 </div>
                 {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
-                                <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
+                <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>비밀번호 찾기</span>
             </div>
@@ -712,6 +714,7 @@ function JoinLogin(){
                             <input type="text" value={userName} onChange={onNameHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
+                    <div className={`${style.guide1}`}>띄어쓰기 불가능</div>
 
 
                     <div className={style["div-join-container-isButton"]}>
@@ -798,15 +801,13 @@ function JoinLogin(){
                     </div>
                     <button className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
 
-                    <img className={`${style.friend11}`} src="/img/friend11.png" alt=""></img>
-                {/* <img className={`${style.friend12}`} src="/img/friend12.png" alt=""></img>
-                <img className={`${style.friend12}`} src="/img/fish5.png" alt=""></img> */}
-                <img className={`${style.fish6}`} src="/img/fish6.png" alt=""></img>
-                <img className={`${style.fish7}`} src="/img/fish7.png" alt=""></img>
-                <img className={`${style.bubble3}`} src="/img/bubble3.png" alt=""></img>
-                <img className={`${style.bubble7}`} src="/img/bubble2.png" alt=""></img>
-                <img className={`${style.bubble8}`} src="/img/bubble3.png" alt=""></img>
-                </div>
+                    <img className={`${style.friend11}`} src="/img/fish/friend11.png" alt=""></img>
+                    <img className={`${style.fish6}`} src="/img/fish/fish6.png" alt=""></img>
+                    <img className={`${style.fish7}`} src="/img/fish/fish7.png" alt=""></img>
+                    <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
+                    <img className={`${style.bubble7}`} src="/img/bubble/bubble2.png" alt=""></img>
+                    <img className={`${style.bubble8}`} src="/img/bubble/bubble3.png" alt=""></img>
+                    </div>
             </div>
         </div>
         </div>

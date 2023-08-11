@@ -10,10 +10,11 @@ let userInfo = createSlice({
         sttLang: '',
         transLang: '',
         fcmToken: '',
+        profileUrl: '',
     },
     reducers: {
         reduxUserInfo(state, action){
-            const {userId, userName, accessToken, expiredDate, sttLang, transLang, fcmToken} = action.payload;
+            const {userId, userName, accessToken, expiredDate, sttLang, transLang, fcmToken, profileUrl} = action.payload;
             state.userId = userId;
             state.userName = userName;
             state.accessToken = accessToken;
@@ -21,6 +22,7 @@ let userInfo = createSlice({
             state.sttLang = sttLang;
             state.transLang = transLang;
             state.fcmToken = fcmToken;
+            state.profileUrl = profileUrl;
         }
     }
 })
