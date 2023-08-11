@@ -37,8 +37,18 @@ public class PostService {
 	public Message registerPost(RegistPostReq registPostReq) throws Exception {
 		User user = userRepository.findByUserId(registPostReq.getUserId()).orElseThrow(() -> new Exception("우자기 앖어"));
 		Post operation = registPostReq.toEntity(user,PostType.ACTIVE);
+		if(!checkRegisterCount(user.getUserNo())){
+			operation.setPostCount(1);
+		}
+		else{
+			operation.setPostCount(operation.getPostCount()+1);
+		}
 		postRepository.save(operation);
 		return new Message("게시글이 올라왔습니다");
+	}
+
+	private boolean checkRegisterCount(long userNo) {
+		return postRepository.existsByUser_UserId(userNo);
 	}
 
 	public PostRes detailPost(String userId, long postNo) throws Exception {
@@ -46,7 +56,7 @@ public class PostService {
 		Post post = postRepository.findByUser_UserNoAndPostNo(user.getUserNo(),postNo);
 		List<AnswerPost> answerPosts = answerPostRepository.findByPostPostNo(post.getPostNo());
 		List<AnswerPostRes> answerPostRes = showPostOne(answerPosts);
-		return new PostRes(post.getPostNo(),post.getPostTitle(),post.getPostContent(),answerPostRes);
+		return new PostRes(post.getPostNo(),post.getPostTitle(),post.getPostContent(),post.getPostCount(),answerPostRes);
 
 	}
 
@@ -77,6 +87,7 @@ public class PostService {
 
 		if(post.getUser().getUserId().equals(user.getUserId())&& post.getPostType().equals(PostType.ACTIVE)){
 			post.setPostType(PostType.NONACTIVE);
+			post.setPostCount(post.getPostCount()-1);
 			postRepository.save(post);
 			return new Message("게시글을 지웠습니다");
 		}

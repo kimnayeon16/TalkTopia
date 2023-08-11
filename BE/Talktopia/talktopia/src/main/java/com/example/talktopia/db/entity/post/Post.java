@@ -45,6 +45,9 @@ public class Post {
 	@Column(name = "post_title")
 	private String postTitle;
 
+	@Column(name = "post_count")
+	private int postCount;
+
 	@CreatedDate
 	@Column(name = "post_create_time")
 	private LocalDateTime postCreateTime;
@@ -59,12 +62,13 @@ public class Post {
 	@Enumerated(EnumType.STRING)
 	private PostType postType;
 	@Builder
-	public Post(long postNo, String postContent, String postTitle, LocalDateTime postCreateTime, User user, PostType postType) {
+	public Post(long postNo, String postContent, String postTitle, LocalDateTime postCreateTime, User user, PostType postType,int postCount) {
 		this.postNo = postNo;
 		this.postContent = postContent;
 		this.postTitle = postTitle;
 		this.postCreateTime = postCreateTime;
 		this.postType=postType;
+		this.postCount=postCount;
 		setUser(user);
 	}
 
