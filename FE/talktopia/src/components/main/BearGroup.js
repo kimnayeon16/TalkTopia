@@ -7,7 +7,6 @@ import { BACKEND_URL } from '../../utils';
 const BearGroup = () => {
   const navigate = useNavigate();
 
-  
   const userInfoString = localStorage.getItem("UserInfo");
   const userInfo = JSON.parse(userInfoString);
   
@@ -66,7 +65,7 @@ const BearGroup = () => {
             join?
           <div className={`${style["speech-bubble3"]}`}>
             <p className={`${style.message}`}>랜덤 6인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={enterFriendRoom(6)}>참여하기</button>
+            <button className={`${style.button}`} onClick={() => {enterFriendRoom(6)}}>참여하기</button>
           </div>
           :
           null

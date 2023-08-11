@@ -90,23 +90,34 @@ function Me(props){
   const logout = () => {
     axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, {
         params: {
-            name: user.userId
+            name: user.userId 
         },
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.accessToken}`
         }
-    })
-  }
+      }).then((response)=>{
+        removeCookie('refreshToken');
+        localStorage.removeItem("UserInfo");
+        console.log("로그아웃");
+        
+        navigate('/');
+     })
+     .catch((error)=>{
+         console.log("로그아웃 실패", error);
+     })
+}
 
 
   return(
-    <div className={`${styles.meModal}`}  onMouseOver={props.handleUserMouseOver} onMouseOut={props.handleUserMouseOut}>
-      <img className={`${styles.img}`} style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden'}} src={userImg} alt=""/>
-      <p className={`${styles.mytext}`}>{userName}</p>
-      <hr/>
-      <p className={`${styles.mytext}`} onClick={()=>{navigate('/myinfo/passwordConfirm')}}>내 정보 보기</p>
-      <p className={`${styles.mytext}`} onClick={logout}>로그아웃</p>
+    <div onMouseOver={props.handleUserMouseOver} onMouseOut={props.handleUserMouseOut}>
+      <div className={`${styles.meModal}`}>
+        <img className={`${styles.img}`} style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden'}} src={userImg} alt=""/>
+        <p className={`${styles.mytext}`}>{userName}</p>
+        <hr/>
+        <p className={`${styles.mytext}`} onClick={()=>{navigate('/myinfo/passwordConfirm')}}>내 정보 보기</p>
+        <p className={`${styles.mytext}`} onClick={logout}>로그아웃</p>
+      </div>
     </div>
   )
 }

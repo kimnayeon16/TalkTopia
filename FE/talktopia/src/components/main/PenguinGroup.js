@@ -62,7 +62,7 @@ const PenguinGroup = () => {
           {join ?
           <div className={`${style["speech-bubble"]}`}>
             <p className={`${style.message}`}>랜덤 2인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={enterFriendRoom(2)}>참여하기</button>
+            <button className={`${style.button}`} onClick={() => {enterFriendRoom(2)}}>참여하기</button>
           </div>
           :
           null
