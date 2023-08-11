@@ -68,11 +68,11 @@ function InviteModalComponent(props) {
                         <div className={style['report-reason-content']} key={idx}>
                             <input 
                                 type='checkbox' 
-                                id={item}
-                                checked={checkedList.includes(item)}
-                                onChange={(e) => checkHandler(e, item)}
+                                id={item.userId}
+                                checked={checkedList.includes(item.userId)}
+                                onChange={(e) => checkHandler(e, item.userId)}
                             />
-                            <label htmlFor={item} >{item}</label>
+                            <label htmlFor={item.userId} >{item.userId}</label>
                         </div>
                     ))}
 

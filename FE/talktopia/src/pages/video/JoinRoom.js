@@ -349,14 +349,9 @@ function JoinRoom() {
     }
 
     // 주제 모달 창
-    const [isTopicModalOpen, setIsTopicModalOpen] = useState(false)
-    const [topicNumber, setTopicNumber] = useState(0)
-    const openTopicModal = () => {
-        setIsTopicModalOpen(true);
-        setTopicNumber((prev)=> (prev + 1))
-    }
-    const closeTopicModal = () => {
-        setIsTopicModalOpen(false)
+    const [isTopic, setIsTopic] = useState(false)
+    const openTopic = () => {
+        setIsTopic(!isTopic)
     }
 
 
@@ -405,7 +400,7 @@ function JoinRoom() {
                                 openTopicbar= { openTopicbar }
                                 closeTopicbar={ closeTopicbar }
                                 roomRole={ localUser.roomRole }
-                                openTopicModal={ openTopicModal }
+                                openTopic={ openTopic }
                             />
                         </div>
                     </div>
@@ -426,6 +421,16 @@ function JoinRoom() {
                                 />
                             </div>
                         </div>
+                    )}
+
+                    {localUser.userId !== undefined && localUser.streamManager !== undefined && (
+                        <>
+                            <TopicModalComponent 
+                                isTopic = { isTopic }
+                                topicList={ topicList }
+                                mainStreamManager={ localUser.streamManager }
+                            />
+                        </>
                     )}
 
                 </div>
@@ -450,16 +455,17 @@ function JoinRoom() {
                 </div>
             ) : null}
 
-            {isTopicModalOpen ? (
+            {/* {isTopicModalOpen ? (
                 <div className={style['report-modal-window']}>
                     <TopicModalComponent 
                         topic={ topicList[topicNumber] }
                         mainStreamManager={ localUser.streamManager }
                         closeTopicModal={ closeTopicModal }
                         topicList={ topicList }
+                        isTopicModalOpen={ isTopicModalOpen }
                     />
                 </div>
-            ) : null}
+            ) : null} */}
 
         </div>
     );
