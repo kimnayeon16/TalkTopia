@@ -46,6 +46,7 @@ public class UserService {
 	private final LanguageRepository languageRepository;
 	private final ProfileImgRepository profileImgRepository;
 	private final UserMailService userMailService;
+	private final UserStatusService userStatusService;
 
 	@Value("${spring.security.jwt.secret}")
 	private String secretKey;
@@ -100,6 +101,8 @@ public class UserService {
 		String refreshToken = JwtProvider.createRefreshToken(userIdPwReq.getUserId(), secretKey,
 			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, dbSearchUser); // refreshToken DB에 저장
+
+		userStatusService.updateUserStatus(userIdPwReq.getUserId(),"ONLINE");
 
 		return new UserLoginRes(userIdPwReq.getUserId(), dbSearchUser.getUserName(), accessToken,
 			refreshToken,
@@ -249,7 +252,7 @@ public class UserService {
 		User searchUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
 
 		tokenRepository.deleteTokenByUserUserNo(searchUser.getUserNo());
-
+		userStatusService.updateUserStatus(userId,"OFFLINE");
 		return new Message("로그아웃에 성공했습니다.");
 	}
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.friend.FriendIdPwReq;
+import com.example.talktopia.api.request.friend.FriendReq;
 import com.example.talktopia.api.service.friend.FriendService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.repository.FriendRepository;
@@ -42,7 +43,7 @@ public class FriendController {
 
 	// 친구 목록 반환
 	@GetMapping("/list/{userId}")
-	public ResponseEntity<List<String>> listFriend(@PathVariable("userId") String userId){
+	public ResponseEntity<List<FriendReq>> listFriend(@PathVariable("userId") String userId){
 		log.info(userId);
 		return ResponseEntity.ok().body(friendService.getFriends(userId));
 	}

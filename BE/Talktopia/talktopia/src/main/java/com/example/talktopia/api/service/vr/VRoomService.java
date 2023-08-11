@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.vr.VRoomFriendReq;
+import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.RoomExitStatus;
 
 import com.example.talktopia.api.request.vr.VRoomExitReq;
@@ -60,6 +61,7 @@ public class VRoomService {
 	private final ParticipantsRepository participantsRepository;
 
 	private final SaveVRoomRepository saveVRoomRepository;
+	private final UserStatusService userStatusService;
 
 	// @Value("${openvidu.secret}")
 	// private String SECRET;
@@ -72,13 +74,14 @@ public class VRoomService {
 	@Autowired
 	public VRoomService(VRoomRepository vroomrepsitory, UserRepository userRepository,
 		ParticipantsService participantsService, ParticipantsRepository participantsRepository,
-		SaveVRoomRepository saveVRoomRepository,
+		SaveVRoomRepository saveVRoomRepository, UserStatusService userStatusService,
 		@Value("${openvidu.url}") String openviduURL, @Value("${openvidu.secret}") String secret) {
 		this.vroomrepsitory = vroomrepsitory;
 		this.userRepository = userRepository;
 		this.participantsService = participantsService;
 		this.participantsRepository = participantsRepository;
 		this.saveVRoomRepository =saveVRoomRepository;
+		this.userStatusService = userStatusService;
 		this.openVidu = new OpenVidu(openviduURL, secret);
 	}
 
@@ -161,6 +164,7 @@ public class VRoomService {
 				//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
 				vRoomRes.setVrSession(roomId);
 				vRoomRes.setRoomRole(RoomRole.GUEST);
+				userStatusService.updateUserStatus(user.getUserId(),"BUSY");
 				// Return the response to the client
 				// 토큰정보와 상태 정보 리턴
 				return vRoomRes;
@@ -245,6 +249,7 @@ public class VRoomService {
 			///////////////// VROOM 이식 /////////////////////////
 			saveVroom(roomId);
 			////////////////////////////////////////////////////
+			userStatusService.updateUserStatus(user.getUserId(),"BUSY");
 			return vRoomRes;
 
 		} catch (Exception e) {
@@ -319,6 +324,7 @@ public class VRoomService {
 			System.out.println(-2);
 			// Return the response to the client
 			// 토큰정보와 상태 정보 리턴
+			userStatusService.updateUserStatus(user.getUserId(),"BUSY");
 			return vRoomRes;
 
 		} catch (Exception e) {
@@ -376,6 +382,7 @@ public class VRoomService {
 		vRoomRes.setRoomRole(RoomRole.GUEST);
 		// Return the response to the client
 		// 토큰정보와 상태 정보 리턴
+		userStatusService.updateUserStatus(user.getUserId(),"BUSY");
 		return vRoomRes;
 	}
 
@@ -438,6 +445,7 @@ public class VRoomService {
 
 				//this.mapSessionToken.get(vRoomExitReq.getVrSession()).getLang().remove(userlan);
 				if (this.mapSessionToken.get(vRoomExitReq.getVrSession()).getCurCount() < 1) {
+					userStatusService.updateUserStatus(user.getUserId(),"ONLINE");
 					deleteSaveVroom(vRoomExitReq.getVrSession());
 					this.mapSessions.remove(vRoomExitReq.getVrSession());
 					this.mapSessionToken.remove(vRoomExitReq.getVrSession());
@@ -458,6 +466,7 @@ public class VRoomService {
 				//OK
 				//이를통해서 참여자 DB를 삭제한다.
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
+				userStatusService.updateUserStatus(user.getUserId(),"ONLINE");
 				return RoomExitStatus.EXIT_SUCCESS;
 				//return new Message("방을 나갔습니다.");
 			}
@@ -497,10 +506,13 @@ public class VRoomService {
 				}
 			}
 			if(this.mapSessionToken.get(vrSession).getCurCount()<1){
+				userStatusService.updateUserStatus(user.getUserId(),"ONLINE");
 				this.mapSessions.remove(vrSession);
 				this.mapSessionToken.remove(vrSession);
 				participantsRepository.deleteByUser_UserNo(user.getUserNo());
 				vroomrepsitory.deleteByVrSession(vRoom.getVrSession());
+
+				return;
 			}
 			//VRoom vRoom = vroomrepsitory.findByVrSession(vRoomExitReq.getVrSession());
 			vRoom.setVrCurrCnt(vRoom.getVrCurrCnt()-1);
@@ -514,6 +526,7 @@ public class VRoomService {
 			//OK
 			//이를통해서 참여자 DB를 삭제한다.
 			participantsRepository.deleteByUser_UserNo(user.getUserNo());
+			userStatusService.updateUserStatus(user.getUserId(),"ONLINE");
 
 		}
 
