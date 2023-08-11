@@ -11,7 +11,8 @@ import style from "./ToolbarComponent.module.css"
 
 function ToolbarComponent(props) {
 
-    const handleTopicbutton = () => {
+    const handleTopicbutton = (e) => {
+        e.preventDefault();
         if (props.roomRole === 'HOST') {
             props.openTopicbar();
         } 
@@ -22,7 +23,7 @@ function ToolbarComponent(props) {
             <div className={style['video-call-actions']}>
                 {props.isTopicbar ? (
                     <>
-                        <button className={`${style['video-game-button']}`} onClick={props.openTopicModal} >
+                        <button className={`${style['video-game-button']}`} onClick={props.openTopic} >
                             <FiHash size="24" color="black" />
                             <p>랜덤 생성</p>
                         </button>  
