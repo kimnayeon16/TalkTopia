@@ -52,6 +52,7 @@ public class WebsocketChatController {
 			.scrcSenderId(chatRoomContentRequest.getSender())
 			.scrcContent(chatRoomContentRequest.getContent())
 			.scrcSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DateFormatPattern.get())))
+			.scrcCached(false)
 			.build();
 		saveChatRoomContentRedisService.saveChat(content);
 

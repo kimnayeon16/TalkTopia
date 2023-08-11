@@ -79,6 +79,7 @@ function ChatWindow({friend, sessionId, showChat, chats}) {
       }
       stomp.send(`/app/send/${sessionId}`, {}, JSON.stringify(sendMessage));
     }
+    setChatMsg("");
   }
   /* websocket end */
 
@@ -132,7 +133,8 @@ function ChatWindow({friend, sessionId, showChat, chats}) {
 
         <div className={`${style["chat-input"]}`}>
           <input type='text' placeholder='채팅 입력...' 
-            onChange={e=>setChatMsg(e.target.value)}>
+            onChange={e=>setChatMsg(e.target.value)}
+            value = {chatMsg}>
           </input>
           <button className={`${style["send-btn"]}`} onClick={sendChatMsg}>전송</button>
         </div>
