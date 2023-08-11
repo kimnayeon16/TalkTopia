@@ -20,15 +20,22 @@ public class Topic {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="topic_id")
-	private long topicId;
+	@Column(name="topic_no")
+	private long topicNo;
 
-	@Column(length = 100, name = "topic_content")
+	@Column(name = "topic_id")
+	private Long topicId;
+
+	@Column(name = "topic_lang")
+	private String topicLang;
+
+	@Column(name = "topic_content")
 	private String topicConent;
 
 	@Builder
-	public Topic(long topicId, String topicConent) {
+	public Topic(long topicId, String topicConent, String topicLang) {
 		this.topicId = topicId;
 		this.topicConent = topicConent;
+		this.topicLang = topicLang;
 	}
 }
