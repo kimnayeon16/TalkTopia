@@ -49,6 +49,7 @@
     background-color: white;
     opacity: 0.9;
     z-index: 100;
+    position: relative;
 }
 
 .mytext{
