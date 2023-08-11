@@ -149,6 +149,16 @@ function IdFind() {
             )}
             <button className={`${style.button}`} onClick={findId}>아이디 찾기</button>
           </div>
+          <img className={`${style.turtle}`} src="/img/fish/turtle.png" alt=""></img>
+            <img className={`${style.grass2}`} src="/img/grass/grass2.png" alt=""></img>
+            <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>
+            <img className={`${style.fish4}`} src="/img/fish/fish4.png" alt=""></img>
+            <img className={`${style.fish33}`} src="/img/fish/fish33.png" alt=""></img>
+            <img className={`${style.fish34}`} src="/img/fish/fish34.png" alt=""></img>
+            <img className={`${style.friend14}`} src="/img/fish/friend14.png" alt=""></img>
+            <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
+            <img className={`${style.bubble2}`} src="/img/bubble/bubble2.png" alt=""></img>
+            <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
         </div>
        </>
        );

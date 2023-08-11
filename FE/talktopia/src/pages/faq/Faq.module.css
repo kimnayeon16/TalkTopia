@@ -1,9 +1,9 @@
 .background{
     background: #bcd8da;
     background-position: top center;
-    background-size: cover;
+    /* background-size: cover; */
     background-attachment: fixed;
-    height: 100vh;
+    height: 100%;
 }
 
 .accordion{

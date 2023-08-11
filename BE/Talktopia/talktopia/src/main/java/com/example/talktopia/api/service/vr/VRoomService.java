@@ -95,9 +95,12 @@ public class VRoomService {
 		return connectionProperties;
 	}
 
+	@Transactional
 	public VRoomRes enterCommonRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
 		if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
+			log.info("user.getNO::::::::::::::::::::::::::"+user.getUserNo());
+			log.info("_+_+_+_+_+_+_+_+_+_+_+_+_+::::	"+participantsRepository.existsByUser_UserNo(user.getUserNo()));
 			exitRoomUser(vRoomReq);
 		}
 		ConnectionProperties connectionProperties = createConnectionProperties(vRoomReq.getUserId());
@@ -259,6 +262,7 @@ public class VRoomService {
 
 	}
 
+	@Transactional
 	public VRoomRes enterFriendRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
 		if(participantsRepository.existsByUser_UserNo(user.getUserNo())){
@@ -334,6 +338,7 @@ public class VRoomService {
 
 	}
 
+	@Transactional
 	public VRoomRes enterJoinRoom(VRoomFriendReq vRoomFriendReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomFriendReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
 		// if(participantsRepository.existsByUser_UserNo(user.getUserNo())){

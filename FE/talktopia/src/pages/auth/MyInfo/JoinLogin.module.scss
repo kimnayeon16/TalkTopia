@@ -62,9 +62,6 @@ $diffRatio: ($contW - $imgW) / $contW;
   width: $contW;
   height: 100vh;
   margin: 0 auto 100px;
-  // background: LightSlateGray;
-  // background-image: url('../../../../public/img/login88.png');
-  // background-color: #dad2bc; 
   background: #bcd8da;
 }
 
@@ -124,8 +121,7 @@ button {
     top: 0;
     width: $contW;
     height: 100%;
-    // background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
-    background-image: url('../../../../public/img/ocean17.jpeg');
+    background-image: url('../../../../public/img/background/ocean17.jpeg');
     background-size: cover;
     transition: transform $switchAT ease-in-out;
   }
@@ -322,8 +318,7 @@ h2 {
   margin-top: 15px;
   text-align: center;
   font-size: 12px;
-  // color: #cfcfcf;
-  color: black;
+  color: #012A4A;
 }
 
 .submit {
@@ -331,7 +326,6 @@ h2 {
   height: 45px;
   margin-top: 40px;
   margin-bottom: 50px;
-  // background: #d4af7a;
   background: #1a759f;
   text-transform: uppercase;
   color: white;
@@ -481,7 +475,8 @@ h2 {
 select {
   width: 140px;
   height: 35px;
-  background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+  // background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+  background: calc(100% - 5px) center no-repeat;
   background-size: 20px;
   padding: 5px 30px 5px 10px;
   border-radius: 30px;
@@ -532,6 +527,14 @@ select option {
   margin-left: 90px;
 }
 
+.guide1 {
+  font-family: 'Dovemayo_wild'; 
+  color: #ed2752;
+  font-size: 12px;
+  margin-top: -20px;
+  margin-left: 90px;
+}
+
 .guide-pass {
   font-family: 'Dovemayo_wild'; 
   color: #ed2752;
@@ -579,11 +582,8 @@ select option {
 }
 
 .div-join {
-  // width: 100%;
   display: flex;
   align-items: center;
-  // margin-bottom: 10px;
-  // text-align: center;
 }
 
 

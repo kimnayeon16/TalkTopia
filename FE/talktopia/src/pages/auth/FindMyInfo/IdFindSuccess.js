@@ -30,6 +30,16 @@ function IdFindSuccess() {
             <button className={`${style["button-together-1"]}`}  onClick={() => navigate('/regist')}>로그인하러가기</button>
             <button className={`${style["button-together-1"]}`} onClick={()=> navigate('/findPassword')}>비밀번호 찾기</button>
         </div>
+        <img className={`${style.turtle}`} src="/img/fish/turtle.png" alt=""></img>
+            <img className={`${style.grass2}`} src="/img/grass/grass2.png" alt=""></img>
+            <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>
+            <img className={`${style.fish4}`} src="/img/fish/fish4.png" alt=""></img>
+            <img className={`${style.fish332}`} src="/img/fish/fish33.png" alt=""></img>
+            <img className={`${style.fish34}`} src="/img/fish/fish34.png" alt=""></img>
+            <img className={`${style.friend14}`} src="/img/fish/friend14.png" alt=""></img>
+            <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
+            <img className={`${style.bubble22}`} src="/img/bubble/bubble2.png" alt=""></img>
+            <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
   </div>
 );
 }

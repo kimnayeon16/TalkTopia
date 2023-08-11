@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 
 // Router
 //start
-import NoStart from './pages/start/NoStart.js';
-import NnoStart from './pages/start/NnoStart.js';
 import Start from './pages/start/Start.js';
 //auth
 import Regist from './pages/auth/MyInfo/JoinLogin.js';
@@ -20,7 +18,7 @@ import PasswordFindFail from './pages/auth/FindMyInfo/PasswordFindFail.js';
 
 //home
 import Home from './pages/home/Home.js';
-import NoHome from './pages/home/NoHome.js';
+import Home1 from './pages/home/NoHome.js';
 
 //mypage
 import MyInfo from './pages/mypage/MyInfo.js';
@@ -45,6 +43,7 @@ import { AnimatePresence } from "framer-motion";
 
 // FCM
 import ServiceWorkerListener from './pages/auth/fcm/ServiceWorkerListener';
+import FCMModalComponent from './components/fcm/FCMModalComponent';
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -55,10 +54,14 @@ function App() {
     setShowModal(true);
   };
 
-  const handleConfirmClick = () => {
-    console.log("확인 버튼이 클릭되었습니다.");
-    setShowModal(false);
-  };
+  const closeModal = () => {
+    setShowModal(false)
+  }
+
+  // const handleConfirmClick = () => {
+  //   console.log("확인 버튼이 클릭되었습니다.");
+  //   setShowModal(false);
+  // };
 
   return (
     <div className="App">
@@ -77,6 +80,7 @@ function App() {
         <Route path="/findPassword/success" element={<PasswordFindSuccess/>}/>
         <Route path="/findPassword/fail" element={<PasswordFindFail/>}/>
         {/* home */}
+        <Route path="/home1" element={<Home1/>}/>
         <Route path="/home" element={<Home/>}/>
         {/* myInfo */}
         <Route path="/myinfo" element={<MyInfo/>}/>
@@ -92,9 +96,6 @@ function App() {
         <Route path="/bye" element={<Leave/>}/>
 
         {/* 삭제할거 */}
-        <Route path="/start1" element={<NoStart/>}/>
-        <Route path="/start" element={<NnoStart/>}/>
-        <Route path="/nohome" element={<NoHome/>}/>
         <Route path="/google" element={<GoogleLoginButton/>}/>
 
         {/* 친구목록 */}
@@ -104,7 +105,13 @@ function App() {
       </AnimatePresence>
 
       <ServiceWorkerListener onMessage={handleMessage} />
-      {showModal && (
+      <FCMModalComponent 
+        showModal={ showModal }
+        modalContent={ modalContent }
+        closeModal={ closeModal }     
+      />
+
+      {/* {showModal && (
         <div className="fcm-modal">
           <div className="fcm-modal-content">
             {modalContent}
@@ -112,7 +119,7 @@ function App() {
             <button className="fcm-modal-content-button" onClick={() => setShowModal(false)}>닫기</button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

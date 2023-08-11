@@ -1,0 +1,93 @@
+.title{
+    font-family: 'EF_jejudoldam';
+    color: #012A4A;
+    font-size: 30px;
+}
+
+.user{
+    width:55px;
+    position: fixed;
+    top: 11px;
+    right: 290px;
+}
+
+.dding{
+    width:60px;
+    position: fixed;
+    top: 8px;
+    right: 190px;
+}
+
+.earth{
+    width:50px;
+    position: fixed;
+    top: 15px;
+    right: 100px;
+}
+
+.faq{
+    width:50px;
+    position: fixed;
+    top: 15px;
+    right: 20px;
+}
+
+.meModal{
+    font-family: 'Dovemayo_wild';
+    font-size: 17px;
+    width: 160px;
+    height: 210px;
+    margin-top: -410px;
+    margin-left: 700px;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.9;
+    z-index: 100;
+}
+
+.mytext{
+    margin-top: 10px;
+}
+
+.earthModal{
+    font-family: 'Dovemayo_wild';
+    font-size: 17px;
+    width: 120px;
+    height: 90px;
+    margin-top: -520px;
+    margin-left: 1080px;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.9;
+    z-index: 100;
+}
+
+.countrytext{
+    margin-top: 10px;
+}
+
+.faqModal{
+    font-family: 'Dovemayo_wild';
+    font-size: 17px;
+    width: 100px;
+    height: 90px;
+    margin-top: -530px;
+    margin-left: 1220px;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.9;
+    z-index: 100;
+}
+
+.faqtext{
+    margin-top: 10px;
+}
+
+.img{
+    width: '50px';
+    height: '50px';
+    border-radius: '50%';
+    overflow: 'hidden';
+    margin-top: 15px;
+}
+

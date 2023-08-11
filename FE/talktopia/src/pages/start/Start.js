@@ -1,53 +1,62 @@
-import React from "react";
-import style from "./Start.module.css";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import style from "./Start.module.css";
+import { useState } from "react";
 
-const Start = () => {
+function NnoStart(){
+    const navigate = useNavigate();
 
-  let navigate = useNavigate();
-  
-  return (
-    <div className={`${style.background}`}>
-        <h3 className={`${style.title}`}>TalkTopia</h3>
-        <p className={`${style.intro}`}>하나의 세계, 하나의 화상채팅</p>
-        <p className={`${style["intro-1"]}`}> 국경을 넘어 다양한 사람들과 언어의 장벽 없이 소통할 수 있습니다.<br/>
-        TalkTopia로의 항해를 경험해보세요.</p>
+    const [animatePenguin, setAnimatePenguin] = useState(false);
+    const [splash, setSplash] = useState(false);
 
-        <div className={`${style.content}`}>
-            <div className={style["content__container"]}>
-                {/* <p className={styles["content__container__text"]}>Hello</p> */}
-                <ul className={style["content__container__list"]}>
-                    <li className={style["content__container__list__item"]}>안녕하세요</li>
-                    <li className={style["content__container__list__item"]}>Hello</li>
-                    <li className={style["content__container__list__item"]}>你好</li>
-                    <li className={style["content__container__list__item"]}>Bonjour</li>
-                    <li className={style["content__container__list__item"]}>привет</li>
-                    <li className={style["content__container__list__item"]}>こんにちは</li>
-                    <li className={style["content__container__list__item"]}>Hallo</li>
-                    <li className={style["content__container__list__item"]}>olá</li>
-                    <li className={style["content__container__list__item"]}>Hola</li>
-                    <li className={style["content__container__list__item"]}>Ciao</li>
-                    <li className={style["content__container__list__item"]}>नमस्ते</li>
-                    <li className={style["content__container__list__item"]}>Halo</li>
-                    {/* <li className={style["content__container__list__item-1"]}>안녕하세요</li>
-                    <li className={style["content__container__list__item-2"]}>Hello</li>
-                    <li className={style["content__container__list__item-3"]}>你好</li>
-                    <li className={style["content__container__list__item-4"]}>Bonjour</li>
-                    <li className={style["content__container__list__item-5"]}>привет</li>
-                    <li className={style["content__container__list__item-6"]}>こんにちは</li>
-                    <li className={style["content__container__list__item-7"]}>Hallo</li>
-                    <li className={style["content__container__list__item-8"]}>olá</li>
-                    <li className={style["content__container__list__item-9"]}>Hola</li>
-                    <li className={style["content__container__list__item-10"]}>Ciao</li>
-                    <li className={style["content__container__list__item-11"]}>नमस्ते</li>
-                    <li className={style["content__container__list__item-12"]}>Halo</li> */}
-                </ul>
+    const handleButtonClick = () => {
+        setAnimatePenguin(true);
+
+        setTimeout(() => {
+            setSplash(true);
+          }, 4000); // 10초 지연
+
+          setTimeout(() => {
+            setSplash(false);
+          }, 5000); // 10초 지연
+
+        setTimeout(() => {
+            navigate('/regist');
+          }, 5100); // 10초 지연
+    };
+
+    return(
+        <div className={`${style.background}`}>
+            <img className={`${style.cloud}`} src="/img/cloud/cloud1.png" alt=""/>
+            <img className={`${style.cloud2}`} src="/img/cloud/cloud2.png" alt=""/>
+            <h2 className={`${style.h2}`}>TalkTopia로 넓은 세상을 만나보세요</h2>
+            <p className={`${style.p}`}>다양한 국가의 사람들과 화상 채팅을 해보실래요?</p>
+            <div className={`${style.content}`}>
+                <div className={style["content__container"]}>
+                    <ul className={style["content__container__list"]}>
+                        <li className={style["content__container__list__item"]}>안녕하세요</li>
+                        <li className={style["content__container__list__item"]}>Hello</li>
+                        <li className={style["content__container__list__item"]}>你好</li>
+                        <li className={style["content__container__list__item"]}>Bonjour</li>
+                        <li className={style["content__container__list__item"]}>привет</li>
+                        <li className={style["content__container__list__item"]}>こんにちは</li>
+                        <li className={style["content__container__list__item"]}>Hallo</li>
+                        <li className={style["content__container__list__item"]}>olá</li>
+                        <li className={style["content__container__list__item"]}>Hola</li>
+                        <li className={style["content__container__list__item"]}>Ciao</li>
+                        <li className={style["content__container__list__item"]}>नमस्ते</li>
+                        <li className={style["content__container__list__item"]}>Halo</li>
+                    </ul>
+                </div>
             </div>
+            <img className={`${style.cloud3}`} src="/img/cloud/cloud3.png" alt=""/>
+            <button className={`${style.button}`} onClick={handleButtonClick}><span className={`${style.span}`}>💻</span> TalkTopia로 가기 <span className={`${style.span}`}>⛵</span></button>
+            <img className={`${animatePenguin ? style.penguin : style.penguin1}`} src="/img/start/penguin.png" alt=""/>
+            {/* <img className={`${style.penguin}`} src="/img/그림4.png" alt=""/> */}
+            <img className={`${style.wave}`} src="/img/boat/boat3.png" alt=""/>
+            <img className={`${style.wave1}`} src="/img/boat/boat5.png" alt=""/>
+            <img className={`${splash ? style.splash : style.splash1 }`} src="/img/start/splash.png" alt=""/>
         </div>
-        <button className={`${style.button}`} onClick={()=>{navigate('/regist')}}>TalkTopia로 떠나실래요? <span className={`${style.span}`}>⛵</span></button>
-    </div>
-  );
-};  
+    )
+}
 
-export default Start;
+export default NnoStart;
