@@ -43,6 +43,7 @@ import { AnimatePresence } from "framer-motion";
 
 // FCM
 import ServiceWorkerListener from './pages/auth/fcm/ServiceWorkerListener';
+import FCMModalComponent from './components/fcm/FCMModalComponent';
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -53,10 +54,14 @@ function App() {
     setShowModal(true);
   };
 
-  const handleConfirmClick = () => {
-    console.log("확인 버튼이 클릭되었습니다.");
-    setShowModal(false);
-  };
+  const closeModal = () => {
+    setShowModal(false)
+  }
+
+  // const handleConfirmClick = () => {
+  //   console.log("확인 버튼이 클릭되었습니다.");
+  //   setShowModal(false);
+  // };
 
   return (
     <div className="App">
@@ -100,7 +105,13 @@ function App() {
       </AnimatePresence>
 
       <ServiceWorkerListener onMessage={handleMessage} />
-      {showModal && (
+      <FCMModalComponent 
+        showModal={ showModal }
+        modalContent={ modalContent }
+        closeModal={ closeModal }     
+      />
+
+      {/* {showModal && (
         <div className="fcm-modal">
           <div className="fcm-modal-content">
             {modalContent}
@@ -108,7 +119,7 @@ function App() {
             <button className="fcm-modal-content-button" onClick={() => setShowModal(false)}>닫기</button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

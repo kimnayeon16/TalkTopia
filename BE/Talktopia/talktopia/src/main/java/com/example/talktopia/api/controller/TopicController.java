@@ -2,6 +2,8 @@ package com.example.talktopia.api.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,9 +20,9 @@ public class TopicController {
 
 	private final TopicService topicService;
 
-	@RequestMapping("/start")
-	public List<Topic> startTopic(){
-		return topicService.startTopic();
+	@GetMapping("/start/{sttLang}")
+	public List<Topic> startTopic(@PathVariable String sttLang){
+		return topicService.startTopic(sttLang);
 	}
 
 }

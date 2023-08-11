@@ -22,7 +22,7 @@ function ToolbarComponent(props) {
             <div className={style['video-call-actions']}>
                 {props.isTopicbar ? (
                     <>
-                        <button className={`${style['video-game-button']}`} >
+                        <button className={`${style['video-game-button']}`} onClick={props.openTopicModal} >
                             <FiHash size="24" color="black" />
                             <p>랜덤 생성</p>
                         </button>  

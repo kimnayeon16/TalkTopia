@@ -44,7 +44,8 @@ public class SecurityConfig {
 			.and()
 			.authorizeRequests()
 			.antMatchers("/api/v1/join/**", "/api/v1/user/**", "/api/v1/myPage/**", "/api/v1/room/**"
-			, "/api/v1/social/**", "/api/v1/fcm/**", "/api/v1/saveChatLog/**", "/api/v1/manage/**")
+			, "/api/v1/social/**", "/api/v1/fcm/**", "/api/v1/saveChatLog/**", "/api/v1/manage/**",
+				"/api/v1/topic/**")
 			.permitAll()
 			.antMatchers("/api/v1/**")
 			.authenticated()

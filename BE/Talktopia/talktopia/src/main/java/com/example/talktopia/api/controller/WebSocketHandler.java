@@ -55,8 +55,6 @@ public class WebSocketHandler {
 		this.userRepository=userRepository;
 	}
 
-	private Map<String, RoomRole> roomRoleHashMap = new HashMap<>();
-
 	@MessageMapping("/api/v1/room/exit/{vrSession}")
 	public void exitRoom(@Payload VRoomExitReq vRoomExitReq,
 		@DestinationVariable("vrSession") String vrSession) throws Exception {
@@ -66,31 +64,16 @@ public class WebSocketHandler {
 		User user = userRepository.findByUserId(vRoomExitReq.getUserId()).orElseThrow(() -> new Exception("우거가 없음 ㅋㅋ"));
 		log.info(user.getUserId());
 		RoomExitStatus roomExitStatus = vRoomService.exitRoom(vRoomExitReq);
-		String newHostUserId;
 
 		//방이 존재하는데 한명만 나간상태
 		if(roomExitStatus.equals(EXIT_SUCCESS)) {
 			//이거는 방장일때 권한을 넘겨줘야해
 			if (isHost(vRoomExitReq.getUserId(),vRoomExitReq)) {
-				newHostUserId = chooseNewHost(vrSession);
-
+				chooseNewHost(vrSession);
 				List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
 				List<ParticipantDTO> participantDTOs = participants.stream()
 					.map(participant -> new ParticipantDTO(participant.getUser().getUserId(), participant.getRoomRole()))
 					.collect(Collectors.toList());
-				// List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
-
-				// long userId = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"))
-				// 	.getUserNo();
-				// // long userId = user.getUserNo();
-				// for (Participants parti : participants) {
-				// 	user = userRepository.findByUserNo(parti.getUser().getUserNo());
-				// 	if (user.getUserNo() == userId) {
-				// 		roomRoleHashMap.put(user.getUserId(), RoomRole.HOST);
-				// 	} else {
-				// 		roomRoleHashMap.put(user.getUserId(), RoomRole.GUEST);
-				// 	}
-				// }
 				messagingTemplate.convertAndSend("/topic/room/" + vrSession, participantDTOs);
 			}
 			else{
@@ -102,26 +85,14 @@ public class WebSocketHandler {
 		}
 	}
 
-	private String chooseNewHost(String vrSession) throws Exception {
+	private void chooseNewHost(String vrSession) throws Exception {
 		List<Participants> participantsOptional = participantsRepository.findByVRoom_VrSession(vrSession);
 		if (participantsOptional.isEmpty()) {
 			throw new Exception("방이 터졌습니다");
 		}
 		Participants participant = participantsOptional.get(0);
-
-		// participantsOptional.get(0).setRoomRole(RoomRole.HOST);
 		participant.setRoomRole(RoomRole.HOST);
 		participantsRepository.save(participant);
-		// log.info("바뀌어"+participantsOptional.get(0).getUser().getUserId());
-		// log.info("바뀌어"+participantsOptional.get(0).toString());
-		// log.info("바뀌어"+participantsOptional.get(0).getRoomRole().toString());
-		// // participantsList를 활용하여 원하는 작업 수행
-		// participantsOptional.get(0).setRoomRole(RoomRole.HOST);
-		// log.info("바뀜!!!"+participantsOptional.get(0).getRoomRole().toString());
-		// participantsRepository.save(participantsOptional.get(0));
-
-		return participant.getUser().getUserId();
-
 	}
 
 	private boolean isHost(String userId,VRoomExitReq vRoomExitReq) throws Exception {
@@ -133,7 +104,7 @@ public class WebSocketHandler {
 	}
 
 }
-
+//////////////////////////////////////////////////////////////////.
 //방이 찾아지지않을때
 // if(roomExitStatus.equals(NO_ONE_IN_ROOM)){
 // 	messagingTemplate.convertAndSend("/topic/room/" +vrSession, "You Left the room");
@@ -147,3 +118,32 @@ public class WebSocketHandler {
 // 	"You have left the room");
 
 // 방에 있는 모든 인원에게 메시지 전송
+//////////////////////////////////////////////////////////////////.
+
+
+
+//////////////////////////////////////////////////////////////////.
+// List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
+
+// long userId = userRepository.findByUserId(newHostUserId).orElseThrow(() -> new Exception("유저가 없습니다"))
+// 	.getUserNo();
+// // long userId = user.getUserNo();
+// for (Participants parti : participants) {
+// 	user = userRepository.findByUserNo(parti.getUser().getUserNo());
+// 	if (user.getUserNo() == userId) {
+// 		roomRoleHashMap.put(user.getUserId(), RoomRole.HOST);
+// 	} else {
+// 		roomRoleHashMap.put(user.getUserId(), RoomRole.GUEST);
+// 	}
+// }
+//////////////////////////////////////////////////////////////////.
+
+////////////////////////////////////////////////////////////////
+// log.info("바뀌어"+participantsOptional.get(0).getUser().getUserId());
+// log.info("바뀌어"+participantsOptional.get(0).toString());
+// log.info("바뀌어"+participantsOptional.get(0).getRoomRole().toString());
+// // participantsList를 활용하여 원하는 작업 수행
+// participantsOptional.get(0).setRoomRole(RoomRole.HOST);
+// log.info("바뀜!!!"+participantsOptional.get(0).getRoomRole().toString());
+// participantsRepository.save(participantsOptional.get(0));
+////////////////////////////////////////////////////////////////
