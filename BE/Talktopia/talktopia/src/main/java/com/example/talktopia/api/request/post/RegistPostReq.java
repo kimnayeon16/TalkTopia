@@ -27,7 +27,7 @@ public class RegistPostReq {
 			.postType(postType)
 			.postTitle(postTitle)
 			.postCreateTime(LocalDateTime.now())
-			.postContent(this.postTitle)
+			.postContent(this.postContent)
 			.user(user)
 			.build();
 	}
