@@ -1,8 +1,10 @@
 package com.example.talktopia.api.service.vr;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.talktopia.api.request.SaveChatLog;
 import com.example.talktopia.api.response.vr.SaveVRoomChatLogRes;
@@ -37,7 +40,7 @@ public class SaveVRoomChatService {
 	// 채팅 로그 파일로 저장
 	public Message saveLog(List<SaveChatLog> saveChatLogs) {
 		String fileName = saveChatLogs.get(0).getVrSession() + ".txt";
-		try (FileWriter writer = new FileWriter(fileName)) {
+		try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8")) {
 			for (SaveChatLog log : saveChatLogs) {
 				writer.write("Sender: " + log.getSender() + ", Message: " + log.getMessage() + "\n");
 			}
@@ -48,7 +51,11 @@ public class SaveVRoomChatService {
 		// Upload file to S3
 		try {
 			File file = new File(fileName);
-			amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, file));
+			PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, file);
+			ObjectMetadata metadata = new ObjectMetadata();
+			metadata.setContentType("text/plain; charset=UTF-8");
+			putObjectRequest.setMetadata(metadata);
+			amazonS3Client.putObject(putObjectRequest);
 
 			// 로컬 파일 삭제
 			file.delete();
