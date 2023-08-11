@@ -64,7 +64,7 @@ const FriendGroup = () => {
             join ?
           <div className={`${style["speech-bubble1"]}`}>
             <p className={`${style.message}`}>방을 만들어서 친구들과 소통해요!</p>
-            <button className={`${style.button}`} onClick={enterFriendRoom(6)}>참여하기</button>
+            <button className={`${style.button}`} onClick={()=>{enterFriendRoom(6)}}>참여하기</button>
           </div>
             :
             null
