@@ -13,7 +13,7 @@ import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.entity.vr.Participants;
 import com.example.talktopia.db.repository.CategoryRepository;
 import com.example.talktopia.db.repository.ParticipantsRepository;
-import com.example.talktopia.db.repository.ReportListRepository;
+import com.example.talktopia.db.repository.ReportedUserRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class ManageService {
 
 	private final UserRepository userRepository;
 	private final ParticipantsRepository participantsRepository;
-	private final ReportListRepository reportListRepository;
+	private final ReportedUserRepository reportedUserRepository;
 	private final CategoryRepository categoryRepository;
 
 	public Message reportUser(ReportReq reportReq) throws Exception {
@@ -64,14 +64,14 @@ public class ManageService {
 			log.info(reportReq.getVrSession());
 			log.info(bully);
 			log.info(reporter);
-			if (reportListRepository.existsByRuVrSessionAndRuBullyAndRuReporter(reportReq.getVrSession(), bully, reporter)) {
+			if (reportedUserRepository.existsByRuVrSessionAndRuBullyAndRuReporter(reportReq.getVrSession(), bully, reporter)) {
 				return new Message("이미 신고를 했었습니다");
 			} //end for 이미 신고한놈
 		//3-2. 신고를 안당하고 같은 방에서 새로운 신고를 당한것인가? -> 신고해주자.
 		//3-3. 신고를 당했지만 다른 사람에게 새로운 시고를 당한것인가? -> 신고해줘야지
 			else {
 					//신고 당한 전적이 있는놈
-				if (reportListRepository.existsByRuVrSessionAndRuBully(reportReq.getVrSession(), bully)) {
+				if (reportedUserRepository.existsByRuVrSessionAndRuBully(reportReq.getVrSession(), bully)) {
 
 					ReportedUser reportedUser = ReportedUser.builder()
 						.ruReportCount(1)
@@ -82,7 +82,7 @@ public class ManageService {
 						.user(user)
 						.ruBully(reportReq.getRuBully())
 						.build();
-					reportListRepository.save(reportedUser);
+					reportedUserRepository.save(reportedUser);
 					int size = reportReq.getRuCategory().size();
 					for (int i = 0; i < size; i++) {
 						Category category = Category.builder()
@@ -105,7 +105,7 @@ public class ManageService {
 					.user(user)
 					.ruBully(reportReq.getRuBully())
 					.build();
-				reportListRepository.save(reportedUser);
+				reportedUserRepository.save(reportedUser);
 				log.info(String.valueOf(reportedUser.getRuId()));
 				for (int i = 0; i < size; i++) {
 					Category category = Category.builder()
