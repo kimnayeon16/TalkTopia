@@ -18,8 +18,8 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 
-	public List<Topic> startTopic() {
-		List<Topic> topic = topicRepository.findAll();
+	public List<Topic> startTopic(String sttLang) {
+		List<Topic> topic = topicRepository.findByTopicLang(sttLang);
 		return topic;
 	}
 }
