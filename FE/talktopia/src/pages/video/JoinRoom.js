@@ -12,6 +12,7 @@ import Chat from '../../components/video/Chat'
 import ConversationLog from '../../components/video/ConversationLog';
 import ReportModalComponent from '../../components/video/ReportModalComponent';
 import InviteModalComponent from '../../components/video/InviteModalComponent';
+import TopicModalComponent from '../../components/video/TopicModalComponent';
 import { BACKEND_URL } from '../../utils';
 
 import style from './JoinRoom.module.css'
@@ -24,11 +25,13 @@ function JoinRoom() {
     const location = useLocation();
 
     const [localUser, setLocalUser] = useState(undefined);  // subscribers 요소에 들어갈 거임. 그러면서 publisher 역할도 함.
-
+    console.log(localUser)
     // session, state 선언
     const [session, setSession] = useState(undefined)
     const [subscribers, setSubscribers] = useState([]);
-    const [mySessionId, setMySessionId] = useState(undefined);   
+    const [mySessionId, setMySessionId] = useState(undefined);  
+    console.log(mySessionId)
+    console.log(location.state.mySessionId) 
 
     // 토큰, 방 타입 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
@@ -90,6 +93,16 @@ function JoinRoom() {
         // 웹 소켓 연결
         stomp.connect({}, (frame) => {
             stomp.subscribe(`/topic/room/${location.state.mySessionId}`, (message) => {
+                const receivedData = JSON.parse(message.body)
+                if (typeof receivedData === 'string') {
+                    console.log('이건 게스트가 나갈때 응답')
+                } else if (typeof receivedData === 'object') {
+                    console.log('웹소켓 데이터', receivedData[0].roomRole)
+                    setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
+                    userDataRef.current.roomRole = receivedData.roomRole
+                    
+                    console.log('이건 호스트가 나갈때의 응답')
+                }
                 console.log("JSON.parse(message.body)", JSON.parse(message.body));
             })
         })
@@ -164,7 +177,7 @@ function JoinRoom() {
             const newUser = {
                 userId: clientData.userId,
                 userName: clientData.userName,
-                roomRole: clientData.roomRole,
+                // roomRole: clientData.roomRole,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
                 streamManager: subscriber,
@@ -206,8 +219,8 @@ function JoinRoom() {
                 // 첫 번째 매개변수는 OpenVidu deployment로 부터 얻은 토큰, 두 번째 매개변수는 이벤트의 모든 사용자가 검색할 수 있음.
                 session.connect(token, { clientData: {
                     userId: localUser.userId, 
-                    userName: localUser.userName,
-                    roomRole: localUser.roomRole  
+                    userName: localUser.userName
+                    // roomRole: localUser.roomRole  
                 }})
                 .then(async () => {
                     // Get your own camera stream ---
@@ -303,12 +316,27 @@ function JoinRoom() {
 
         axios.get(`${BACKEND_URL}/api/v1/topic/start`, { headers })
         .then((response) => {
-            setTopicList(response.data);     
-            console.log(response.data)
+            const shuffledData = shuffleTopic(response.data)
+            setTopicList(shuffledData);     
+            console.log(shuffledData)
         })
         .catch((error) => {
             console.log("에러 발생", error);
         }) 
+    }
+
+    const shuffleTopic = (arr) => {
+        let m = arr.length
+        let temp;
+        let idx;
+
+        while (m) {
+            idx = Math.floor(Math.random() * m--)
+            temp = arr[m]
+            arr[m] = arr[idx]
+            arr[idx] = temp
+        }
+        return arr
     }
 
     // 주제 시작 및 종료시 Toolbar 버튼 변경
@@ -318,6 +346,17 @@ function JoinRoom() {
     }
     const closeTopicbar = () => {
         setIsTopicbar(false)
+    }
+
+    // 주제 모달 창
+    const [isTopicModalOpen, setIsTopicModalOpen] = useState(false)
+    const [topicNumber, setTopicNumber] = useState(0)
+    const openTopicModal = () => {
+        setIsTopicModalOpen(true);
+        setTopicNumber((prev)=> (prev + 1))
+    }
+    const closeTopicModal = () => {
+        setIsTopicModalOpen(false)
     }
 
 
@@ -366,6 +405,7 @@ function JoinRoom() {
                                 openTopicbar= { openTopicbar }
                                 closeTopicbar={ closeTopicbar }
                                 roomRole={ localUser.roomRole }
+                                openTopicModal={ openTopicModal }
                             />
                         </div>
                     </div>
@@ -409,6 +449,18 @@ function JoinRoom() {
                     />
                 </div>
             ) : null}
+
+            {isTopicModalOpen ? (
+                <div className={style['report-modal-window']}>
+                    <TopicModalComponent 
+                        topic={ topicList[topicNumber] }
+                        mainStreamManager={ localUser.streamManager }
+                        closeTopicModal={ closeTopicModal }
+                        topicList={ topicList }
+                    />
+                </div>
+            ) : null}
+
         </div>
     );
 }
