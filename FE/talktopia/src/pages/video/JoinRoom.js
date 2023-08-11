@@ -314,7 +314,7 @@ function JoinRoom() {
             'Authorization': `Bearer ${user.accessToken}`
         }
 
-        axios.get(`${BACKEND_URL}/api/v1/topic/start`, { headers })
+        axios.get(`${BACKEND_URL}/api/v1/topic/start/${user.sttLang}`, { headers })
         .then((response) => {
             const shuffledData = shuffleTopic(response.data)
             setTopicList(shuffledData);     
