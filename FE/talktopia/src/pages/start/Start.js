@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import style from "./Start.module.css";
 import { useState } from "react";
 
-function NnoStart(){
+function Start(){
     const navigate = useNavigate();
 
     const [animatePenguin, setAnimatePenguin] = useState(false);
@@ -51,7 +51,7 @@ function NnoStart(){
             <img className={`${style.cloud3}`} src="/img/cloud/cloud3.png" alt=""/>
             <button className={`${style.button}`} onClick={handleButtonClick}><span className={`${style.span}`}>💻</span> TalkTopia로 가기 <span className={`${style.span}`}>⛵</span></button>
             <img className={`${animatePenguin ? style.penguin : style.penguin1}`} src="/img/start/penguin.png" alt=""/>
-            {/* <img className={`${style.penguin}`} src="/img/그림4.png" alt=""/> */}
+            <img className={`${style.woodroad}`} src="/img/background/나무판자.png" alt=""/>
             <img className={`${style.wave}`} src="/img/boat/boat3.png" alt=""/>
             <img className={`${style.wave1}`} src="/img/boat/boat5.png" alt=""/>
             <img className={`${splash ? style.splash : style.splash1 }`} src="/img/start/splash.png" alt=""/>
@@ -59,4 +59,4 @@ function NnoStart(){
     )
 }
 
-export default NnoStart;
+export default Start;

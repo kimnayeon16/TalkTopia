@@ -20,6 +20,10 @@ const WhaleGroup = () => {
       <div className={style.pinkContainer}>
         <div className={style.pinkwhale}></div>
         <div className={style.pinkwhale2}></div>
+        <div className={`${style["speech-bubble2"]}`}>
+            <p className={`${style.message}`}>랜덤 4인 방에 참여하세요!</p>
+            <button className={`${style.button}`}>참여하기</button>
+          </div>
       </div>
     </div>
   );

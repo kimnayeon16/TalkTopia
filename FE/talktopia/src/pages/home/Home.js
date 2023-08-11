@@ -17,7 +17,7 @@ import { BACKEND_URL } from '../../utils';
 import { removeCookie } from '../../cookie';
 
 function Home(){
-
+  const navigate = useNavigate();
   const [userModalVisible, setUserModalVisible] = useState(false);
   const [ddingModalVisible, setDdingMoalVisible] = useState(false);
   const [faqModalVisible, setFaqMoalVisible] = useState(false);
@@ -48,7 +48,7 @@ function Home(){
 
   return(
   <div className={`${style.body}`}>
-    <span className={`${styles.title}`}>TalkTopia</span>
+    <span className={`${styles.title}`} onClick={()=>{navigate('/home')}}>TalkTopia</span>
     <img className={`${styles.user}`} src="/img/nav/user.png" alt="" onMouseOver={handleUserMouseOver} onMouseOut={handleUserMouseOut}></img>
     {userModalVisible && <Me handleUserMouseOver={handleUserMouseOver} handleUserMouseOut={handleUserMouseOut}/>}
     <img className={`${styles.dding}`} src="/img/nav/dding.png" alt=""></img>

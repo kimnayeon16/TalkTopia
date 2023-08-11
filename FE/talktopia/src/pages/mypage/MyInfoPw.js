@@ -9,14 +9,15 @@ import Swal from "sweetalert2";
 
 function MyInfoPw(){
     const user = useSelector((state) => state.userInfo);
-    // let dispatch = useDispatch();
+
+    const userLocal = localStorage.getItem("UserInfo");
+    const userInfo = JSON.parse(userLocal);
+    console.log(userLocal);
+    console.log(userLocal.userId);
+    const id = userInfo.userId;
+    console.log(id);
 
     let navigate = useNavigate();
-
-    // const headers = {
-    //     'Content-Type' : 'application/json',
-    //     'Authorization' : `Bearer ${user.accessToken}`,
-    // }
 
 
     const [userPw,setUserPw] = useState("");
@@ -25,21 +26,20 @@ function MyInfoPw(){
         setUserPw(e.target.value);
     }
 
-    localStorage.getItem("userData")
 
     const confirmPw = () => {
-        console.log(user.userId);
+        console.log(id);
         console.log(userPw);
         console.log(user.accessToken);
 
 
         axios.post(`${BACKEND_URL}/api/v1/myPage/checkPw`, {
-            userId: user.userId,
+            userId: id,
             userPw: userPw,
           }, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.accessToken}`,
+              'Authorization': `Bearer ${userInfo.accessToken}`,
             },
           })
           .then((response) => {

@@ -10,22 +10,22 @@ const BearGroup = () => {
     <div className={style.bearGroup}>
       <div className={style.bearContainer1}>
         <div className={`${style.bear} ${style.tooltipContainer}`}>
-          <div className={style.tooltip}>4-person random chat room!</div>
         </div>
       </div>
       <div className={style.bearContainer2}>
         <div className={`${style.bear} ${style.tooltipContainer}`}>
-          <div className={style.tooltip}>4-person random chat room!</div>
         </div>
       </div>
       <div className={style.bearContainer3}>
         <div className={`${style.bear} ${style.tooltipContainer}`}>
-          <div className={style.tooltip}>4-person random chat room!</div>
+          <div className={`${style["speech-bubble3"]}`}>
+            <p className={`${style.message}`}>랜덤 6인 방에 참여하세요!</p>
+            <button className={`${style.button}`}>참여하기</button>
+          </div>
         </div>
       </div>
       <div className={style.bearContainer4}>
         <div className={`${style.bear} ${style.tooltipContainer}`}>
-          <div className={style.tooltip}>4-person random chat room!</div>
         </div>
       </div>
     </div>
