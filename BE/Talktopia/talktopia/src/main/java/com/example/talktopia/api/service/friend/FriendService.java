@@ -124,6 +124,8 @@ public class FriendService {
 
 	//유저 검색해서 내보내기.
 	public List<UnknownUserReq> findUserId(FindUserReq findUserReq) throws Exception {
+		User userNo = userRepository.findByUserId(findUserReq.getUserId()).orElseThrow(()->new Exception("유저가 없어"));
+
 		List<User> arr ;
 		List<UnknownUserReq> res = new ArrayList<>();
 		if(findUserReq.getFindType().equals("EMAIL")){
@@ -142,8 +144,15 @@ public class FriendService {
 			throw new Exception("옳지 않은 검색 방식입니다");
 		}
 		for(User user : arr){
-			log.info(user.getUserId());
 			String userStatus = userStatusService.getUserStatus(user.getUserId());
+			if(userStatus==null||userStatus.equals("OFFLINE")){
+				continue;
+			}
+			long frId = userRepository.findByUserNo(user.getUserNo()).getUserNo();
+			Friend friend =friendRepository.findByUser_UserNoAndFrFriendNo(userNo.getUserNo(), frId);
+			if(friend!=null){
+				continue;
+			}
 			UnknownUserReq friendReq = UnknownUserReq.builder()
 				.userId(user.getUserId())
 				.userStatus(userStatus)
