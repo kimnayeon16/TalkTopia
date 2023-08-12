@@ -27,7 +27,7 @@ import Leave from './pages/mypage/Leave.js';
 
 // faq
 import Faq from './pages/faq/Faq.tsx';
-import Counsel from './pages/faq/Counsel.js';
+// import Counsel from './pages/faq/Counsel.js';
 
 import Translation from './apis/translation/GoogleTranslator.js';
 import WebSpeechApi from './apis/stt/WebSpeechApi.js';
@@ -81,7 +81,7 @@ function App() {
         <Route path="/findPassword/success" element={<PasswordFindSuccess/>}/>
         <Route path="/findPassword/fail" element={<PasswordFindFail/>}/> */}
 
-        <Route path="/regist" element={<PublicRoute element={<Home/>}/>}/>
+        <Route path="/regist" element={<PublicRoute element={<Regist/>}/>}/>
         <Route path="/snsRegist" element={<PublicRoute element={<SocialLogin/>}/>}/>
         <Route path="/findId" element={<PublicRoute element={<IdFind/>}/>}/>
         <Route path="/findId/success" element={<PublicRoute element={<IdFindSuccess/>}/>}/>
@@ -101,7 +101,7 @@ function App() {
 
         {/* faq */}
         <Route path="/faq" element={<PrivateRoute element={<Faq/>}/>}></Route>
-        <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}></Route>
+        {/* <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}></Route> */}
         {/* <Route path="/faq" element={<Faq/>}></Route>
         <Route path="/counsel" element={<Counsel/>}></Route> */}
 
