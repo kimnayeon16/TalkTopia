@@ -65,7 +65,7 @@ public class UserService {
 
 		// req -> toEntity -> save
 		User joinUser = userInfoReq.toEntity(languageRepository.findByLangStt(userInfoReq.getUserLan()),
-			profileImgRepository.findByImgNo(2L));
+			profileImgRepository.findByImgNo(1L));
 		joinUser.hashPassword(bCryptPasswordEncoder);
 
 		log.info("userId: " + joinUser.getUserId());
@@ -335,7 +335,7 @@ public class UserService {
 		userRepository.findByUserEmail(googleReq.getUserEmail())
 			.ifPresent(user -> new RuntimeException("이미 존재하는 회원입니다."));
 		log.info("DB 넣기전 마지막 점검");
-		ProfileImg profileImg = profileImgRepository.findByImgNo(2L);
+		ProfileImg profileImg = profileImgRepository.findByImgNo(1L);
 		User joinUser = googleReq.toEntity(profileImg);
 		userRepository.save(joinUser);
 
