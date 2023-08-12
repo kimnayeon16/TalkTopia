@@ -410,7 +410,7 @@ function JoinRoom() {
                             <div className={style['conversation-container']}>
                                 <ConversationLog
                                     isAudioActive={ localUser.isAudioActive }
-                                    myUserName={ localUser.userId }
+                                    myUserId={ localUser.userId }
                                     mainStreamManager={ localUser.streamManager }
                                 />
                             </div>   
