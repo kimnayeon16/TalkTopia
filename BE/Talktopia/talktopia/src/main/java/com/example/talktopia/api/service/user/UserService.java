@@ -259,13 +259,13 @@ public class UserService {
 	public ProfileImg uploadFile(MultipartFile profile, String userId) throws Exception {
 		User user = userRepository.findByUserId(userId).orElseThrow(() -> new Exception("유저가 없어"));
 
-		String profileUrl = Optional.ofNullable(user.getProfileImg())
-			.map(ProfileImg::getImgUrl)
-			.orElse(null);
-
-		if (profileUrl != null) {
-			profileImgService.delete(profileUrl);
-		}
+		// String profileUrl = Optional.ofNullable(user.getProfileImg())
+		// 	.map(ProfileImg::getImgUrl)
+		// 	.orElse(null);
+		//
+		// if (profileUrl != null) {
+		// 	profileImgService.delete(profileUrl);
+		// }
 
 		ProfileImg url = profileImgService.upload(profile, dirName, userId);
 		log.info("profile image uploaded successfully");
