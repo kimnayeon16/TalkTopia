@@ -34,6 +34,8 @@ spring:
     username: wbo1026@naver.com
     password: QuddnR1026!
 
+
+
   # JWT
   security:
     jwt:
@@ -68,3 +70,8 @@ servlet:
     enabled: true
     max-file-size: 20MB
     max-request-size: 20MB
+
+# papago
+naver:
+  id: s6oegnumm3
+  secret: 3NXkR33SWN5geIo9z7k31fPJUZeGohznx35qwXEQ
