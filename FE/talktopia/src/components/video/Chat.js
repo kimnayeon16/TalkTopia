@@ -14,11 +14,12 @@ function Chat(props) {
 
     useEffect(() => {
         // Receiver of the message (usually before calling 'session.connect')
-        props.mainStreamManager.stream.session.on('signal:chat', (event) => {
+        props.mainStreamManager.stream.session.on('signal:chat', async (event) => {
             const data = JSON.parse(event.data);
             let translatedMessage;
             if (props.myUserId !== data.sendUserId ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
-                translatedMessage = translationHandler(data.message, data.sourceLang, user.transLang);
+                translatedMessage = await translationHandler(data.message, data.sourceLang, user.transLang);
+                console.log(translatedMessage, '이거 번역 성공 되서 데이터 저장 되나?')
             } else {
                 translatedMessage = data.message;
             }
