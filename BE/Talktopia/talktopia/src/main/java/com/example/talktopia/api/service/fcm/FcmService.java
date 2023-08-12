@@ -80,7 +80,7 @@ public class FcmService {
 					notInviteList.add(user.getUserId());
 				}
 				else if (user.getToken().getTFcm() != null) {
-					String title = "초대 알림이 왔습니다.";
+					String title = "화상채팅방 초대 알림이 왔습니다.";
 					String body = fcmSendVroomMessage.getUserId()+" 님이 화상채팅방에 초대하셨습니다.";
 					VRoom vRoom = vRoomRepository.findByVrSession(fcmSendVroomMessage.getVrSession());
 					Map<String, String> data = new HashMap<>();
@@ -135,7 +135,7 @@ public class FcmService {
 
 	public Message sendFriendMessage(FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
 		User user = userRepository.findByUserId(fcmSendFriendMessage.getFriendId()).orElseThrow(()-> new Exception("유저가없엉"));
-		String title = "초대 알림이 왔습니다.";
+		String title = "친구 요청 알림이 왔습니다.";
 		String body = fcmSendFriendMessage.getUserId()+" 님이 친구추가 요청을 보냈습니다.";
 		if(user.getToken().getTFcm() !=null){
 
