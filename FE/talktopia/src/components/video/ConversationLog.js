@@ -34,9 +34,9 @@ function ConversationLog(props) {
         if (newMfinalTranscript !== '' && newMfinalTranscript !== ' ') {
             const data = {
                 transcript: newMfinalTranscript,                    // stt 
-                nickname: props.myUserName,                         // 말한 사용자 이름
+                sendUserId: props.myUserId,                         // 말한 사용자 이름
                 streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
-                lang: user.transLang                                // 번역 source 언어
+                sourceLang: user.transLang                          // 번역 source 언어
             };
             // Sender of the message (after 'session.connect')
             props.mainStreamManager.stream.session.signal({
@@ -136,21 +136,31 @@ function ConversationLog(props) {
         // Receiver of the message (usually before calling 'session.connect')
         props.mainStreamManager.stream.session.on('signal:STT', async (event) => {
             const data = JSON.parse(event.data);
-            console.log(data,'-------------------------')
+
+            let translatedMessage;
+            if (props.myUserId !== data.sendUserId ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
+                translatedMessage = await translationHandler(data.transcript, data.sourceLang, user.transLang);
+            } else {
+                console.log('내가 말한거')
+                translatedMessage = data.transcript;
+            }
+
             let messageData = ({
                 transcript: data.transcript,            // 전달받은 메세지
-                nickname: data.nickname,                // 전달한 사용자 이름
+                sendUserId: data.sendUserId,            // 전달한 사용자 이름
                 connectionId: event.from.connectionId,  // Connection object of the sender 
-                source: data.lang,                      // 전달받은 메세지 언어
-                translate: ''              // 번역된 메세지 
+                source: data.sourceLang,                // 전달받은 메세지 언어
+                translate: translatedMessage            // 번역된 메세지 
             });
+            setMessageList((prev) => ([...prev, messageData]))
+
 
              // 번역 안할 때는 주석처리하면 됨.
-            if (messageData.nickname !== props.myUserName) { // 메세지 보낸 사람이 본인이 아닌경우
-                await translationHandler(messageData);
-            } else if (messageData.nickname === props.myUserName) {
-                setMessageList((prev) => ([...prev, messageData]))
-            }
+            // if (messageData.sendUserId !== props.myUserId) { // 메세지 보낸 사람이 본인이 아닌경우
+            //     await translationHandler(messageData);
+            // } else if (messageData.sendUserId === props.myUserId) {
+            //     setMessageList((prev) => ([...prev, messageData]))
+            // }
             
             // setMessageList((prev) => ([...prev, messageData]))
             scrollToBottom();
@@ -164,11 +174,11 @@ function ConversationLog(props) {
         };
     }, []);
 
-    const translationHandler = async (newMessageList) => {
+    const translationHandler = async (text, sourceLanguage, targetLanguage) => {
         const encodedParams = new URLSearchParams();
-        encodedParams.set('source_language', newMessageList.source) // 전달 받은 텍스트 언어
-        encodedParams.set('target_language', user.transLang)        // 번역할 언어
-        encodedParams.set('text', newMessageList.transcript)
+        encodedParams.set('source_language', sourceLanguage) // 전달 받은 텍스트 언어
+        encodedParams.set('target_language', targetLanguage) // 번역할 언어
+        encodedParams.set('text', text)
 
         console.log('translationHandler data', encodedParams)
 
@@ -185,13 +195,15 @@ function ConversationLog(props) {
             
         try {
             const response = await axios.request(options);
-            newMessageList.translate = response.data.data.translatedText
-            
-            console.log('번역에 성공하였습니다.', newMessageList.translate)
-            setMessageList((prev) => ([...prev, newMessageList]))
+            let translatedText = response.data.data.translatedText            
+            console.log('번역에 성공하였습니다.', translatedText)
+            return translatedText
+
+            // setMessageList((prev) => ([...prev, newMessageList]))
         } catch (error) {
             console.error(error);
-            alert('번역에 실패하였습니다.');
+            // alert('번역에 실패하였습니다.');
+            return text
         }
     };
 
@@ -220,10 +232,10 @@ function ConversationLog(props) {
                     >
                         <div className={ `${style.msg_detail }`}>
                             <div className={ `${style.msg_info }`}>
-                                <p>{data.nickname}</p>
+                                <p>{data.sendUserId}</p>
                             </div>
                             <div className={ `${style.msg_content }`}>
-                                <p className={ `${style.text }`}>{data.transcript} ( {data.translate} )</p>
+                                <p className={ `${style.text }`}>{data.translate}</p>
                             </div>
                         </div>
                     </div>

@@ -77,10 +77,10 @@ function Chat(props) {
     };
 
     // 번역 함수
-    const translationHandler = async (text, sourceLanguage, targetLanguate) => {
+    const translationHandler = async (text, sourceLanguage, targetLanguage) => {
         const encodedParams = new URLSearchParams();
         encodedParams.set('source_language', sourceLanguage) // 전달 받은 텍스트 언어
-        encodedParams.set('target_language', targetLanguate)        // 번역할 언어
+        encodedParams.set('target_language', targetLanguage)        // 번역할 언어
         encodedParams.set('text', text)
 
         console.log('translationHandler data', encodedParams)
