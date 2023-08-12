@@ -1,0 +1,159 @@
+.title{
+    position: fixed;
+    font-family: 'EF_jejudoldam';
+    color: #012A4A;
+    font-size: 35px;
+    margin-left: -1250px;
+    margin-bottom: 650px;
+}
+
+/* 내 정보 */
+.user-space{
+    position: relative;
+    display: inline-block;
+}
+
+.user{
+    width:55px;
+    position: fixed;
+    top: 20px;
+    right: 320px;
+    z-index: 10;
+}
+
+.meModal{
+    font-family: 'Dovemayo_wild';
+    font-size: 17px;
+    width: 160px;
+    height: 200px;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.8;
+    z-index: 100;
+    position: fixed;
+    top: 75px;
+    right: 270px;
+    margin: 0;
+    padding: 10px;
+    flex-direction: column;
+}
+
+.mytext{
+    margin: 5px 0;
+}
+
+.mytext:hover{
+    background-color: rgba(122, 184, 243, 0.896);
+    opacity: 0.5;
+    border-radius: 15px;
+    color: white;
+}
+
+
+/* 알림 */
+.dding{
+    width:60px;
+    position: fixed;
+    top: 17px;
+    right: 230px;
+}
+
+
+/* 언어 변경(지구) */
+.earth-space{
+    position: relative;
+    display: inline-block;
+}
+
+.earth{
+    width:50px;
+    height: auto;
+    position: fixed;
+    top: 24px;
+    right: 140px;
+    z-index: 10;
+}
+
+.earthModal{
+    font-family: 'Dovemayo_wild';
+    font-size: 17px;
+    width: 120px;
+    height: 90px;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.8;
+    z-index: 100;
+    position: fixed;
+    top: 76px;
+    right: 110px;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.countrytext{
+    margin: 5px 0;
+}
+
+.countrytext:hover{
+    background-color: rgba(122, 184, 243, 0.896);
+    opacity: 0.5;
+    border-radius: 15px;
+    color: white;
+}
+
+
+/* faq */
+.faq-space{
+    position: relative;
+    display: inline-block;
+}
+
+.faq{
+    width:50px;
+    position: fixed;
+    top: 24px;
+    right: 50px;
+    z-index: 10;
+}
+
+.faqModal{
+    font-family: 'Dovemayo_wild';
+    font-size: 17px;
+    width: 100px;
+    height: 90px;
+    margin-top: -320px;
+    margin-left: 1350px;
+    border-radius: 15px;
+    background-color: white;
+    opacity: 0.8;
+    z-index: 100;
+    position: fixed;
+    top: 76px;
+    right: 30px;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.faqtext{
+    margin: 5px 0;
+}
+
+.faqtext:hover{
+    background-color: rgba(122, 184, 243, 0.896);
+    opacity: 0.5;
+    border-radius: 15px;
+    color: white;
+}
+
+.img{
+    width: '50px';
+    height: '50px';
+    border-radius: '50%';
+    overflow: 'hidden';
+    margin-top: 15px;
+}
+

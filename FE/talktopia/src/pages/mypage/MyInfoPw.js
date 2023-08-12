@@ -7,6 +7,7 @@ import style from "./Myinfo.module.css";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useUnload from '../../utils/useUnload';
+import Nav from '../../nav/Nav';
 
 function MyInfoPw(){
     const user = useSelector((state) => state.userInfo);
@@ -78,6 +79,7 @@ function MyInfoPw(){
 
     return(
         <div className={`${style.background1}`}>
+          <Nav/>
             <h2 className={`${style.logo}`}>TalkTopia</h2>
             <h2 className={`${style.title}`}>내 정보 보기</h2>
             <p className={`${style.p}`}>회원 정보 수정을 위해 비밀번호를 확인해주세요.</p>
@@ -92,9 +94,6 @@ function MyInfoPw(){
             <img className={`${style.fish33}`} src="/img/fish/fish33.png" alt=""></img>
             <img className={`${style.fish34}`} src="/img/fish/fish34.png" alt=""></img>
             <img className={`${style.friend14}`} src="/img/fish/friend14.png" alt=""></img>
-            <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
-            <img className={`${style.bubble2}`} src="/img/bubble/bubble2.png" alt=""></img>
-            <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
             <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
             <img className={`${style.bubble2}`} src="/img/bubble/bubble2.png" alt=""></img>
             <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>

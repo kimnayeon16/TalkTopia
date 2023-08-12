@@ -64,7 +64,7 @@ const BearGroup = () => {
           {
             join?
           <div className={`${style["speech-bubble3"]}`}>
-            <p className={`${style.message}`}>랜덤 6인 방에 참여하세요!</p>
+            <p className={`${style.message}`}>랜덤 4인 방에 참여하세요!</p>
             <button className={`${style.button}`} onClick={() => {enterFriendRoom(6)}}>참여하기</button>
           </div>
           :

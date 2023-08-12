@@ -3,7 +3,22 @@
     background-size: cover;
     background-attachment: fixed;
     height: 100vh;
-    overflow: hidden;
+    overflow:auto;
+    /* max-height: 100%;
+    overflow-y: auto; */
+}
+
+.divide{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  padding: 60px;
+  width: 80%;
 }
 
 .background1{
@@ -12,6 +27,15 @@
     background-attachment: fixed;
     height: 100vh;
     overflow: hidden;
+}
+
+
+.profile{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin: auto; */
 }
 
 .logo {
@@ -23,7 +47,7 @@
 
 .title {
     font-family: 'Dovemayo_wild';
-    margin-top: 40px;
+    margin-top: 60px;
     margin-bottom: 20px;
     color: #012A4A;
     font-size: 40px;
@@ -41,7 +65,7 @@
   font-family: 'Dovemayo_wild'; 
   color: #ed2752;
   font-size: 12px;
-  margin-top: -20px;
+  margin-top: -40px;
   margin-left: 80px;
 }
 
@@ -49,7 +73,7 @@
     font-family: 'Dovemayo_wild'; 
     color: #45a91e;
     font-size: 12px;
-    margin-top: -20px;
+    margin-top: -40px;
     margin-left: 80px;
   }
 
@@ -59,7 +83,7 @@
     width: 350px;
     height: 45px;
     margin-top: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-size: 16px;
     border-radius: 15px;
     background-color: white;
@@ -85,7 +109,7 @@
     width: 350px;
     height: 45px;
     margin-top: 15px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     font-size: 16px;
     border-radius: 15px;
     background-color: rgb(150, 143, 143);
@@ -94,22 +118,24 @@
 }
 
 .button {
+    position: relative;
     font-family: 'Dovemayo_wild'; 
     color: white;
     background-color: #013A63;
     width: 150px;
     height: 50px;
     font-size: 21px;
-    margin-bottom: -50px;
-    margin-right: 60px;
+    bottom: -50px;
+    margin-right: 70px;
     border-radius: 15px;
 }
 
 .button1 {
     color: #707a81;
     text-decoration: underline;
-    margin-bottom: -50px;
-    margin-left: -50px;
+    position: fixed;
+    bottom: 20px;
+    margin-left: -40px;
 }
 
 .button2 {
@@ -174,7 +200,8 @@
     font-family: 'Dovemayo_wild'; 
     font-size: 12px;
     color: #012A4A;
-    margin-top: -25px;
+    margin-top: -40px;
+    margin-bottom: 10px;
     margin-left: 80px;
 }
 
@@ -187,6 +214,7 @@
     background-color: white;
     opacity: 0.5;
     text-align: center;
+    margin-top: 10px;
 }
 
 .together{
@@ -227,7 +255,7 @@
     position: absolute;
     width: 70px;
     bottom: 0;
-    margin-left: -40px;
+    margin-left: 240px;
     animation: grass 3s ease-in-out infinite;
 }
 
@@ -270,7 +298,7 @@
 .fish33{
     position: absolute;
     width: 85px;
-    margin: -500px 100px 0 500px;
+    margin: -230px 100px 0 600px;
     animation: bubble1 3s ease-in-out infinite;
 }
 
@@ -292,7 +320,7 @@
 .bubble1{
     position: absolute;
     width: 60px;
-    margin: -220px 0 0 400px;
+    margin: -420px 0 0 400px;
     opacity: 0.4;
     animation: bubble1 3s ease-in-out infinite;
 }
@@ -308,7 +336,7 @@
 .bubble3{
     position: absolute;
     width: 60px;
-    margin: 60px 0 0 280px;
+    margin: -100px 0 0 380px;
     opacity: 0.4;
     animation: bubble3 3s ease-in-out infinite;
 }
@@ -345,7 +373,7 @@
 .turtle1{
     position: absolute;
     width: 80px;
-    margin: -240px 0 0 -450px;
+    margin: -100px 0 0 -200px;
     animation: turtle 3s ease-in-out infinite;
 }
 
@@ -361,7 +389,7 @@
     position: absolute;
     width: 100px;
     bottom: 0;
-    margin-left: -600px;
+    margin-left: -550px;
     animation: grass1 3s ease-in-out infinite;
 }
 
@@ -377,30 +405,24 @@
 
 .fish331{
     position: absolute;
-    width: 85px;
-    margin: -650px 100px 0 500px;
+    width: 75px;
+    margin: -580px 100px 0 520px;
     animation: bubble1 3s ease-in-out infinite;
 }
 
-.fish341{
-    position: absolute;
-    width: 80px;
-    margin: -450px 0 0 -650px;
-    animation: bubble1 3s ease-in-out infinite;
-}
 
 .friend141{
     position: absolute;
     width: 100px;
     bottom: 0;
-    margin-left: 400px;
+    /* margin-left: 400px;s */
     animation: grass1 3s ease-in-out infinite;
 }
 
 .bubble11{
     position: absolute;
     width: 60px;
-    margin: -400px 0 0 350px;
+    margin: -610px 0 0 240px;
     opacity: 0.4;
     animation: bubble1 3s ease-in-out infinite;
 }
@@ -408,7 +430,7 @@
 .bubble21{
     position: absolute;
     width: 60px;
-    margin: -650px 0 0 -450px;
+    margin: -560px 0 0 -630px;
     opacity: 0.4;
     animation: bubble2 3s ease-in-out infinite;
 }

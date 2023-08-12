@@ -128,14 +128,14 @@ function PostDetail() {
   return (
     <div className={`${style.background1}`}>
         <div className={`${style.container1}`}>
-        <h2 className={`${style.question}`}>질문</h2>
-          <div className={`${style.box1}`}>
-            <div className={`${style.header}`}>
-              <h2 className={`${style.h2}`}>{detailedPost.postTitle}</h2>
-              <p className={`${style["post-content"]}`}>{detailedPost.postContent}</p>
+          <h2 className={`${style.question}`}>질문</h2>
+            <div className={`${style.box1}`}>
+              <div className={`${style.header}`}>
+                <h2 className={`${style.h2}`}>{detailedPost.postTitle}</h2>
+                <p className={`${style["post-content"]}`}>{detailedPost.postContent}</p>
+              </div>
             </div>
-          </div>
-          <button className={`${style["delete-button"]}`} onClick={handleDeleteButtonClick}>게시글 삭제</button>
+            <button className={`${style["delete-button"]}`} onClick={handleDeleteButtonClick}>게시글 삭제</button>
         </div>
 
         <div className={`${style.container2}`}>
