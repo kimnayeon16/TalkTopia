@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.talktopia.api.request.friend.FriendIdPwReq;
 import com.example.talktopia.api.request.friend.FriendReq;
+import com.example.talktopia.api.request.friend.UnknownUserReq;
 import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.friend.Friend;
@@ -114,6 +115,26 @@ public class FriendService {
 				.userId(user1.getUserId())
 				.userStatus(userStatus)
 				.userName(user1.getUserName())
+				.build();
+			res.add(friendReq);
+		}
+		return res;
+	}
+
+	//유저 검색해서 내보내기.
+	public List<UnknownUserReq> findUserId(String userId) {
+		User user = findUser(userId);
+		List<Friend> arr = friendRepository.findByUser_UserNo(user.getUserNo());
+		List<UnknownUserReq> res = new ArrayList<>();
+		for(Friend f : arr){
+			Long tmp= f.getFrFriendNo();
+			User user1 = userRepository.findByUserNo(tmp);
+			String userStatus = userStatusService.getUserStatus(userId);
+			UnknownUserReq friendReq = UnknownUserReq.builder()
+				.userId(user1.getUserId())
+				.userStatus(userStatus)
+				.userName(user1.getUserName())
+				.userImg(user1.getProfileImg().getImgUrl())
 				.build();
 			res.add(friendReq);
 		}
