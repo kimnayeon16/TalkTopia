@@ -52,6 +52,8 @@ function MyInfo(){
             setUserEmail(response.data.userEmail);
             setUserImgUrl(response.data.userProfileImgUrl);
             setUserLan(response.data.userLan);
+
+            console.log(response);
         })
          .catch((error)=>{
              console.log("못 불러와써유", error);

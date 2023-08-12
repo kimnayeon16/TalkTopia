@@ -129,7 +129,7 @@ animation: bounce 5s infinite ease-in-out;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  z-index: 0;
+  z-index: -5;
 }
 
 .fishgroup{
@@ -410,9 +410,10 @@ animation: bounce 5s infinite ease-in-out;
 
   .stone2{
       width: 100px;
-  height: 100px;
-  background-size: cover;
-  background-image: url('./../../../public/img/grass/stone2.png');
+    height: 100px;
+    background-size: cover;
+    background-image: url('./../../../public/img/grass/stone2.png');
+    z-index: 10;
   }
 
   .stone3{
