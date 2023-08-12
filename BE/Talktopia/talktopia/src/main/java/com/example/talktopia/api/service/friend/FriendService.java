@@ -12,8 +12,10 @@ import com.example.talktopia.api.request.friend.UnknownUserReq;
 import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.friend.Friend;
+import com.example.talktopia.db.entity.user.Language;
 import com.example.talktopia.db.entity.user.User;
 import com.example.talktopia.db.repository.FriendRepository;
+import com.example.talktopia.db.repository.LanguageRepository;
 import com.example.talktopia.db.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class FriendService {
 	private final FriendRepository friendRepository;
 	private final UserRepository userRepository;
 	private final UserStatusService userStatusService;
+	private final LanguageRepository languageRepository;
 
 	// 친구 추가
 	public Message addFriend(FriendIdPwReq friendIdPwReq) {
@@ -136,6 +139,15 @@ public class FriendService {
 		}
 		else if(findUserReq.getFindType().equals("ID")){
 			arr = userRepository.findByCustomUserId(findUserReq.getSearch());
+			if(arr==null){
+				return res;
+			}
+		}
+		else if(findUserReq.getFindType().equals("LANG")){
+			Language lan = languageRepository.findByLangName(findUserReq.getLanguage());
+			long lanNo=lan.getLangNo();
+			log.info("왜 이걸로 안뜨지?"+lanNo+" "+findUserReq.getLanguage());
+			arr = userRepository.findByCustomUserLANG(lanNo);
 			if(arr==null){
 				return res;
 			}

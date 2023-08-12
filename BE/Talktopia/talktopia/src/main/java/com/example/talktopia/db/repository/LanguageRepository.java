@@ -8,5 +8,8 @@ import com.example.talktopia.db.entity.user.Language;
 @Repository
 public interface LanguageRepository extends JpaRepository<Language, Long> {
 	Language findByLangStt(String langStt);
+
+
+	Language findByLangName(String language);
 	// Language findByLangNo(Long langNo);
 }

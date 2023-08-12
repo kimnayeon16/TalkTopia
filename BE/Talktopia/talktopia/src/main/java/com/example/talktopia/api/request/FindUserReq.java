@@ -10,4 +10,5 @@ public class FindUserReq {
 	String userId;
 	String search;
 	String findType;
+	String language;
 }
