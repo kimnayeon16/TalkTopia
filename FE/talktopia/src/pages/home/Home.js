@@ -28,24 +28,14 @@ function Home(){
   const [userImg, setUserImg] = useState("");
 
   useEffect(() => {
-    try {
       const userInfoString = localStorage.getItem("UserInfo");
-      if (userInfoString) {
-        const userInfo = JSON.parse(userInfoString);
-        const name = userInfo.userName;
-        const imgurl = userInfo.profileUrl;
-        setUserName(name);
-        setUserImg(imgurl);
-      } else {
-        // 값이 없을 경우 ErrorPage 컴포넌트를 렌더링
-        navigate('/error');
-      }
-    } catch (error) {
-      // localStorage에 문제가 있을 경우 ErrorPage 컴포넌트를 렌더링
-      setUserName("Guest");
-    }
-  }, []);
 
+      const userInfo = JSON.parse(userInfoString);
+      const name = userInfo.userName;
+      const imgurl = userInfo.profileUrl;
+      setUserName(name);
+      setUserImg(imgurl);
+  }, []);
 
 
   // useUnload((e) => {

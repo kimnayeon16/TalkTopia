@@ -7,7 +7,6 @@ import style from "./PasswordFind.module.css";
 function PasswordFind(){
     const headers ={
         'Content-Type' : 'application/json',
-        
     }
 
   const navigate = useNavigate();
