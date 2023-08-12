@@ -98,3 +98,22 @@
     margin-top: 15px;
 }
 
+.guide {
+    position:absolute;
+    font-family: 'Dovemayo_wild';
+    color: #012A4A;
+    font-size: 32px;
+    font-weight: 800;
+    margin-right: 1200px;
+    margin-top: 270px;
+    z-index: 3;
+}
+
+.sign {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    margin-right: 1200px;
+    margin-top: 350px;
+    z-index: 0;
+}

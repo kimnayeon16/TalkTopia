@@ -1,5 +1,5 @@
 // App.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import BearGroup from '../../components/main/BearGroup';
 import CoralGroup from '../../components/main/CoralGroup';
 import FishGroup from '../../components/main/FishGroup';
@@ -15,12 +15,44 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { removeCookie } from '../../cookie';
+// import useUnload from '../../utils/useUnload';
 
 function Home(){
   const navigate = useNavigate();
   const [userModalVisible, setUserModalVisible] = useState(false);
   const [earthModalVisible, setEarthMoalVisible] = useState(false);
   const [faqModalVisible, setFaqMoalVisible] = useState(false);
+
+  const user = useSelector((state) => state.userInfo);
+  const [userName, setUserName] = useState("");
+  const [userImg, setUserImg] = useState("");
+
+  useEffect(() => {
+    try {
+      const userInfoString = localStorage.getItem("UserInfo");
+      if (userInfoString) {
+        const userInfo = JSON.parse(userInfoString);
+        const name = userInfo.userName;
+        const imgurl = userInfo.profileUrl;
+        setUserName(name);
+        setUserImg(imgurl);
+      } else {
+        // 값이 없을 경우 ErrorPage 컴포넌트를 렌더링
+        navigate('/error');
+      }
+    } catch (error) {
+      // localStorage에 문제가 있을 경우 ErrorPage 컴포넌트를 렌더링
+      setUserName("Guest");
+    }
+  }, []);
+
+
+
+  // useUnload((e) => {
+  //   e.preventDefault();
+  //   localStorage.removeItem("UserInfo");
+  //   removeCookie('refreshToken');
+  // });
 
   const handleUserMouseOver = () => {
     setUserModalVisible(true);
@@ -64,6 +96,8 @@ function Home(){
     <CoralGroup />
     <FriendList />
     <WaterGroup />
+    <p className={`${styles.guide}`}>마우스를 동물 친구들 <br/> 위로 올려보세요!</p>
+    <img className={`${styles.sign}`} src="/img/main/sign1.png" alt=""></img>
   </div>
   )
 };
@@ -77,15 +111,16 @@ function Me(props){
   const user = useSelector((state) => state.userInfo);
   const [userName, setUserName] = useState("");
   const [userImg, setUserImg] = useState("");
+
   
-  useEffect(()=>{
-    const userInfoString = localStorage.getItem("UserInfo");
-    const userInfo = JSON.parse(userInfoString);
-    const name = userInfo.userName;
-    const imgurl = userInfo.profileUrl;
-    setUserName(name);
-    setUserImg(imgurl);
-  },[])
+  // useEffect(()=>{
+  //   const userInfoString = localStorage.getItem("UserInfo");
+  //   const userInfo = JSON.parse(userInfoString);
+  //   const name = userInfo.userName;
+  //   const imgurl = userInfo.profileUrl;
+  //   setUserName(name);
+  //   setUserImg(imgurl);
+  // },[])
 
   const logout = () => {
     axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, {
