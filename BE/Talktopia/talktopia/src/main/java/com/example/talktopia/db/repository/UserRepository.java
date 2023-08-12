@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.hibernate.sql.ordering.antlr.ColumnMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.talktopia.db.entity.user.User;
@@ -28,4 +29,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	User findByUserNo(Long tmp);
 
 	Optional<User> findByUserIdOrUserEmail(String userId, String userEmail);
+
+	@Query("SELECT u FROM User u WHERE u.userId LIKE ?1%")
+	List<User> findByCustomUserNo(String userId);
 }
