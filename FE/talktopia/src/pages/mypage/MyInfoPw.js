@@ -6,9 +6,17 @@ import style from "./Myinfo.module.css";
 
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useUnload from '../../utils/useUnload';
 
 function MyInfoPw(){
     const user = useSelector((state) => state.userInfo);
+
+   
+  useUnload((e) => {
+    // e.preventDefault();
+    // localStorage.removeItem("UserInfo");
+    // removeCookie('refreshToken');
+  });
 
     const userLocal = localStorage.getItem("UserInfo");
     const userInfo = JSON.parse(userLocal);

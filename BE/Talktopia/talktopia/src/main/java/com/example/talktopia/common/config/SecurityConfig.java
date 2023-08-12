@@ -45,7 +45,8 @@ public class SecurityConfig {
 			.authorizeRequests()
 			.antMatchers("/api/v1/join/**", "/api/v1/user/**", "/api/v1/myPage/**", "/api/v1/room/**"
 			, "/api/v1/social/**", "/api/v1/fcm/**", "/api/v1/saveChatLog/**", "/api/v1/manage/**",
-				"/api/v1/topic/**", "/api/v1/ask/**", "/api/v1/report/**", "/api/v1/comment/**")
+				"/api/v1/topic/**", "/api/v1/ask/**", "/api/v1/report/**", "/api/v1/comment/**",
+				"/api/v1/friend/**")
 			.permitAll()
 			.antMatchers("/api/v1/**")
 			.authenticated()

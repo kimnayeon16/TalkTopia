@@ -45,6 +45,10 @@ import { AnimatePresence } from "framer-motion";
 import ServiceWorkerListener from './pages/auth/fcm/ServiceWorkerListener';
 import FCMModalComponent from './components/fcm/FCMModalComponent';
 
+import Error from './pages/error/Error.js';
+import PrivateRoute from './route/PrivateRoute';
+import PublicRoute from './route/PublicRoute';
+
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState('');
@@ -68,23 +72,38 @@ function App() {
         {/* start */}
         <Route path="/" element={<Start/>}/>
         {/* auth */}
-        <Route path="/regist" element={<Regist/>}/>
+        {/* <Route path="/regist" element={<Regist/>}/>
         <Route path="/snsRegist" element={<SocialLogin/>}/>
         <Route path="/findId" element={<IdFind/>}/>
         <Route path="/findId/success" element={<IdFindSuccess/>}/>
         <Route path="/findId/fail" element={<IdFindFail/>}/>
         <Route path="/findPassword" element={<PasswordFind/>}/>
         <Route path="/findPassword/success" element={<PasswordFindSuccess/>}/>
-        <Route path="/findPassword/fail" element={<PasswordFindFail/>}/>
+        <Route path="/findPassword/fail" element={<PasswordFindFail/>}/> */}
+
+        <Route path="/regist" element={<PublicRoute element={<Home/>}/>}/>
+        <Route path="/snsRegist" element={<PublicRoute element={<SocialLogin/>}/>}/>
+        <Route path="/findId" element={<PublicRoute element={<IdFind/>}/>}/>
+        <Route path="/findId/success" element={<PublicRoute element={<IdFindSuccess/>}/>}/>
+        <Route path="/findId/fail" element={<PublicRoute element={<IdFindFail/>}/>}/>
+        <Route path="/findPassword" element={<PublicRoute element={<PasswordFind/>}/>}/>
+        <Route path="/findPassword/success" element={<PublicRoute element={<PasswordFindSuccess/>}/>}/>
+        <Route path="/findPassword/fail" element={<PublicRoute element={<PasswordFindFail/>}/>}/>
+
         {/* home */}
         <Route path="/home1" element={<Home1/>}/>
-        <Route path="/home" element={<Home/>}/>
+        <Route path="/home" element={<PrivateRoute element={<Home/>}/>}/>
         {/* myInfo */}
-        <Route path="/myinfo" element={<MyInfo/>}/>
-        <Route path="/myinfo/passwordConfirm" element={<MyInfoPw/>}/>
+        <Route path="/myinfo" element={<PrivateRoute element={<MyInfo/>}/>}/>
+        <Route path="/myinfo/passwordConfirm" element={<PrivateRoute element={<MyInfoPw/>}/>}/>
+        {/* <Route path="/myinfo" element={<MyInfo/>}/> */}
+        {/* <Route path="/myinfo/passwordConfirm" element={<MyInfoPw/>}/> */}
+
         {/* faq */}
-        <Route path="/faq" element={<Faq/>}></Route>
-        <Route path="/counsel" element={<Counsel/>}></Route>
+        <Route path="/faq" element={<PrivateRoute element={<Faq/>}/>}></Route>
+        <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}></Route>
+        {/* <Route path="/faq" element={<Faq/>}></Route>
+        <Route path="/counsel" element={<Counsel/>}></Route> */}
 
         <Route path="/translation" element={<Translation/>}/>
         <Route path="/stt" element={<WebSpeechApi/>}/>
@@ -92,6 +111,8 @@ function App() {
         <Route path="/joinroom" element={<JoinRoom/>}/>
         <Route path="/bye" element={<Leave/>}/>
 
+        {/* 없는 페이지 */}
+        <Route component={<Error/>}/>
         {/* 삭제할거 */}
         <Route path="/google" element={<GoogleLoginButton/>}/>
 

@@ -113,6 +113,7 @@ public class FriendService {
 			FriendReq friendReq = FriendReq.builder()
 				.userId(user1.getUserId())
 				.userStatus(userStatus)
+				.userName(user1.getUserName())
 				.build();
 			res.add(friendReq);
 		}
