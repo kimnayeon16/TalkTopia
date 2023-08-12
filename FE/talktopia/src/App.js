@@ -48,20 +48,17 @@ import FCMModalComponent from './components/fcm/FCMModalComponent';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState('');
+  const [modalData, setModalData] = useState(undefined);
 
   const handleMessage = (payload) => {
     setModalContent(payload.notification.body); // 받는 내용
+    setModalData(payload.data);                 // 받는 데이터
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false)
   }
-
-  // const handleConfirmClick = () => {
-  //   console.log("확인 버튼이 클릭되었습니다.");
-  //   setShowModal(false);
-  // };
 
   return (
     <div className="App">
@@ -108,18 +105,9 @@ function App() {
       <FCMModalComponent 
         showModal={ showModal }
         modalContent={ modalContent }
+        modalData = { modalData }
         closeModal={ closeModal }     
       />
-
-      {/* {showModal && (
-        <div className="fcm-modal">
-          <div className="fcm-modal-content">
-            {modalContent}
-            <button className="fcm-modal-content-button" onClick={handleConfirmClick}>확인</button>
-            <button className="fcm-modal-content-button" onClick={() => setShowModal(false)}>닫기</button>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }
