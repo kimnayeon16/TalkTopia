@@ -64,14 +64,21 @@ const WaterGroup = () => {
 
   return (
     <div className={style.waterGroup}>
-      <div className={style.waterDrop + ' ' + style.waterDrop1}></div>
+      {/* <div className={style.waterDrop + ' ' + style.waterDrop1}></div>
       <div className={style.waterDrop + ' ' + style.waterDrop2}></div>
       <div className={style.waterDrop + ' ' + style.waterDrop3}></div>
       <div className={style.waterDrop + ' ' + style.waterDrop1}></div>
       <div className={style.waterDrop + ' ' + style.waterDrop2}></div>
       <div className={style.waterDrop + ' ' + style.waterDrop3}></div>
       <div className={style.waterDrop + ' ' + style.waterDrop1}></div>
-      <div className={style.waterDrop + ' ' + style.waterDrop2}></div>
+      <div className={style.waterDrop + ' ' + style.waterDrop2}></div> */}
+      <div className={style.waterDrop1}></div>
+      <div className={style.waterDrop2}></div>
+      <div className={style.waterDrop3}></div>
+      <div className={style.waterDrop4}></div>
+      <div className={style.waterDrop5}></div>
+      <div className={style.waterDrop6}></div>
+      <div className={style.waterDrop7}></div>
     </div>
   );
 };

@@ -47,6 +47,8 @@ background-image: url('./../../../public/img/bubble/bubble1.png');
 background-size: cover;
 position: absolute;
 opacity: 0.3;
+margin-left: -600px;
+margin-top: -200px;
 animation: highbounce 5s infinite ease-in-out;
 }
 .waterDrop2 {
@@ -56,6 +58,8 @@ background-image: url('./../../../public/img/bubble/bubble2.png');
 background-size: cover;
 position: absolute;
 opacity: 0.3;
+margin-top: 200px;
+margin-left: -450px;
 animation: lowbounce 5s infinite ease-in-out;
 }
 .waterDrop3 {
@@ -65,7 +69,53 @@ background-image: url('./../../../public/img/bubble/bubble3.png');
 background-size: cover;
 position: absolute;
 opacity: 0.3;
+margin-top: 70px;
+margin-left: -200px;
 animation: bounce 5s infinite ease-in-out;
+}
+.waterDrop4 {
+  width: 50px;
+  height: 50px;
+  background-image: url('./../../../public/img/bubble/bubble3.png');
+  background-size: cover;
+  position: absolute;
+  opacity: 0.1;
+  margin-top: -170px;
+  margin-left: -200px;
+  animation: bounce 5s infinite ease-in-out;
+  }
+.waterDrop5 {
+    width: 50px;
+    height: 50px;
+    background-image: url('./../../../public/img/bubble/bubble2.png');
+    background-size: cover;
+    position: absolute;
+    opacity: 0.3;
+    margin-top: 140px;
+    margin-left: 270px;
+    animation: lowbounce 5s infinite ease-in-out;
+}
+.waterDrop6 {
+  width: 50px;
+  height: 50px;
+  background-image: url('./../../../public/img/bubble/bubble1.png');
+  background-size: cover;
+  position: absolute;
+  opacity: 0.3;
+  margin-left: 600px;
+  margin-top: -200px;
+  animation: highbounce 5s infinite ease-in-out;
+  }
+  .waterDrop7 {
+    width: 50px;
+    height: 50px;
+    background-image: url('./../../../public/img/bubble/bubble2.png');
+    background-size: cover;
+    position: absolute;
+    opacity: 0.2;
+    margin-top: 240px;
+    margin-left: 500px;
+    animation: lowbounce 5s infinite ease-in-out;
 }
 /* ------------------------ body 구간 -------------------- */
 .body {
