@@ -35,4 +35,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query("SELECT u FROM User u WHERE u.userEmail LIKE ?1%")
 	List<User> findByCustomUserEmail(String search);
+
+	@Query("SELECT u FROM User u WHERE u.language.langNo = :search")
+	List<User> findByCustomUserLANG(long search);
 }
