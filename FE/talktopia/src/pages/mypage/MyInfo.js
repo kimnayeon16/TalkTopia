@@ -26,32 +26,28 @@ function MyInfo(){
     const [userEmail, setUserEmail] = useState("");
     const [userImgUrl, setUserImgUrl] = useState("");
     const [userLan, setUserLan] = useState("");
+    const [userAccessToken, setUserAccessToken] = useState("");
 
     const [pwValid, setPwValid] = useState(false);
 
     const [pwConfirmMsg, setPwConfirmMsg] = useState('');
     const [userPwCorrect, setUserPwCorrect] = useState(false);
 
-    const [userId, setUserIdd] = useState('');
-    const [userAccessToken, setUserAccessToken] = useState('');
 
     useEffect(()=>{
         const userInfoString = localStorage.getItem("UserInfo");
         const userInfo = JSON.parse(userInfoString);
-        setUserIdd(userInfo.userId);
-        setUserAccessToken(userInfo.userAccessToken);
 
-        axios.get(`${BACKEND_URL}/api/v1/myPage/${userId}`, {
+        setUserAccessToken(userInfo.accessToken);
+
+        axios.get(`${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`, {
             headers : {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${userInfo.accessToken}`
             }
         })
         .then((response)=>{
-            console.log(response.data);
-            console.log("초기 url", response.data.userProfileImgUrl);
             setUserId(response.data.userId);
-            // setUserPw(response.data.userPw);
             setUserName(response.data.userName);
             setUserEmail(response.data.userEmail);
             setUserImgUrl(response.data.userProfileImgUrl);
@@ -122,7 +118,7 @@ function MyInfo(){
                 userName: userName,
                 userPw: userPw,
                 userEmail: userEmail,
-                userImgUrl: "sdfasdfdasf",
+                userImgUrl: userImgUrl,
                 userLan: userLan
               }, 
               {
@@ -131,15 +127,17 @@ function MyInfo(){
                   'Authorization': `Bearer ${userAccessToken}`,
                 },
               })
-            .then((response) => {   
+            .then((response) => {
                 Swal.fire({
                     icon: "success",
                     title: "수정이 완료되었습니다.",
                     confirmButtonText: "확인",
                     confirmButtonColor: '#90dbf4',
-                }).then(
-                    navigate('/home')
-                )
+                    timer: 2000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    navigate('/home');
+                  });
             })
             .catch((error) =>{
                 console.log("수정 실패", error);
@@ -160,9 +158,10 @@ function MyInfo(){
             cancelButtonColor: '#ee5561',
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${BACKEND_URL}/api/v1/myPage/leave/${userId}`, {
+                axios.delete(`${BACKEND_URL}/api/v1/myPage/leave/${userId1}`, {
                     params: {
-                        name: user.userId
+                        // name: user.userId
+                        name: userId1
                     },
                     headers: {
                       'Content-Type': 'application/json',
@@ -200,7 +199,7 @@ function MyInfo(){
         console.log(formData);
 
         try{
-            const response = await axios.put(`${BACKEND_URL}/api/v1/myPage/profile/${userId}`, formData, {
+            const response = await axios.put(`${BACKEND_URL}/api/v1/myPage/profile/${userId1}`, formData, {
                 headers : {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${userAccessToken}`
@@ -218,13 +217,21 @@ function MyInfo(){
 
             Swal.fire({
                 icon: "success",
-                title: "프로필이 수정되었습니다.",
+                title: "프로필 사진이 수정되었습니다.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
+                timer: 2000,
+                timerProgressBar: true,
             })
 
         }catch(error){
             console.log("에러", error);
+        }
+    }
+
+    const onCheckEnter = (e) => {
+        if(e.key === 'Enter') {
+            updateMyInfo();
         }
     }
 
@@ -253,14 +260,14 @@ function MyInfo(){
                 <div className={`${style.together1}`}>
                     <p className={`${style.p}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                     {/* <p className={`${style.guide}`}>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p> */}
-                    <input type="password" value={userPw} className={`${style.input}`} onChange={onPwHandler}></input>
+                    <input type="password" value={userPw} className={`${style.input}`} onChange={onPwHandler} onKeyPress={onCheckEnter}></input>
                 </div>
             </div>
             <div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
             <div className={`${style.together}`}>
                 <div className={`${style.together1}`}>
                     <p className={`${style.p}`}>비밀번호 확인&nbsp;</p>
-                    <input type="password" value={userPwConfirm} className={`${style.input}`} onChange={onPwConfirmHandler}></input>
+                    <input type="password" value={userPwConfirm} className={`${style.input}`} onChange={onPwConfirmHandler} onKeyPress={onCheckEnter}></input>
                 </div>
             </div>
             <div>
@@ -269,7 +276,7 @@ function MyInfo(){
             <div className={`${style.together}`}>
                 <div className={`${style.together1}`}>
                     <p className={`${style.p}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <input type="text" value={userName} className={`${style.input}`} onChange={onNameHandler}></input>
+                    <input type="text" value={userName} className={`${style.input}`} onChange={onNameHandler} onKeyPress={onCheckEnter}></input>
                 </div>
             </div>
             <div className={`${style.guide}`}>띄어쓰기 불가능</div>
@@ -283,7 +290,7 @@ function MyInfo(){
                 <div className={`${style.together1}`}>
                 <button className={`${style.button1}`} onClick={leave}>탈퇴하기</button>
                     <p className={`${style.p}`}>사용 언어&nbsp;&nbsp;&nbsp;</p>
-                    <select className={`${style.select}`} value={userLan} onChange={onLanHandler}>
+                    <select className={`${style.select}`} value={userLan} onChange={onLanHandler} onKeyPress={onCheckEnter}>
                         <option value="" disabled>선택하세요</option>
                         <option value="ko-KR">한국어</option>
                         <option value="de-DE">독일어</option>

@@ -19,7 +19,7 @@ import { removeCookie } from '../../cookie';
 function Home(){
   const navigate = useNavigate();
   const [userModalVisible, setUserModalVisible] = useState(false);
-  const [ddingModalVisible, setDdingMoalVisible] = useState(false);
+  const [earthModalVisible, setEarthMoalVisible] = useState(false);
   const [faqModalVisible, setFaqMoalVisible] = useState(false);
 
   const handleUserMouseOver = () => {
@@ -31,11 +31,11 @@ function Home(){
   };
 
   const handleEarthMouseOver = () => {
-    setDdingMoalVisible(true);
+    setEarthMoalVisible(true);
   }
 
   const handleEarthMouseOut = () => {
-    setDdingMoalVisible(false);
+    setEarthMoalVisible(false);
   }
 
   const handleFaqMouseOver = () => {
@@ -53,7 +53,7 @@ function Home(){
     {userModalVisible && <Me handleUserMouseOver={handleUserMouseOver} handleUserMouseOut={handleUserMouseOut}/>}
     <img className={`${styles.dding}`} src="/img/nav/dding.png" alt=""></img>
     <img className={`${styles.earth}`} src="/img/nav/earth.png" alt="" onMouseOver={handleEarthMouseOver} onMouseOut={handleEarthMouseOut}></img>
-    {ddingModalVisible && <Earth handleEarthMouseOver={handleEarthMouseOver} handleEarthMouseOut={handleEarthMouseOut}/>}
+    {earthModalVisible && <Earth handleEarthMouseOver={handleEarthMouseOver} handleEarthMouseOut={handleEarthMouseOut}/>}
     <img className={`${styles.faq}`} src="/img/nav/faq1.png" alt="" onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}></img>
     {faqModalVisible && <Faq handleFaqMouseOver={handleFaqMouseOver} handleFaqMouseOut={handleFaqMouseOut}/>}
     <FishGroup />

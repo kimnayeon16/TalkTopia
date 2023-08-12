@@ -11,7 +11,7 @@
     width:55px;
     position: fixed;
     top: 20px;
-    right: 290px;
+    right: 320px;
     z-index: 10;
 }
 
@@ -19,14 +19,14 @@
     width:60px;
     position: fixed;
     top: 17px;
-    right: 190px;
+    right: 230px;
 }
 
 .earth{
     width:50px;
     position: fixed;
     top: 24px;
-    right: 100px;
+    right: 140px;
     z-index: 10;
 }
 
@@ -34,7 +34,7 @@
     width:50px;
     position: fixed;
     top: 24px;
-    right: 20px;
+    right: 50px;
     z-index: 10;
 }
 
@@ -44,7 +44,7 @@
     width: 160px;
     height: 210px;
     margin-top: -300px;
-    margin-left: 900px;
+    margin-left: 840px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.9;
@@ -62,7 +62,7 @@
     width: 120px;
     height: 90px;
     margin-top: -510px;
-    margin-left: 1280px;
+    margin-left: 1210px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.9;
@@ -79,7 +79,7 @@
     width: 100px;
     height: 90px;
     margin-top: -520px;
-    margin-left: 1420px;
+    margin-left: 1350px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.9;
