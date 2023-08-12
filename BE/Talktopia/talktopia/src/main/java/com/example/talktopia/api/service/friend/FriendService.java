@@ -144,6 +144,9 @@ public class FriendService {
 			throw new Exception("옳지 않은 검색 방식입니다");
 		}
 		for(User user : arr){
+			if(user.getUserNo()==userNo.getUserNo()){
+				continue;
+			}
 			String userStatus = userStatusService.getUserStatus(user.getUserId());
 			if(userStatus==null||userStatus.equals("OFFLINE")){
 				continue;
