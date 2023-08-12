@@ -1,5 +1,6 @@
 package com.example.talktopia.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.talktopia.api.request.FindUserReq;
 import com.example.talktopia.api.request.friend.FriendIdPwReq;
 import com.example.talktopia.api.request.friend.FriendReq;
+import com.example.talktopia.api.request.friend.UnknownUserReq;
 import com.example.talktopia.api.service.friend.FriendService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.repository.FriendRepository;
@@ -46,5 +49,16 @@ public class FriendController {
 	public ResponseEntity<List<FriendReq>> listFriend(@PathVariable("userId") String userId){
 		log.info(userId);
 		return ResponseEntity.ok().body(friendService.getFriends(userId));
+	}
+
+	//유저검색
+	@PostMapping("/findUserId")
+	public ResponseEntity<?> findUserId(@RequestBody FindUserReq findUserReq) throws Exception {
+		List<UnknownUserReq> arr = friendService.findUserId(findUserReq);
+		if (arr == null) {
+			return ResponseEntity.badRequest().body("arr is null"); // 혹은 원하는 에러 메시지
+		} else {
+			return ResponseEntity.ok(arr);
+		}
 	}
 }

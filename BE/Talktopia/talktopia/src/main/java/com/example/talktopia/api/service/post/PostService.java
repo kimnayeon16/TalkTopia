@@ -36,6 +36,12 @@ public class PostService {
 
 	public Message registerPost(RegistPostReq registPostReq) throws Exception {
 		User user = userRepository.findByUserId(registPostReq.getUserId()).orElseThrow(() -> new Exception("우자기 앖어"));
+		if(registPostReq.getPostTitle()==null){
+			throw new Exception("제목이 비었습니다");
+		}
+		else if(registPostReq.getPostContent()==null){
+			throw new Exception("본문이 비었습니다.");
+		}
 		Post operation = registPostReq.toEntity(user,PostType.ACTIVE);
 		if(!checkRegisterCount(user.getUserNo())){
 			operation.setPostCount(1);

@@ -321,6 +321,7 @@ public class UserService {
 			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, joinUser); // refreshToken DB에 저장
 
+		log.info("소셜 로그인 image: " + joinUser.getProfileImg().getImgUrl());
 		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
 			refreshToken,
 			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add", joinUser.getProfileImg().getImgUrl());

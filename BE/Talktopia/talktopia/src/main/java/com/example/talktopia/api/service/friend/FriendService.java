@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.talktopia.api.request.FindUserReq;
 import com.example.talktopia.api.request.friend.FriendIdPwReq;
 import com.example.talktopia.api.request.friend.FriendReq;
+import com.example.talktopia.api.request.friend.UnknownUserReq;
 import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.friend.Friend;
@@ -114,6 +116,41 @@ public class FriendService {
 				.userId(user1.getUserId())
 				.userStatus(userStatus)
 				.userName(user1.getUserName())
+				.build();
+			res.add(friendReq);
+		}
+		return res;
+	}
+
+	//유저 검색해서 내보내기.
+	public List<UnknownUserReq> findUserId(FindUserReq findUserReq) throws Exception {
+		List<User> arr ;
+		List<UnknownUserReq> res = new ArrayList<>();
+		if(findUserReq.getFindType().equals("EMAIL")){
+			arr = userRepository.findByCustomUserNo(findUserReq.getSearch());
+			if(arr==null){
+				return res;
+			}
+		}
+		else if(findUserReq.getFindType().equals("ID")){
+			arr = userRepository.findByCustomUserNo(findUserReq.getSearch());
+			if(arr==null){
+				return res;
+			}
+		}
+		else{
+			throw new Exception("옳지 않은 검색 방식입니다");
+		}
+		for(User user : arr){
+			log.info(user.getUserId());
+			String userStatus = userStatusService.getUserStatus(user.getUserId());
+			UnknownUserReq friendReq = UnknownUserReq.builder()
+				.userId(user.getUserId())
+				.userStatus(userStatus)
+				.userName(user.getUserName())
+				.userImg(user.getProfileImg().getImgUrl())
+				.userLngImg(user.getLanguage().getLangFlagImgUrl())
+				.userLng(user.getLanguage().getLangName())
 				.build();
 			res.add(friendReq);
 		}
