@@ -81,7 +81,7 @@ function App() {
         <Route path="/findPassword/success" element={<PasswordFindSuccess/>}/>
         <Route path="/findPassword/fail" element={<PasswordFindFail/>}/> */}
 
-        <Route path="/regist" element={<PublicRoute element={<Home/>}/>}/>
+        <Route path="/regist" element={<PublicRoute element={<Regist/>}/>}/>
         <Route path="/snsRegist" element={<PublicRoute element={<SocialLogin/>}/>}/>
         <Route path="/findId" element={<PublicRoute element={<IdFind/>}/>}/>
         <Route path="/findId/success" element={<PublicRoute element={<IdFindSuccess/>}/>}/>
