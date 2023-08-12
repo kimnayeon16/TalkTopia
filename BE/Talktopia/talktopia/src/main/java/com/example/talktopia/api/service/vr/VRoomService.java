@@ -353,13 +353,13 @@ public class VRoomService {
 
 		if(this.mapSessionToken.get(connId).getMaxCount()!=maxCnt ||
 			this.mapSessionToken.get(connId).getCurCount()>=maxCnt ||
-			!vRoom.isVrEnter() || vRoom.getVrType().equals(VRoomType.FRIEND)){
+			!vRoom.isVrEnter() || vRoom.getVrType().equals(VRoomType.COMMON)){
 			if(this.mapSessionToken.get(connId).getMaxCount()!=maxCnt)
 			{
 				log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(connId).getMaxCount());
 			}
-			else if(this.mapSessionToken.get(connId).getCurCount()!=maxCnt){
-				log.info("this.mapSessionToken.get(roomId).getMaxCount(): ======="+this.mapSessionToken.get(connId).getCurCount());
+			else if(this.mapSessionToken.get(connId).getCurCount()>=maxCnt){
+				log.info("this.mapSessionToken.get(roomId).getCurCount(): ======="+this.mapSessionToken.get(connId).getCurCount());
 			}
 			else{
 				log.info("vRoom.isVrEnter(): ======"+vRoom.isVrEnter());
