@@ -177,7 +177,7 @@ function JoinRoom() {
             const newUser = {
                 userId: clientData.userId,
                 userName: clientData.userName,
-                // roomRole: clientData.roomRole,
+                roomRole: clientData.roomRole,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
                 streamManager: subscriber,
@@ -219,8 +219,8 @@ function JoinRoom() {
                 // 첫 번째 매개변수는 OpenVidu deployment로 부터 얻은 토큰, 두 번째 매개변수는 이벤트의 모든 사용자가 검색할 수 있음.
                 session.connect(token, { clientData: {
                     userId: localUser.userId, 
-                    userName: localUser.userName
-                    // roomRole: localUser.roomRole  
+                    userName: localUser.userName,
+                    roomRole: localUser.roomRole  
                 }})
                 .then(async () => {
                     // Get your own camera stream ---
@@ -366,6 +366,7 @@ function JoinRoom() {
                                     <UserVideoComponent 
                                         userId={ localUser.userId }
                                         userName={ localUser.userName }
+                                        roomRole={ localUser.roomRole }
                                         streamManager={ localUser.streamManager }
                                         participantCount={ participantCount }
                                     />
@@ -376,6 +377,7 @@ function JoinRoom() {
                                         <UserVideoComponent 
                                             userId={ sub.userId }
                                             userName={ sub.userName }
+                                            roomRole={ sub.roomRole }
                                             streamManager={ sub.streamManager }
                                             participantCount={ participantCount }
                                             openReportModal = { openReportModal }
