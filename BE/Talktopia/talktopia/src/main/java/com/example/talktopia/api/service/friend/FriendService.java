@@ -127,13 +127,13 @@ public class FriendService {
 		List<User> arr ;
 		List<UnknownUserReq> res = new ArrayList<>();
 		if(findUserReq.getFindType().equals("EMAIL")){
-			arr = userRepository.findByCustomUserNo(findUserReq.getSearch());
+			arr = userRepository.findByCustomUserEmail(findUserReq.getSearch());
 			if(arr==null){
 				return res;
 			}
 		}
 		else if(findUserReq.getFindType().equals("ID")){
-			arr = userRepository.findByCustomUserNo(findUserReq.getSearch());
+			arr = userRepository.findByCustomUserId(findUserReq.getSearch());
 			if(arr==null){
 				return res;
 			}
