@@ -7,27 +7,34 @@ function FCMModalComponent(props) {
     const user = useSelector((state) => state.userInfo);
     const navigate = useNavigate();
 
+    const headers = {
+        'Content-Type' : 'application/json',
+        'Authorization': `Bearer ${user.accessToken}`
+    }
     
     const handleConfirmClick = () => {
         console.log("확인 버튼이 클릭되었습니다.");
-        enterFriendRoom(6)
-        props.closeModal();
+        if ('vrSession' in props.modalData) {
+            props.closeModal();
+            joinFriend(props.modalData.vrSession)
+        } else if ('friendId' in props.modalData) {
+            props.closeModal();
+            friendAdd(props.modalData.userId)
+        } else {
+            props.closeModal();
+        }
+        // enterFriendRoom(6)
         //   setShowModal(false);
     };
-    const enterFriendRoom = async (e) => {
-        const headers = {
-            'Content-Type' : 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
-        }
-
+    const joinFriend = async (sessionId) => {
         const requestBody = {
             userId: user.userId,
-            vr_max_cnt: e
+            vrSession: sessionId
         };
 
         const requestBodyJSON = JSON.stringify(requestBody);
         await axios
-        .post(`${BACKEND_URL}/api/v1/room/enterFriend`, requestBodyJSON, {headers})
+        .post(`${BACKEND_URL}/api/v1/room/joinFriend`, requestBodyJSON, {headers})
         .then((response) => {
             console.log(response.data.token)
             navigate('/joinroom', {
@@ -44,6 +51,23 @@ function FCMModalComponent(props) {
             console.log("에러 발생", error);
         })
     };
+
+    const friendAdd = async (friendId) => {
+        const requestBody = {
+            userId: user.userId,        // 본인 아이디
+            partId: friendId            // 친구추가하려는 아이디
+        };
+        const requestBodyJSON = JSON.stringify(requestBody);
+
+        await axios
+        .post(`${BACKEND_URL}/api/v1/friend/add`, requestBodyJSON, {headers})   // 여기부터 다시 수정해야함.
+        .then((response) => {
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
+    }
 
   return (
     <>
