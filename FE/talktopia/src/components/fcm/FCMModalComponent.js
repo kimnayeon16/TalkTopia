@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function FCMModalComponent(props) {
     const user = useSelector((state) => state.userInfo);
     const navigate = useNavigate();
-
+    console.log(props.modalData)
     const headers = {
         'Content-Type' : 'application/json',
         'Authorization': `Bearer ${user.accessToken}`

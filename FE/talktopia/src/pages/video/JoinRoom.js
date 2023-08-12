@@ -416,7 +416,7 @@ function JoinRoom() {
                             </div>   
                             <div className={style['chat-container']}>
                                 <Chat
-                                    myUserName={ localUser.userId }
+                                    myUserId={ localUser.userId }
                                     mainStreamManager={ localUser.streamManager }
                                 />
                             </div>
@@ -439,6 +439,7 @@ function JoinRoom() {
             {isReportModalOpen ? (
                 <div className={style['report-modal-window']}>
                     <ReportModalComponent 
+                        vrSession={ userDataRef.current.mySessionId }
                         reportUserId={ isReportUserId }
                         closeReportModal={ closeReportModal }
                     />
@@ -454,19 +455,6 @@ function JoinRoom() {
                     />
                 </div>
             ) : null}
-
-            {/* {isTopicModalOpen ? (
-                <div className={style['report-modal-window']}>
-                    <TopicModalComponent 
-                        topic={ topicList[topicNumber] }
-                        mainStreamManager={ localUser.streamManager }
-                        closeTopicModal={ closeTopicModal }
-                        topicList={ topicList }
-                        isTopicModalOpen={ isTopicModalOpen }
-                    />
-                </div>
-            ) : null} */}
-
         </div>
     );
 }
