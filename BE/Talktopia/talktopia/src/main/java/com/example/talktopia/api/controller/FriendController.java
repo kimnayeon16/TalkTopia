@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.talktopia.api.request.friend.FriendIdPwReq;
 import com.example.talktopia.api.request.friend.FriendReq;
+import com.example.talktopia.api.request.friend.UnknownUserReq;
 import com.example.talktopia.api.service.friend.FriendService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.repository.FriendRepository;
@@ -46,5 +47,12 @@ public class FriendController {
 	public ResponseEntity<List<FriendReq>> listFriend(@PathVariable("userId") String userId){
 		log.info(userId);
 		return ResponseEntity.ok().body(friendService.getFriends(userId));
+	}
+
+	//유저검색
+	@GetMapping("/findUserId/{userId}")
+	public ResponseEntity<List<UnknownUserReq>> findUserId(@PathVariable("userId") String userId){
+		log.info(userId);
+		return ResponseEntity.ok().body(friendService.findUserId(userId));
 	}
 }
