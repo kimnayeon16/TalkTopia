@@ -48,7 +48,7 @@ public class PostService {
 	}
 
 	private boolean checkRegisterCount(long userNo) {
-		return postRepository.existsByUser_UserId(userNo);
+		return postRepository.existsByUser_UserNo(userNo);
 	}
 
 	public PostRes detailPost(String userId, long postNo) throws Exception {
