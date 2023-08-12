@@ -141,6 +141,7 @@ public class FcmService {
 
 			Map<String, String> data = new HashMap<>();
 			data.put("userId",fcmSendFriendMessage.getUserId());
+			data.put("friendId", fcmSendFriendMessage.getFriendId());
 			data.put("accept", "수락");
 			data.put("denied", "거절");
 
