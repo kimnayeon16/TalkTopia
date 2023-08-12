@@ -12,7 +12,7 @@ import { BACKEND_URL } from '../../utils';
 function UserVideoComponent (props) {
 
     const user = useSelector((state) => state.userInfo);    // Redux 정보
-    console.log(user.userId, props.userId, user.userId !== props.userId)
+
     const friendAdd = async () => {
 
         const headers = {
@@ -27,32 +27,13 @@ function UserVideoComponent (props) {
         const requestBodyJSON = JSON.stringify(requestBody);
 
         await axios
-        .post(`${BACKEND_URL}/api/v1/fcm/sendFriendMessage`, requestBodyJSON, {headers})   // 여기부터 다시 수정해야함.
+        .post(`${BACKEND_URL}/api/v1/fcm/sendFriendMessage`, requestBodyJSON, {headers})
         .then((response) => {
             console.log(response.data)
         })
         .catch((error) => {
             console.log("에러 발생", error);
         })
-
-
-
-
-
-        // const requestBody = {
-        //     userId: user.userId,        // 본인 아이디
-        //     partId: props.userId      // 친구추가하려는 아이디
-        // };
-        // const requestBodyJSON = JSON.stringify(requestBody);
-
-        // await axios
-        // .post(`${BACKEND_URL}/api/v1/friend/add`, requestBodyJSON, {headers})   // 여기부터 다시 수정해야함.
-        // .then((response) => {
-        //     console.log(response.data)
-        // })
-        // .catch((error) => {
-        //     console.log("에러 발생", error);
-        // })
     }
 
     const reportUser = (e) => {
@@ -64,6 +45,7 @@ function UserVideoComponent (props) {
         <>
             <div className={style['name-tag']}>
                 <span>{props.userName}</span>
+                <span>{props.roomRole}</span>
             </div>
             
             {props.streamManager !== undefined ? (

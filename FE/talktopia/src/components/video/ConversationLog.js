@@ -85,13 +85,13 @@ function ConversationLog(props) {
     
         recognitionInstance.onend = function (event) {
             //Fired when the speech recognition service has disconnected.
-            // if (recognitionEnableRef.current) {
-            //     recognitionInstance.start();
-            //     console.log('재연결 되었습니다.')
-            // } else {
-            //     console.log('한 뭉탱이 인식이 끝났습니다.');
-            // }
-            console.log('한 뭉탱이 인식이 끝났습니다.');
+            if (recognitionEnableRef.current) {
+                recognitionInstance.start();
+                console.log('재연결 되었습니다.')
+            } else {
+                console.log('한 뭉탱이 인식이 끝났습니다.');
+            }
+            // console.log('한 뭉탱이 인식이 끝났습니다.');
         }
     
         recognitionInstance.onnomatch = function (event) {
@@ -155,16 +155,6 @@ function ConversationLog(props) {
                 translate: translatedMessage            // 번역된 메세지 
             });
             setMessageList((prev) => ([...prev, messageData]))
-
-
-             // 번역 안할 때는 주석처리하면 됨.
-            // if (messageData.sendUserId !== props.myUserId) { // 메세지 보낸 사람이 본인이 아닌경우
-            //     await translationHandler(messageData);
-            // } else if (messageData.sendUserId === props.myUserId) {
-            //     setMessageList((prev) => ([...prev, messageData]))
-            // }
-            
-            // setMessageList((prev) => ([...prev, messageData]))
             scrollToBottom();
         });
 
