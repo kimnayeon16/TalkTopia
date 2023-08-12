@@ -20,4 +20,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 	Post findByUser_UserNoAndPostNo(long userNo, long postNo);
 
 	boolean existsByUser_UserId(long userNo);
+
+	boolean existsByUser_UserNo(long userNo);
 }
