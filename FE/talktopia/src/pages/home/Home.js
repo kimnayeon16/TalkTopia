@@ -10,12 +10,14 @@ import WaterGroup from '../../components/main/WaterGroup';
 import WhaleGroup from '../../components/main/WhaleGroup';
 import style from '../../components/main/mainComponent.module.css';
 import styles from "./Home.module.css";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { removeCookie } from '../../cookie';
 import Nav from '../../nav/Nav';
+import { reduxUserInfo } from '../../store';
+
 // import useUnload from '../../utils/useUnload';
 
 function Home(){
@@ -25,6 +27,8 @@ function Home(){
   const [faqModalVisible, setFaqMoalVisible] = useState(false);
 
   const user = useSelector((state) => state.userInfo);
+  let dispatch = useDispatch();
+
   const [userName, setUserName] = useState("");
   const [userImg, setUserImg] = useState("");
 
@@ -37,6 +41,16 @@ function Home(){
       setUserName(name);
       setUserImg(imgurl);
   }, []);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+    const storedUserInfo = localStorage.getItem('UserInfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      // Redux 상태를 업데이트하는 액션 디스패치
+      dispatch(reduxUserInfo(userInfo));
+    }
+  }, [dispatch]);
 
 
   // useUnload((e) => {

@@ -10,17 +10,17 @@ import { useDispatch, useSelector } from 'react-redux';
 const BearGroup = () => {
   const user = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    // 로컬 스토리지에서 저장된 사용자 정보 불러오기
-    const storedUserInfo = localStorage.getItem('UserInfo');
-    if (storedUserInfo) {
-      const userInfo = JSON.parse(storedUserInfo);
-      // Redux 상태를 업데이트하는 액션 디스패치
-      dispatch(reduxUserInfo(userInfo));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+  //   const storedUserInfo = localStorage.getItem('UserInfo');
+  //   if (storedUserInfo) {
+  //     const userInfo = JSON.parse(storedUserInfo);
+  //     // Redux 상태를 업데이트하는 액션 디스패치
+  //     dispatch(reduxUserInfo(userInfo));
+  //   }
+  // }, [dispatch]);
   
   const headers = {
     'Content-Type': 'application/json',
@@ -36,30 +36,31 @@ const BearGroup = () => {
     setJoin(false);
   }
 
-  const enterFriendRoom = async (e) => {
+  const enterCommonRoom = async (e) => {
     const requestBody = {
-        userId: user.userId,
-        vr_max_cnt: e
+      userId: user.userId,
+      vr_max_cnt: e
     };
 
     const requestBodyJSON = JSON.stringify(requestBody);
     await axios
-    .post(`${BACKEND_URL}/api/v1/room/enterFriend`, requestBodyJSON, {headers})
+    .post(`${BACKEND_URL}/api/v1/room/enterCommon`, requestBodyJSON, {headers})
     .then((response) => {
         console.log(response.data.token)
         navigate('/joinroom', {
             state: {
+                // myUserName: user.userId,
                 mySessionId: response.data.vrSession,
                 token: response.data.token,
                 roomRole: response.data.roomRole,
-                roomType: 'friend'
+                roomType: 'common'
             }
         });
     })
     .catch((error) => {
         console.log("에러 발생", error);
     })
-};
+  };
 
   return (
     <div className={style.bearGroup} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
@@ -77,7 +78,7 @@ const BearGroup = () => {
             join?
           <div className={`${style["speech-bubble3"]}`}>
             <p className={`${style.message}`}>랜덤 4인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={() => {enterFriendRoom(6)}}>참여하기</button>
+            <button className={`${style.button}`} onClick={() => {enterCommonRoom(4)}}>참여하기</button>
           </div>
           :
           null
