@@ -23,12 +23,13 @@
 .category{
   font-family: 'Dovemayo_wild';
   color: #012A4A;
-  margin: 0 10px 0 10px;
+  margin: 10px 10px 0 10px;
   font-size: 25px;
 }
 
 .category:hover{
-  color: #2d597a;
+  color: rgb(101, 147, 164);
+  text-decoration: underline;
 }
 
 .button {
@@ -44,6 +45,7 @@
   transition: background-color 0.2s;
   margin: 20px 10px 0 10px;
   display: inline-block;
+  
 }
 
 .container {
@@ -84,8 +86,8 @@
   position: absolute;
   width: 70px;
   bottom: 0;
-  margin-left: -660px;
-  margin-bottom: 660px;
+  margin-left: -680px;
+  margin-bottom: 580px;
   animation: grass1 3s ease-in-out infinite;
 }
 

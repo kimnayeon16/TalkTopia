@@ -8,4 +8,5 @@
     margin: 0;
     padding: 10px;
     cursor: pointer;
+    z-index: 10;
 }
