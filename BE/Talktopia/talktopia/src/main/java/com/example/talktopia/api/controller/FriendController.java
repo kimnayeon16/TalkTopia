@@ -46,7 +46,7 @@ public class FriendController {
 
 	// 친구 목록 반환
 	@GetMapping("/list/{userId}")
-	public ResponseEntity<List<FriendReq>> listFriend(@PathVariable("userId") String userId){
+	public ResponseEntity<List<UnknownUserReq>> listFriend(@PathVariable("userId") String userId){
 		log.info(userId);
 		return ResponseEntity.ok().body(friendService.getFriends(userId));
 	}

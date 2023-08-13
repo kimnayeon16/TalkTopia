@@ -105,15 +105,15 @@ public class FriendService {
 
 		// 초대 보낸 유저의 친구들 중 초대한 친구가 있으면
 		for (Friend f : friends1) {
-			if(f.getFrFriendNo() == friendNo) {
+			if (f.getFrFriendNo() == friendNo) {
 				log.info("friendNo1" + f.getFrFriendNo());
 				return true; // 이미 친구
 			}
 		}
 
 		// 초대 받은 유저의 친구들 중 초대한 친구가 있으면
-		for (Friend f: friends2) {
-			if(f.getFrFriendNo() == userNo){
+		for (Friend f : friends2) {
+			if (f.getFrFriendNo() == userNo) {
 				log.info("friendNo2" + f.getFrFriendNo());
 				return true;
 			}
@@ -122,65 +122,64 @@ public class FriendService {
 	}
 
 	// 친구목록 불러오기
-	public List<FriendReq> getFriends(String userId) {
+	public List<UnknownUserReq> getFriends(String userId) {
 		User user = findUser(userId);
 		List<Friend> arr = friendRepository.findByUser_UserNo(user.getUserNo());
-		List<FriendReq> res = new ArrayList<>();
-		for(Friend f : arr){
-			Long tmp= f.getFrFriendNo();
-			User user1 = userRepository.findByUserNo(tmp);
+		List<UnknownUserReq> res = new ArrayList<>();
+		for (Friend f : arr) {
+			User temp = userRepository.findByUserNo(f.getFrFriendNo());
 			String userStatus = userStatusService.getUserStatus(userId);
-			FriendReq friendReq = FriendReq.builder()
-				.userId(user1.getUserId())
+			UnknownUserReq friend = UnknownUserReq.builder()
+				.userId(temp.getUserId())
+				.userImg(temp.getProfileImg().getImgUrl())
+				.userLng(temp.getLanguage().getLangName())
+				.userLngImg(temp.getLanguage().getLangFlagImgUrl())
 				.userStatus(userStatus)
-				.userName(user1.getUserName())
+				.userName(temp.getUserName())
 				.build();
-			res.add(friendReq);
+			res.add(friend);
 		}
 		return res;
 	}
 
 	//유저 검색해서 내보내기.
 	public List<UnknownUserReq> findUserId(FindUserReq findUserReq) throws Exception {
-		User userNo = userRepository.findByUserId(findUserReq.getUserId()).orElseThrow(()->new Exception("유저가 없어"));
+		User userNo = userRepository.findByUserId(findUserReq.getUserId()).orElseThrow(() -> new Exception("유저가 없어"));
 
-		List<User> arr ;
+		List<User> arr;
 		List<UnknownUserReq> res = new ArrayList<>();
-		if(findUserReq.getFindType().equals("EMAIL")){
+		if (findUserReq.getFindType().equals("EMAIL")) {
 			arr = userRepository.findByCustomUserEmail(findUserReq.getSearch());
-			if(arr==null){
+			if (arr == null) {
 				return res;
 			}
-		}
-		else if(findUserReq.getFindType().equals("ID")){
+		} else if (findUserReq.getFindType().equals("ID")) {
 			arr = userRepository.findByCustomUserId(findUserReq.getSearch());
-			if(arr==null){
+			if (arr == null) {
 				return res;
 			}
-		}
-		else if(findUserReq.getFindType().equals("LANG")){
+		} else if (findUserReq.getFindType().equals("LANG")) {
 			Language lan = languageRepository.findByLangName(findUserReq.getLanguage());
-			long lanNo=lan.getLangNo();
-			log.info("왜 이걸로 안뜨지?"+lanNo+" "+findUserReq.getLanguage());
+			long lanNo = lan.getLangNo();
+			log.info("왜 이걸로 안뜨지?" + lanNo + " " + findUserReq.getLanguage());
 			arr = userRepository.findByCustomUserLANG(lanNo);
-			if(arr==null){
+			if (arr == null) {
 				return res;
 			}
-		}
-		else{
+		} else {
 			throw new Exception("옳지 않은 검색 방식입니다");
 		}
-		for(User user : arr){
-			if(user.getUserNo()==userNo.getUserNo()){
+		for (User user : arr) {
+			if (user.getUserNo() == userNo.getUserNo()) {
 				continue;
 			}
 			String userStatus = userStatusService.getUserStatus(user.getUserId());
-			if(userStatus==null||userStatus.equals("OFFLINE")){
+			if (userStatus == null || userStatus.equals("OFFLINE")) {
 				continue;
 			}
 			long frId = userRepository.findByUserNo(user.getUserNo()).getUserNo();
-			Friend friend =friendRepository.findByUser_UserNoAndFrFriendNo(userNo.getUserNo(), frId);
-			if(friend!=null){
+			Friend friend = friendRepository.findByUser_UserNoAndFrFriendNo(userNo.getUserNo(), frId);
+			if (friend != null) {
 				continue;
 			}
 			UnknownUserReq friendReq = UnknownUserReq.builder()
