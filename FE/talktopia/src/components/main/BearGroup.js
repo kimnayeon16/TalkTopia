@@ -3,16 +3,28 @@ import style from './mainComponent.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
+import { reduxUserInfo } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const BearGroup = () => {
+  const user = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const userInfoString = localStorage.getItem("UserInfo");
-  const userInfo = JSON.parse(userInfoString);
+  useEffect(() => {
+    // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+    const storedUserInfo = localStorage.getItem('UserInfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      // Redux 상태를 업데이트하는 액션 디스패치
+      dispatch(reduxUserInfo(userInfo));
+    }
+  }, [dispatch]);
   
   const headers = {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${userInfo.accessToken}`
+    'Authorization': `Bearer ${user.accessToken}`
   }
   const [join, setJoin] = useState(false);
 
@@ -26,7 +38,7 @@ const BearGroup = () => {
 
   const enterFriendRoom = async (e) => {
     const requestBody = {
-        userId: userInfo.userId,
+        userId: user.userId,
         vr_max_cnt: e
     };
 

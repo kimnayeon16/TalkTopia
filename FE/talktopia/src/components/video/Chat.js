@@ -13,7 +13,8 @@ function Chat(props) {
     const [messageList, setMessageList] = useState([]);
     const [message, setMessage] = useState('');
     const chatScroll = useRef(null);
-
+    console.log(messageList)
+    console.log(props.mainStreamManager.session.connection.connectionId)
     useEffect(() => {
         // Receiver of the message (usually before calling 'session.connect')
         props.mainStreamManager.stream.session.on('signal:chat', async (event) => {
