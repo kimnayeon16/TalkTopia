@@ -31,7 +31,7 @@ function FriendList() {
   const getFriendList = () => {
     axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setFriendList(response.data);
       })
       .catch((error) => {
@@ -76,9 +76,11 @@ function FriendList() {
   return ( 
     <div className={`${style["friend-list-body"]}`}>
       {
-        friendList.map((friendId, i) => (
+        friendList.map((friend, i) => (
           <div key={i}>
-            <p>내 친구{friendId}:  <button className={`${style["send-btn"]}`} onClick={()=>{enterChat(friendId)}}>채팅하기</button> </p>
+            <p>내 친구{friend.userId}: {friend.userStatus}
+              <button className={`${style["send-btn"]}`} onClick={()=>{enterChat(friend.userId)} 
+          }>채팅하기</button> </p>
           </div>
         ))
 

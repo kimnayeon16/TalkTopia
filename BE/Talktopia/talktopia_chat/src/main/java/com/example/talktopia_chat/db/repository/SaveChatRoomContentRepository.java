@@ -19,6 +19,7 @@ public interface SaveChatRoomContentRepository extends JpaRepository<SaveChatRoo
 	List<SaveChatRoomContent> findAll();
 
 	List<SaveChatRoomContent> findByChatRoom_crNo(long crNo);
+	List<SaveChatRoomContent> findTop30ByChatRoom_CrNo_OrderByScrcNoDesc(long crNo);
 
 	// @Query("select *\n"
 	// 	+ "from SaveChatRoomContent s \n"
@@ -30,7 +31,7 @@ public interface SaveChatRoomContentRepository extends JpaRepository<SaveChatRoo
 	/**
 	 * 특정 시간 이전의 채팅 내용을 페이징 처리하여 반환해야 하기 때문에 Page<SaveChatRoomContent>를 반환
 	 * */
-	Page<SaveChatRoomContent> findByScrcSendTimeBeforeAndChatRoom_CrSession(String sessionId, LocalDateTime sendTime, Pageable pageable);
+	Page<SaveChatRoomContent> findByScrcSendTimeBeforeAndChatRoom_CrSession(LocalDateTime sendTime, String sessionId, Pageable pageable);
 
 
 	/**

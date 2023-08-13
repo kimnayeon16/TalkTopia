@@ -48,15 +48,15 @@ public class WebsocketChatController {
 
 		// 채팅 내용 Redis에 저장
 		SaveChatRoomContentRedis content = SaveChatRoomContentRedis.builder()
-			.scrcSession(sessionId)
 			.scrcSenderId(chatRoomContentRequest.getSender())
 			.scrcContent(chatRoomContentRequest.getContent())
 			.scrcSendTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DateFormatPattern.get())))
 			.scrcCached(false)
 			.build();
-		saveChatRoomContentRedisService.saveChat(content);
+		// System.out.println("sendtime: "+content.getScrcSendTime());
+		saveChatRoomContentRedisService.saveChat(sessionId, content);
 
-		System.out.println("subscribe 주소: /topic/sub/"+sessionId);
+		// System.out.println("subscribe 주소: /topic/sub/"+sessionId);
 		// 특정 sessionId를 가지는 채팅방에 broad casting
 		template.convertAndSend("/topic/sub/" + sessionId, content);
 	}
