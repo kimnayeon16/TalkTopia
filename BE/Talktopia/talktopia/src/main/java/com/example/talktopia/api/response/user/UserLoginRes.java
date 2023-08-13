@@ -21,5 +21,6 @@ public class UserLoginRes {
 	private String transLang;
 	private String msg;
 	private String profileUrl;
+	private String role;
 }
 
