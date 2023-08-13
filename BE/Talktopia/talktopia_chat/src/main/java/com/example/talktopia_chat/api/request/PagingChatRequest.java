@@ -13,5 +13,5 @@ import lombok.Setter;
 @Setter
 public class PagingChatRequest {
 	private String sessionId; // 채팅방 세션
-	private String sendTime;  // 채팅 보내진 시간
+	private String lastSendTime;  // 채팅 보내진 시간
 }

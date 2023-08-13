@@ -60,7 +60,7 @@ public class ChatController {
 
 		// sessionId로 mysql에서 새 데이터 긁어오기
 		PagingChatResponse res = chatService.getPagingChat(pagingChatRequest.getSessionId(),
-			pagingChatRequest.getSendTime());
+			pagingChatRequest.getLastSendTime());
 		return ResponseEntity.ok(res);
 	}
 }

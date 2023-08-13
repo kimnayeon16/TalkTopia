@@ -29,8 +29,9 @@ public class WriteBackByRedisCapacityScheduler {
 	private final ChatRoomRepository chatRoomRepository;
 
 	// 1시간 마다 200사이즈 넘는 Redis -> MySQL
-	@Scheduled(cron = "0 0 0/1 * * *") // 1시간마다 실행
-	// @Scheduled(cron = "0 * * * * *") // 1분마다 실행
+	// @Scheduled(cron = "0 0 0/1 * * *") // 1시간마다 실행
+	@Scheduled(cron = "0 /10 * * * *") // 30분마다 실행
+	// @Scheduled(cron = "0 0/2 * * * *") // 2분마다 실행
 	public void writeBack() {
 		log.info("writeBack 시작");
 
@@ -40,7 +41,7 @@ public class WriteBackByRedisCapacityScheduler {
 		for(ChatRoom cr : chatRooms){
 			String key =  cr.getCrSession();
 			Long zSetSize = redisTemplate.opsForZSet().size(key);
-			if(zSetSize!=null && zSetSize>=200){
+			if(zSetSize!=null && zSetSize>=50){
 				log.info("'{}'키의 사이즈는 {}. 백업함.", key, zSetSize);
 				writeBackRedisByKey.writeBackForKey(key);
 			}

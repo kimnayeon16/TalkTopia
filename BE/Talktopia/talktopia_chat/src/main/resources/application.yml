@@ -27,6 +27,7 @@ spring:
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#        dialect: org.hibernate.dialect.MySQL57Dialect # 채팅 시간을 Datetime(3)으로 넣기 위함
 
   # JWT
   security:

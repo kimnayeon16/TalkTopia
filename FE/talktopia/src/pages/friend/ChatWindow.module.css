@@ -1,22 +1,26 @@
 /* styles.css */
 .chat-window {
+    position: absolute;
+    bottom: 25%;
+
+    /* position: relative; */
+
     width: 450px;
     height: 500px;
     padding: 20px;
-    position: absolute;
-    bottom: 0;
     color: rgb(59, 59, 59);
     transition: right 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
     z-index: 1;
     box-sizing: border-box;
 
     /* blur */
-    background: rgba( 255, 255, 255, 0.25 );
-    backdrop-filter: blur( 7.5px );
-    -webkit-backdrop-filter: blur( 7.5px );
+    background: rgb(255, 255, 255);
 
     box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
     border-radius: 20px;
+
+    z-index: 100002;
 }
 
 .chat >*{
@@ -25,11 +29,12 @@
 }
 
 .hide-chat{
-  right: -450px; /* 처음에는 화면 밖으로 위치 */
+  right: 0px; /* 처음에는 화면 밖으로 위치 */
+  opacity: 0;
 }
   
 .show-chat {
-    right: 0; /* 화면 내로 이동하여 표시 */
+    right: 350px; /* 화면 내로 이동하여 표시 */
 }
 
 .chat {
@@ -38,6 +43,10 @@
   height: 100%;
 }
 
+.placeholder{
+  height: 1px;
+  margin-top: -1px; 
+}
 
 
 .chat-header {
@@ -77,20 +86,18 @@
 }
 
 
-
+/* 채팅 입력하는 부분 */
 .chat-input {
-  background-color: bisque;
+  background-color: rgb(255, 255, 255);
   height: 30px;
   display: grid;
   grid-template-columns: 80% 20%;
 }
 .chat-input input{
   grid-column: 1;
+  background-color: rgb(237, 237, 237);
 }
-.chat-input button{
-  background-color: aqua;
-  grid-column: 2;
-}
+
 
 
 /* 채팅메세지 */
@@ -113,4 +120,15 @@
   color: gray;
   font-size : small;
   float: right;
+}
+
+.chat-send-btn{
+  display: inline;
+  width: 100%;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+}
+.chat-send-btn:hover{
+  background-color: rgb(234, 234, 234);
 }

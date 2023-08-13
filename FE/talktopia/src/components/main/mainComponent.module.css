@@ -480,6 +480,9 @@ animation: bounce 5s infinite ease-in-out;
   bottom: 0;
   z-index: 9;
   }
+.crabContainer1:hover{
+  cursor: pointer;
+}
   .crab{
   width: 150px;
   height: 200px;

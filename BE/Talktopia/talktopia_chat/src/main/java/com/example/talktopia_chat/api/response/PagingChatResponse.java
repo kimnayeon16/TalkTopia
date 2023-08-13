@@ -15,6 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PagingChatResponse {
-	private List<SaveChatRoomContent> chatList; // 채팅 로그
+	private List<PagedChat> chatList; // 채팅 로그
 	private Boolean hasNext;  // 다음 리스트 존재 여부
 }

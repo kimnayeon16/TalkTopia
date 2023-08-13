@@ -3,9 +3,15 @@ package com.example.talktopia_chat.api.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +40,9 @@ public class SaveChatRoomContentRedisService {
 	// Redis에 저장된 캐시정보 갱신. 캐시가 없을 경우엔 생성함.
 	// value는 캐시 이름이고 key는 캐시할 키
 	// @CachePut(value = "chats", key = "#saveChatRoomContentRedis.scrcSession", cacheManager = "rcm")
-	public void saveChat(SaveChatRoomContentRedis scrc) {
-		String scrcSession = scrc.getScrcSession();
-
+	public void saveChat(String sessionId, SaveChatRoomContentRedis scrc) {
 		// 순서가 있는 Set으로 저장. sort기준은 timeToDoubleForSort
-		redisTemplate.opsForZSet().add(scrcSession, scrc, timeToDoubleForSort(scrc.getScrcSendTime()));
+		redisTemplate.opsForZSet().add(sessionId, scrc, timeToDoubleForSort(scrc.getScrcSendTime()));
 	}
 
 	// sendTime을 double로 만들어 zSet 정렬에 씀
@@ -55,45 +59,39 @@ public class SaveChatRoomContentRedisService {
 	 * */
 	// 채팅 메세지를 캐싱하여 동일한 쿼리를 redis에 계속 실행할 필요 없음
 	// @Cacheable(value = "chats", key = "#scrcSession", cacheManager = "rcm")
-	public EnterChatResponse getRedisChat(String scrcSession) {
-		
+	public EnterChatResponse getRedisChat(String sessionId) {
+
 		// ZSet에서 scrcSession을 키값으로 하는 데이터 리스트 반환
-		List<SaveChatRoomContentRedis> chatList = ChatSetToListUtil.convert(scrcSession, redisTemplate);
-		
+		List<SaveChatRoomContentRedis> chatList = ChatSetToListUtil.convert(sessionId, redisTemplate);
+
 		// Cache-Through 전략: cache 조회 후 데이터 없으면 RDBMS조사하여 최신 30개의 데이터 저장.
 		if (chatList.isEmpty()) {
-			cacheThrough(scrcSession);
-			chatList = ChatSetToListUtil.convert(scrcSession, redisTemplate);
+			cacheThrough(sessionId);
+			chatList = ChatSetToListUtil.convert(sessionId, redisTemplate);
 		}
 
 		// scrcSession과 함께 반환
-		return new EnterChatResponse(scrcSession, chatList);
+		return new EnterChatResponse(sessionId, chatList);
 	}
 
 	/**
-	 * ========  mysql에 있는 채팅로그 redis로 저장 ==============
+	 * ========  mysql에 있는 최근 30개의 채팅로그 redis로 저장 ==============
 	 * */
-	public void cacheThrough(String session) {
+	public void cacheThrough(String sessionId) {
+
 		// scrcSession으로 채팅방 no 찾음
-		Optional<ChatRoom> chatRoom = chatRoomRepository.findByCrSession(session);
-		if(chatRoom.isEmpty()){
+		Optional<ChatRoom> chatRoom = chatRoomRepository.findByCrSession(sessionId);
+		if (chatRoom.isEmpty()) {
 			return;
 		}
-
-		// 찾아진 no로 채팅 로그들 데려옴
-		List<SaveChatRoomContent> saveChatRoomContentList = saveChatRoomContentRepository.findByChatRoom_crNo(
+		// 시간 내림차순으로 최근 30개 데이터 추출
+		List<SaveChatRoomContent> saveChatRoomContentList = saveChatRoomContentRepository.findTop30ByChatRoom_CrNo_OrderByScrcNoDesc(
 			chatRoom.get().getCrNo());
 
-
 		// jpa entity => redis entity => redis에 저장
-		int size = 1;
+		Collections.reverse(saveChatRoomContentList); // 최근순인 데이터 뒤집기 => 시간 오름차순으로 30개 데이터 추출
 		for (SaveChatRoomContent scrc : saveChatRoomContentList) {
-			// 최신 30개 데이터 유지
-			if (size == 30)
-				break;
-
 			SaveChatRoomContentRedis temp = SaveChatRoomContentRedis.builder()
-				.scrcSession(scrc.getChatRoom().getCrSession())
 				.scrcSenderId(scrc.getScrcSenderId())
 				.scrcContent(scrc.getScrcContent())
 				// LocalDate to String
@@ -101,8 +99,7 @@ public class SaveChatRoomContentRedisService {
 				.scrcCached(true)
 				.build();
 
-			redisTemplate.opsForZSet().add(session, temp, timeToDoubleForSort(temp.getScrcSendTime()));
-			size++;
+			redisTemplate.opsForZSet().add(sessionId, temp, timeToDoubleForSort(temp.getScrcSendTime()));
 		}
 	}
 }

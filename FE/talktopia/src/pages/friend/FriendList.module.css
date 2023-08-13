@@ -6,6 +6,7 @@
 
 .send-btn{
     border : 10px solid red;
+    display: inline;
 }
 
 /* button{

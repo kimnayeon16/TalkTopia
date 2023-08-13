@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -37,7 +39,8 @@ public class SaveChatRoomContent {
 	private String scrcSenderId;
 
 	// @CreatedDate
-	@Column(name="scrc_send_time")
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name="scrc_send_time", columnDefinition = "TIMESTAMP(3)")
 	private LocalDateTime scrcSendTime;
 
 
@@ -60,5 +63,16 @@ public class SaveChatRoomContent {
 		this.scrcSenderId = scrcSenderId;
 		this.scrcSendTime = scrcSendTime;
 		this.chatRoom = chatRoom;
+	}
+
+	@Override
+	public String toString() {
+		return "SaveChatRoomContent{" +
+			"scrcNo=" + scrcNo +
+			", scrcContent='" + scrcContent + '\'' +
+			", scrcSenderId='" + scrcSenderId + '\'' +
+			", scrcSendTime=" + scrcSendTime +
+			", chatRoom=" + chatRoom +
+			'}';
 	}
 }

@@ -41,11 +41,17 @@ public class WriteBackRedisByKey {
 		// chatList의 값들을 SaveChatRoomContent 엔티티로 변환하여 MySQL에 저장
 		List<SaveChatRoomContent> chatListIntoMySQL = new ArrayList<>();
 		for (SaveChatRoomContentRedis chat : chatList) {
-			SaveChatRoomContent scrc = convertToSaveChatRoomContent(chat);
+			// redis에서 가져온 채팅데이터가 이미 mysql에서 가져온거면 저장안함
+			if(chat.isScrcCached())
+				continue;
+			// redis entity -> jpa entity
+			log.info("redis의 시간 : "+chat.getScrcSendTime());
+			SaveChatRoomContent scrc = convertToSaveChatRoomContent(sessionId, chat);
+			log.info("mysql의 시간: "+chat.getScrcSendTime());
 			chatListIntoMySQL.add(scrc);
 		}
 
-		// MySQL에 저장
+		// MySQL에 저장 후 삭제
 		saveChatRoomContentRepository.saveAll(chatListIntoMySQL);
 		redisTemplate.delete(sessionId);
 
@@ -53,13 +59,13 @@ public class WriteBackRedisByKey {
 	}
 
 	// SaveChatRoomContentRedis -> SaveChatRoomContent
-	private SaveChatRoomContent convertToSaveChatRoomContent(SaveChatRoomContentRedis scrcr) {
+	private SaveChatRoomContent convertToSaveChatRoomContent(String sessionId, SaveChatRoomContentRedis scrcr) {
 		SaveChatRoomContent res = SaveChatRoomContent.builder()
 			.scrcSenderId(scrcr.getScrcSenderId())
 			.scrcContent(scrcr.getScrcContent())
 			.chatRoom(
-				chatRoomRepository.findByCrSession(scrcr.getScrcSession())
-					.orElseThrow(() -> new RuntimeException(scrcr.getScrcSession() + "을 세션으로하는 채팅방이 없습니다."))
+				chatRoomRepository.findByCrSession(sessionId)
+					.orElseThrow(() -> new RuntimeException(sessionId + "을 세션으로하는 채팅방이 없습니다."))
 			)
 			// string to LocalDateTime
 			.scrcSendTime(

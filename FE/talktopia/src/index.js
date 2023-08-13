@@ -16,7 +16,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
+    {/* <React.StrictMode> */}
       <CookiesProvider>
         <BrowserRouter>
         {/* <AnimatePresence> */}
@@ -26,7 +26,7 @@ root.render(
           {/* </AnimatePresence> */}
         </BrowserRouter>
       </CookiesProvider>
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </Provider>
 );
 
