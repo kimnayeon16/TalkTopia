@@ -69,12 +69,22 @@ function Alram(){
                         <div className={style["refresh-button"]} onClick={refreshNotifications}>
                             <span className={style["refresh-icon"]}>⟳</span> 새로고침
                         </div>
-                        {notifications.map((notification, index) => (
-                        <div key={index} className={`${style["notification-item"]} ${getNotificationClass(notification.rmType)}`}>
-                            <img src={getNotificationIcon(notification.rmType)} alt="notification icon" />
-                            {notification.rmContent}
-                        </div>
-                        ))}
+
+                        {notifications === [] ? (
+                            <>
+                                {notifications.map((notification, index) => (
+                                <div key={index} className={`${style["notification-item"]} ${getNotificationClass(notification.rmType)}`}>
+                                    <img src={getNotificationIcon(notification.rmType)} alt="notification icon" />
+                                    {notification.rmContent}
+                                </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div className={style["notification-item"]}>
+                                <p>알림이 비었습니다.</p>
+                            </div>
+                        )}
+
                   </div>
                 )}
         </div>
