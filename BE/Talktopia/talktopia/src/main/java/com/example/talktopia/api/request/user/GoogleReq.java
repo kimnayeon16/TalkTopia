@@ -23,7 +23,7 @@ public class GoogleReq {
 		return User.builder()
 			.userName(userName.split(" ")[0])
 			.userEmail(userEmail)
-			.userId("google" + userId)
+			.userId("#google" + userId)
 			.providerType(ProviderType.GOOGLE)
 			.profileImg(profileImg)
 			.userRole(UserRole.USER)
