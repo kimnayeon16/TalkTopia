@@ -51,6 +51,9 @@ import Error from './pages/error/Error.js';
 import PrivateRoute from './route/PrivateRoute';
 import PublicRoute from './route/PublicRoute';
 
+// Admin
+import AdminPage from './pages/admin/AdminPage';
+
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState('');
@@ -124,6 +127,9 @@ function App() {
         {/* 친구목록 */}
         <Route path="/friendList" element={<FriendList/>}/>
         <Route path="/chat" element={<ChatWindow />} />
+
+        {/* 관리자페이지 */}
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
       </AnimatePresence>
 

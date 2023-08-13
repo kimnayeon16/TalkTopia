@@ -89,7 +89,17 @@ function JoinLogin(){
             
 
             //로컬에 저장하기
-            const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang, fcmToken: token, profileUrl: response.data.profileUrl}
+            const UserInfo = { 
+                userId: response.data.userId, 
+                userName: response.data.userName, 
+                accessToken: response.data.accessToken, 
+                expiredDate: response.data.expiredDate, 
+                sttLang: response.data.sttLang, 
+                transLang: response.data.transLang, 
+                fcmToken: token, 
+                profileUrl: response.data.profileUrl,
+                role: response.data.role
+            }
             localStorage.setItem("UserInfo", JSON.stringify(UserInfo));
 
             //쿠키에 저장하기
@@ -605,10 +615,21 @@ function JoinLogin(){
                                 expiredDate: response.data.expiredDate,
                                 sttLang: response.data.sttLang,
                                 transLang: response.data.transLang,
+                                profileUrl: response.data.profileUrl,
+                                role: response.data.role,
                               }));
-                  
+
                               //로컬에 저장하기
-                              const UserInfo = { userId: response.data.userId, userName: response.data.userName, accessToken: response.data.accessToken, expiredDate: response.data.expiredDate, sttLang: response.data.sttLang, transLang: response.data.transLang}
+                              const UserInfo = { 
+                                userId: response.data.userId, 
+                                userName: response.data.userName, 
+                                accessToken: response.data.accessToken, 
+                                expiredDate: response.data.expiredDate, 
+                                sttLang: response.data.sttLang, 
+                                transLang: response.data.transLang,
+                                profileUrl: response.data.profileUrl,
+                                role: response.data.role
+                            }
                               localStorage.setItem("UserInfo", JSON.stringify(UserInfo));
                   
                               //쿠키에 저장하기
