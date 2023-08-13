@@ -11,6 +11,7 @@ import com.example.talktopia.api.request.FCMFailMessage;
 import com.example.talktopia.api.request.fcm.FCMSendFriendMessage;
 import com.example.talktopia.api.request.fcm.FCMSendVroomMessage;
 import com.example.talktopia.api.request.fcm.FCMTokenReq;
+import com.example.talktopia.api.service.friend.FriendService;
 import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.user.Reminder;
@@ -46,6 +47,8 @@ public class FcmService {
 	private final ReminderRepository reminderRepository;
 
 	private final UserStatusService userStatusService;
+
+	private final FriendService friendService;
 	public void saveToken(FCMTokenReq fcmTokenReq) throws Exception {
 		log.info("fcmTokenReq: " + fcmTokenReq.getUserId());
 		User user = userRepository.findByUserId(fcmTokenReq.getUserId()).orElseThrow(()-> new Exception("유저가 없어0"));
@@ -134,18 +137,21 @@ public class FcmService {
 	}
 
 	public Message sendFriendMessage(FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
-		User user = userRepository.findByUserId(fcmSendFriendMessage.getFriendId()).orElseThrow(()-> new Exception("유저가없엉"));
+		User user = userRepository.findByUserId(fcmSendFriendMessage.getFriendId()).orElseThrow(()-> new Exception("친구 유저가없엉"));
 		String title = "친구 요청 알림이 왔습니다.";
 		String body = fcmSendFriendMessage.getUserId()+" 님이 친구추가 요청을 보냈습니다.";
 		if (user.getToken() != null && user.getToken().getTFcm() !=null){
-
+			User duplicateUser = userRepository.findByUserId(fcmSendFriendMessage.getUserId()).orElseThrow(()->new Exception("내 유저가 없어"));
+			if(friendService.isAlreadyFriend(duplicateUser.getUserNo(),user.getUserNo())){
+				throw new RuntimeException("이미 친구입니다.");
+			}
 			Map<String, String> data = new HashMap<>();
 			data.put("userId",fcmSendFriendMessage.getUserId());
 			data.put("friendId", fcmSendFriendMessage.getFriendId());
 			data.put("accept", "수락");
 			data.put("denied", "거절");
 
-			Notification notification = Notification.builder()
+				Notification notification = Notification.builder()
 				.setTitle(title)
 				.setBody(body)
 				.build();
