@@ -70,6 +70,7 @@ function JoinLogin(){
               sttLang: response.data.sttLang,
               transLang: response.data.transLang,
               profileUrl: response.data.profileUrl,
+              role: response.data.role,
             }));
 
             //fcm 토큰 발급
