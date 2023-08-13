@@ -111,7 +111,7 @@ function MyInfo(){
         }else if(userName.length === 0 || /\s/.test(userName)){
             Swal.fire({
                 icon: "warning",
-                title: "이름을 입력해주세요.",
+                title: "이름 입력 조건을 확인해주세요.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
             })
@@ -131,13 +131,29 @@ function MyInfo(){
                 },
               })
             .then((response) => {
+                console.log(response, "반응, 여기에 응답으로 값들을 다 받아서 넣어주는게 나을까?");
+                console.log(userLan);
+
+                const userInfoString = localStorage.getItem("UserInfo");
+                const userInfo = JSON.parse(userInfoString);
+
+                userInfo.userId = userId1;
+                userInfo.userName = userName;
+                userInfo.userPw = userPw;
+                userInfo.profileUrl = userImgUrl;
+                userInfo.sttLang = userLan;
+
+                //다시 localStorage에 저장
+                localStorage.setItem("UserInfo", JSON.stringify(userInfo));
+
+
                 Swal.fire({
                     icon: "success",
                     title: "수정이 완료되었습니다.",
                     confirmButtonText: "확인",
                     confirmButtonColor: '#90dbf4',
-                    timer: 2000,
-                    timerProgressBar: true,
+                    // timer: 2000,
+                    // timerProgressBar: true,
                 }).then(() => {
                     navigate('/home');
                   });
@@ -313,7 +329,6 @@ function MyInfo(){
                             <option value="zh-CN">중국어 간체</option>
                             <option valye="pt-TW">중국어 번체</option>
                         </select>
-                        
                     </div>
                 </div>
             </div>

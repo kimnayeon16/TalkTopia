@@ -50,6 +50,7 @@ import FCMModalComponent from './components/fcm/FCMModalComponent';
 import Error from './pages/error/Error.js';
 import PrivateRoute from './route/PrivateRoute';
 import PublicRoute from './route/PublicRoute';
+import Logout from './pages/auth/MyInfo/Logout'
 
 // Admin
 import AdminPage from './pages/admin/AdminPage';
@@ -119,6 +120,8 @@ function App() {
         <Route path="/joinroom" element={<JoinRoom/>}/>
         <Route path="/bye" element={<Leave/>}/>
 
+        {/* 로그아웃 */}
+        <Route path="/logout" element={<Logout/>}/>
         {/* 없는 페이지 */}
         <Route path="/*" component={<Error/>}/>
         {/* 삭제할거 */}

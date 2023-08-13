@@ -44,9 +44,9 @@ function PostList() {
         </ul>
         <ul className={`${style.ul}`}>
           {data.map((item,i) => (
-            <li className={`${style.li}`} key={item.postNo}>
-              <span onClick={()=>{navigate(`/post/${item.postNo}`)}}>{i+1}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span onClick={()=>{navigate(`/post/${item.postNo}`)}}>{item.postTitle}</span>
+            <li className={`${style.li}`} key={item.postNo} onClick={()=>{navigate(`/post/${item.postNo}`)}}>
+              <span>{i+1}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span>{item.postTitle}</span>
             </li>
           ))}
         </ul>

@@ -74,29 +74,29 @@ function JoinLogin(){
             }));
 
             //fcm 토큰 발급
-            const token = await getFCMToken();
+            // const token = await getFCMToken();
             
-            try {
-                if (token) {
-                await sendTokenToServer(response.data.userId, token);
-                dispatch(reduxUserInfo({
-                    fcmToken: token,
-                    }));
-                }
-            } catch (error) {
-                console.error("Error initializing FCM:", error);
-            }
+            // try {
+            //     if (token) {
+            //     await sendTokenToServer(response.data.userId, token);
+            //     dispatch(reduxUserInfo({
+            //         fcmToken: token,
+            //         }));
+            //     }
+            // } catch (error) {
+            //     console.error("Error initializing FCM:", error);
+            // }
             
 
             //로컬에 저장하기
-            const UserInfo = { 
+            const UserInfo = {
                 userId: response.data.userId, 
                 userName: response.data.userName, 
                 accessToken: response.data.accessToken, 
                 expiredDate: response.data.expiredDate, 
                 sttLang: response.data.sttLang, 
                 transLang: response.data.transLang, 
-                fcmToken: token, 
+                fcmToken: "", 
                 profileUrl: response.data.profileUrl,
                 role: response.data.role
             }
@@ -149,6 +149,7 @@ function JoinLogin(){
     const [userLan, setUserLan] = useState(''); //lan 담을 state
 
     const [pwConfirmMsg, setPwConfirmMsg] = useState(''); //pw 일치 확인 메세지
+    const [nameMsg, setNameMsg] = useState("띄어쓰기 불가능");
 
     const [idValid, setIdValid] = useState(false);
     const [pwValid, setPwValid] = useState(false);
@@ -165,6 +166,7 @@ function JoinLogin(){
     //모든 정보가 입력됐을 때 회원가입 완료
     const [userIdCorrect, setUserIdCorrect] = useState(false);
     const [userPwCorrect, setUserPwCorrect] = useState(false);
+    const [userPwConfirmCorrect, setUserPwConfirmCorrect] = useState(false);
     const [userNameCorrect, setUserNameCorrect] = useState(false);
     // eslint-disable-next-line
     const [userEmailCorrect, setUserEmailCorrect] = useState(false);
@@ -251,8 +253,12 @@ function JoinLogin(){
         //유효성 검사
         if(regex.test(value)){
             setPwValid(true);
+            setUserPwCorrect(true);
+            console.log("만족");
         }else{
             setPwValid(false);
+            setUserPwCorrect(false);
+            console.log("불만족")
         }
     }
 
@@ -262,19 +268,21 @@ function JoinLogin(){
 
         if(e.target.value === userPwJoin){
             setPwConfirmMsg("비밀번호가 일치합니다.");
-            setUserPwCorrect(true);
+            setUserPwConfirmCorrect(true);
         }else{
             setPwConfirmMsg("비밀번호가 일치하지 않습니다.");
-            setUserPwCorrect(false);
+            setUserPwConfirmCorrect(false);
     }}
 
     //이름
     const onNameHandler = (e) => {
         setUserName(e.target.value);
-        if(e.target.value.length !== 0){
+        if(e.target.value.length !== 0 && !/\s/.test(e.target.value)){
             setUserNameCorrect(true);
+            setNameMsg("");
         }else{
             setUserNameCorrect(false);
+            setNameMsg("띄어쓰기 불가능");
         }
     }
 
@@ -442,7 +450,7 @@ function JoinLogin(){
         e.preventDefault();
      
         //입력한 정보들이 모두 유효할 경우
-        if(userIdCorrect && userPwCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
+        if(userIdCorrect && userPwCorrect && userPwConfirmCorrect && userNameCorrect && userEmailCorrect && userLanCorrect){
             try{
                 const requestBody = {
                     userId: userIdJoin,
@@ -501,7 +509,7 @@ function JoinLogin(){
                 timer: 2000,
                 timerProgressBar: true,
             })
-        }else if(!userPwCorrect){
+        }else if(!userPwCorrect || !userPwConfirmCorrect){
             Swal.fire({
                 icon: "warning",
                 title: "비밀번호를 확인해주세요.",
@@ -513,7 +521,7 @@ function JoinLogin(){
         }else if(!userNameCorrect || /\s/.test(userName)){
             Swal.fire({
                 icon: "warning",
-                title: "이름을 입력해주세요.",
+                title: "이름을 정확히 입력해주세요.",
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
@@ -728,7 +736,7 @@ function JoinLogin(){
                         </div>
                     </div>
                     <div>
-                        <br/><div className={`${style["guide-pass"]} ${userPwCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
+                        <br/><div className={`${style["guide-pass"]} ${userPwConfirmCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
                     </div>
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
@@ -736,9 +744,7 @@ function JoinLogin(){
                             <input type="text" value={userName} onChange={onNameHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
-                    <div className={`${style.guide1}`}>띄어쓰기 불가능</div>
-
-
+                    <div className={`${userNameCorrect ? "" : style.guide1}`}>{nameMsg}</div>
                     <div className={style["div-join-container-isButton"]}>
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>

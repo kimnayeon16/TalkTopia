@@ -42,7 +42,7 @@
     font-family: 'Dovemayo_wild';
     font-size: 17px;
     width: 160px;
-    height: 200px;
+    height: 270px;
     border-radius: 15px;
     background-color: white;
     opacity: 0.8;
@@ -56,7 +56,8 @@
 }
 
 .mytext{
-    margin: 5px 0;
+    margin: 10px 0;
+    font-size: clamp(14px, 1.5vw, 18px);
 }
 
 .mytext:hover{
