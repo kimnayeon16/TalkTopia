@@ -16,6 +16,7 @@ import com.example.talktopia.db.entity.post.AnswerPost;
 import com.example.talktopia.db.entity.post.Post;
 import com.example.talktopia.db.entity.post.PostType;
 import com.example.talktopia.db.entity.user.User;
+import com.example.talktopia.db.entity.user.UserRole;
 import com.example.talktopia.db.repository.AnswerPostRepository;
 import com.example.talktopia.db.repository.PostRepository;
 import com.example.talktopia.db.repository.UserRepository;
@@ -59,7 +60,13 @@ public class PostService {
 
 	public PostRes detailPost(String userId, long postNo) throws Exception {
 		User user = userRepository.findByUserId(userId).orElseThrow(() -> new Exception("우자기 앖어"));
-		Post post = postRepository.findByUser_UserNoAndPostNo(user.getUserNo(),postNo);
+		Post post;
+		if(user.getUserRole().equals(UserRole.ADMIN)){
+			post = postRepository.findByPostNo(postNo).orElseThrow(()->new Exception("게시글이없어"));
+		}
+		else {
+			post = postRepository.findByUser_UserNoAndPostNo(user.getUserNo(), postNo);
+		}
 		List<AnswerPost> answerPosts = answerPostRepository.findByPostPostNo(post.getPostNo());
 		List<AnswerPostRes> answerPostRes = showPostOne(answerPosts);
 		return new PostRes(post.getPostNo(),post.getPostTitle(),post.getPostContent(),post.getPostCount(),answerPostRes);
@@ -71,7 +78,7 @@ public class PostService {
 		List<AnswerPostRes> answerPostRes = new ArrayList<>();
 		for(AnswerPost answerPost: answerPosts){
 			AnswerPostRes answer = new AnswerPostRes();
-			answer.setUserId("ADMIN");
+			answer.setUserId(answer.getUserId());
 			answer.setContentContent(answerPost.getContentContent());
 			answer.setContentCreateTime(answerPost.getContentCreateTime());
 
@@ -82,9 +89,16 @@ public class PostService {
 
 	public List<PostListRes> enterPost(String userId) throws Exception {
 		User user = userRepository.findByUserId(userId).orElseThrow(() -> new Exception("우자기 앖어"));
-		List<PostListRes> postListResList = showPostMulti(user.getUserNo());
+		List<PostListRes> postListResList;
+		if(user.getUserRole().equals(UserRole.ADMIN)){
+			postListResList = showAllUserList();
+		}
+		else {
+			postListResList = showPostMulti(user.getUserNo());
+		}
 		return postListResList;
 	}
+
 
 	@Transactional
 	public Message deletePost(String userId, long postNo) throws Exception {
@@ -109,6 +123,18 @@ public class PostService {
 		List<Post> postList = postRepository.findByUser_UserNo(userId);
 		List<PostListRes> postListResList = new ArrayList<>();
 		log.info(postList.toString());
+		for(Post post : postList){
+			PostListRes postListRes = new PostListRes();
+			postListRes.setPostTitle(post.getPostTitle());
+			postListRes.setPostNo(post.getPostNo());
+			postListResList.add(postListRes);
+		}
+		return postListResList;
+	}
+
+	private List<PostListRes> showAllUserList() {
+		List<Post> postList = postRepository.findAll();
+		List<PostListRes> postListResList = new ArrayList<>();
 		for(Post post : postList){
 			PostListRes postListRes = new PostListRes();
 			postListRes.setPostTitle(post.getPostTitle());

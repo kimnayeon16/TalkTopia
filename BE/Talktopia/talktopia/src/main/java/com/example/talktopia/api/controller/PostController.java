@@ -2,6 +2,7 @@ package com.example.talktopia.api.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +29,13 @@ public class PostController {
 
 
 	@GetMapping("/enter")
-	public List<PostListRes> enterPost(@RequestParam("userId")String userId) throws Exception {
-		return postService.enterPost(userId);
+	public ResponseEntity<?> enterPost(@RequestParam("userId")String userId) throws Exception {
+		List<PostListRes> arr = postService.enterPost(userId);
+		if (arr == null) {
+			return ResponseEntity.badRequest().body("arr is null"); // 혹은 원하는 에러 메시지
+		} else {
+			return ResponseEntity.ok(arr);
+		}
 	}
 
 	@PostMapping("/register")
@@ -45,6 +51,7 @@ public class PostController {
 	@GetMapping("/list/detail")
 	public PostRes detailPost(@RequestParam("userId")String userId,@RequestParam("postNo")long postNo) throws Exception {
 		return postService.detailPost(userId,postNo);
+
 	}
 
 }
