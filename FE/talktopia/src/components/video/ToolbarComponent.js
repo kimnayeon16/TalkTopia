@@ -23,22 +23,27 @@ function ToolbarComponent(props) {
             <div className={style['video-call-actions']}>
                 {props.isTopicbar ? (
                     <>
-                        <button className={`${style['video-game-button']}`} onClick={props.openTopic} >
+                        <button className={`${style['video-game-button']} ${style['video-game-button-HOST']}`} onClick={props.openTopic} >
                             <FiHash size="24" color="black" />
                             <p>랜덤 생성</p>
                         </button>  
-                        <button className={`${style['video-game-button']}`} onClick={props.closeTopicbar} >
+                        <button className={`${style['video-game-button']} ${style['video-game-button-HOST']}`} onClick={props.closeTopicbar} >
                             <FiHash size="24" color="black" />
                             <p>주제 종료</p>
                         </button>  
                     </>
                 ) : (
-                    <button className={`${style['video-game-button']}`} onClick={handleTopicbutton} >
-                        <FiHash size="24" color="black" />
+                    <button 
+                        className={props.roomRole === 'HOST' ? 
+                            `${style['video-game-button']} ${style['video-game-button-HOST']}` : 
+                            `${style['video-game-button']} ${style['video-game-button-GUEST']}`
+                        } 
+                        onClick={handleTopicbutton}
+                    >
+                        <FiHash size="24" color={props.roomRole === 'HOST' ? "black" : "grey"} />
                         <p>주제 제시</p>
                     </button>  
                 )}
-
             </div>
 
             <div className={style['video-call-actions']}>

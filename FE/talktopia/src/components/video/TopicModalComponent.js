@@ -50,11 +50,15 @@ function TopicModalComponent(props) {
         setIsTopicModal(false)
     }
 
+    const preventCloseTopicModal = (e) => {
+        e.stopPropagation();
+    }
+
     return (
         <>
             {isTopicModal ? (
-                <div className={style['report-modal-window']}>
-                    <div className={style['report-modal-content']}>
+                <div className={style['report-modal-window']} onClick={closeTopicModal}>
+                    <div className={style['report-modal-content']} onClick={preventCloseTopicModal}>
                         <h1>주제에 대해 자유롭게 이야기해보세요</h1>
                         <button className={style['report-modal-close']} onClick={closeTopicModal}>close</button>
                         <h2>{message}</h2>
