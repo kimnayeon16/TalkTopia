@@ -4,18 +4,20 @@ import { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const PenguinGroup = () => {
+  const user = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
 
   
-  const userInfoString = localStorage.getItem("UserInfo");
-  const userInfo = JSON.parse(userInfoString);
+  // const userInfoString = localStorage.getItem("UserInfo");
+  // const userInfo = JSON.parse(userInfoString);
   
   const headers = {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${userInfo.accessToken}`
+    'Authorization': `Bearer ${user.accessToken}`
   }
   const [join, setJoin] = useState(false);
 
@@ -27,23 +29,24 @@ const PenguinGroup = () => {
     setJoin(false);
   }
 
-  const enterFriendRoom = async (e) => {
+  const enterCommonRoom = async (e) => {
     const requestBody = {
-        userId: userInfo.userId,
-        vr_max_cnt: e
+      userId: user.userId,
+      vr_max_cnt: e
     };
 
     const requestBodyJSON = JSON.stringify(requestBody);
     await axios
-    .post(`${BACKEND_URL}/api/v1/room/enterFriend`, requestBodyJSON, {headers})
+    .post(`${BACKEND_URL}/api/v1/room/enterCommon`, requestBodyJSON, {headers})
     .then((response) => {
         console.log(response.data.token)
         navigate('/joinroom', {
             state: {
+                // myUserName: user.userId,
                 mySessionId: response.data.vrSession,
                 token: response.data.token,
                 roomRole: response.data.roomRole,
-                roomType: 'friend'
+                roomType: 'common'
             }
         });
     })
@@ -62,7 +65,7 @@ const PenguinGroup = () => {
           {join ?
           <div className={`${style["speech-bubble"]}`}>
             <p className={`${style.message}`}>랜덤 2인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={() => {enterFriendRoom(2)}}>참여하기</button>
+            <button className={`${style.button}`} onClick={() => {enterCommonRoom(2)}}>참여하기</button>
           </div>
           :
           null

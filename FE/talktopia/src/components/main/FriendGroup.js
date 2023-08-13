@@ -10,17 +10,17 @@ const FriendGroup = () => {
   const user = useSelector((state) => state.userInfo);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    // 로컬 스토리지에서 저장된 사용자 정보 불러오기
-    const storedUserInfo = localStorage.getItem('UserInfo');
-    if (storedUserInfo) {
-      const userInfo = JSON.parse(storedUserInfo);
-      // Redux 상태를 업데이트하는 액션 디스패치
-      dispatch(reduxUserInfo(userInfo));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // 로컬 스토리지에서 저장된 사용자 정보 불러오기
+  //   const storedUserInfo = localStorage.getItem('UserInfo');
+  //   if (storedUserInfo) {
+  //     const userInfo = JSON.parse(storedUserInfo);
+  //     // Redux 상태를 업데이트하는 액션 디스패치
+  //     dispatch(reduxUserInfo(userInfo));
+  //   }
+  // }, [dispatch]);
 
   
   const headers = {
