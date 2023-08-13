@@ -1,5 +1,6 @@
 package com.example.talktopia.api.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,13 @@ public class AnswerPostController {
 	private final AnswerPostService answerPostService;
 
 	@PostMapping("/answer")
-	public Message answerPost(@RequestBody AnswerPostReq answerPostReq) throws Exception {
-		return answerPostService.answerPost(answerPostReq);
+	public ResponseEntity<Message> answerPost(@RequestBody AnswerPostReq answerPostReq) throws Exception {
+		try {
+			Message message = answerPostService.answerPost(answerPostReq);
+			return ResponseEntity.ok(message);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Message(e.getMessage()));
+		}
 	}
 
 }

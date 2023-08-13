@@ -35,6 +35,6 @@ public class AnswerPostService {
 			answerPostRepository.save(answerPost);
 			return new Message("댓글을 달았습니다");
 		}
-		throw new Exception("댓글 다는 권한은 없습니다.");
+		throw new Exception("댓글 다는 권한은 관리자에게만 있습니다.");
 	}
 }
