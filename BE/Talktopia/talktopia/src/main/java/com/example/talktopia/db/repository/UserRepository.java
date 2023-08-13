@@ -30,10 +30,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	Optional<User> findByUserIdOrUserEmail(String userId, String userEmail);
 
-	@Query("SELECT u FROM User u WHERE u.userId LIKE ?1%")
+	@Query("SELECT u FROM User u WHERE u.userId LIKE %?1%")
 	List<User> findByCustomUserId(String userId);
 
-	@Query("SELECT u FROM User u WHERE u.userEmail LIKE ?1%")
+	@Query("SELECT u FROM User u WHERE u.userEmail LIKE %?1%")
 	List<User> findByCustomUserEmail(String search);
 
 	@Query("SELECT u FROM User u WHERE u.language.langNo = :search")
