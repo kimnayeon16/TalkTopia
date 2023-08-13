@@ -11,7 +11,6 @@ import style from './Nav.module.css';
 function Alram(){
     const user = useSelector((state) => state.userInfo);
     const [notifications, setNotifications] = useState([]);
-
     const [ddingModalVisible, setDdingModalVisible] = useState(false);
 
     useEffect(() => {
@@ -70,7 +69,11 @@ function Alram(){
                             <span className={style["refresh-icon"]}>⟳</span> 새로고침
                         </div>
 
-                        {notifications === [] ? (
+                        {notifications == [] ? (
+                            <div className={style["notification-item"]}>
+                                <p>알림이 비었습니다.</p>
+                            </div>
+                        ) : (
                             <>
                                 {notifications.map((notification, index) => (
                                 <div key={index} className={`${style["notification-item"]} ${getNotificationClass(notification.rmType)}`}>
@@ -79,10 +82,6 @@ function Alram(){
                                 </div>
                                 ))}
                             </>
-                        ) : (
-                            <div className={style["notification-item"]}>
-                                <p>알림이 비었습니다.</p>
-                            </div>
                         )}
 
                   </div>

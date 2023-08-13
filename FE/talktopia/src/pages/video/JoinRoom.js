@@ -25,13 +25,13 @@ function JoinRoom() {
     const location = useLocation();
 
     const [localUser, setLocalUser] = useState(undefined);  // subscribers 요소에 들어갈 거임. 그러면서 publisher 역할도 함.
-    console.log(localUser)
+    // console.log(localUser)
     // session, state 선언
     const [session, setSession] = useState(undefined)
     const [subscribers, setSubscribers] = useState([]);
     const [mySessionId, setMySessionId] = useState(undefined);  
-    console.log(mySessionId)
-    console.log(location.state.mySessionId) 
+    // console.log(mySessionId)
+    // console.log(location.state.mySessionId) 
 
     // 토큰, 방 타입 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
@@ -39,7 +39,7 @@ function JoinRoom() {
 
     // Layout 및 참여자 수
     const [participantCount, setParticipantCount] = useState(1)
-    console.log(participantCount)
+    // console.log(participantCount)
     const layoutPlan = {
         1: style.oneParticipant,
         2: style.twoParticipants,
@@ -62,11 +62,11 @@ function JoinRoom() {
 
     // 2) 화면 렌더링 시 최초 1회 실행
     useEffect(() => {
-        // if (location.state === null || location.state.myUserName === null || location.state.token === null) {
-        //     console.log("location.state의 정보가 없습니다.");
-        //     navigate("/home");
-        //     return;
-        // };
+        if (location.state === null || location.state.mySessionId === null || location.state.token === null || location.state.roomRole === null) {
+            console.log("location.state의 정보가 없습니다.");
+            navigate("/home");
+            return;
+        };
 
         setMySessionId(location.state.mySessionId);
         setOpenviduToken(location.state.token);
