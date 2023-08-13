@@ -117,7 +117,7 @@ function App() {
         <Route path="/bye" element={<Leave/>}/>
 
         {/* 없는 페이지 */}
-        <Route component={<Error/>}/>
+        <Route path="/*" component={<Error/>}/>
         {/* 삭제할거 */}
         <Route path="/google" element={<GoogleLoginButton/>}/>
 

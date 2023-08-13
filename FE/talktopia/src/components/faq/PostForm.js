@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import style from './PostForm.module.css'; // 스타일 파일을 import
 import Swal from 'sweetalert2';
@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../utils';
 
 import Nav from '../../nav/Nav';
+import { reduxUserInfo } from '../../store';
 
 function PostForm() {
   const navigate = useNavigate();
-
+  let dispatch = useDispatch();
   const user = useSelector((state) => state.userInfo);
 
   const [userId, setUserId] = useState("");
@@ -21,6 +22,7 @@ function PostForm() {
     const userInfo = JSON.parse(userInfoString);
     setUserId(userInfo.userId);
     setAccessToken(userInfo.accessToken);
+    dispatch(reduxUserInfo(userInfo));
   },[])
 
   const headers = {
@@ -33,7 +35,7 @@ function PostForm() {
   const [postContent, setPostContent] = useState('');
 
   const handleSubmit = async e => {
-    // e.preventDefault();
+    e.preventDefault();
 
     if(postTitle.length === 0){
       Swal.fire({
@@ -54,10 +56,14 @@ function PostForm() {
         timerProgressBar: true,
       })
     }else{
+
+      const userInfoString = localStorage.getItem("UserInfo");
+      const userInfo = JSON.parse(userInfoString);
+
       const postData = {
         postTitle: postTitle,
         postContent: postContent,
-        userId: userId
+        userId: userInfo.userId
       };
   
       const requestBodyJSON = JSON.stringify(postData);
@@ -105,7 +111,7 @@ function PostForm() {
   }
 
   const onCheckEnter = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if(e.key === 'Enter') {
       handleSubmit();
     }
@@ -118,7 +124,7 @@ function PostForm() {
       <h2 className={`${style.title}`}>문의하기</h2>
       <form className={`${style.form}`}>
         <p className={`${style.name}`}>제목</p>
-        <input className={`${style.input}`} type="text" placeholder="제목을 입력해주세요." value={postTitle} onKeyPress={onCheckEnter} onChange={e => setPostTitle(e.target.value)} />
+        <input className={`${style.input}`} type="text" placeholder="제목을 입력해주세요." value={postTitle} onChange={e => setPostTitle(e.target.value)} />
         <p className={`${style.name1}`}>문의 내용</p>
         <textarea className={`${style.textarea}`}
           placeholder="문의 내용을 입력해주세요."
