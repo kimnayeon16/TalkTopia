@@ -4,37 +4,56 @@ import axios from 'axios';
 import style from './PostDetail.module.css'; 
 import { BACKEND_URL } from '../../utils';
 import Swal from 'sweetalert2';
+import { reduxUserInfo } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import Nav from '../../nav/Nav';
 
 
 function PostDetail() {
   const navigate = useNavigate();
+  let dispatch = useDispatch();
+  const user = useSelector((state) => state.userInfo);
+
+  const [userId, setUserId] = useState("");
+  const [userAccessToken, setUserAccessToken] = useState("");
 
   const { postNo } = useParams();
 
-  const [userId, setUserId] = useState("");
-  const [accessToken, setAccessToken] = useState("");
-
   const [detailedPost, setDetailedPost] = useState(null);
   const [newComment, setNewComment] = useState(""); // 새로운 댓글 입력 상태
+
+  // const [userInfo, setUserInfo] = useState("");
+  const [itsme, setItsme] = useState([]);
 
   useEffect(() => {
     const userInfoString = localStorage.getItem("UserInfo");
     const userInfo = JSON.parse(userInfoString);
     setUserId(userInfo.userId);
-    setAccessToken(userInfo.accessToken);
-  },[])
+    setUserAccessToken(userInfo.userAccessToken);
+    setItsme(userInfo)
+    console.log(itsme)
+    console.log("ㅇ 앰어리ㅏ머라엚알 너 여기 오낭 모라ㅣ ?")
+    dispatch(reduxUserInfo(userInfo));
+}, []);
+
+
 
   useEffect(() => {
     fetchData();
   }, [postNo]);
 
+  
   const fetchData = async () => {
+    const userInfoString = localStorage.getItem("UserInfo");
+    const userInfo = JSON.parse(userInfoString);
+
+    console.log(`${BACKEND_URL}/api/v1/ask/list/detail?userId=${userInfo.userId}&postNo=${postNo}`)
     try {
       await axios
-      .get(`${BACKEND_URL}/api/v1/ask/list/detail?userId=talktopia1&postNo=${postNo}`,{
+      .get(`${BACKEND_URL}/api/v1/ask/list/detail?userId=${userInfo.userId}&postNo=${postNo}`,{
         headers : {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          'Authorization': `Bearer ${userInfo.accessToken}`
         }
       })
       .then((response) => {
@@ -51,18 +70,21 @@ function PostDetail() {
 
 
   const handleCommentSubmit = async () => {
+    const userInfoString = localStorage.getItem("UserInfo");
+    const userInfo = JSON.parse(userInfoString);
+
     try {
       await axios.post(
         `${BACKEND_URL}/api/v1/comment/answer`,
         {
-          userId: "englishtest1",
+          userId: userInfo.userId,
           postNo: postNo,
           contentContent: newComment
         },
         {
           headers : {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${userInfo.accessToken}`
           }
         }
       ).then((response) =>{
@@ -78,8 +100,15 @@ function PostDetail() {
         fetchData(); // 새로운 댓글을 등록한 후에 데이터를 다시 가져옴
 
       }).catch((error) => {
+        console.log(error.response.data.message);
+        const message = error.response.data.message
+        Swal.fire({
+          icon: "error",
+          title: message,
+          confirmButtonText: "확인",
+          confirmButtonColor: '#90dbf4',
+        })
         console.log("댓글 등록 실패");
-        console.log(error);
       })
     } catch (error) {
       console.error('Error submitting comment:', error);
@@ -97,19 +126,37 @@ function PostDetail() {
       confirmButtonColor: '#90dbf4',
       cancelButtonColor: '#ec1c57',
     }).then((result) => {
+      const userInfoString = localStorage.getItem("UserInfo");
+      const userInfo = JSON.parse(userInfoString);
+
       if (result.isConfirmed) {
         const handleDeleteConfirm = async () => {
           try {
             await axios.get(
-              `${BACKEND_URL}/api/v1/ask/list/delete?userId=talktopia1&postNo=${postNo}`,
+              `${BACKEND_URL}/api/v1/ask/list/delete?userId=${userInfo.userId}&postNo=${postNo}`,
               {
                 headers : {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${accessToken}`
+                  'Authorization': `Bearer ${userInfo.accessToken}`
                 }
               }
-            );
-              navigate('/counsel');
+            ).then((response) => {
+              Swal.fire({
+                icon: "success",
+                title: "게시글이 성공적으로 삭제되었습니다.",
+                confirmButtonText: "확인",
+                timer: 2000,
+                timerProgressBar: true,
+                confirmButtonColor: '#90dbf4',
+              }).then((result) =>{
+                // if(result.isConfirmed){
+                  navigate('/counsel');
+                // }
+              })
+
+            }).catch((error) => {
+              console.log("삭제 실패")
+            })
           } catch (error) {
             console.error('Error deleting post:', error);
           }
@@ -127,6 +174,7 @@ function PostDetail() {
 
   return (
     <div className={`${style.background1}`}>
+      <Nav/>
         <div className={`${style.container1}`}>
           <h2 className={`${style.question}`}>질문</h2>
             <div className={`${style.box1}`}>

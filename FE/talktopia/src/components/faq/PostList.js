@@ -43,9 +43,9 @@ function PostList() {
           <div className={`${style.li}`}> 번호 &nbsp;&nbsp;&nbsp;&nbsp; 제목 </div>
         </ul>
         <ul className={`${style.ul}`}>
-          {data.map(item => (
+          {data.map((item,i) => (
             <li className={`${style.li}`} key={item.postNo}>
-              <span onClick={()=>{navigate(`/post/${item.postNo}`)}}>{item.postNo}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span onClick={()=>{navigate(`/post/${item.postNo}`)}}>{i+1}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span onClick={()=>{navigate(`/post/${item.postNo}`)}}>{item.postTitle}</span>
             </li>
           ))}

@@ -18,7 +18,6 @@ function User(){
 
     useEffect(() => {
         const userInfoString = localStorage.getItem("UserInfo");
-  
         const userInfo = JSON.parse(userInfoString);
         setUserName(userInfo.userName);
         setUserImg(userInfo.profileUrl);

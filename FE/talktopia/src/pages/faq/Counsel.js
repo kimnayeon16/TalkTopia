@@ -1,11 +1,31 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import PostList from '../../components/faq/PostList'; 
 import style from './Counsel.module.css';
 import Nav from '../../nav/Nav';
+import { useDispatch, useSelector } from 'react-redux';
+import { reduxUserInfo } from '../../store';
 function OneToOneInquiry() {
 
   const navigate = useNavigate();
+
+  let dispatch = useDispatch();
+  const user = useSelector((state) => state.userInfo);
+
+  const [userId, setUserId] = useState("");
+  const [userAccessToken, setUserAccessToken] = useState("");
+
+
+  // const [userInfo, setUserInfo] = useState("");
+
+  useEffect(() => {
+    const userInfoString = localStorage.getItem("UserInfo");
+    const userInfo = JSON.parse(userInfoString);
+    setUserId(userInfo.userId);
+    setUserAccessToken(userInfo.userAccessToken);
+    dispatch(reduxUserInfo(userInfo));
+}, []);
+
 
   return (
     <div className={`${style.background}`}>
