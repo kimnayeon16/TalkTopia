@@ -322,6 +322,8 @@ public class UserService {
 			new Date(now.getTime() + refreshExpiredMs));
 		saveRefreshToken(refreshToken, joinUser); // refreshToken DB에 저장
 
+		userStatusService.updateUserStatus(joinUser.getUserId(),"ONLINE");
+
 		log.info("소셜 로그인 image: " + joinUser.getProfileImg().getImgUrl());
 		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
 			refreshToken,
