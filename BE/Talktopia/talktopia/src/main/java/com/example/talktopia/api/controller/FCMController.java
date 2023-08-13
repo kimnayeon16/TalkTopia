@@ -1,5 +1,6 @@
 package com.example.talktopia.api.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,8 +39,13 @@ public class FCMController {
 	}
 
 	@PostMapping("/sendFriendMessage")
-	public Message sendFriendMessage(@RequestBody FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
-		return fcmService.sendFriendMessage(fcmSendFriendMessage);
+	public ResponseEntity<Message> sendFriendMessage(@RequestBody FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
+		try {
+			Message message = fcmService.sendFriendMessage(fcmSendFriendMessage);
+			return ResponseEntity.ok(message);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(new Message(e.getMessage()));
+		}
 	}
 
 	@PostMapping("/failFCMMessage")
