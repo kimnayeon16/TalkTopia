@@ -7,7 +7,7 @@
 
     /* backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px ); */
-    background: rgba( 255, 255, 255, 0.25 );
+    background: rgb(0 0 0 / 15%);
 
     overflow: hidden;
     z-index: 10000000000;
@@ -34,7 +34,7 @@
 }
 
 .friend-list-h2{
-    margin: 0;
+    margin: 28px 0 0 0;
     font-weight: 800;
 }
 
@@ -44,7 +44,7 @@
 }
   
 .friend-list::-webkit-scrollbar-track {
-    background-color: grey;
+    /* background-color: grey; */
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px white;
 }
@@ -59,21 +59,25 @@
 
 .modal-close-btn{
     position: absolute;
-    right: 0;
-    top: 0;
-
+    right: 12px;
+    top: 6px;
+    width: auto;
     background: none;
     border: none;
-    cursor: pointer;
     font-size: 1.5em;
-    color: #adadad; /* 닫기 버튼의 색상 */
+    color: #adadad;
     display: inline;
 }
 
 
 .friend-section{
     display: grid;
-    grid-template-columns: 10% 80% 10%;
+    grid-template-columns: 15% 70% 15%;
+
+    margin: 30px 0 0 0;
+}
+.friend-section:hover{
+    background-color: #d8dadf;
 }
 
 .friend-section-profile{
@@ -81,7 +85,9 @@
     width: 100%;
     box-sizing: border-box;
 }
-.friend-section-profile{
+.friend-section-profile img{
+    width: 100%;
+    height: 50px;
     border-radius: 100%;
 }
 
@@ -89,21 +95,28 @@
     grid-column: 2;
     width: 100%;
     box-sizing: border-box;
+    padding: 0 15px;
 
+    word-break: break-all;
 }
-.friend-section-name:first-child{
+.friend-section-name *:first-of-type{
     font-size: small;
+    text-align: left;
 }
-.friend-section-name:last-child{
+.friend-section-name *:last-of-type{
     font-size: larger;
+    text-align: left;
+}
+.friend-section-name-status{
+
 }
 
 .enter-chat-btn{
     display: inline;
-    grid-column: 2;
+    grid-column: 3;
     border: none;
     width: 100%;
-    box-sizing: border-box;
+    height: 100%;
 
     background-color: rgb(158, 158, 255);
     border-radius: 20px;

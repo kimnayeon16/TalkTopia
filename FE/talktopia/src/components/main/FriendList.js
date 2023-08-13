@@ -107,9 +107,9 @@ const FriendList = () => {
             <div className={`${friendListStyle["friend-list"]}`}>
               {
                 friendList.map((friend, i) => (
-                  <div key={i} className={`${friendListStyle["friend-seciton"]}`}>
-                    <div className={`${friendListStyle["friend-seciton-profile"]}`}>
-                      <img url={friend.userImg}></img>
+                  <div key={i} className={`${friendListStyle["friend-section"]}`}>
+                    <div className={`${friendListStyle["friend-section-profile"]}`}>
+                      <img src={friend.userImg}></img>
                     </div>
                     <div className={`${friendListStyle["friend-section-name"]}`}>
                       <div className={`${friendListStyle["friend-section-name-status"]}`}>
