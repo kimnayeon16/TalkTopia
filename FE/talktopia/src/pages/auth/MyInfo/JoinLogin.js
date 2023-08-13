@@ -790,12 +790,12 @@ function JoinLogin(){
                                 <option value="en-US">영어</option>
                                 <option value="it-IT">이탈리아어</option>
                                 <option value="id-ID">인도네시아어</option>
+                                <option value="th-TH">태국어</option>
                                 <option value="ja-JP">일본어</option>
                                 <option value="fr-FR">프랑스어</option>
                                 <option value="pt-PT">포르투칼어</option>
                                 <option value="zh-CN">중국어 간체</option>
                                 <option valye="pt-TW">중국어 번체</option>
-                                <option value="hi-IN">힌디어</option>
                             </select>
                         </div>
                     </div>
