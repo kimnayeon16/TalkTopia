@@ -195,7 +195,13 @@ public class UserService {
 	// 회원 탈퇴
 	@Transactional
 	public Message deleteUser(String userId) {
-		userRepository.deleteByUserId(userId).orElseThrow(() -> new RuntimeException("없는 회원입니다."));
+		User searchUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("없는 회원입니다."));
+
+		// profileImage null로 바꾸기
+		searchUser.setImageNull();
+
+		// 삭제
+		userRepository.deleteByUserId(userId).orElseThrow(() -> new RuntimeException("회원 탈퇴 실패했습니다."));
 
 		return new Message("회원 탈퇴가 완료되었습니다.");
 	}

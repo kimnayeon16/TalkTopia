@@ -122,4 +122,8 @@ public class User {
 			friend.setUser(this);
 		}
 	}
+
+	public void setImageNull() {
+		this.profileImg = null;
+	}
 }
