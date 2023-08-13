@@ -22,6 +22,7 @@ function Home(){
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userInfo);
+  console.log(user, '0000000000000000000000000000000000')
   let dispatch = useDispatch();
 
   const [userName, setUserName] = useState("");

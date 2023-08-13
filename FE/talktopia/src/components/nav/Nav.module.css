@@ -8,6 +8,22 @@
     z-index: 10;
 }
 
+/* 관리자 페이지 */
+.admin-space{
+  position: relative;
+  display: inline-block;
+}
+
+.admin{
+  width:55px;
+  position: fixed;
+  top: 20px;
+  right: 410px;
+  z-index: 10;
+}
+
+
+
 /* 내 정보 */
 .user-space{
     position: relative;
