@@ -169,7 +169,6 @@ animation: bounce 5s infinite ease-in-out;
   position: absolute;
   top: 25%;
   right: 20%;
-  /* z-index: 10; */
   
 }
 /* ------------------------ container 구간 -------------------- */
@@ -192,12 +191,14 @@ animation: bounce 5s infinite ease-in-out;
   top: 50%;
   right: 0;
   animation: bearswim3 16s ease-in-out infinite, bounce 2s ease-in-out infinite;
+  /* z-index:10; */
 }
 .bearContainer4 {
   position: absolute;
   top: 80%;
   right: 0;
   animation: bearswim4 8s ease-in-out infinite, bounce 2s ease-in-out infinite;
+  z-index:10;
 }
 
 .bear {
@@ -285,7 +286,6 @@ animation: bounce 5s infinite ease-in-out;
   position: absolute;
   top: 25%;
   right: 50%;
-  /* z-index: 10; */
 }
 
 .whiteContainer {
@@ -318,7 +318,6 @@ animation: bounce 5s infinite ease-in-out;
   top: calc(23% - 50px);
   left: 100%;
   animation: pengswim2 10s ease-in-out alternate infinite, lowbounce 5s ease-in-out infinite;
-  z-index: 1;
 }
 
 .bluewhale {
@@ -351,7 +350,6 @@ animation: bounce 5s infinite ease-in-out;
   background-size: cover;
   background-image: url('./../../../public/img/main/pinkwhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
   transform: scaleX(-1);
-  z-index: 1;
 }
 .pinkwhale2 {
   width: 100px;
@@ -360,7 +358,6 @@ animation: bounce 5s infinite ease-in-out;
   background-image: url('./../../../public/img/main/pinkwhale.png'); /* 두 번째 물고기 이미지 경로로 변경 */
   transform: scaleX(1);
   margin-top: -30px;
-  z-index: 1;
 }
 
 .coralGroup{
@@ -712,7 +709,7 @@ animation: bounce 5s infinite ease-in-out;
   margin-left: 140px;
   margin-top: -120px;
   padding-top: 15px;
-  z-index: 10;
+  /* z-index: 30; */
 }
 
 .speech-bubble2:after {
@@ -728,6 +725,7 @@ animation: bounce 5s infinite ease-in-out;
 	border-top: 0;
 	margin-top: -12.5px;
 	margin-left: -25px;
+  /* z-index: 30; */
 }
 
 .speech-bubble3 {
@@ -736,8 +734,8 @@ animation: bounce 5s infinite ease-in-out;
 	position: relative;
 	background: #9ad1d6;
 	border-radius: 15px;
-  margin-left: -350px;
-  margin-top: -10px;
+  margin-left: -380px;
+  bottom: 100px;
   padding-top: 15px;
   z-index: 20;
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from "../../utils";
 import style from "./Myinfo.module.css";
@@ -11,25 +11,24 @@ import Nav from '../../nav/Nav';
 
 function MyInfoPw(){
     const user = useSelector((state) => state.userInfo);
-
-   
-  useUnload((e) => {
-    // e.preventDefault();
-    // localStorage.removeItem("UserInfo");
-    // removeCookie('refreshToken');
-  });
-
-    const userLocal = localStorage.getItem("UserInfo");
-    const userInfo = JSON.parse(userLocal);
-    console.log(userLocal);
-    console.log(userLocal.userId);
-    const id = userInfo.userId;
-    console.log(id);
-
     let navigate = useNavigate();
-
-
+  
     const [userPw,setUserPw] = useState("");
+   
+  // useUnload((e) => {
+  //   // e.preventDefault();
+  //   // localStorage.removeItem("UserInfo");
+  //   // removeCookie('refreshToken');
+  // });
+
+    useEffect(()=>{
+      const userLocal = localStorage.getItem("UserInfo");
+      const userInfo = JSON.parse(userLocal);
+
+      if(userInfo.userId.charAt(0) === "#"){
+        navigate('/myinfo');
+      }
+    },[])
 
     const onUserPwHandle = (e) => {
         setUserPw(e.target.value);
@@ -37,13 +36,12 @@ function MyInfoPw(){
 
 
     const confirmPw = () => {
-        console.log(id);
-        console.log(userPw);
-        console.log(user.accessToken);
+      const userLocal = localStorage.getItem("UserInfo");
+      const userInfo = JSON.parse(userLocal);
 
 
         axios.post(`${BACKEND_URL}/api/v1/myPage/checkPw`, {
-            userId: id,
+            userId: userInfo.userId,
             userPw: userPw,
           }, {
             headers: {

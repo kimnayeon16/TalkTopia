@@ -74,7 +74,11 @@ const BearGroup = () => {
       </div>
       <div className={style.bearContainer3}>
         <div className={`${style.bear} ${style.tooltipContainer}`}>
-          {
+        </div>
+      </div>
+      <div className={style.bearContainer4}>
+        <div className={`${style.bear} ${style.tooltipContainer}`}>
+        {
             join?
           <div className={`${style["speech-bubble3"]}`}>
             <p className={`${style.message}`}>랜덤 4인 방에 참여하세요!</p>
@@ -84,10 +88,6 @@ const BearGroup = () => {
           null
 
           }
-        </div>
-      </div>
-      <div className={style.bearContainer4}>
-        <div className={`${style.bear} ${style.tooltipContainer}`}>
         </div>
       </div>
     </div>
