@@ -72,8 +72,8 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Reminder> reminderList = new ArrayList<>();
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private ReportedUser reportedUser;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<ReportedUser> reportedUser = new ArrayList<>();
 
 	// 양방향 매핑
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
