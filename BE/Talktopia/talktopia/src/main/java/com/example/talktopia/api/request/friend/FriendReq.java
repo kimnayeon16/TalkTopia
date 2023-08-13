@@ -11,11 +11,14 @@ public class FriendReq {
 	String userId;
 	String userStatus;
 	String userName;
+	String userImg;
+
 
 	@Builder
-	public FriendReq(String userId, String userStatus, String userName) {
+	public FriendReq(String userId, String userStatus, String userName, String userImg) {
 		this.userId = userId;
 		this.userStatus = userStatus;
 		this.userName = userName;
+		this.userImg = userImg;
 	}
 }

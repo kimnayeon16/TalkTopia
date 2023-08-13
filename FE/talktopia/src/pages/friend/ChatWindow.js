@@ -55,7 +55,10 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
     // IntersectionObserver를 생성하고 연결
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        loadMoreChatLogs();
+        // 스크롤 이벤트 1.5초 지연
+        setTimeout(() => {
+          loadMoreChatLogs();
+        }, 1500);
       }
     });
     

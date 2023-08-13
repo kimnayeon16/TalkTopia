@@ -100,23 +100,32 @@ const FriendList = () => {
       { isListVisible &&
         <div className={`${friendListStyle["friend-list-modal-overlay"]}`}>
           <div className={`${friendListStyle["friend-list-modal"]}`}>
-            <h2>친구 목록</h2>
+            <h2 className={`${friendListStyle["friend-list-h2"]}`}>친구 목록</h2>
             {/* <button onClick={setIsListVisible(false)} className={`${friendListStyle["modal-close-btn"]}`}>X</button> */}
-            <button onClick={() => setIsListVisible(false)} className={`${friendListStyle["modal-close-btn"]}`}>X</button>
+            <button onClick={() => {setIsListVisible(false); setShowChat(false) }} className={`${friendListStyle["modal-close-btn"]}`}>X</button>
             
             <div className={`${friendListStyle["friend-list"]}`}>
               {
                 friendList.map((friend, i) => (
-                  <div key={i}>
-                    <p>
-                      {friend.userName}: {friend.userStatus}
-                      <button className={`${friendListStyle["send-btn"]}`} onClick={()=>{enterChat(friend)}}>채팅하기</button>
-                    </p>
+                  <div key={i} className={`${friendListStyle["friend-seciton"]}`}>
+                    <div className={`${friendListStyle["friend-seciton-profile"]}`}>
+                      <img url={friend.userImg}></img>
+                    </div>
+                    <div className={`${friendListStyle["friend-section-name"]}`}>
+                      <div className={`${friendListStyle["friend-section-name-status"]}`}>
+                        {friend.userStatus}
+                      </div>
+                      <div>
+                        {friend.userName}
+                      </div>
+                    </div>
+                    <button className={`${friendListStyle["enter-chat-btn"]}`} onClick={()=>{enterChat(friend)}}>채팅하기</button>
                   </div>
                 ))
               }
             </div>
           </div>
+
           { isListVisible &&
             showChat && selectedFriendId
             &&(<ChatWindow
