@@ -1,17 +1,17 @@
 .convesation-title {
+  display: flex;
   height: 10%;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  box-sizing: border-box;
-  font-weight: bold;
-  font-size: 17px;
-  text-align: left;
-  background-color: rgb(255, 250, 250);
-  color: #362C2C;
   padding-top: 4px;
   padding-bottom: 4px;
-  display: flex;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
+  font-size: 17px;
+  font-weight: bold;
+  color: #362C2C;
   align-items: center;
+  text-align: left;
 }
 
 .conversation-title-text {
@@ -22,35 +22,36 @@
 .conversation-div-line {
   width: auto;
   height: 1px;
-  text-align: center;
   background: #362C2C;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  text-align: center;
 }
 
 .message_wrap {
-  background-color: rgb(255, 250, 250);
-  padding: 4px 15px;
+  /* background-color: rgb(255, 250, 250); */
   height: 80%;
+  padding: 4px 15px;
   overflow: auto;
 }
 
 
 .stt-transript {
   width: 100%;
-  border: 1px solid #a2a4a7;
-  text-align: center;
   height: 10%;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.8); /* 투명한 백그라운드 */
+  border: 1px solid #a2a4a7;
+  text-align: center;
   overflow: hidden;
 }
 
 .stt-transcript-text {
   display: block;
   border: none;
-  outline: none;
   font-size: 14px;
   color: #000000;
+  outline: none;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -78,12 +79,12 @@
   
   .msg_content {
     position: relative;
-    margin-top: 5px;
-    border-radius: 5px;
-    padding: 8px;
-    color: #000000;
     width: auto;
     max-width: 80%;
+    margin-top: 5px;
+    padding: 8px;
+    border-radius: 5px;
+    color: #000000;
   }
   
   .text {
@@ -106,10 +107,10 @@
     float: left;
   }
   .message.left .msg_detail .msg_content {
-    background-color: #f0f0f0;
+    left: -5px;
     border-bottom-width: 0;
     border-left-width: 0;
-    left: -5px;
+    background-color: #f0f0f0;
   }
   
   /* End message from other user */
@@ -125,10 +126,10 @@
     float: right;
   }
   .message.right .msg_detail .msg_content {
-    background-color: #c8ffe8;
+    right: -5px;
     border-bottom-width: 0;
     border-left-width: 0;
-    right: -5px;
+    background-color: #c8ffe8;
   }
   
   /* End my messages */

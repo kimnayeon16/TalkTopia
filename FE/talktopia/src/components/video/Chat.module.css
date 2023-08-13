@@ -67,8 +67,6 @@
 .text {
   word-break: break-all;color: #000000;
 }
- 
-
 
 /* Start message from other user */
 .message > .left .msg_detail .msg_info {
@@ -105,48 +103,50 @@
 /* End my messages */
   
 .message-input-container {
+  display: flex;
   position: absolute;
   bottom: 0px;
   width: 100%;
-  backdrop-filter: blur(20px);
-  text-align: center;
-  padding: 10px 0px;
   height: 30px;
+  padding: 0% 3% 5px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-  display: flex;
+  backdrop-filter: blur(20px);
   justify-content: space-evenly;
-
+  text-align: center;
 }
 
 .message-input {
+  flex: 9;
   width: 80%;
   height: 100%;
+  padding-left: 10px;
   border: none;
   outline: none;
-  font-size: 14px;
-  color: #000000; 
   background-color: #cacbe7;
   border-radius: 8px;
+  font-size: 14px;
+  color: #000000; 
 }
  
-
 .sendButton {
-  color: #fff;
-  background-color: #3d42df;
-  border-radius: 8px;
-  border: none;
-  width: 32px;
-  height: 32px;
+  flex: 2;
   display: flex;
+  width: 28px;
+  height: 100%;
+  margin-left: 5px;
+  background-color: #3d42df;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
   justify-content: center;
   align-items: center;
-  
 }
-/* svg {
+
+.sendButton svg {
   width: 20px;
   height: 20px;
-} */
+}
 
 ::-webkit-scrollbar {
   width: 8px;
