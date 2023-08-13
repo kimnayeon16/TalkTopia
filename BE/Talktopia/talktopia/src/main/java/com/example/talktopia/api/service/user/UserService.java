@@ -106,7 +106,8 @@ public class UserService {
 
 		return new UserLoginRes(userIdPwReq.getUserId(), dbSearchUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans(), null, dbSearchUser.getProfileImg().getImgUrl());
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), lan.getLangStt(), lan.getLangTrans(), null,
+			dbSearchUser.getProfileImg().getImgUrl(), dbSearchUser.getUserRole().name());
 
 	}
 
@@ -324,7 +325,8 @@ public class UserService {
 		log.info("소셜 로그인 image: " + joinUser.getProfileImg().getImgUrl());
 		return new UserLoginRes(joinUser.getUserId(), joinUser.getUserName(), accessToken,
 			refreshToken,
-			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add", joinUser.getProfileImg().getImgUrl());
+			JwtProvider.extractClaims(accessToken, secretKey).getExpiration(), sttLang, transLang, "add",
+			joinUser.getProfileImg().getImgUrl(), joinUser.getUserRole().name());
 
 	}
 
