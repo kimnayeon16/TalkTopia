@@ -40,10 +40,11 @@ public class FriendService {
 		User friend = findUser(friendIdPwReq.getPartId());
 
 		// userId로 no 찾기
-		long userNo = findUser(friendIdPwReq.getUserId()).getUserNo();
+		long userNo = user.getUserNo();
+		long friendNo = friend.getUserNo();
 
 		// 중복 체크
-		if (isAlreadyFriend(userNo)) {
+		if (isAlreadyFriend(userNo, friendNo)) {
 			throw new RuntimeException("중복된 친구입니다.");
 		}
 
@@ -95,12 +96,26 @@ public class FriendService {
 	}
 
 	// 중복 찾기
-	public boolean isAlreadyFriend(long userNo) {
-		List<Friend> friends = friendRepository.findByUser_UserNo(userNo);
+	public boolean isAlreadyFriend(long userNo, long friendNo) {
+		// 초대를 보낸 유저의 친구 리스트
+		List<Friend> friends1 = friendRepository.findByUser_UserNo(userNo);
 
-		for (Friend f : friends) {
-			if(f.getUser().getUserNo() == userNo) {
+		// 초대를 받은 유저의 친구 리스트
+		List<Friend> friends2 = friendRepository.findByUser_UserNo(friendNo);
+
+		// 초대 보낸 유저의 친구들 중 초대한 친구가 있으면
+		for (Friend f : friends1) {
+			if(f.getFrFriendNo() == friendNo) {
+				log.info("friendNo1" + f.getFrFriendNo());
 				return true; // 이미 친구
+			}
+		}
+
+		// 초대 받은 유저의 친구들 중 초대한 친구가 있으면
+		for (Friend f: friends2) {
+			if(f.getFrFriendNo() == userNo){
+				log.info("friendNo2" + f.getFrFriendNo());
+				return true;
 			}
 		}
 		return false; // 친구가 아님
