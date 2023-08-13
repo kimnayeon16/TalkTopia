@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../utils';
 
+import Nav from '../../nav/Nav';
+
 function PostForm() {
   const navigate = useNavigate();
 
@@ -31,7 +33,7 @@ function PostForm() {
   const [postContent, setPostContent] = useState('');
 
   const handleSubmit = async e => {
-    e.preventDefault();
+    // e.preventDefault();
 
     if(postTitle.length === 0){
       Swal.fire({
@@ -102,23 +104,40 @@ function PostForm() {
     });
   }
 
+  const onCheckEnter = (e) => {
+    e.preventDefault();
+    if(e.key === 'Enter') {
+      handleSubmit();
+    }
+}
+
+
   return (
     <div className={`${style.background}`}>
+      <Nav/>
       <h2 className={`${style.title}`}>문의하기</h2>
       <form className={`${style.form}`}>
         <p className={`${style.name}`}>제목</p>
-        <input className={`${style.input}`} type="text" placeholder="제목을 입력해주세요." value={postTitle} onChange={e => setPostTitle(e.target.value)} />
+        <input className={`${style.input}`} type="text" placeholder="제목을 입력해주세요." value={postTitle} onKeyPress={onCheckEnter} onChange={e => setPostTitle(e.target.value)} />
         <p className={`${style.name1}`}>문의 내용</p>
         <textarea className={`${style.textarea}`}
           placeholder="문의 내용을 입력해주세요."
           value={postContent}
           onChange={e => setPostContent(e.target.value)}
+          onKeyPress={onCheckEnter}
         />
         <div className={`${style.buttonGroup}`}>
           <button className={`${style.button}`} onClick={cancel}>취소</button>
           <button className={`${style.button}`} onClick={handleSubmit}>등록하기</button>
         </div>
       </form>
+            <img className={`${style.grass1}`} src="/img/grass/grass2.png" alt=""></img>
+            <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>
+            <img className={`${style.fish1}`} src="/img/fish/fish1.png" alt=""></img>
+            <img className={`${style.fish34}`} src="/img/fish/fish34.png" alt=""></img>
+            <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
+            <img className={`${style.bubble2}`} src="/img/bubble/bubble2.png" alt=""></img>
+            <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
     </div>
   );
 }
