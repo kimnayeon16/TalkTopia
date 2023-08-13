@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -56,7 +57,7 @@ public class ReportedUser {
 	@Column(name = "ru_vr_session")
 	private String ruVrSession;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "user_no")
 	private User user;
 
@@ -79,7 +80,7 @@ public class ReportedUser {
 	public void setUserStatus(User user) {
 		this.user = user;
 		if (user != null) {
-			user.setReportedUser(this);
+			user.getReportedUser().add(this);
 		}
 	}
 
