@@ -7,6 +7,7 @@ import { removeCookie } from '../../cookie';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { reduxUserInfo } from "../../store";
+import Nav from '../../nav/Nav';
 
 function MyInfo(){
     const user = useSelector((state) => state.userInfo);
@@ -240,83 +241,90 @@ function MyInfo(){
 
     return(
         <div className={`${style.background}`}>
+            <Nav/>
             <h2 className={`${style.title}`}>내 정보 수정</h2>
-
-            <img style={{ width: '80px', height: '80px', borderRadius: '50%',
-            overflow: 'hidden'}} src={userImgUrl} alt="프로필 이미지"/>
-
-            <form>
-                <label for="file">
-                    <div className={`${style["btn-upload"]}`}>파일 업로드하기</div>
-                </label>
-                <input className={`${style["signup-profileImg-label1"]}`} type="file" name="file" id="file"accept="image/*" onChange={onChangeFiles}/>
-                <button className={`${style["signup-profileImg-label"]}`} onClick={upload}>등록</button>
-            </form>
-            <div className={`${style.together}`}>
-                <div className={`${style.together1}`}>
-                    <p className={`${style.p}`}>아이디&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <input type="text" value={userId1} className={`${style["input-1"]}`} readOnly></input>
+            <div className={`${style.divide}`}>
+                <div className={`${style.profile}`}>
+                    <img style={{ width: '80px', height: '80px', borderRadius: '50%',
+                    overflow: 'hidden'}} src={userImgUrl} alt="프로필 이미지"/>
+                    <form>
+                        <label for="file">
+                            <div className={`${style["btn-upload"]}`}>파일 업로드하기</div>
+                        </label>
+                        <input className={`${style["signup-profileImg-label1"]}`} type="file" name="file" id="file"accept="image/*" onChange={onChangeFiles}/>
+                        <button className={`${style["signup-profileImg-label"]}`} onClick={upload}>등록</button>
+                    </form>
+                    <div className={`${style.together}`}>
+                        <div className={`${style.together1}`}>
+                            <p className={`${style.p}`}>아이디&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                            <input type="text" value={userId1} className={`${style["input-1"]}`} readOnly></input>
+                        </div>
+                    </div>
+                    <div className={`${style.together}`}>
+                    <div className={`${style.together1}`}>
+                        <p className={`${style.p}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <input type="text" value={userEmail} className={`${style["input-1"]}`} readOnly></input>
+                    </div>
                 </div>
             </div>
-            <div className={`${style.together}`}>
-                <div className={`${style.together1}`}>
-                    <p className={`${style.p}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    {/* <p className={`${style.guide}`}>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p> */}
-                    <input type="password" value={userPw} className={`${style.input}`} onChange={onPwHandler} onKeyPress={onCheckEnter}></input>
+            <div className={`${style.profile}`}>
+                <div className={`${style.together}`}>
+                    <div className={`${style.together1}`}>
+                        <p className={`${style.p}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        {/* <p className={`${style.guide}`}>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p> */}
+                        <input type="password" value={userPw} className={`${style.input}`} onChange={onPwHandler} onKeyPress={onCheckEnter}></input>
+                    </div>
+                </div>
+                <div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
+                <div className={`${style.together}`}>
+                    <div className={`${style.together1}`}>
+                        <p className={`${style.p}`}>비밀번호 확인&nbsp;</p>
+                        <input type="password" value={userPwConfirm} className={`${style.input}`} onChange={onPwConfirmHandler} onKeyPress={onCheckEnter}></input>
+                    </div>
+                </div>
+                <div>
+                    <div className={`${style["guide-pass"]} ${userPwCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
+                </div>
+                <div className={`${style.together}`}>
+                    <div className={`${style.together1}`}>
+                        <p className={`${style.p}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <input type="text" value={userName} className={`${style.input}`} onChange={onNameHandler} onKeyPress={onCheckEnter}></input>
+                    </div>
+                </div>
+                <div className={`${style.guide}`}>띄어쓰기 불가능</div>
+           
+                <div className={`${style.together2}`}>
+                    <div className={`${style.together1}`}>
+                    
+                        <p className={`${style.p}`}>사용 언어&nbsp;&nbsp;&nbsp;</p>
+                        <select className={`${style.select}`} value={userLan} onChange={onLanHandler} onKeyPress={onCheckEnter}>
+                            <option value="" disabled>선택하세요</option>
+                            <option value="ko-KR">한국어</option>
+                            <option value="de-DE">독일어</option>
+                            <option value="ru-RU">러시아어</option>
+                            <option value="es-ES">스페인어</option>
+                            <option value="en-US">영어</option>
+                            <option value="it-IT">이탈리아어</option>
+                            <option value="id-ID">인도네시아어</option>
+                            <option value="ja-JP">일본어</option>
+                            <option value="fr-FR">프랑스어</option>
+                            <option value="pt-PT">포르투칼어</option>
+                            <option value="zh-CN">중국어 간체</option>
+                            <option valye="pt-TW">중국어 번체</option>
+                            <option value="hi-IN">힌디어</option>
+                        </select>
+                        
+                    </div>
                 </div>
             </div>
-            <div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
-            <div className={`${style.together}`}>
-                <div className={`${style.together1}`}>
-                    <p className={`${style.p}`}>비밀번호 확인&nbsp;</p>
-                    <input type="password" value={userPwConfirm} className={`${style.input}`} onChange={onPwConfirmHandler} onKeyPress={onCheckEnter}></input>
-                </div>
             </div>
-            <div>
-                <div className={`${style["guide-pass"]} ${userPwCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
-            </div>
-            <div className={`${style.together}`}>
-                <div className={`${style.together1}`}>
-                    <p className={`${style.p}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <input type="text" value={userName} className={`${style.input}`} onChange={onNameHandler} onKeyPress={onCheckEnter}></input>
-                </div>
-            </div>
-            <div className={`${style.guide}`}>띄어쓰기 불가능</div>
-            <div className={`${style.together}`}>
-                <div className={`${style.together1}`}>
-                    <p className={`${style.p}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                    <input type="text" value={userEmail} className={`${style["input-1"]}`} readOnly></input>
-                </div>
-            </div>
-            <div className={`${style.together2}`}>
-                <div className={`${style.together1}`}>
-                <button className={`${style.button1}`} onClick={leave}>탈퇴하기</button>
-                    <p className={`${style.p}`}>사용 언어&nbsp;&nbsp;&nbsp;</p>
-                    <select className={`${style.select}`} value={userLan} onChange={onLanHandler} onKeyPress={onCheckEnter}>
-                        <option value="" disabled>선택하세요</option>
-                        <option value="ko-KR">한국어</option>
-                        <option value="de-DE">독일어</option>
-                        <option value="ru-RU">러시아어</option>
-                        <option value="es-ES">스페인어</option>
-                        <option value="en-US">영어</option>
-                        <option value="it-IT">이탈리아어</option>
-                        <option value="id-ID">인도네시아어</option>
-                        <option value="ja-JP">일본어</option>
-                        <option value="fr-FR">프랑스어</option>
-                        <option value="pt-PT">포르투칼어</option>
-                        <option value="zh-CN">중국어 간체</option>
-                        <option valye="pt-TW">중국어 번체</option>
-                        <option value="hi-IN">힌디어</option>
-                    </select>
-                    <button className={`${style.button}`} onClick={updateMyInfo}>수정하기</button>
-                </div>
-            </div>
+            <button className={`${style.button1}`} onClick={leave}>탈퇴하기</button>
+            <button className={`${style.button}`} onClick={updateMyInfo}>수정하기</button>
             <img className={`${style.turtle1}`} src="/img/fish/turtle.png" alt=""></img>
             <img className={`${style.grass21}`} src="/img/grass/grass2.png" alt=""></img>
             <img className={`${style.grass51}`} src="/img/grass/grass5.png" alt=""></img>
             <img className={`${style.fish41}`} src="/img/fish/fish4.png" alt=""></img>
             <img className={`${style.fish331}`} src="/img/fish/fish33.png" alt=""></img>
-            <img className={`${style.fish341}`} src="/img/fish/fish34.png" alt=""></img>
             <img className={`${style.friend141}`} src="/img/fish/friend14.png" alt=""></img>
             <img className={`${style.bubble11}`} src="/img/bubble/bubble1.png" alt=""></img>
             <img className={`${style.bubble21}`} src="/img/bubble/bubble2.png" alt=""></img>

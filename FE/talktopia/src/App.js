@@ -27,7 +27,9 @@ import Leave from './pages/mypage/Leave.js';
 
 // faq
 import Faq from './pages/faq/Faq.tsx';
-// import Counsel from './pages/faq/Counsel.js';
+import Counsel from './pages/faq/Counsel.js';
+import PostForm from './components/faq/PostForm.js';
+import PostDetail from './components/faq/PostDetail.js';
 
 import Translation from './apis/translation/GoogleTranslator.js';
 import WebSpeechApi from './apis/stt/WebSpeechApi.js';
@@ -101,7 +103,10 @@ function App() {
 
         {/* faq */}
         <Route path="/faq" element={<PrivateRoute element={<Faq/>}/>}></Route>
-        {/* <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}></Route> */}
+        <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}></Route>
+        <Route path="/inquiry" element={<PostForm/>}></Route>
+        <Route path="/post/:postNo" element={<PostDetail />} />
+        
         {/* <Route path="/faq" element={<Faq/>}></Route>
         <Route path="/counsel" element={<Counsel/>}></Route> */}
 

@@ -6,11 +6,11 @@ const FriendList = () => {
 
   const crabClick = () => {
     setIsUp(true);
-    if (isUp === true) {
+    // if (isUp === true) {
       setTimeout(() => {
         setIsUp(false);
-      }, 10000);
-    }
+      }, 9000);
+    // }
   };
 
   return (

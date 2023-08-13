@@ -1,0 +1,92 @@
+.background {
+    background: #bcd8da;
+    background-attachment: fixed;
+    background-size: cover; /* 이미지를 커버할 수 있도록 설정 */
+    height: 100vh; /* 화면 높이에 맞추기 위해 100vh로 설정 */
+  }
+
+.title{
+  font-family: 'EF_jejudoldam';
+  color: #012A4A;
+  padding-top: 30px;
+  margin: auto;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+}
+
+.name{
+  font-family: 'Dovemayo_wild';
+  color: #012A4A;
+  margin-left: -920px;
+  font-size: 24px;
+}
+.name1{
+  font-family: 'Dovemayo_wild';
+  color: #012A4A;
+  margin-left: -880px;
+  font-size: 24px;
+}
+/* .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+  } */
+  
+  .form {
+    font-family: 'Dovemayo_wild';
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input {
+    font-family: 'Dovemayo_wild';
+    margin: auto;
+    width: 1000px;
+    height: 50px;
+    margin-bottom: 30px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    opacity: 0.6;
+  }
+  
+  .textarea {
+    font-family: 'Dovemayo_wild';
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    width: 65%;
+    height: 200px;
+    border: none;
+    resize: none;
+    border-radius: 10px;
+    opacity: 0.6;
+  }
+
+  .buttonGroup{
+    margin-left: 680px;
+  }
+  
+  .button {
+    font-family: 'Dovemayo_wild';
+    background-color: #013A63;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    width: 150px;
+    height: 40px;
+    border-radius: 15px;
+    font-size: 20px;
+    transition: background-color 0.2s;
+    margin: 20px 10px 0 10px;
+    display: inline-block;
+  }
+  
+  .button:hover {
+    background-color:  #23587d;
+  }
+  

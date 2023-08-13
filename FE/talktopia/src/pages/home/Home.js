@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { removeCookie } from '../../cookie';
+import Nav from '../../nav/Nav';
 // import useUnload from '../../utils/useUnload';
 
 function Home(){
@@ -28,24 +29,14 @@ function Home(){
   const [userImg, setUserImg] = useState("");
 
   useEffect(() => {
-    try {
       const userInfoString = localStorage.getItem("UserInfo");
-      if (userInfoString) {
-        const userInfo = JSON.parse(userInfoString);
-        const name = userInfo.userName;
-        const imgurl = userInfo.profileUrl;
-        setUserName(name);
-        setUserImg(imgurl);
-      } else {
-        // 값이 없을 경우 ErrorPage 컴포넌트를 렌더링
-        navigate('/error');
-      }
-    } catch (error) {
-      // localStorage에 문제가 있을 경우 ErrorPage 컴포넌트를 렌더링
-      setUserName("Guest");
-    }
-  }, []);
 
+      const userInfo = JSON.parse(userInfoString);
+      const name = userInfo.userName;
+      const imgurl = userInfo.profileUrl;
+      setUserName(name);
+      setUserImg(imgurl);
+  }, []);
 
 
   // useUnload((e) => {
@@ -54,40 +45,17 @@ function Home(){
   //   removeCookie('refreshToken');
   // });
 
-  const handleUserMouseOver = () => {
-    setUserModalVisible(true);
-  };
-
-  const handleUserMouseOut = () => {
-    setUserModalVisible(false);
-  };
-
-  const handleEarthMouseOver = () => {
-    setEarthMoalVisible(true);
-  }
-
-  const handleEarthMouseOut = () => {
-    setEarthMoalVisible(false);
-  }
-
-  const handleFaqMouseOver = () => {
-    setFaqMoalVisible(true);
-  }
-
-  const handleFaqMouseOut = () => {
-    setFaqMoalVisible(false);
-  }
-
   return(
   <div className={`${style.body}`}>
-    <span className={`${styles.title}`} onClick={()=>{navigate('/home')}}>TalkTopia</span>
+    <Nav/>
+    {/* <span className={`${styles.title}`} onClick={()=>{navigate('/home')}}>TalkTopia</span>
     <img className={`${styles.user}`} src="/img/nav/user.png" alt="" onMouseOver={handleUserMouseOver} onMouseOut={handleUserMouseOut}></img>
     {userModalVisible && <Me handleUserMouseOver={handleUserMouseOver} handleUserMouseOut={handleUserMouseOut}/>}
     <img className={`${styles.dding}`} src="/img/nav/dding.png" alt=""></img>
     <img className={`${styles.earth}`} src="/img/nav/earth.png" alt="" onMouseOver={handleEarthMouseOver} onMouseOut={handleEarthMouseOut}></img>
     {earthModalVisible && <Earth handleEarthMouseOver={handleEarthMouseOver} handleEarthMouseOut={handleEarthMouseOut}/>}
     <img className={`${styles.faq}`} src="/img/nav/faq1.png" alt="" onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}></img>
-    {faqModalVisible && <Faq handleFaqMouseOver={handleFaqMouseOver} handleFaqMouseOut={handleFaqMouseOut}/>}
+    {faqModalVisible && <Faq handleFaqMouseOver={handleFaqMouseOver} handleFaqMouseOut={handleFaqMouseOut}/>} */}
     <FishGroup />
     <PenguinGroup />
     <BearGroup />
@@ -111,16 +79,6 @@ function Me(props){
   const user = useSelector((state) => state.userInfo);
   const [userName, setUserName] = useState("");
   const [userImg, setUserImg] = useState("");
-
-  
-  // useEffect(()=>{
-  //   const userInfoString = localStorage.getItem("UserInfo");
-  //   const userInfo = JSON.parse(userInfoString);
-  //   const name = userInfo.userName;
-  //   const imgurl = userInfo.profileUrl;
-  //   setUserName(name);
-  //   setUserImg(imgurl);
-  // },[])
 
   const logout = () => {
     axios.get(`${BACKEND_URL}/api/v1/user/logout/${user.userId}`, {
