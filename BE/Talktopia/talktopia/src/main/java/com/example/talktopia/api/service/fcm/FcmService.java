@@ -137,7 +137,7 @@ public class FcmService {
 		User user = userRepository.findByUserId(fcmSendFriendMessage.getFriendId()).orElseThrow(()-> new Exception("유저가없엉"));
 		String title = "친구 요청 알림이 왔습니다.";
 		String body = fcmSendFriendMessage.getUserId()+" 님이 친구추가 요청을 보냈습니다.";
-		if(user.getToken().getTFcm() !=null){
+		if (user.getToken() != null && user.getToken().getTFcm() !=null){
 
 			Map<String, String> data = new HashMap<>();
 			data.put("userId",fcmSendFriendMessage.getUserId());
@@ -167,7 +167,7 @@ public class FcmService {
 			return new Message("알림을 전송했습니다");
 		}
 
-		return new Message("해당 유저가 존재하지않습니다.");
+		return new Message("해당 유저가 로그인중이 아닙니다.");
 
 	}
 
