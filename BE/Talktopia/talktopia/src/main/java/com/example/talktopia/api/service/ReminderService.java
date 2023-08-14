@@ -30,7 +30,7 @@ public class ReminderService {
 		// private long rmNo;
 		// private String rmContent;
 		// private String rmType;
-		userRepository.findByUserId(userId).orElseThrow(()->new Exception("유저를 못찾아"));
+		userRepository.findByUserId(userId).orElseThrow(() -> new Exception("유저를 못찾아"));
 
 		List<Reminder> reminder = reminderRepository.findByUser_UserId(userId);
 		if (reminder.isEmpty()) {
@@ -38,14 +38,14 @@ public class ReminderService {
 		}
 		List<ReminderRes> reminderResList = new ArrayList<>();
 		for (Reminder rem : reminder) {
-			if(!rem.isRmRead()) {
-				ReminderRes reminderRes = ReminderRes.builder()
-					.rmContent(rem.getRmContent())
-					.rmNo(rem.getRmNo())
-					.rmType(rem.getRmType())
-					.build();
-				reminderResList.add(reminderRes);
-			}
+			ReminderRes reminderRes = ReminderRes.builder()
+				.rmContent(rem.getRmContent())
+				.rmNo(rem.getRmNo())
+				.rmType(rem.getRmType())
+				.rmRead(rem.isRmRead())
+				.build();
+			reminderResList.add(reminderRes);
+
 		}
 		Collections.reverse(reminderResList);
 		return ResponseEntity.ok(reminderResList);
@@ -57,5 +57,18 @@ public class ReminderService {
 		reminder.setRmRead(true);
 		reminderRepository.save(reminder);
 		return new Message("메세지를 확인하였습니다.");
+	}
+
+	public String readRem(long rmNo) {
+		Reminder reminder = reminderRepository.findByRmNo(rmNo);
+
+		if(reminder == null) {
+			throw new RuntimeException("해당 알림이 없습니다.");
+		}
+
+		reminder.setRmRead(true);
+		reminderRepository.save(reminder);
+
+		return reminder.getUser().getUserId();
 	}
 }

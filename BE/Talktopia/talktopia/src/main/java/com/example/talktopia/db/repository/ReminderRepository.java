@@ -10,4 +10,6 @@ import com.example.talktopia.db.entity.user.Reminder;
 @Repository
 public interface ReminderRepository extends JpaRepository<Reminder,Long> {
 	List<Reminder> findByUser_UserId(String userId);
+
+	Reminder findByRmNo(long rmNo);
 }
