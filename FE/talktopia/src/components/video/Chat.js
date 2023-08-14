@@ -13,8 +13,7 @@ function Chat(props) {
     const [messageList, setMessageList] = useState([]);
     const [message, setMessage] = useState('');
     const chatScroll = useRef(null);
-    console.log(messageList)
-    console.log(props.mainStreamManager.session.connection.connectionId)
+
     useEffect(() => {
         // Receiver of the message (usually before calling 'session.connect')
         props.mainStreamManager.stream.session.on('signal:chat', async (event) => {
@@ -22,7 +21,6 @@ function Chat(props) {
             let translatedMessage;
             if (props.myUserId !== data.sendUserId ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
                 translatedMessage = await translationHandler(data.message, data.sourceLang, user.transLang);
-                console.log(translatedMessage, '이거 번역 성공 되서 데이터 저장 되나?')
             } else {
                 translatedMessage = data.message;
             }

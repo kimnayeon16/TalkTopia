@@ -25,13 +25,12 @@ function JoinRoom() {
     const location = useLocation();
 
     const [localUser, setLocalUser] = useState(undefined);  // subscribers 요소에 들어갈 거임. 그러면서 publisher 역할도 함.
-    console.log(localUser)
+    
+    console.log('현재 localUser 정보',localUser)
     // session, state 선언
     const [session, setSession] = useState(undefined)
     const [subscribers, setSubscribers] = useState([]);
     const [mySessionId, setMySessionId] = useState(undefined);  
-    // console.log(mySessionId)
-    // console.log(location.state.mySessionId) 
 
     // 토큰, 방 타입 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
@@ -97,16 +96,14 @@ function JoinRoom() {
                 const receivedData = JSON.parse(message.body)
                 if (typeof receivedData === 'string') {
                     console.log('이건 게스트가 나갈때 응답')
-                } else if (typeof receivedData === 'object') {
-                    console.log('웹소켓 데이터', receivedData[0].roomRole)
-                    // setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
-                    // userDataRef.current.roomRole = receivedData.roomRole
+                } else if (typeof receivedData === 'object') {  // host 나갔을 때 오는 응답
+                    console.log('호스트나갔을 때 웹소켓 응답 데이터', receivedData[0].roomRole)
                     
-                    console.log('이건 호스트가 나갈때의 응답')
+                    console.log('받은 응답이 호스트인경우', receivedData[0].roomRole)
+                    console.log('받은 응답이 호스티인 경우, userDataRef 정보', userDataRef.current)
+                    setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
+                    userDataRef.current.roomRole = receivedData[0].roomRole
                     if (receivedData[0].roomRole === 'HOST') {
-                        console.log('내가 호스트인경우', receivedData[0].roomRole)
-                        setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
-                        userDataRef.current.roomRole = receivedData.roomRole
 
                         sessionRef.current.signal({
                             data: JSON.stringify(user.userId),  // Any string (optional)
@@ -132,11 +129,12 @@ function JoinRoom() {
         if (sessionRef.current !== undefined) {
             sessionRef.current.on('signal:roomRole', async (event) => {
                 const data = JSON.parse(event.data);
-                console.log('호스트 유저 ID', data)
+                console.log('전달받은 호스트 유저 ID', data)
                 if (user.userId !== data ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
                     setLocalUser((prevLocalUser)=>{
                         const updatedLocalUser = prevLocalUser.map((userObj) => {
                             if (userObj.userId === data) {
+                                console.log('찾았다 요놈', data, userObj.userId)
                                 return { ...userObj, roomRole: 'HOST'};
                             }
                             return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
@@ -197,6 +195,7 @@ function JoinRoom() {
             vrSession: userDataRef.current.mySessionId,
             roomRole: userDataRef.current.roomRole
         };
+        console.log('세션 종료시 전달하는 데이터', exitRequest)
         stomp.send("/app/api/v1/room/exit/"+userDataRef.current.mySessionId, {}, JSON.stringify(exitRequest));
     };
 
