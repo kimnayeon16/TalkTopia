@@ -105,7 +105,7 @@ const FriendList = () => {
             <button onClick={() => {setIsListVisible(false); setShowChat(false) }} className={`${friendListStyle["modal-close-btn"]}`}>X</button>
             
             <div className={`${friendListStyle["friend-list"]}`}>
-              {
+              { friendList && 
                 friendList.map((friend, i) => (
                   <div key={i} className={`${friendListStyle["friend-section"]}`}>
                     <div className={`${friendListStyle["friend-section-profile"]}`}>
