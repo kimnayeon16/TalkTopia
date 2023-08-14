@@ -27,7 +27,7 @@ function Home(){
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userInfo);
-  console.log(user, '0000000000000000000000000000000000')
+  console.log(user, '0000000000000000000000000000000000');
   let dispatch = useDispatch();
 
   const [userName, setUserName] = useState("");
@@ -71,12 +71,16 @@ function Home(){
   useEffect(() => {
     // 로컬 스토리지에서 저장된 사용자 정보 불러오기
     const storedUserInfo = localStorage.getItem('UserInfo');
+    console.log(storedUserInfo, "로컬에서 가져온것")
     if (storedUserInfo) {
       const userInfo = JSON.parse(storedUserInfo);
       // Redux 상태를 업데이트하는 액션 디스패치
       dispatch(reduxUserInfo(userInfo));
+      console.log(storedUserInfo, "로컬")
     }
-  }, [dispatch]);
+
+    console.log(user, '11111111111111111111111');
+  }, [user]);
 
 
   // useUnload((e) => {

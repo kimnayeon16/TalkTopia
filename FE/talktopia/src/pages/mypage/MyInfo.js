@@ -39,9 +39,17 @@ function MyInfo(){
         const userInfoString = localStorage.getItem("UserInfo");
         const userInfo = JSON.parse(userInfoString);
 
+        console.log(userInfo);
+
         setUserAccessToken(userInfo.accessToken);
 
-        axios.get(`${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`, {
+        const api = `${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`;
+
+        console.log(`${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`)
+
+        console.log(userInfo.userId, "아이디")
+        console.log(userInfo.accessToken)
+        axios.get(api, {
             headers : {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${userInfo.accessToken}`
@@ -57,7 +65,7 @@ function MyInfo(){
             console.log(response);
         })
          .catch((error)=>{
-             console.log("못 불러와써유", error);
+             console.log("못 불러옴", error);
          })
     },[]);
     
