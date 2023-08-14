@@ -104,9 +104,9 @@ function JoinRoom() {
                     console.log('이건 게스트가 나갈때 응답')
                 } else if (typeof receivedData === 'object') {  // host 나갔을 때 오는 응답
                     console.log('호스트나갔을 때 웹소켓 응답 데이터', receivedData)
-                    console.log(receivedData[0].userId)
+                    console.log(receivedData.userId)
                     console.log('이거는 localUser', localUser)
-                    setHostId(receivedData[0].userId)
+                    setHostId(receivedData.userId)
                     // changeLocalUser(receivedData[0].userId)
                     // setLocalUser((prevLocalUser)=>{
                     //     const updatedLocalUser = prevLocalUser.map((userObj) => {
