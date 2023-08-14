@@ -69,11 +69,8 @@ public class WebSocketHandler {
 		if(roomExitStatus.equals(EXIT_SUCCESS)) {
 			//이거는 방장일때 권한을 넘겨줘야해
 			if (isHost(vRoomExitReq.getUserId(),vRoomExitReq)) {
-				chooseNewHost(vrSession);
-				List<Participants> participants = participantsRepository.findByVRoom_VrSession(vrSession);
-				List<ParticipantDTO> participantDTOs = participants.stream()
-					.map(participant -> new ParticipantDTO(participant.getUser().getUserId(), participant.getRoomRole()))
-					.collect(Collectors.toList());
+				Participants participants = chooseNewHost(vrSession);
+				ParticipantDTO participantDTOs = new ParticipantDTO(participants.getUser().getUserId(),participants.getRoomRole());
 				messagingTemplate.convertAndSend("/topic/room/" + vrSession, participantDTOs);
 			}
 			else{
@@ -85,7 +82,7 @@ public class WebSocketHandler {
 		}
 	}
 
-	private void chooseNewHost(String vrSession) throws Exception {
+	private Participants chooseNewHost(String vrSession) throws Exception {
 		List<Participants> participantsOptional = participantsRepository.findByVRoom_VrSession(vrSession);
 		if (participantsOptional.isEmpty()) {
 			throw new Exception("방이 터졌습니다");
@@ -93,6 +90,7 @@ public class WebSocketHandler {
 		Participants participant = participantsOptional.get(0);
 		participant.setRoomRole(RoomRole.HOST);
 		participantsRepository.save(participant);
+		return participant;
 	}
 
 	private boolean isHost(String userId,VRoomExitReq vRoomExitReq) throws Exception {
