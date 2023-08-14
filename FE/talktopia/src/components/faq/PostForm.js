@@ -110,12 +110,12 @@ function PostForm() {
     });
   }
 
-  const onCheckEnter = (e) => {
-    // e.preventDefault();
-    if(e.key === 'Enter') {
-      handleSubmit();
-    }
-}
+//   const onCheckEnter = (e) => {
+//     e.preventDefault();
+//     if(e.key === 'Enter') {
+//       handleSubmit();
+//     }
+// }
 
 
   return (
@@ -130,7 +130,6 @@ function PostForm() {
           placeholder="문의 내용을 입력해주세요."
           value={postContent}
           onChange={e => setPostContent(e.target.value)}
-          onKeyPress={onCheckEnter}
         />
         <div className={`${style.buttonGroup}`}>
           <button className={`${style.button}`} onClick={cancel}>취소</button>
