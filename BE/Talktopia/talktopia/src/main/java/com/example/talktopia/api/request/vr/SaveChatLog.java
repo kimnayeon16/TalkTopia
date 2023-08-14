@@ -1,4 +1,4 @@
-package com.example.talktopia.api.request;
+package com.example.talktopia.api.request.vr;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class SaveChatLog {
 
-	private String vrSession;
 	private String sender;
 	private String message;
 
