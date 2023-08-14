@@ -168,12 +168,17 @@
   }
   
   .notification-chat-invite {
-    background-color: #ffcccc;
+    background-color: #f6fd95;
   }
   
   .notification-friend-request {
     background-color: #ccffcc;
   }
+
+  .notification-fail-request {
+    background-color: #ffcccc;
+  }
+
   
 
 

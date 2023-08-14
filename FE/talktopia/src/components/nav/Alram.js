@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from "../../utils";
+import NotificationDetailModal from "../alarm/NotificationDetail"; // 새로운 모달 컴포넌트 추가
 
 // import addFriendIcon from "../../../public/img/dding/addFriendIcon.png"
 // import inviteRoomIcon from "../../../public/img/dding/inviteRoomIcon.png"
@@ -9,9 +10,11 @@ import { BACKEND_URL } from "../../utils";
 import style from './Nav.module.css';
 
 function Alram(){
+
     const user = useSelector((state) => state.userInfo);
     const [notifications, setNotifications] = useState([]);
     const [ddingModalVisible, setDdingModalVisible] = useState(false);
+    const [selectedNotification, setSelectedNotification] = useState(null);
 
     useEffect(() => {
         if (ddingModalVisible) {
@@ -40,13 +43,16 @@ function Alram(){
 
     // 유형에 따른 css class명 반환
     const getNotificationClass = (type) => {
-        if (type === "화상채팅방 초대") return style["notification-chat-invite"];
-        if (type === "친구 추가 요청") return style["notification-friend-request"];
+        if (type === "Room Request") return style["notification-chat-invite"];
+        if (type === "Friend Request") return style["notification-friend-request"];
+        if (type === "Fail Request") return style["notification-fail-request"];
         return "";
     };
     const getNotificationIcon = (type) => {
-        if (type === "화상채팅방 초대") return "img/dding/inviteRoomIcon.png"
-        if (type === "친구 추가 요청") return "img/dding/addFriendIcon.png"
+        if (type === "Room Request") return "img/dding/inviteRoomIcon.png"
+        if (type === "Friend Request") return "img/dding/addFriendIcon.png"
+        if (type === "Fail Request") return "img/dding/failRequestIcon.png"
+        if (type === "Done.") return "img/dding/doneRequestIcon.png"
         return null;
     };
 
@@ -57,9 +63,15 @@ function Alram(){
       const handleDdingMouseOut = () => {
         setDdingModalVisible(false);
       };
+        //모달창으로 가는 로직
+      const handleNotificationClick = (notification,e) => {
+        e.stopPropagation();
+        setSelectedNotification(notification.rmNo);
+        setDdingModalVisible(false);
 
-
+    };
     return(
+        <> 
         <div className={`${style["dding-space"]}`} onMouseOver={handleDdingMouseOver} onMouseOut={handleDdingMouseOut}>
             <img className={`${style.dding}`} src="/img/nav/dding.png" alt=""></img>
                 {
@@ -76,17 +88,23 @@ function Alram(){
                         ) : (
                             <>
                                 {notifications.map((notification, index) => (
-                                <div key={index} className={`${style["notification-item"]} ${getNotificationClass(notification.rmType)}`}>
+                               <div
+                                    key={index}
+                                    onClick={(e) => handleNotificationClick(notification,e)} // 클릭 이벤트 핸들러 추가
+                                    className={`${style["notification-item"]} ${getNotificationClass(notification.rmType)}`}
+                                >
                                     <img src={getNotificationIcon(notification.rmType)} alt="notification icon" />
                                     {notification.rmContent}
                                 </div>
                                 ))}
                             </>
                         )}
-
                   </div>
                 )}
         </div>
+                      {selectedNotification && (
+            <NotificationDetailModal rmNo={selectedNotification} closeModal={() => setSelectedNotification(null)} />
+             )}  </>
     )
 }
 
