@@ -120,26 +120,6 @@ function JoinRoom() {
             })
         })
 
-        // userRole 역할
-        // if (sessionRef.current !== undefined) {
-            // sessionRef.current.on('signal:roomRole', async (event) => {
-            //     const data = JSON.parse(event.data);
-            //     console.log('호스트 유저 ID', data)
-            //     if (user.userId !== data ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
-            //         setLocalUser((prevLocalUser)=>{
-            //             const updatedLocalUser = prevLocalUser.map((userObj) => {
-            //                 if (userObj.userId === data) {
-            //                   return { ...userObj, roomRole: 'HOST'};
-            //                 }
-            //                 return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
-            //             })
-            //             console.log('유저 정보를 업데이트하였습니다.');
-            //             return updatedLocalUser;
-            //         })
-            //     }
-            // });
-        // }
-
         // 주제 목록 불러오기
         getTopicList();
 
@@ -147,6 +127,27 @@ function JoinRoom() {
         // 윈도우 객체에 화면 종료 이벤트 추가
         window.addEventListener('beforeunload', onBeforeUnload); 
         joinSession();  // 세션 입장
+
+        // userRole 역할
+        if (sessionRef.current !== undefined) {
+            sessionRef.current.on('signal:roomRole', async (event) => {
+                const data = JSON.parse(event.data);
+                console.log('호스트 유저 ID', data)
+                if (user.userId !== data ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
+                    setLocalUser((prevLocalUser)=>{
+                        const updatedLocalUser = prevLocalUser.map((userObj) => {
+                            if (userObj.userId === data) {
+                                return { ...userObj, roomRole: 'HOST'};
+                            }
+                            return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
+                        })
+                        console.log('유저 정보를 업데이트하였습니다.');
+                        return updatedLocalUser;
+                    })
+                }
+            });
+        }
+
 
         return () => {
             // 윈도우 객체에 화면 종료 이벤트 제거
@@ -235,32 +236,10 @@ function JoinRoom() {
             // console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.");        
         });
 
-        // userRole 역할
-        mySession.on('signal:roomRole', async (event) => {
-            const data = JSON.parse(event.data);
-            console.log('호스트 유저 ID', data)
-            if (user.userId !== data ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
-                setLocalUser((prevLocalUser)=>{
-                    const updatedLocalUser = prevLocalUser.map((userObj) => {
-                        if (userObj.userId === data) {
-                          return { ...userObj, roomRole: 'HOST'};
-                        }
-                        return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
-                    })
-                    console.log('유저 정보를 업데이트하였습니다.');
-                    return updatedLocalUser;
-                })
-            }
-        });
-
         // 서버 측에서 예기치 않은 비동기 오류가 발생할 때 Session 개체에 의해 트리거 되는 이벤트
         mySession.on('exception', (exception) => {
             console.warn(exception);
         });
-
-        
-
-
 
         // 세션 갱신
         setOV(newOV);
