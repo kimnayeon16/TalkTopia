@@ -4,6 +4,7 @@ import axios from 'axios';
 import OpenViduVideoComponent from './OvVideo';
 import { FaUserPlus } from "react-icons/fa";
 import { FaUserTimes } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 import style from './UserVideoComponent.module.css'
 import { BACKEND_URL } from '../../utils';
@@ -29,9 +30,29 @@ function UserVideoComponent (props) {
         await axios
         .post(`${BACKEND_URL}/api/v1/fcm/sendFriendMessage`, requestBodyJSON, {headers})
         .then((response) => {
+            Swal.fire({
+                icon: "success",
+                // title: "만나서 반가워요!",
+                text: response.data.message,
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 1000,
+                timerProgressBar: true,
+              })
+
+
             console.log(response.data)
         })
         .catch((error) => {
+            Swal.fire({
+                icon: "success",
+                title: "만나서 반가워요!",
+                text: error,
+                confirmButtonText: "확인",
+                confirmButtonColor: '#90dbf4',
+                timer: 1000,
+                timerProgressBar: true,
+              })
             console.log("에러 발생", error);
         })
     }

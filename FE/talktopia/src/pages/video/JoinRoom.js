@@ -25,7 +25,7 @@ function JoinRoom() {
     const location = useLocation();
 
     const [localUser, setLocalUser] = useState(undefined);  // subscribers 요소에 들어갈 거임. 그러면서 publisher 역할도 함.
-    // console.log(localUser)
+    console.log(localUser)
     // session, state 선언
     const [session, setSession] = useState(undefined)
     const [subscribers, setSubscribers] = useState([]);
@@ -39,6 +39,7 @@ function JoinRoom() {
 
     // Layout 및 참여자 수
     const [participantCount, setParticipantCount] = useState(1)
+    const participantCountRef = useRef(1)
     // console.log(participantCount)
     const layoutPlan = {
         1: style.oneParticipant,
@@ -98,14 +99,45 @@ function JoinRoom() {
                     console.log('이건 게스트가 나갈때 응답')
                 } else if (typeof receivedData === 'object') {
                     console.log('웹소켓 데이터', receivedData[0].roomRole)
-                    setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
-                    userDataRef.current.roomRole = receivedData.roomRole
+                    // setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
+                    // userDataRef.current.roomRole = receivedData.roomRole
                     
                     console.log('이건 호스트가 나갈때의 응답')
+                    if (receivedData[0].roomRole === 'HOST') {
+                        setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
+                        userDataRef.current.roomRole = receivedData.roomRole
+
+                        sessionRef.current.signal({
+                            data: JSON.stringify(user.userId),  // Any string (optional)
+                            to: [],                             // Array of Connection objects (optional. Broadcast to everyone if empty)
+                            type: 'roomRole',                   // The type of message (optional)
+                        })
+                    }
+
                 }
                 console.log("JSON.parse(message.body)", JSON.parse(message.body));
             })
         })
+
+        // userRole 역할
+        if (sessionRef.current !== undefined) {
+            sessionRef.current.on('signal:roomRole', async (event) => {
+                const data = JSON.parse(event.data);
+                console.log('호스트 유저 ID', data)
+                if (user.userId !== data ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
+                    setLocalUser((prevLocalUser)=>{
+                        const updatedLocalUser = prevLocalUser.map((userObj) => {
+                            if (userObj.userId === data) {
+                              return { ...userObj, roomRole: 'HOST'};
+                            }
+                            return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
+                        })
+                        console.log('유저 정보를 업데이트하였습니다.');
+                        return updatedLocalUser;
+                    })
+                }
+            });
+        }
 
         // 주제 목록 불러오기
         getTopicList();
@@ -135,6 +167,10 @@ function JoinRoom() {
         if (sessionRef.current) {
             sessionRef.current.disconnect();
             await leaveSessionHandler();
+        }
+
+        if (participantCountRef.current === 1) {
+            await sendLogToServer();
         }
 
         // session, state 초기화
@@ -187,12 +223,14 @@ function JoinRoom() {
             setSubscribers((prev) => [...prev, newUser]);   // 새 구독자에 대한 상태 업데이트
             console.log(newUser.userId, "님이 접속했습니다.");
             setParticipantCount((prev) => (prev + 1))       // 참여자 수 증가
+            participantCountRef.current += 1
         });
 
         // Session 개체에서 제거된 관련 subsrciber를 subsribers 배열에서 제거
         mySession.on('streamDestroyed', (event) => {
             setSubscribers((preSubscribers) => preSubscribers.filter((subscriber) => subscriber.streamManager !== event.stream.streamManager));
             setParticipantCount((prev) => (prev - 1))       // 참여자 수 감소
+            participantCountRef.current -= 1
             // console.log(JSON.parse(event.stream.connection.data).clientData, "님이 접속을 종료했습니다.");
         });
 
@@ -354,6 +392,71 @@ function JoinRoom() {
         setIsTopic(!isTopic)
     }
 
+    // 세션 종료시 대화로그 및 채팅 저장
+    // const [chatLog, setChatLog] = useState([])
+    // const [conversationLog, setConversationLog] = useState([])
+    const chatLogRef = useRef([])
+    const conversationLogRef = useRef([])
+
+    const chatLogHandler = (sender, message) => {
+        console.log('chatLog message: ', message)
+
+        let newChatLog = {
+            sender: sender,
+            message: message
+        }
+        // setChatLog((prev)=>([...prev, newChatLog]))
+        chatLogRef.current.push(newChatLog)
+    }
+
+    const conversationLogHandler = (sender, message) => {
+        console.log('conversationLog message: ', message)
+        let newChatLog = {
+            sender: sender,
+            message: message
+        }
+        // setConversationLog((prev)=>([...prev, newChatLog]))
+        conversationLogRef.current.push(newChatLog)
+
+    }
+
+    const sendLogToServer = async () => {
+        let emptyData = {
+            sender: '',
+            message: ''
+        }
+        if (chatLogRef.current == []) {
+            chatLogRef.current.push(emptyData)
+        }
+        if (conversationLogRef.current == []) {
+            conversationLogRef.current.push(emptyData)
+        }
+        console.log(chatLogRef.current)
+        console.log(conversationLogRef.current)
+
+        const headers = {
+            'Content-Type' : 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+        }
+        
+        const requestBody = {
+            vrSession: userDataRef.current.mySessionId,
+            conversationLog: conversationLogRef.current,
+            chatLog: chatLogRef.current
+        };
+        console.log('레디스로 보내는 데이터 정보', requestBody)
+        const requestBodyJSON = JSON.stringify(requestBody);
+
+        await axios
+        .post(`${BACKEND_URL}/api/v1/saveChatLog/saveLog`, requestBodyJSON, {headers})   // 여기부터 다시 수정해야함.
+        .then((response) => {
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.log("에러 발생", error);
+        })
+    }
+
 
     return (
         <div>
@@ -414,12 +517,16 @@ function JoinRoom() {
                                     isAudioActive={ localUser.isAudioActive }
                                     myUserId={ localUser.userId }
                                     mainStreamManager={ localUser.streamManager }
+                                    conversationLogHandler={ conversationLogHandler }
+                                    vrSession={ userDataRef.current.mySessionId }
                                 />
                             </div>   
                             <div className={style['chat-container']}>
                                 <Chat
                                     myUserId={ localUser.userId }
                                     mainStreamManager={ localUser.streamManager }
+                                    chatLogHandler={ chatLogHandler }
+                                    vrSession={ userDataRef.current.mySessionId }
                                 />
                             </div>
                         </div>
