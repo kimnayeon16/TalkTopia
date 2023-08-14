@@ -2,7 +2,6 @@ package com.example.talktopia.api.service.vr;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -14,7 +13,8 @@ import org.springframework.stereotype.Service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.talktopia.api.request.SaveChatLog;
+import com.example.talktopia.api.request.vr.ChatLogsRequest;
+import com.example.talktopia.api.request.vr.SaveChatLog;
 import com.example.talktopia.api.response.vr.SaveVRoomChatLogRes;
 import com.example.talktopia.common.message.Message;
 import com.example.talktopia.db.entity.vr.SaveVRoom;
@@ -38,11 +38,17 @@ public class SaveVRoomChatService {
 	private final SaveVRoomRepository saveVRoomRepository;
 
 	// 채팅 로그 파일로 저장
-	public Message saveLog(List<SaveChatLog> saveChatLogs) {
-		String fileName = saveChatLogs.get(0).getVrSession() + ".txt";
+	public Message saveLog(ChatLogsRequest chatLogsRequest) {
+		String fileName = chatLogsRequest.getVrSession() + ".txt";
+
 		try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8")) {
-			for (SaveChatLog log : saveChatLogs) {
-				writer.write("Sender: " + log.getSender() + ", Message: " + log.getMessage() + "\n");
+			// Write conversationLog
+			for (SaveChatLog log : chatLogsRequest.getConversationLog()) {
+				writer.write("[ConversationLog] Sender: " + log.getSender() + ", Message: " + log.getMessage() + "\n");
+			}
+			// Write chatLog
+			for (SaveChatLog log : chatLogsRequest.getChatLog()) {
+				writer.write("[ChatLog] Sender: " + log.getSender() + ", Message: " + log.getMessage() + "\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -57,14 +63,14 @@ public class SaveVRoomChatService {
 			putObjectRequest.setMetadata(metadata);
 			amazonS3Client.putObject(putObjectRequest);
 
-			// 로컬 파일 삭제
+			// Delete local file
 			file.delete();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		String logFileUrl = amazonS3Client.getUrl(bucket, fileName).toString();
-		SaveVRoom saveVRoom = saveVRoomRepository.findBySvrSession(saveChatLogs.get(0).getVrSession());
+		SaveVRoom saveVRoom = saveVRoomRepository.findBySvrSession(chatLogsRequest.getVrSession());
 		log.info("saveVRoom " + saveVRoom);
 		SaveVRoomChatLog saveVRoomChatLog = SaveVRoomChatLog.builder()
 			.vrChatLogFileUrl(logFileUrl)

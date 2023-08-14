@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.talktopia.api.request.SaveChatLog;
+import com.example.talktopia.api.request.vr.ChatLogsRequest;
+import com.example.talktopia.api.request.vr.SaveChatLog;
 import com.example.talktopia.api.service.vr.SaveVRoomChatService;
 import com.example.talktopia.common.message.Message;
 
@@ -24,7 +25,8 @@ public class SaveVRoomChatController {
 	private final SaveVRoomChatService saveVRoomChatService;
 
 	@PostMapping("/saveLog")
-	public ResponseEntity<Message> saveLogAndCreateFile(@RequestBody List<SaveChatLog> saveChatLogs) {
-		return ResponseEntity.ok().body(saveVRoomChatService.saveLog(saveChatLogs));
+	public ResponseEntity<Message> saveLog(@RequestBody ChatLogsRequest chatLogsRequest) {
+
+		return ResponseEntity.ok(saveVRoomChatService.saveLog(chatLogsRequest));
 	}
 }
