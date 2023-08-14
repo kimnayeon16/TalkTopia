@@ -42,18 +42,22 @@ public class Reminder {
 	@Column(name = "rm_host")
 	private String rmHost;
 
+	@Column(name = "rm_guest")
+	private String rmGuest;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_no")
 	private User user;
 
 	@Builder
-	public Reminder(long rmNo, boolean rmRead, String rmContent, String rmType, String rmVrSession,String rmHost,User user) {
+	public Reminder(long rmNo, boolean rmRead, String rmContent, String rmType, String rmVrSession,String rmHost,User user,String rmGuest) {
 		this.rmNo = rmNo;
 		this.rmRead = rmRead;
 		this.rmContent = rmContent;
 		this.rmType = rmType;
 		this.rmVrSession=rmVrSession;
 		this.rmHost=rmHost;
+		this.rmGuest=rmGuest;
 		setReminder(user);
 	}
 

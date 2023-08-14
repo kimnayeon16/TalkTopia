@@ -71,13 +71,14 @@ public class FcmService {
 				User user = userRepository.findByUserId(fcmSendVroomMessage.getFriendId().get(i))
 					.orElseThrow(() -> new Exception("유저가없엉"));
 				if(!userStatusService.getUserStatus(user.getUserId()).equals("ONLINE")){
-					String body = fcmSendVroomMessage.getUserId()+" You invited, but the user was on another business.";
+					String body = fcmSendVroomMessage.getUserId()+" You invited, but the customer was on another business.";
 					Reminder reminder = Reminder.builder()
 						.rmContent(body)
 						.rmType("Room Request")
 						.user(user)
 						.rmVrSession(fcmSendVroomMessage.getVrSession())
 						.rmHost(hostUser.getUserId())
+						.rmGuest(user.getUserId())
 						.rmRead(false)
 						.build();
 					reminderRepository.save(reminder);
@@ -109,6 +110,7 @@ public class FcmService {
 						.rmContent(body)
 						.rmType("Room Request")
 						.user(user)
+						.rmGuest(user.getUserId())
 						.rmVrSession(fcmSendVroomMessage.getVrSession())
 						.rmHost(hostUser.getUserId())
 						.rmRead(false)
@@ -172,6 +174,7 @@ public class FcmService {
 				.rmType("Friend Request")
 				.user(user)
 				.rmVrSession("NONE")
+				.rmGuest(user.getUserId())
 				.rmHost(hostUser.getUserId())
 				.rmRead(false)
 				.build();
@@ -202,8 +205,9 @@ public class FcmService {
 			firebaseMessaging.send(message);
 			Reminder reminder = Reminder.builder()
 				.rmContent(body)
-				.rmType("Fail Request")
+				.rmType("a rejection message")
 				.rmVrSession("NONE")
+				.rmGuest(user.getUserId())
 				.rmHost(hostUser.getUserId())
 				.user(user)
 				.rmRead(false)

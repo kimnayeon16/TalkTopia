@@ -15,11 +15,12 @@ public class ReminderBodyRes {
 	String rmType;
 	String rmVrSession;
 	String rmHost;
+	String rmGuest;
 	long receiverNo;
 
 	@Builder
 	public ReminderBodyRes(long rmNo, boolean rmRead, String rmContent, String rmType, String rmVrSession,
-		String rmHost,
+		String rmHost,String rmGuest,
 		long receiverNo) {
 		this.rmNo = rmNo;
 		this.rmRead = rmRead;
@@ -27,6 +28,7 @@ public class ReminderBodyRes {
 		this.rmType = rmType;
 		this.rmVrSession = rmVrSession;
 		this.rmHost = rmHost;
+		this.rmGuest=rmGuest;
 		this.receiverNo = receiverNo;
 	}
 }
