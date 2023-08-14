@@ -29,7 +29,7 @@ function SocialLogin(){
           // Redux 상태를 업데이트하는 액션 디스패치
           dispatch(reduxUserInfo(userInfo));
         }
-    }, [dispatch]);
+    }, [user]);
 
     const onLanHandler = (e) => {
         setUserLan(e.target.value);
@@ -62,6 +62,21 @@ function SocialLogin(){
             .then((response) => {
                 console.log(response);
                 console.log(response.data);
+                dispatch(reduxUserInfo({ ...user, sttLang: userLan, transLang: response.data}));
+                const userInfoJSON = localStorage.getItem("UserInfo");
+
+                if (userInfoJSON) {
+                  // JSON 문자열을 객체로 변환
+                  const userInfo = JSON.parse(userInfoJSON);
+                
+                  // sttLang 값을 변경하고 싶은 userLan 값으로 업데이트
+                  const newUserInfo = {
+                    ...userInfo,
+                    sttLang: userLan,
+                    transLang: response.data
+                  };
+                  localStorage.setItem("UserInfo", JSON.stringify(newUserInfo));
+
                 Swal.fire({
                     icon: "success",
                     title: "회원가입 성공!",
@@ -70,22 +85,9 @@ function SocialLogin(){
                     confirmButtonColor: '#90dbf4',
                     timer: 2000,
                     timerProgressBar: true,
-                  });
-                  dispatch(reduxUserInfo({ ...user, sttLang: userLan, transLang: response.data}));
-                  const userInfoJSON = localStorage.getItem("UserInfo");
-
-                  if (userInfoJSON) {
-                    // JSON 문자열을 객체로 변환
-                    const userInfo = JSON.parse(userInfoJSON);
-                  
-                    // sttLang 값을 변경하고 싶은 userLan 값으로 업데이트
-                    const newUserInfo = {
-                      ...userInfo,
-                      sttLang: userLan,
-                      transLang: response.data
-                    };
-                    localStorage.setItem("UserInfo", JSON.stringify(newUserInfo));
-                  navigate('/home');
+                  }).then(
+                      navigate('/home')
+                  )
                 }
             })
         }
