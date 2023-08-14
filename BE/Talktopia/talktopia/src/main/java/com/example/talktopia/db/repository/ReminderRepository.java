@@ -12,4 +12,8 @@ public interface ReminderRepository extends JpaRepository<Reminder,Long> {
 	List<Reminder> findByUser_UserId(String userId);
 
 	Reminder findByRmNo(long rmNo);
+
+	List<Reminder> findByUser_UserNoAndRmHostAndRmType(long receiverNo, String rmHost, String rmType);
+
+	List<Reminder> findByUser_UserNoAndRmHostAndRmTypeAndRmVrSession(long receiverNo, String rmHost, String rmType, String rmVrSession);
 }

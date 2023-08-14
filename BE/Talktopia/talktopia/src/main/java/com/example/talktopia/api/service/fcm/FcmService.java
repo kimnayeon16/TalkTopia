@@ -65,26 +65,27 @@ public class FcmService {
 
 		int friendSize = fcmSendVroomMessage.getFriendId().size();
 		List<String> notInviteList = new ArrayList<>();
-
+		User hostUser =userRepository.findByUserId(fcmSendVroomMessage.getUserId()).orElseThrow(()->new Exception("호스트 유저가없어요"));
 		if(friendSize>0) {
 			for (int i = 0; i < friendSize; i++) {
 				User user = userRepository.findByUserId(fcmSendVroomMessage.getFriendId().get(i))
 					.orElseThrow(() -> new Exception("유저가없엉"));
 				if(!userStatusService.getUserStatus(user.getUserId()).equals("ONLINE")){
-
-					String body = fcmSendVroomMessage.getUserId()+" 님이 초대를 하셨지만 해당 고객께서 다른 용무중이셨습니다.";
+					String body = fcmSendVroomMessage.getUserId()+" You invited, but the user was on another business.";
 					Reminder reminder = Reminder.builder()
 						.rmContent(body)
-						.rmType("화상채팅방 초대")
+						.rmType("Room Request")
 						.user(user)
+						.rmVrSession(fcmSendVroomMessage.getVrSession())
+						.rmHost(hostUser.getUserId())
 						.rmRead(false)
 						.build();
 					reminderRepository.save(reminder);
 					notInviteList.add(user.getUserId());
 				}
 				else if (user.getToken().getTFcm() != null) {
-					String title = "화상채팅방 초대 알림이 왔습니다.";
-					String body = fcmSendVroomMessage.getUserId()+" 님이 화상채팅방에 초대하셨습니다.";
+					String title = "A video chat room invitation notification has been sent.";
+					String body = fcmSendVroomMessage.getUserId()+" has invited you to the video chat room.";
 					VRoom vRoom = vRoomRepository.findByVrSession(fcmSendVroomMessage.getVrSession());
 					Map<String, String> data = new HashMap<>();
 					data.put("vrSession", vRoom.getVrSession());
@@ -106,8 +107,10 @@ public class FcmService {
 					firebaseMessaging.send(message);
 					Reminder reminder = Reminder.builder()
 						.rmContent(body)
-						.rmType("화상채팅방 초대")
+						.rmType("Room Request")
 						.user(user)
+						.rmVrSession(fcmSendVroomMessage.getVrSession())
+						.rmHost(hostUser.getUserId())
 						.rmRead(false)
 						.build();
 					reminderRepository.save(reminder);
@@ -118,10 +121,10 @@ public class FcmService {
 				User user = userRepository.findByUserId(fcmSendVroomMessage.getUserId()).orElseThrow(()->new Exception("노 유저"));
 				StringBuilder body = new StringBuilder();
 				for(String list : notInviteList){
-					body.append(list).append("님 ");
+					body.append(list).append("sir ");
 				}
 				Notification notification = Notification.builder()
-					.setTitle("초대를 받지 않는 인원들이 존재합니다")
+					.setTitle("There are people who don't accept invitations")
 					.setBody(body.toString())
 					.build();
 
@@ -131,19 +134,20 @@ public class FcmService {
 					.build();
 				firebaseMessaging.send(message);
 			}
-			return new Message("알림을 전송했습니다");
+			return new Message("Notification sent successfully");
 		}
-		return new Message("친구를 불러오지 못하였습니다");
+		return new Message("I couldn't bring my friend");
 	}
 
 	public Message sendFriendMessage(FCMSendFriendMessage fcmSendFriendMessage) throws Exception {
+		User hostUser =userRepository.findByUserId(fcmSendFriendMessage.getUserId()).orElseThrow(()->new Exception("호스트 유저가없어요"));
 		User user = userRepository.findByUserId(fcmSendFriendMessage.getFriendId()).orElseThrow(()-> new Exception("친구 유저가없엉"));
-		String title = "친구 요청 알림이 왔습니다.";
-		String body = fcmSendFriendMessage.getUserId()+" 님이 친구추가 요청을 보냈습니다.";
+		String title = "A friend request notification has been received.";
+		String body = fcmSendFriendMessage.getUserId()+" has sent a friend request.";
 		if (user.getToken() != null && user.getToken().getTFcm() !=null){
 			User duplicateUser = userRepository.findByUserId(fcmSendFriendMessage.getUserId()).orElseThrow(()->new Exception("내 유저가 없어"));
 			if(friendService.isAlreadyFriend(duplicateUser.getUserNo(),user.getUserNo())){
-				throw new RuntimeException("이미 친구입니다.");
+				throw new RuntimeException("We're already friends.");
 			}
 			Map<String, String> data = new HashMap<>();
 			data.put("userId",fcmSendFriendMessage.getUserId());
@@ -165,22 +169,25 @@ public class FcmService {
 			firebaseMessaging.send(message);
 			Reminder reminder = Reminder.builder()
 				.rmContent(body)
-				.rmType("친구 추가 요청")
+				.rmType("Friend Request")
 				.user(user)
+				.rmVrSession("NONE")
+				.rmHost(hostUser.getUserId())
 				.rmRead(false)
 				.build();
 			reminderRepository.save(reminder);
-			return new Message("알림을 전송했습니다");
+			return new Message("Notification sent successfully");
 		}
 
-		return new Message("해당 유저가 로그인중이 아닙니다.");
+		return new Message("This user is not logged in.");
 
 	}
 
 	public Message failFCMMessage(FCMFailMessage fcmFailMessage) throws Exception {
+		User hostUser =userRepository.findByUserId(fcmFailMessage.getSenderId()).orElseThrow(()->new Exception("호스트 유저가없어요"));
 		User user = userRepository.findByUserId(fcmFailMessage.getReceiverId()).orElseThrow(()-> new Exception("받는 사람이 없어"));
-		String title = "초대 알림 상태";
-		String body = fcmFailMessage.getSenderId()+" 님이 초대를 거절하였습니다.";
+		String title = "Invitation notification status";
+		String body = fcmFailMessage.getSenderId()+" has declined your invitation.";
 		if(user.getToken().getTFcm() !=null){
 			Notification notification = Notification.builder()
 				.setTitle(title)
@@ -195,14 +202,16 @@ public class FcmService {
 			firebaseMessaging.send(message);
 			Reminder reminder = Reminder.builder()
 				.rmContent(body)
-				.rmType("거절 메세지")
+				.rmType("Fail Request")
+				.rmVrSession("NONE")
+				.rmHost(hostUser.getUserId())
 				.user(user)
 				.rmRead(false)
 				.build();
 			reminderRepository.save(reminder);
-			return new Message("알림을 전송했습니다");
+			return new Message("Notification sent successfully");
 		}
-		return new Message("해당 유저가 존재하지않습니다.");
+		return new Message("The user does not exist.");
 	}
 }
 //
