@@ -4,7 +4,7 @@ import axios from "axios";
 import { BACKEND_URL } from '../../utils';
 
 
-// import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
+import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
 import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
@@ -154,6 +154,7 @@ function ConversationLog(props) {
                 source: data.sourceLang,                // 전달받은 메세지 언어
                 translate: translatedMessage            // 번역된 메세지 
             });
+            props.conversationLogHandler(data.sendUserId, data.transcript)
             setMessageList((prev) => ([...prev, messageData]))
             scrollToBottom();
         });
@@ -167,65 +168,66 @@ function ConversationLog(props) {
     }, []);
 
     // Rapid API translation
-    // const translationHandler = async (text, sourceLanguage, targetLanguage) => {
-    //     const encodedParams = new URLSearchParams();
-    //     encodedParams.set('source_language', sourceLanguage) // 전달 받은 텍스트 언어
-    //     encodedParams.set('target_language', targetLanguage) // 번역할 언어
-    //     encodedParams.set('text', text)
-
-    //     console.log('translationHandler data', encodedParams)
-
-    //     const options = {
-    //         method: 'POST',
-    //         url: 'https://text-translator2.p.rapidapi.com/translate',
-    //         headers: {
-    //             'content-type': 'application/x-www-form-urlencoded',
-    //             'X-RapidAPI-Key': REACT_APP_X_RAPID_API_KEY,
-    //             'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
-    //         },
-    //         data: encodedParams,
-    //     };
-            
-    //     try {
-    //         const response = await axios.request(options);
-    //         let translatedText = response.data.data.translatedText            
-    //         console.log('번역에 성공하였습니다.', translatedText)
-    //         return translatedText
-
-    //         // setMessageList((prev) => ([...prev, newMessageList]))
-    //     } catch (error) {
-    //         console.error(error);
-    //         // alert('번역에 실패하였습니다.');
-    //         return text
-    //     }
-    // };
-    // papago API 테스트
     const translationHandler = async (text, sourceLanguage, targetLanguage) => {
-    
-        const headers = {
-            'Content-Type' : 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
-        }
-        
-        const requestBody = {
-            text: text,
-            targetLang: targetLanguage,
-            sourceLang: sourceLanguage
+        const encodedParams = new URLSearchParams();
+        encodedParams.set('source_language', sourceLanguage) // 전달 받은 텍스트 언어
+        encodedParams.set('target_language', targetLanguage) // 번역할 언어
+        encodedParams.set('text', text)
+
+        console.log('translationHandler data', encodedParams)
+
+        const options = {
+            method: 'POST',
+            url: 'https://text-translator2.p.rapidapi.com/translate',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-RapidAPI-Key': REACT_APP_X_RAPID_API_KEY,
+                'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
+            },
+            data: encodedParams,
         };
-
-        const requestBodyJSON = JSON.stringify(requestBody);
-
+            
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/naver/translate`, requestBodyJSON, {headers})
-            let translatedText = response.data
+            const response = await axios.request(options);
+            let translatedText = response.data.data.translatedText            
             console.log('번역에 성공하였습니다.', translatedText)
             return translatedText
+
+            // setMessageList((prev) => ([...prev, newMessageList]))
         } catch (error) {
             console.error(error);
             // alert('번역에 실패하였습니다.');
             return text
         }
     };
+
+    // papago API 테스트
+    // const translationHandler = async (text, sourceLanguage, targetLanguage) => {
+    
+    //     const headers = {
+    //         'Content-Type' : 'application/json',
+    //         'Authorization': `Bearer ${user.accessToken}`
+    //     }
+        
+    //     const requestBody = {
+    //         text: text,
+    //         targetLang: targetLanguage,
+    //         sourceLang: sourceLanguage
+    //     };
+
+    //     const requestBodyJSON = JSON.stringify(requestBody);
+
+    //     try {
+    //         const response = await axios.post(`${BACKEND_URL}/api/v1/naver/translate`, requestBodyJSON, {headers})
+    //         let translatedText = response.data
+    //         console.log('번역에 성공하였습니다.', translatedText)
+    //         return translatedText
+    //     } catch (error) {
+    //         console.error(error);
+    //         // alert('번역에 실패하였습니다.');
+    //         return text
+    //     }
+    // };
 
     const scrollToBottom = () => {
         setTimeout(() => {

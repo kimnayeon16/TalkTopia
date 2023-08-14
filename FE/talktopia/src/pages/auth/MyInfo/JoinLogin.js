@@ -87,7 +87,6 @@ function JoinLogin(){
             //     console.error("Error initializing FCM:", error);
             // }
             
-
             //로컬에 저장하기
             const UserInfo = {
                 userId: response.data.userId, 
