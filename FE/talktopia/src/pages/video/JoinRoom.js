@@ -54,6 +54,7 @@ function JoinRoom() {
 
     const sessionRef = useRef(undefined);   // session값 ref
     const userDataRef = useRef(undefined);  // session Id, user Id 값 ref
+    const userRollRef = useRef(undefined);  // userRoll 정보
 
     // socket 통신
     const sockJs = new SockJS(`${BACKEND_URL}/ws`);
@@ -86,9 +87,10 @@ function JoinRoom() {
         const userData = { 
             mySessionId: location.state.mySessionId, 
             myUserId: user.userId,
-            roomRole: location.state.roomRole
+            // roomRole: location.state.roomRole
         }
         userDataRef.current = userData
+        userRollRef.current = location.state.roomRole
 
         // 웹 소켓 연결
         stomp.connect({}, (frame) => {
@@ -100,9 +102,9 @@ function JoinRoom() {
                     console.log('호스트나갔을 때 웹소켓 응답 데이터', receivedData[0].roomRole)
                     
                     console.log('받은 응답이 호스트인경우', receivedData[0].roomRole)
-                    console.log('받은 응답이 호스티인 경우, userDataRef 정보', userDataRef.current)
+                    console.log('받은 응답이 호스티인 경우, userDataRef 정보', userRollRef.current)
                     setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
-                    userDataRef.current.roomRole = receivedData[0].roomRole
+                    userRollRef.current = receivedData[0].roomRole
                     if (receivedData[0].roomRole === 'HOST') {
 
                         sessionRef.current.signal({
@@ -182,6 +184,7 @@ function JoinRoom() {
 
         sessionRef.current = undefined;
         userDataRef.current = undefined;
+        userRollRef.current = undefined;
         stomp.disconnect();
 
         navigate('/home');
@@ -193,7 +196,7 @@ function JoinRoom() {
             userId: userDataRef.current.myUserId,
             token: user.accessToken,
             vrSession: userDataRef.current.mySessionId,
-            roomRole: userDataRef.current.roomRole
+            roomRole: userRollRef.current
         };
         console.log('세션 종료시 전달하는 데이터', exitRequest)
         stomp.send("/app/api/v1/room/exit/"+userDataRef.current.mySessionId, {}, JSON.stringify(exitRequest));
