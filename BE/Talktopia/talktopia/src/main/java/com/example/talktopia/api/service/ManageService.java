@@ -48,7 +48,7 @@ public class ManageService {
 		//1. 신고 당한유저가 존재하는가?
 		Optional<User> bullyUsers = userRepository.findByUserId(reportReq.getRuBully());
 		if (bullyUsers.isEmpty()) {
-			throw new Exception("신고당하는 유저는 존재하지 않습니다");
+			throw new Exception("There are no users who are being reported");
 		}
 		String bully = bullyUsers.get().getUserId();
 
@@ -65,7 +65,7 @@ public class ManageService {
 			log.info(bully);
 			log.info(reporter);
 			if (reportedUserRepository.existsByRuVrSessionAndRuBullyAndRuReporter(reportReq.getVrSession(), bully, reporter)) {
-				return new Message("이미 신고를 했었습니다");
+				return new Message("I already reported it");
 			} //end for 이미 신고한놈
 		//3-2. 신고를 안당하고 같은 방에서 새로운 신고를 당한것인가? -> 신고해주자.
 		//3-3. 신고를 당했지만 다른 사람에게 새로운 시고를 당한것인가? -> 신고해줘야지
@@ -91,7 +91,8 @@ public class ManageService {
 							.build();
 						categoryRepository.save(category);
 					}
-					return new Message("신고가 당한적이 있지만 다른사람한테 신고가 되었습니다");
+					//신고가 당한적이 있지만 다른사람한테 신고가 되었습니다
+					return new Message("I've been reported, but I've been reported to someone else");
 				}
 				//신고 당한 전적이 없는놈
 				//3-2. 신고를 안당하고 같은 방에서 새로운 신고를 당한것인가? -> 신고해주자.
@@ -114,10 +115,10 @@ public class ManageService {
 						.build();
 					categoryRepository.save(category);
 				}
-				return new Message("신고가 당한적이 없습니다 고로 신고가 되었습니다");
+				return new Message("I reported it.");
 			}//end for 이미 신고한 전적이 있는놈
 		}
-		return new Message("신고유저와 신고당한유저는 같은방에 있지 않습니다.");
+		return new Message("The reported user and the reported user are not in the same room.b");
 
 
 	}
