@@ -541,7 +541,7 @@ function JoinRoom() {
                                             userId={ sub.userId }
                                             userName={ sub.userName }
                                             roomRole={ sub.roomRole }
-                                            nation={ sub.natioin }
+                                            nation={ sub.nation }
                                             streamManager={ sub.streamManager }
                                             participantCount={ participantCount }
                                             openReportModal = { openReportModal }

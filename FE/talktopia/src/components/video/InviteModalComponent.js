@@ -60,23 +60,25 @@ function InviteModalComponent(props) {
 
     return (
         <>
-            <div className={style['report-modal-content']}>
+            <div className={style['invite-modal-content']}>
                 <h1>친구 목록</h1>
-                <button className={style['report-modal-close']} onClick={props.closeInviteModal}>close</button>
+                <button className={style['invite-modal-close']} onClick={props.closeInviteModal}>close</button>
                 <form onSubmit={onSubmit}>
-                    {checkBoxList.map((item, idx) => (
-                        <div className={style['report-reason-content']} key={idx}>
-                            <input 
-                                type='checkbox' 
-                                id={item.userId}
-                                checked={checkedList.includes(item.userId)}
-                                onChange={(e) => checkHandler(e, item.userId)}
-                            />
-                            <label htmlFor={item.userId} >{item.userId}</label>
-                        </div>
-                    ))}
+                    <div className={style['friends-container']} >
+                        {checkBoxList.map((item, idx) => (
+                            <div key={idx} className={style['friend-content']}>
+                                <input className={style['checkbox']}
+                                    type='checkbox' 
+                                    id={item.userId}
+                                    checked={checkedList.includes(item.userId)}
+                                    onChange={(e) => checkHandler(e, item.userId)}
+                                />
+                                <label htmlFor={item.userId} >{item.userId}</label>
+                            </div>
+                        ))}
+                    </div>
 
-                    <button type='submit'>초대하기</button>
+                    <button type='submit' className={style['invite-button']}>초대하기</button>
                 </form>
             </div>
         </>
