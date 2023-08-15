@@ -23,6 +23,7 @@ import com.example.talktopia.api.request.user.UserInfoReq;
 import com.example.talktopia.api.response.user.UserMyPageRes;
 import com.example.talktopia.api.service.user.UserService;
 import com.example.talktopia.common.message.Message;
+import com.example.talktopia.db.entity.user.Language;
 import com.example.talktopia.db.entity.user.ProfileImg;
 
 import lombok.RequiredArgsConstructor;
@@ -61,9 +62,9 @@ public class MyPageController {
 
 	// 회원 정보 수정
 	@PutMapping("/modify")
-	public ResponseEntity<Message> modifyUser(@RequestBody UserInfoReq userInfoReq) {
-		userService.modifyUser(userInfoReq);
-		return ResponseEntity.ok().body(new Message("회원 정보가 수정되었습니다."));
+	public ResponseEntity<String> modifyUser(@RequestBody UserInfoReq userInfoReq) {
+		String transLang = userService.modifyUser(userInfoReq);
+		return ResponseEntity.ok().body(transLang);
 	}
 
 	@PutMapping("/profile/{userId}")
