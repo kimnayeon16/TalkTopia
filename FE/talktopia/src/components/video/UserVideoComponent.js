@@ -30,7 +30,7 @@ const flag = {
 function UserVideoComponent (props) {
 
     const user = useSelector((state) => state.userInfo);    // Redux 정보
-    console.log(flag[user.sttLang])
+    console.log(flag[props.nation])
 
     const friendAdd = async () => {
 
