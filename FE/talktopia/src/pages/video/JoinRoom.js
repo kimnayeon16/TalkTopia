@@ -234,6 +234,7 @@ function JoinRoom() {
                 userId: clientData.userId,
                 userName: clientData.userName,
                 roomRole: clientData.roomRole,
+                nation: clientData.nation,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
                 streamManager: subscriber,
@@ -278,7 +279,8 @@ function JoinRoom() {
                 session.connect(token, { clientData: {
                     userId: localUser.userId, 
                     userName: localUser.userName,
-                    roomRole: localUser.roomRole  
+                    roomRole: localUser.roomRole,
+                    nation: user.sttLang
                 }})
                 .then(async () => {
                     // Get your own camera stream ---
@@ -480,8 +482,10 @@ function JoinRoom() {
     //
     const changeUserRoll = (data) => {
         console.log('제발 떠라', subscribers)
-        if (data === user.userId) {
+        if (data === user.userId) { 
             setLocalUser((prev) => ({...prev, roomRole: 'HOST'}))
+            userRollRef.current = 'HOST'
+            
         } else if (data !== user.userId) {
             const updatedSubscribers = subscribers.map((userObj) => {
                 if (userObj.userId === data) {
@@ -525,6 +529,7 @@ function JoinRoom() {
                                         userId={ localUser.userId }
                                         userName={ localUser.userName }
                                         roomRole={ localUser.roomRole }
+                                        nation={ user.sttLang }
                                         streamManager={ localUser.streamManager }
                                         participantCount={ participantCount }
                                     />
@@ -536,6 +541,7 @@ function JoinRoom() {
                                             userId={ sub.userId }
                                             userName={ sub.userName }
                                             roomRole={ sub.roomRole }
+                                            nation={ sub.natioin }
                                             streamManager={ sub.streamManager }
                                             participantCount={ participantCount }
                                             openReportModal = { openReportModal }
