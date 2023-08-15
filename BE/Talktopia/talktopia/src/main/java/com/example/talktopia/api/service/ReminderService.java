@@ -68,6 +68,7 @@ public class ReminderService {
 			.rmContent(reminder.getRmContent())
 			.rmRead(reminder.isRmRead())
 			.rmType(reminder.getRmType())
+			.rmGuest(reminder.getRmGuest())
 			.receiverNo(reminder.getUser().getUserNo())
 			.build();
 		reminderRepository.save(reminder);
