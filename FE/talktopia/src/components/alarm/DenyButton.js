@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../utils";
+import "./DenyButton.css"
 
 function DenyButton({ notification, closeModal }) {
     const handleDenyClick = async () => {
@@ -28,8 +29,12 @@ function DenyButton({ notification, closeModal }) {
     if (notification.rmType === "Done.") {
         return null;
     }
+
     return (
-        <button className="DenyButton" onClick={handleDenyClick}>Deny</button>
+        <button className="DenyButton" onClick={handleDenyClick}>
+            <img className ="NotificationImg" src="img/dding/failRequestIcon.png" alt="Fail Icon" />
+            Deny
+        </button>
     );
 }
 

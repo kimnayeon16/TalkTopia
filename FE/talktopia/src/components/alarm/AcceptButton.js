@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../utils";
+import "./AcceptButton.css"
 
 function AcceptButton({ notification, closeModal }) {
     const handleAccept = async () => {
@@ -60,6 +61,7 @@ function AcceptButton({ notification, closeModal }) {
 
     return (
         <button className="AcceptButton" onClick={handleAccept}>
+            <img className ="NotificationImg" src="img/dding/doneRequestIcon.png" alt="Accept Icon" />
             Accept
         </button>
     );

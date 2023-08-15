@@ -44,15 +44,40 @@ function NotificationDetail({ rmNo, closeModal }) {
     return (
         <div className="NotificationDetailDiv">
             <div className="NotificationModalHeader">
-                <span className="NotificationCloseButton" onClick={closeModal}>X</span>
+                <div className="NotificationCloseButton" onClick={closeModal}>X</div>
             </div>
-            <h1 className="NotificationDetailH1">Notification Detail</h1>
-            <p className="NotificationDetailP">Notification Content: {notificationData.rmContent}</p>
-            <p className="NotificationDetailP">Notification Status: {notificationData.rmType}</p>
-            <p className="NotificationDetailP">Sender : {notificationData.rmHost}</p>
-            {/* 여기에 나머지 데이터 표시 */}
-            <AcceptButton notification={notificationData} closeModal={closeModal} />
-            <DenyButton notification={notificationData} closeModal={closeModal} />
+            <div className="NotificationBody">
+            {notificationData.rmVrSession !== "NONE" ? (
+                        <div className="NotificationDetailH1">Room Request Message</div>
+                    ) : notificationData.rmVrSession === "NONE" ? (
+                        <div className="NotificationDetailH1">Friend Request Message</div>
+                    ) : null}
+                <div className="NotificationDetailP">
+                    <div className="NotificationDetailLabel">Notification Content</div>
+                    <div className="NotificationDetailLabelChildren"> {notificationData.rmContent}</div>
+                </div>    
+                <div className="NotificationDetailP">
+                    <div className="NotificationDetailLabel">Notification Status</div>
+                    <div className="NotificationDetailLabelChildren">{notificationData.rmType}</div>
+                </div>
+                <div className="NotificationDetailP">
+                    <div className="NotificationDetailLabel">Notification Sender</div>
+                    <div className="NotificationDetailLabelChildren"> {notificationData.rmHost}</div>
+                </div>
+                <div className="NotificationDetailP">
+                    {notificationData.rmVrSession !== "NONE" ? (
+                        <>
+                        <div className="NotificationDetailLabel">Notification VR Session</div>
+                        <div className="NotificationDetailLabelChildren"> {notificationData.rmVrSession}</div>
+                        </>
+                    ) : null}
+                </div>
+                                {/* 여기에 나머지 데이터 표시 */}
+            </div>
+            <div className="buttonStatus">
+                <AcceptButton notification={notificationData} closeModal={closeModal} />
+                <DenyButton notification={notificationData} closeModal={closeModal} />
+            </div>
         </div>
     );
 }
