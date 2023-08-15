@@ -567,15 +567,16 @@ function JoinLogin(){
 
       return (
         <motion.div
-    /* 2. 원하는 애니메이션으로 jsx를 감싸준다 */
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: 20 }}
-    transition={{ duration: 0.3 }}
+            /* 2. 원하는 애니메이션으로 jsx를 감싸준다 */
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
         >
         <div className={`${style.background}`}>
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
-            <div className={`${style.form} ${style["sign-in"]}`} >
+            {/* sign in start */}
+            <div className={`${style["form-signin"]} ${style["sign-in"]}`} >
                 <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🐬</h2>
                 <div className={`${style.login}`}>
                 
@@ -588,7 +589,7 @@ function JoinLogin(){
                     <input className={`${style.input}`} type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
-                <button type="button" className={`${style.submit}`} onClick={onLogin}>로그인</button>
+                <button type="button" className={`${style["submit-login"]} ${style["submit"]}`} onClick={onLogin}>로그인</button>
                 {/* <button></button> */}
                 <div className={`${style.line}`}>SNS계정으로 로그인</div>
                 <div  className={`${style.google}`}>
@@ -671,6 +672,8 @@ function JoinLogin(){
                     }}
                 />
                 </GoogleOAuthProvider>
+
+                {/* image 영역 시작 */}
                 <img className={`${style.fish1}`} src="/img/fish/fish1.png" alt=""></img>
                 <img className={`${style.fish2}`} src="/img/fish/fish2.png" alt=""></img>
                 <img className={`${style.fish3}`} src="/img/fish/fish3.png" alt=""></img>
@@ -679,30 +682,46 @@ function JoinLogin(){
                 <img className={`${style.bubble4}`} src="/img/bubble/bubble3.png" alt=""></img>
                 <img className={`${style.bubble5}`} src="/img/bubble/bubble1.png" alt=""></img>
                 <img className={`${style.bubble6}`} src="/img/bubble/bubble2.png" alt=""></img>
+                {/* image영역 끝 */}
+                
                 </div>
                 {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
-                <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>비밀번호 찾기</span>
-            </div>
-            <div className={style["sub-cont"]}>
-                <div className={style.img}>
-                    <div className={`${style["img__text"]} ${style["m--up"]}`}>
-                        <h2 className={`${style["h2-Font"]}`}>만나서 반가워요</h2>
-                        <p>새로운 친구들과 함께할 준비가 되셨나요? 😊<br/> 지금 로그인하고 TalkTopia의 다양한 서비스를 즐겨보세요!</p>
-                    </div>
-                    <div className={`${style["img__text"]} ${style["m--in"]}`}>
-                        <h2 className={`${style["h2-Font"]}`}>처음이신가요?</h2>
-                        <p>여러분의 새로운 시작을 환영합니다 💙 <br/> 가입하고 전세계의 새로운 친구들을 사겨보세요!</p>
-                    </div>
-                    <div className={style["img__btn"]} onClick={handleToggleSignUp}>
-                        <span className={`${style["m--up"]} ${change ? style.active : ""}`}>회원가입 하러가기</span>
-                        <span className={`${style["m--in"]} ${change ? "" : style.active}`}>로그인 하러가기</span>
-                    </div>
-                </div>
 
-                <div className={`${style.form} ${style.sign} ${style.up}`}>
-                    <h2 className={`${style["h2-Join"]}`}>새로운 모험이 시작됩니다! <br/> 🌊 함께 멋진 시간을 만들어가요! </h2>
+                <div className={`${style["find-area"]}`}>
+                    <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
+                    <span></span>
+                    <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>비밀번호 찾기</span>
+                </div>
+            </div>
+            {/* sign in end */}
+
+
+
+            {/* 옆에 있는 사진 영역 시작 */}
+            <div className={style.img}>
+                <div className={`${style["img__text"]} ${style["m--up"]}`}>
+                    <h2 className={`${style["h2-Font"]}`}>만나서 반가워요</h2>
+                    <p>새로운 친구들과 함께할 준비가 되셨나요? 😊<br/> 지금 로그인하고 TalkTopia의 다양한 서비스를 즐겨보세요!</p>
+                </div>
+                <div className={`${style["img__text"]} ${style["m--in"]}`}>
+                    <h2 className={`${style["h2-Font"]}`}>처음이신가요?</h2>
+                    <p>여러분의 새로운 시작을 환영합니다 💙 <br/> 가입하고 전세계의 새로운 친구들을 사겨보세요!</p>
+                </div>
+                <div className={style["img__btn"]} onClick={handleToggleSignUp}>
+                    <span className={`${style["m--up"]} ${change ? style.active : ""}`}>회원가입 하러가기</span>
+                    <span className={`${style["m--in"]} ${change ? "" : style.active}`}>로그인 하러가기</span>
+                </div>
+            </div>
+            {/* 옆에 있는 사진 영역 끝 */}
+
+
+
+            {/* 회원가입 영역 시작 */}
+            <div className={style["sub-cont"]}>
+
+
+                <h2 className={`${style["h2-Join"]}`}>새로운 모험이 시작됩니다! <br/> 🌊 함께 멋진 시간을 만들어가요! </h2>
+                <div className={`${style["form-signup"]}`}>
                     <div className={style["div-join-container-isButton"]}>
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>아이디 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -836,6 +855,7 @@ function JoinLogin(){
                     <img className={`${style.bubble8}`} src="/img/bubble/bubble3.png" alt=""></img>
                     </div>
             </div>
+            {/* 옆에 있는 사진 영역 끝 */}
         </div>
         </div>
         </motion.div>

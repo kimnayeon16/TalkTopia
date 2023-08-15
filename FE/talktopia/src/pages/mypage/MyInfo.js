@@ -27,6 +27,7 @@ function MyInfo(){
     const [userEmail, setUserEmail] = useState("");
     const [userImgUrl, setUserImgUrl] = useState("");
     const [userLan, setUserLan] = useState("");
+    const [userTransLan, setUserTransLan] = useState("");
     const [userAccessToken, setUserAccessToken] = useState("");
 
     const [pwValid, setPwValid] = useState(false);
@@ -39,16 +40,10 @@ function MyInfo(){
         const userInfoString = localStorage.getItem("UserInfo");
         const userInfo = JSON.parse(userInfoString);
 
-        console.log(userInfo);
-
         setUserAccessToken(userInfo.accessToken);
 
         const api = `${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`;
 
-        console.log(`${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`)
-
-        console.log(userInfo.userId, "아이디")
-        console.log(userInfo.accessToken)
         axios.get(api, {
             headers : {
                 'Content-Type': 'application/json',
@@ -62,7 +57,6 @@ function MyInfo(){
             setUserImgUrl(response.data.userProfileImgUrl);
             setUserLan(response.data.userLan);
 
-            console.log(response);
         })
          .catch((error)=>{
              console.log("못 불러옴", error);
@@ -124,6 +118,35 @@ function MyInfo(){
                 confirmButtonColor: '#90dbf4',
             })
         }else{
+            if(userLan === "ko-KR"){
+                setUserTransLan("ko");
+            }else if(userLan === "en-US"){
+                setUserTransLan("en");
+            }else if(userLan === "de-DE"){
+                setUserTransLan("de");
+            }else if(userLan === "ru-RU"){
+                setUserTransLan("ru");
+            }else if(userLan === "es-ES"){
+                setUserTransLan("es");
+            }else if(userLan === "it-IT"){
+                setUserTransLan("it");
+            }else if(userLan === "id-ID"){
+                setUserTransLan("id");
+            }else if(userLan === "ja-JP"){
+                setUserTransLan("ja");
+            }else if(userLan === "fr-FR"){
+                setUserTransLan("fr");
+            }else if(userLan === "zh-CN"){
+                setUserTransLan("zh-CN");
+            }else if(userLan === "zh-TW"){
+                setUserTransLan("zh-TW");
+            }else if(userLan === "pt-PT"){
+                setUserTransLan("pt");
+            }else if(userLan === "th-TH"){
+                setUserTransLan("th");
+            }
+
+
             axios.put(`${BACKEND_URL}/api/v1/myPage/modify`, {
                 userId: userId1,
                 userName: userName,
@@ -139,17 +162,21 @@ function MyInfo(){
                 },
               })
             .then((response) => {
-                console.log(response, "반응, 여기에 응답으로 값들을 다 받아서 넣어주는게 나을까?");
+                console.log(response);
                 console.log(userLan);
 
                 const userInfoString = localStorage.getItem("UserInfo");
                 const userInfo = JSON.parse(userInfoString);
+
+                
+                
 
                 userInfo.userId = userId1;
                 userInfo.userName = userName;
                 userInfo.userPw = userPw;
                 userInfo.profileUrl = userImgUrl;
                 userInfo.sttLang = userLan;
+                userInfo.transLang = userTransLan;
 
                 //다시 localStorage에 저장
                 localStorage.setItem("UserInfo", JSON.stringify(userInfo));
@@ -187,7 +214,6 @@ function MyInfo(){
             if (result.isConfirmed) {
                 axios.delete(`${BACKEND_URL}/api/v1/myPage/leave/${userId1}`, {
                     params: {
-                        // name: user.userId
                         name: userId1
                     },
                     headers: {

@@ -25,7 +25,7 @@ function MyInfoPw(){
       const userLocal = localStorage.getItem("UserInfo");
       const userInfo = JSON.parse(userLocal);
 
-      if(userInfo.userId.charAt(0) === "#"){
+      if(userInfo.userId.charAt(0) === "*"){
         navigate('/myinfo');
       }
     },[])

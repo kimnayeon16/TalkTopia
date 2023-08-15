@@ -10,7 +10,7 @@
     background: rgb(0 0 0 / 15%);
 
     overflow: hidden;
-    z-index: 10000000000;
+    z-index: 100;
 }
 
 .friend-list-modal{
@@ -54,6 +54,17 @@
     border-radius: 10px;
     /* background-clip: padding-box; */
     border: 2px solid transparent;
+}
+
+.modal-search-btn{
+    position: absolute;
+    left: 12px;
+    top: 11px;
+    width: 30px;
+    background: none;
+    border: none;
+    color: #adadad;
+    display: inline;
 }
 
 
