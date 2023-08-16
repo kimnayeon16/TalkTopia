@@ -1,0 +1,29 @@
+{
+    "start": {
+        "wideSea": "Meet the wide world with Toktopia",
+        "variousNation": "Do you want to video chat with people from other countries?",
+        "go": "Go to TalkTopia"
+    },
+    "nohome": {
+        "myInfo": "내 정보 보기",
+        "logout": "로그아웃",
+        "pageLangKR": "한국어",
+        "pageLangEN": "영어",
+        "inquiry": "1:1 문의",
+        "deepSea": "세계를 하나로 잇는 깊은 바다 처럼",
+        "port": "는 여러분의 여정을 시작할 특별한 항구가 될거에요.",
+        "peoples": "원하는 인원 수를 설정하여",
+        "sail": "님만의 특별한 항해를 떠날 수 있어요.",
+        "variousNation": "마음에 맞는 다양한 국적의 사람들과 행운 넘치는 시간을 보내길 기원할게요.",
+        "addLan": "내가 사용할 언어",
+        "random2": "랜덤 2인",
+        "random4": "랜덤 4인",
+        "random6": "랜덤 6인",
+        "createRoom": "방 만들기",
+        "showFriends": "친구 목록 보기"
+      },
+      "home": {
+        "mouse": "Hover your mouse over",
+        "over": "our animal friends!"
+      }
+}

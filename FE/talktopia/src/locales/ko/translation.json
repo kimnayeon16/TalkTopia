@@ -1,0 +1,82 @@
+{
+    "start": {
+        "wideSea": "TalkTopia로 넓은 세상을 만나보세요",
+        "variousNation": "다양한 국가의 사람들과 화상 채팅을 해보실래요?",
+        "go": "TalkTopia로 가기"
+    },
+    "nohome": {
+        "myInfo": "내 정보 보기",
+        "logout": "로그아웃",
+        "pageLangKR": "한국어",
+        "pageLangEN": "영어",
+        "inquiry": "1:1 문의",
+        "deepSea": "세계를 하나로 잇는 깊은 바다 처럼",
+        "port": "는 여러분의 여정을 시작할 특별한 항구가 될거에요.",
+        "peoples": "원하는 인원 수를 설정하여",
+        "sail": "님만의 특별한 항해를 떠날 수 있어요.",
+        "variousNation": "마음에 맞는 다양한 국적의 사람들과 행운 넘치는 시간을 보내길 기원할게요.",
+        "addLan": "내가 사용할 언어",
+        "random2": "랜덤 2인",
+        "random4": "랜덤 4인",
+        "random6": "랜덤 6인",
+        "createRoom": "방 만들기",
+        "showFriends": "친구 목록 보기"
+      },
+      "home": {
+        "mouse": "마우스를 동물 친구들",
+        "over": "위로 올려보세요!"
+      },
+      "user": {
+        "lan": "언어",
+        "myInfo": "내 정보 보기",
+        "logout": "로그아웃"
+      },
+      "Alram": {
+        "renew": "새로고침",
+        "empty": "알림이 비었습니다."
+      },
+      "NotiDetail": {
+        "Rreq": "화상 채팅방 초대 메세지",
+        "Freq": "친구 요청 메세지",
+        "content": "메세지 내용",
+        "status": "메세지 종류",
+        "sender": "보낸 사람",
+        "vrSession": "화상 채팅방 번호"
+      },
+      "AcceptBtn": {
+        "accept": "수락"
+      },
+      "DenyBtn": {
+        "deny": "거절"
+      },
+      "Faq": {
+        "faq": "FAQ",
+        "inquiry": "1:1 문의"
+      },
+      "PenguinG": {
+        "msg": "랜덤 2인 방에 참여하세요!",
+        "participant": "참여하기"
+      },
+      "BearG": {
+        "msg": "랜덤 4인 방에 참여하세요!",
+        "participant": "참여하기"
+      },
+      "FriendG": {
+        "msg": "방을 만들어서 친구들과 소통해요!",
+        "participant": "참여하기"
+      },
+      "WhaleG": {
+        "msg": "랜덤 6인 방에 참여하세요!",
+        "participant": "참여하기"
+      },
+      "FriendList": {
+        "list": "친구 목록"
+      },
+      "Leave": {
+        "msg1": "회원 탈퇴가 완료되었습니다.",
+        "msg2": "TalkTopia를 이용해주시고 사랑해주셔서 감사합니다.",
+        "msg3": "더욱 더 노력하고 발전하는 TalkTopia가 되겠습니다.",
+        "accept": "확인"
+      }
+
+}

@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import style from "./Start.module.css";
 import { useState } from "react";
+import Earth from "../../components/nav/Earth";
+import { useTranslation } from "react-i18next";
 
 function Start(){
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [animatePenguin, setAnimatePenguin] = useState(false);
     const [splash, setSplash] = useState(false);
@@ -29,10 +32,11 @@ function Start(){
             <img className={`${style.cloud}`} src="/img/cloud/cloud1.png" alt=""/>
             <img className={`${style.cloud2}`} src="/img/cloud/cloud2.png" alt=""/>
             <img className={`${style.cloud3}`} src="/img/cloud/cloud3.png" alt=""/>
-
+            
             <div className={`${style["start-header"]}`}>
-                <h2 className={`${style.h2}`}>TalkTopia로 넓은 세상을 만나보세요</h2>
-                <p className={`${style.p}`}>다양한 국가의 사람들과 화상 채팅을 해보실래요?</p>
+                {/* <h2 className={`${style.h2}`}>TalkTopia로 넓은 세상을 만나보세요</h2> */}
+                <h2 className={`${style.h2}`}>{t(`start.wideSea`)}</h2>
+                <p className={`${style.p}`}>{t(`start.variousNation`)}</p>
                 <div className={`${style.content}`}>
                     <div className={style["content__container"]}>
                         <ul className={style["content__container__list"]}>
@@ -53,7 +57,9 @@ function Start(){
                 </div>
             </div>
 
-            <button className={`${style.button}`} onClick={handleButtonClick}><span className={`${style.span}`}>💻</span> TalkTopia로 가기 <span className={`${style.span}`}>⛵</span></button>
+            <Earth/>
+
+            <button className={`${style.button}`} onClick={handleButtonClick}><span className={`${style.span}`}>💻</span> {t(`start.go`)} <span className={`${style.span}`}>⛵</span></button>
             <img className={`${animatePenguin ? style.penguin : style.penguin1}`} src="/img/start/penguin.png" alt=""/>
             <img className={`${style.woodroad}`} src="/img/background/나무판자.png" alt=""/>
             <img className={`${style.wave}`} src="/img/boat/boat3.png" alt=""/>

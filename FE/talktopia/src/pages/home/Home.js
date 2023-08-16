@@ -24,10 +24,13 @@ import sendTokenToServer from '../auth/fcm/sendTokenToServer';
 import NotificationAccordion from '../auth/fcm/NotificationAccordion';
 import useTokenValidation from '../../utils/useTokenValidation';
 
+import { useTranslation } from "react-i18next";
+
 function Home(){
   useTokenValidation();
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const user = useSelector((state) => state.userInfo);
   console.log(user, '0000000000000000000000000000000000');
@@ -103,7 +106,7 @@ function Home(){
     <CoralGroup />
     <FriendList />
     <WaterGroup />
-    <p className={`${styles.guide}`}>마우스를 동물 친구들 <br/> 위로 올려보세요!</p>
+    <p className={`${styles.guide}`}> {t(`home.mouse`)} <br/> {t(`home.over`)} </p>
     <img className={`${styles.sign}`} src="/img/main/sign1.png" alt=""></img>
   </div>
   )
