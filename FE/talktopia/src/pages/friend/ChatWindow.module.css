@@ -70,7 +70,7 @@
   font-size: 20px;
   font-weight: 800;
   display: inline;
-  color: #2d2f32;
+  color: #4a4d52;
 }
 
 /* 프사 뒷배경 */
@@ -273,6 +273,7 @@
 }
 
 .chat-send-btn:hover {
+  background-color: #2fb6ff;
 }
 
 .chat-send-btn *{

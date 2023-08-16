@@ -78,6 +78,9 @@ const FriendList = () => {
         setSelectedFriend(friend);
         setShowChat(false)
         setShowChat(true);
+
+        // 검색창 안나오게 함
+        setSearchVisible(false);
       })
       .catch((error) => {
         console.log(error);
@@ -112,7 +115,7 @@ const FriendList = () => {
               {/* 돋보기 버튼 */}
               <img className={`${friendListStyle["modal-search-btn"]}`} src="/img/main/search.png" alt="" onClick={modalOpen}></img>
               {/* 닫기 버튼 */}
-              <button onClick={() => {setIsListVisible(false); setShowChat(false) }} className={`${friendListStyle["modal-close-btn"]}`}><AiOutlineClose size='20'/></button>
+              <button onClick={() => {setIsListVisible(false); setShowChat(false); setSearchVisible(false) }} className={`${friendListStyle["modal-close-btn"]}`}><AiOutlineClose size='20'/></button>
               
               <div className={`${friendListStyle["friend-list"]}`}>
                 { friendList && 
@@ -133,7 +136,7 @@ const FriendList = () => {
                         </div>)
                       }
                       {/* 미접속 */}
-                      { friend.userStatus == "OFFLINE"  || friend.userStatus == null && (
+                      { (friend.userStatus == "OFFLINE"  || friend.userStatus == null) && (
                         <div className={`${friendListStyle["friend-section-profile"]} ${friendListStyle["friend-section-profile-offline"]}`}>
                           <img src={friend.userImg}></img>
                         </div>)
@@ -176,7 +179,7 @@ const FriendList = () => {
           </div>
         }
 
-      {searchVisible && 
+      {searchVisible &&
       (<SearchFind searchVisible={searchVisible} onShowSearchFind={handleShowSearchFind}/>)
       }
 
