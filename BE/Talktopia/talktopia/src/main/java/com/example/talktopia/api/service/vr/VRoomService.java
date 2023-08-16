@@ -237,7 +237,7 @@ public class VRoomService {
 			// Prepare the response with the tokeny
 			VRoomRes vRoomRes = new VRoomRes();
 			//참여자의 Role와 id를 알아야함
-			List<ShowAllVRoomRes> showAllVRoomRes = findAllRoom(connRoomId);
+			List<ShowAllVRoomRes> showAllVRoomRes = findAllRoom(roomId);
 			vRoomRes.setShowAllVRoomRes(showAllVRoomRes);
 			vRoomRes.setToken(token);
 			vRoomRes.setVrSession(roomId);
@@ -576,6 +576,8 @@ public class VRoomService {
 				.vRoomRole(part.getRoomRole())
 				.userId(user.getUserId())
 				.build();
+			log.info("제발요~~~~~~~~~~~~~~~~~~~~~~~~"+part.getRoomRole());
+			log.info("제발요~~~~~~~~~~~~~~~~~~~~~~~~"+user.getUserId());
 			showAllVRoomRes.add(show);
 		}
 		return showAllVRoomRes;
