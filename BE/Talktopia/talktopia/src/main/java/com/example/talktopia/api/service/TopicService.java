@@ -18,8 +18,10 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 
-	public List<Topic> startTopic(String sttLang) {
+	public TopicRes startTopic(String sttLang) {
 		List<Topic> topic = topicRepository.findByTopicLang(sttLang);
-		return topic;
+		String topicTitle = topic.get(0).getTopicTitle();
+
+		return new TopicRes(topicTitle, topic);
 	}
 }
