@@ -174,7 +174,7 @@ public class FriendService {
 				continue;
 			}
 			String userStatus = userStatusService.getUserStatus(user.getUserId());
-			if (userStatus == null || userStatus.equals("OFFLINE")) {
+			if (userStatus == null) {
 				continue;
 			}
 			long frId = userRepository.findByUserNo(user.getUserNo()).getUserNo();
