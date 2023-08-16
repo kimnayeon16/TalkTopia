@@ -25,16 +25,28 @@ function PostDetail() {
   // const [userInfo, setUserInfo] = useState("");
   const [itsme, setItsme] = useState([]);
 
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const [postLength, setPostLength] = useState(0);
+  const [createTime, setCreateTime] = useState("");
+  const [formattedDateTime, setFormattedDateTime] = useState("");
+
   useEffect(() => {
     const userInfoString = localStorage.getItem("UserInfo");
     const userInfo = JSON.parse(userInfoString);
     setUserId(userInfo.userId);
     setUserAccessToken(userInfo.userAccessToken);
     setItsme(userInfo)
-    console.log(itsme)
-    console.log("ㅇ 앰어리ㅏ머라엚알 너 여기 오낭 모라ㅣ ?")
+
+    if(userInfo.role === "ADMIN"){
+      setIsAdmin(true);
+    }
     dispatch(reduxUserInfo(userInfo));
 }, []);
+
+  // useEffect(()=>{
+
+  // },[isAdmin])
 
 
 
@@ -59,6 +71,21 @@ function PostDetail() {
       .then((response) => {
         console.log(response);
         setDetailedPost(response.data);
+        setPostLength(response.data.answerPosts.length);
+
+        setCreateTime(response.data.postCreateTime);
+
+        const dateTime = new Date(response.data.postCreateTime);
+
+        const year = dateTime.getFullYear();
+        const month = dateTime.getMonth() + 1;
+        const day = dateTime.getDate();
+        const hours = dateTime.getHours();
+        const minutes = dateTime.getMinutes();
+        const seconds = dateTime.getSeconds();
+
+        setFormattedDateTime(`작성 일자 : ${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분 ${seconds}초`);
+
       })
       .catch((error) => {
         console.log(error);
@@ -179,7 +206,9 @@ function PostDetail() {
           <h2 className={`${style.question}`}>질문</h2>
             <div className={`${style.box1}`}>
               <div className={`${style.header}`}>
-                <h2 className={`${style.h2}`}>{detailedPost.postTitle}</h2>
+                <h2 className={`${style.h2}`}>제목 : {detailedPost.postTitle}</h2>
+                <p className={`${style.date}`}>{formattedDateTime}</p>
+                <img className={`${style.line}`} src="/img/findMyInfo/find1.png" alt=""/>
                 <p className={`${style["post-content"]}`}>{detailedPost.postContent}</p>
               </div>
             </div>
@@ -188,8 +217,10 @@ function PostDetail() {
 
         <div className={`${style.container2}`}>
           <h2 className={`${style.question}`}>답변</h2>
-          <div className={`${style.box1}`}>
+          <div className={`${style.box2}`}>
             <div className={`${style["answer-posts"]}`}>
+              {
+                postLength !== 0 ? 
                 <ul>
                   {detailedPost.answerPosts.map((answerPost, index) => (
                       <li className={`${style.li}`} key={index}>
@@ -198,14 +229,30 @@ function PostDetail() {
                       </li>
                   ))}
                 </ul>
+                  : (
+                    <ul>
+                      <li className={`${style.li}`} >
+                        <p className={`${style.answer2}`}>아직 답변이 달리지 않았습니다.</p>
+                        <p className={`${style.answer2}`}>순차적으로 처리하고 있으니 빠른 시일 내에 답변을 제공하겠습니다.</p>
+                        <p className={`${style.answer2}`}>TalkTopia에 많은 관심을 가져주셔서 감사합니다.</p>
+                      </li>
+                    </ul>
+                  )
+              }
             </div>
           </div>
+
+          {
+            isAdmin ? 
             <div className={`${style["comment-section-container"]}`}>
                   <div className={`${style["comment-section"]}`}>
-                      <input className={`${style["comment-input"]}`} type="text" placeholder="댓글을 입력하세요" value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
+                      <input className={`${style["comment-input"]}`} type="text" placeholder="문의 글에 대한 답변을 입력하세요" value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
                       <button className={`${style["comment-button"]}`} onClick={handleCommentSubmit}>등록</button>
                   </div>
               </div>
+              :
+              null
+          }
         </div>
         <img className={`${style.grass1}`} src="/img/grass/grass2.png" alt=""></img>
             <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>

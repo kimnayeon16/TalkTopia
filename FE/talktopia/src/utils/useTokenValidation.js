@@ -36,7 +36,7 @@ function useTokenValidation(userInfo){
                 localStorage.removeItem("UserInfo");
                 Swal.fire({
                     icon: "error",
-                    title: "세션 정보가 만료되어 로그아웃되었습니다.",
+                    title: "세션 정보가 만료되어 <br/> 로그아웃되었습니다.",
                     text: "TalkTopia를 계속 이용하고 싶으시면 다시 로그인해주세요.",
                     confirmButtonText: "확인",
                     confirmButtonColor: '#90dbf4',

@@ -100,8 +100,8 @@ function PostForm() {
       text: "작성 내용은 저장되지 않습니다.",
       showCancelButton: true,
       confirmButtonText: "확인",
-      confirmButtonColor: '#90dbf4',
-      CancelButtonText: "취소",
+      confirmButtonColor: '#f32f70',
+      cancelButtonText: "취소",
       reverseButtons: true, 
     }).then((result) => {
       if (result.isConfirmed) {
