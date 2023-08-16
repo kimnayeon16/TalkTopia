@@ -133,14 +133,56 @@ public class ReminderService {
 
 	public Message 	denyRemind(ReminderInviteReq reminderInviteReq) throws Exception {
 		//메세지를 보낸사람
-		User oppsiteUser =userRepository.findByUserId(reminderInviteReq.getRmHost()).orElseThrow(()->new Exception("유저가 없어"));
+		User oppsiteUserA =userRepository.findByUserId(reminderInviteReq.getRmHost()).orElseThrow(()->new Exception("유저가 없어"));
 		//메세지를 받았던사람
-		User opppsiteHost =userRepository.findByUserNo(reminderInviteReq.getReceiverNo());
+		User opppsiteHostA =userRepository.findByUserNo(reminderInviteReq.getReceiverNo());
 
 		FCMFailMessage fcmFailMessage = FCMFailMessage.builder()
-			.senderId(opppsiteHost.getUserId())
-			.receiverId(oppsiteUser.getUserId())
+			.senderId(opppsiteHostA.getUserId())
+			.receiverId(oppsiteUserA.getUserId())
 			.build();
+
+
+		if(reminderInviteReq.getRmType().equals("Friend Request")) {
+			//해당하는것에대한 알림을 모두다 알림 처리해야한다.
+			List<Reminder> reminders = reminderRepository.findByUser_UserNoAndRmHostAndRmType(
+				reminderInviteReq.getReceiverNo(), reminderInviteReq.getRmHost(), reminderInviteReq.getRmType());
+			for (Reminder reminder : reminders) {
+				reminder.setRmContent("Denied Friend Request.");
+				reminder.setRmType("Done.");
+				reminderRepository.save(reminder);
+			}
+
+			User oppsiteUser =userRepository.findByUserId(reminderInviteReq.getRmHost()).orElseThrow(()->new Exception("유저가 없어"));
+			User opppsiteHost =userRepository.findByUserNo(reminderInviteReq.getReceiverNo());
+			reminders = reminderRepository.findByUser_UserNoAndRmHostAndRmType(
+				oppsiteUser.getUserNo(), opppsiteHost.getUserId(), reminderInviteReq.getRmType());
+			for (Reminder reminder : reminders) {
+				reminder.setRmContent("Denied Friend Response.");
+				reminder.setRmType("Done.");
+				reminderRepository.save(reminder);
+			}
+		}
+		//채팅방 요청일때
+		else if(reminderInviteReq.getRmType().equals("Room Request")) {
+
+			List<Reminder> reminders = reminderRepository.findByUser_UserNoAndRmHostAndRmTypeAndRmVrSession(reminderInviteReq.getReceiverNo(),reminderInviteReq.getRmHost(),reminderInviteReq.getRmType(),reminderInviteReq.getRmVrSession());
+			for(Reminder reminder : reminders){
+				reminder.setRmContent("Denied Room Request.");
+				reminder.setRmType("Done.");
+				reminderRepository.save(reminder);
+			}
+			User oppsiteUser =userRepository.findByUserId(reminderInviteReq.getRmHost()).orElseThrow(()->new Exception("유저가 없어"));
+			User opppsiteHost =userRepository.findByUserNo(reminderInviteReq.getReceiverNo());
+			reminders = reminderRepository.findByUser_UserNoAndRmHostAndRmTypeAndRmVrSession(
+				oppsiteUser.getUserNo(), opppsiteHost.getUserId(), reminderInviteReq.getRmType(),reminderInviteReq.getRmVrSession());
+			for (Reminder reminder : reminders) {
+				reminder.setRmContent("Denied Room Response.");
+				reminder.setRmType("Done.");
+				reminderRepository.save(reminder);
+			}
+		}
+
 		return fcmService.failFCMMessage(fcmFailMessage);
 	}
 }

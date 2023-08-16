@@ -117,7 +117,7 @@ function AcceptButton({ notification, closeModal }) {
                         Swal.fire({
                             icon: "error",
                             title: "알수 없는 에러",
-                            text: "알수 없는 에러로 친구 추가가 되지않았습니다.",
+                            text: "알수 없는 에러로 친구 추가가 안됐습니다.",
                             confirmButtonText: "확인",
                             confirmButtonColor: '#f47b7b',
                             timer: 3000,

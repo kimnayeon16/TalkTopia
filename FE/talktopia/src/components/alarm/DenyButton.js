@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../utils";
 import "./DenyButton.css"
+import e from "cors";
 
 function DenyButton({ notification, closeModal }) {
     const handleDenyClick = async () => {
@@ -14,6 +15,7 @@ function DenyButton({ notification, closeModal }) {
         };
 
         try {
+            console.log(requestData.receiverNo,requestData.rmHost,requestData.rmVrSession,requestData.rmType)
             const userInfoString = localStorage.getItem("UserInfo");
             const userInfo = JSON.parse(userInfoString);
             await axios.post(`${BACKEND_URL}/api/v1/notice/read/deny`, requestData, {
@@ -21,7 +23,9 @@ function DenyButton({ notification, closeModal }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userInfo.accessToken}`
                 }
-            });
+            }).catch((error)=> {
+                console.log(error);
+            })
             closeModal(); // Close the modal after denying
         } catch (error) {
             console.error("Error denying notification:", error);
