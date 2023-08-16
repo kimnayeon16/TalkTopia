@@ -14,10 +14,12 @@ function DenyButton({ notification, closeModal }) {
         };
 
         try {
+            const userInfoString = localStorage.getItem("UserInfo");
+            const userInfo = JSON.parse(userInfoString);
             await axios.post(`${BACKEND_URL}/api/v1/notice/read/deny`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add authorization headers if needed
+                    'Authorization': `Bearer ${userInfo.accessToken}`
                 }
             });
             closeModal(); // Close the modal after denying
