@@ -56,7 +56,8 @@ public class UserService {
 	final String dirName = "profile";
 
 	// Token validate Time
-	private Long accessExpiredMs = 30 * 60 * 1000L + 34200000;
+	// private Long accessExpiredMs = 30 * 60 * 1000L + 34200000;
+	private Long accessExpiredMs = 7 * 60 * 1000L + 32400000; // 7분 테스트
 	private Long refreshExpiredMs = accessExpiredMs + 7 * 24 * 60 * 60 * 1000L;
 
 	// 회원가입
