@@ -301,7 +301,7 @@
 }
 
 .friend-section-profile-busy::after {
-  color: rgb(214, 124, 40);
+  color: #ff9f46;
 }
 
 .friend-section-profile-offline::after {
@@ -337,4 +337,44 @@
   font-weight: 600;
 }
 
-.add {}
+/* -------------- 반응형 구간 ------------------------- */
+/* 큰화면 */
+@media only screen and (min-width : 1900px) {
+  .janjan{
+      zoom : 1.5
+  }
+}
+@media only screen and (min-height : 1900px) {
+  .table-container{
+      height: 95%;
+  }
+}
+
+/* 작은화면 */
+@media only screen and (max-width: 1200px) {
+  .janjan{
+      zoom : 1
+  }
+}
+@media only screen and (max-height: 900px) {
+  .table-container{
+      height: 80%;
+  }
+}
+@media only screen and (max-height: 760px) {
+  .table-container{
+      height: 70%;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .janjan{
+      zoom : 0.7
+  }
+}
+
+@media only screen and (max-width: 546px) {
+  .janjan{
+      zoom : 0.5
+  }
+}
