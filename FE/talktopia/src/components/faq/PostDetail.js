@@ -224,7 +224,7 @@ function PostDetail() {
                 <ul>
                   {detailedPost.answerPosts.map((answerPost, index) => (
                       <li className={`${style.li}`} key={index}>
-                        <span className={`${style.answer1}`}>답변 {index + 1}</span>
+                        <span className={`${style.answer1}`}>관리자 답변 {index + 1}</span>
                         <p className={`${style.answer}`}>{answerPost.contentContent}</p>
                       </li>
                   ))}
@@ -246,12 +246,17 @@ function PostDetail() {
             isAdmin ? 
             <div className={`${style["comment-section-container"]}`}>
                   <div className={`${style["comment-section"]}`}>
-                      <input className={`${style["comment-input"]}`} type="text" placeholder="문의 글에 대한 답변을 입력하세요" value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
+                      <input className={`${style["comment-input"]}`} type="text" placeholder="문의 글에 대한 답변을 입력하세요." value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
                       <button className={`${style["comment-button"]}`} onClick={handleCommentSubmit}>등록</button>
                   </div>
               </div>
               :
-              null
+              <div className={`${style["comment-section-container"]}`}>
+                  <div className={`${style["comment-section"]}`}>
+                    <div className={`${style["comment-input1"]}`}></div>
+                    <div className={`${style["comment-button1"]}`}></div>
+                  </div>
+              </div>
           }
         </div>
         <img className={`${style.grass1}`} src="/img/grass/grass2.png" alt=""></img>
