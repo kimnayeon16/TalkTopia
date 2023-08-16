@@ -5,7 +5,7 @@ import style from './SearchFind.module.css'
 import AddFriendButton from '../../components/search/AddFriendButton' // 추가된 부분
 import useTokenValidation from '../../utils/useTokenValidation';
 
-function FriendSearch(searchVisible) {
+function FriendSearch(searchVisible, onShowSearchFind) {
   useTokenValidation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,6 +90,7 @@ useEffect(()=>{
 
 const modalChange = () => {
   setModal(!modal);
+  onShowSearchFind(false);
 }
 
   return (

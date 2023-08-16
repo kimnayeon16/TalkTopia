@@ -22,7 +22,7 @@
   /* box-shadow: 0 5px 30px rgba(0, 0, 0, .2); */
   border-radius: 20px;
 
-  background: linear-gradient(rgba(255, 255, 255, 0.636) 60%, rgba(255, 255, 255, 0.347));
+  background: linear-gradient(rgba(255, 255, 255, 0.636) 60%, rgba(255, 255, 255, 0.347), #e0feff66);
 
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -122,7 +122,7 @@
 
 
 .chat-content {
-  padding: 0 10px;
+  padding: 0 12px;
 
   /* background-color: rgba(255, 255, 255, 0.558); */
   background: linear-gradient(rgba(0, 0, 0, 0.026) 10%, transparent 20%, rgba(255, 255, 255, 0.57) 70%);
@@ -130,9 +130,9 @@
   overflow-x: hidden;
 
   border-top: 2.4px solid rgba(255, 255, 255, 0.657);
-  border-bottom: 2.3px solid rgba(0, 0, 0, 0.02);
+  border-bottom: 3.3px solid rgba(0, 0, 0, 0.02);
   padding-top: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 /* 스크롤바 */
@@ -176,8 +176,8 @@
 .chat-msg{
   display: inline-block;
   word-break: break-all;
-  border-radius: 30px;
-  padding: 5px 10px;
+  border-radius: 18px;
+  padding: 7px 12px;
   max-width: 300px;
   /* color: #4a4b4d; */
   color: rgb(92, 93, 97);
@@ -193,6 +193,7 @@
 .my-chat-msg .chat-msg{
   background-color: white;
   margin: 0 0 0 10px;
+  text-align: left;
 }
 
 .friend-chat-msg {
@@ -254,16 +255,20 @@
 .chat-send-btn {
   display: inline;
   width: 60px;
+  /* height: 40px; */
   border-radius: 30px;
-  background-color: white;
+  background-color: #15aeff;
+  /* background: linear-gradient(#ffffffc7, transparent); */
+  border: 2.5px solid white;
+  border: 2px solid rgb(255 255 255 / 88%);
 }
 
 .chat-send-btn:hover {
 }
 
 .chat-send-btn *{
-  color: rgba(0, 0, 0, 0.497);
-  width: 30px;
+  color: rgb(255, 255, 255);
+  width: 25px;
 }
 
 /* 채팅창 닫기버튼 */
@@ -277,4 +282,46 @@
   font-size: 1.5em;
   color: #05050592;
   display: inline;
+}
+
+/* -------------- 반응형 구간 ------------------------- */
+/* 큰화면 */
+@media only screen and (min-width : 1900px) {
+  .chat-window{
+      zoom : 1.5
+  }
+}
+@media only screen and (min-height : 1900px) {
+  .friend-list{
+      height: 95%;
+  }
+}
+
+/* 작은화면 */
+@media only screen and (max-width: 1200px) {
+  .chat-window{
+      zoom : 1
+  }
+}
+/* @media only screen and (max-height: 900px) {
+  .friend-list{
+      height: 75%;
+  }
+}
+@media only screen and (max-height: 760px) {
+  .friend-list{
+      height: 70%;
+  }
+} */
+
+@media only screen and (max-width: 950px) {
+  .chat-window{
+      zoom : 0.7
+  }
+}
+
+@media only screen and (max-width: 546px) {
+  .chat-window{
+      zoom : 0.5
+  }
 }

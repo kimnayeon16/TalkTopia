@@ -86,9 +86,12 @@ const FriendList = () => {
     setShowChat(false);
   }
   const modalOpen = () => {
+    setShowChat(false)
     setSearchVisible(!searchVisible);
   }
-
+  const handleShowSearchFind = (msg) => {
+    setSearchVisible(msg);
+  }
 
   /* 함수 영역 끝 */
 
@@ -105,8 +108,9 @@ const FriendList = () => {
           <div className={`${friendListStyle["friend-list-modal-overlay"]}`}>
             <div className={`${friendListStyle["friend-list-modal"]}`}>
               <h2 className={`${friendListStyle["friend-list-h2"]}`}>친구 목록</h2>
-              {/* 닫기 버튼 */}
+              {/* 돋보기 버튼 */}
               <img className={`${friendListStyle["modal-search-btn"]}`} src="/img/main/search.png" alt="" onClick={modalOpen}></img>
+              {/* 닫기 버튼 */}
               <button onClick={() => {setIsListVisible(false); setShowChat(false) }} className={`${friendListStyle["modal-close-btn"]}`}><AiOutlineClose size='20'/></button>
               
               <div className={`${friendListStyle["friend-list"]}`}>
@@ -162,11 +166,12 @@ const FriendList = () => {
                 chats={chats} />)
             }
 
-            {searchVisible && <SearchFind searchVisible={searchVisible}/>}
           </div>
         }
 
-      {searchVisible && <SearchFind searchVisible={searchVisible}/>}
+      {searchVisible && 
+      <SearchFind searchVisible={searchVisible} onShowSearchFind={handleShowSearchFind}/>
+      }
 
 
     </div>

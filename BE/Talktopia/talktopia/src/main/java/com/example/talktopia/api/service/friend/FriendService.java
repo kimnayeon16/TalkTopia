@@ -128,7 +128,7 @@ public class FriendService {
 		List<UnknownUserReq> res = new ArrayList<>();
 		for (Friend f : arr) {
 			User temp = userRepository.findByUserNo(f.getFrFriendNo());
-			String userStatus = userStatusService.getUserStatus(userId);
+			String userStatus = userStatusService.getUserStatus(temp.getUserId());
 			UnknownUserReq friend = UnknownUserReq.builder()
 				.userId(temp.getUserId())
 				.userImg(temp.getProfileImg().getImgUrl())
