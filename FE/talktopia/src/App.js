@@ -18,7 +18,6 @@ import PasswordFindFail from './pages/auth/FindMyInfo/PasswordFindFail.js';
 
 //home
 import Home from './pages/home/Home.js';
-import Home1 from './pages/home/NoHome.js';
 
 //mypage
 import MyInfo from './pages/mypage/MyInfo.js';
@@ -97,7 +96,6 @@ function App() {
         <Route path="/findPassword/fail" element={<PublicRoute element={<PasswordFindFail/>}/>}/>
 
         {/* home */}
-        <Route path="/home1" element={<Home1/>}/>
         <Route path="/home" element={<PrivateRoute element={<Home/>}/>}/>
         {/* myInfo */}
         <Route path="/myinfo" element={<PrivateRoute element={<MyInfo/>}/>}/>
@@ -106,10 +104,11 @@ function App() {
         {/* <Route path="/myinfo/passwordConfirm" element={<MyInfoPw/>}/> */}
 
         {/* faq */}
-        <Route path="/faq" element={<PrivateRoute element={<Faq/>}/>}></Route>
-        <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}></Route>
-        <Route path="/inquiry" element={<PostForm/>}></Route>
-        <Route path="/post/:postNo" element={<PostDetail />} />
+        <Route path="/faq" element={<PrivateRoute element={<Faq/>}/>}/>
+        <Route path="/counsel" element={<PrivateRoute element={<Counsel/>}/>}/>
+        <Route path="/inquiry" element={<PrivateRoute element={<PostForm/>}/>}/>
+        {/* <Route path="/post/:postNo" element={<PostDetail />} /> */}
+        <Route path="/post/:postNo" element={<PrivateRoute element={<PostDetail/>}/>}/>
         
         {/* <Route path="/faq" element={<Faq/>}></Route>
         <Route path="/counsel" element={<Counsel/>}></Route> */}
@@ -123,7 +122,7 @@ function App() {
         {/* 로그아웃 */}
         <Route path="/logout" element={<Logout/>}/>
         {/* 없는 페이지 */}
-        <Route path="/*" component={<Error/>}/>
+        <Route path="/*" element={<Error/>}/>
         {/* 삭제할거 */}
         <Route path="/google" element={<GoogleLoginButton/>}/>
 

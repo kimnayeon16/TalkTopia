@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import style from "./PasswordFind.module.css";
+import style from "./PasswordFindFail.module.css";
 
 function PasswordFindFail(){
     const navigate = useNavigate();
