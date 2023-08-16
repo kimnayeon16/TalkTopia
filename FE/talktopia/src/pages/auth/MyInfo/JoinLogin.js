@@ -491,6 +491,7 @@ function JoinLogin(){
                  alert("회원가입 실패");
             }
 
+            //초기화
              setUserIdJoin("");
              setUserJoinPw("");
              setUserPwConfirm("");
@@ -500,7 +501,25 @@ function JoinLogin(){
              setUserEmail("");
              setUserLan("");
              setPwConfirmMsg("");
+             setNameMsg("띄어쓰기 불가능")
              setEmailButton("이메일 인증");
+             setIdValid(false);
+             setPwValid(false);
+             setEmailValid(false);
+             setEmailSelect(true);
+             setEmailConfirmWindow(false);
+             setEmailConfirm("");
+             setEmailConfirmWindow(false);
+             setEmailConfirm("");
+             setEmailConfirmServer("");
+             setButtonDisabled(false);
+             setUserIdCorrect(false);
+             setUserPwCorrect(false);
+             setUserPwConfirmCorrect(false);
+             setUserNameCorrect(false);
+             setUserEmailCorrect(false);
+             setUserLanCorrect(false);
+
         }else if(!userIdCorrect){
             Swal.fire({
                 icon: "warning",
