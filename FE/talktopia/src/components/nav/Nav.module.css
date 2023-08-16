@@ -24,6 +24,7 @@
 
 
 
+
 /* 내 정보 */
 .user-space {
   position: relative;
@@ -116,17 +117,13 @@
   letter-spacing: 0.02em;
   line-height: 1.4;
   transition: background-color 0.2s;
-
+  
   /* 간격 및 둥근 테두리 스타일 추가 */
-  margin-bottom: 8px;
-  /* 아이템 간의 간격 설정 */
-  border-radius: 5px;
-  /* 둥근 테두리 설정 */
+  margin-bottom: 8px;      /* 아이템 간의 간격 설정 */
+  border-radius: 5px;      /* 둥근 테두리 설정 */
 
-  display: flex;
-  /* 플렉스박스 설정 */
-  align-items: center;
-  /* 수직 중앙 정렬 */
+  display: flex;           /* 플렉스박스 설정 */
+  align-items: center;     /* 수직 중앙 정렬 */
 
   overflow: auto;
 }
@@ -138,19 +135,14 @@
 
 .notification-item:last-child {
   border-bottom: none;
-  margin-bottom: 0;
-  /* 마지막 아이템에는 margin-bottom을 제거 */
+  margin-bottom: 0;        /* 마지막 아이템에는 margin-bottom을 제거 */
 }
 
 .notification-item img {
-  float: left;
-  /* 이미지를 왼쪽에 고정 */
-  margin-right: 10px;
-  /* 텍스트와의 간격 확보 */
-  width: 30px;
-  /* 이미지 크기 설정 */
-  height: 30px;
-  /* 이미지 크기 설정 */
+  float: left;           /* 이미지를 왼쪽에 고정 */
+  margin-right: 10px;    /* 텍스트와의 간격 확보 */
+  width: 30px;           /* 이미지 크기 설정 */
+  height: 30px;          /* 이미지 크기 설정 */
 }
 
 
@@ -193,6 +185,7 @@
 
 
 
+
 /* 언어 변경(지구) */
 .earth-space {
   position: relative;
@@ -219,7 +212,7 @@
   z-index: 100;
   position: fixed;
   top: 76px;
-  right: 110px;
+  right: 30px;
   margin: 0;
   padding: 10px;
   display: flex;
@@ -244,19 +237,22 @@
   display: inline-block;
 }
 
-.faq {
-  width: 50px;
+.faq{
+  width:50px;
+  height: auto;
   position: fixed;
   top: 24px;
-  right: 50px;
-  z-index: 9;
+  right: 140px;
+  z-index: 10;
+
 }
 
-.faqModal {
+.faqModal{
   font-family: 'Dovemayo_wild';
   font-size: 17px;
-  width: 100px;
+  width: 120px;
   height: 90px;
+
   margin-top: -320px;
   margin-left: 1350px;
   border-radius: 15px;
@@ -265,7 +261,7 @@
   z-index: 100;
   position: fixed;
   top: 76px;
-  right: 30px;
+  right: 110px;
   margin: 0;
   padding: 10px;
   display: flex;
@@ -296,11 +292,11 @@
 /* 큰화면 */
 @media only screen and (min-width : 1900px) {
   .user {
-    zoom : 1.5 
+    zoom: 1.5
   }
 
   .dding {
-    zoom : 1.5 
+    zoom: 1.5
   }
 
   .earth {
@@ -315,11 +311,11 @@
 /* 작은화면 */
 @media only screen and (max-width: 1200px) {
   .user {
-    zoom : 1 
+    zoom: 1
   }
 
   .dding {
-    zoom : 1 
+    zoom: 1
   }
 
   .earth {
@@ -333,29 +329,29 @@
 
 @media only screen and (max-width: 950px) {
   .user {
-    zoom : 0.7  
+    zoom: 0.7
   }
 
   .dding {
-    zoom : 0.7  
+    zoom: 0.7
   }
 
   .earth {
-    zoom: 0.7 
+    zoom: 0.7
   }
 
   .faq {
-    zoom: 0.7 
+    zoom: 0.7
   }
 }
 
 @media only screen and (max-width: 546px) {
   .user {
-    zoom : 0.5 
+    zoom: 0.5
   }
 
   .dding {
-    zoom : 0.5 
+    zoom: 0.5
   }
 
   .earth {

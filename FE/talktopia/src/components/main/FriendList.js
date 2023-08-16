@@ -10,6 +10,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useEffect } from 'react';
 import friendListStyle from './FriendList.module.css';
 import ChatWindow from '../../pages/friend/ChatWindow';
+import SearchFind from '../../pages/search/SearchFind';
 
 const FriendList = () => {
   const user = useSelector((state) => state.userInfo);
@@ -23,6 +24,9 @@ const FriendList = () => {
   const [showChat, setShowChat] = useState(false); // 채팅방 표시 여부
   const [enterSessionId, setEnterSessionId] = useState(""); // 채팅방 session
   const [chats, setChats] = useState([]) // 채팅 내용
+  // 친구 검색
+  const [searchVisible, setSearchVisible] = useState(false);
+
   /* friend list용 state 끝 */
 
 
@@ -35,8 +39,6 @@ const FriendList = () => {
   };
 
   const crabClick = () => {
-    console.log("ccc")
-
     fetchFriends();
 
     setIsUp(true);
@@ -48,11 +50,8 @@ const FriendList = () => {
   };
 
   const fetchFriends = () =>{
-    console.log("fetch??")
-    console.log(`${user.userId}`)
     axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
     .then((response) => {
-      console.log(response)
       setFriendList(response.data);
       setIsListVisible(true)
     })
@@ -89,6 +88,10 @@ const FriendList = () => {
   const handleShowChat = (message)=>{
     setShowChat(false);
   }
+  const modalOpen = () => {
+    setSearchVisible(!searchVisible);
+  }
+
 
   /* 함수 영역 끝 */
 
@@ -105,7 +108,8 @@ const FriendList = () => {
           <div className={`${friendListStyle["friend-list-modal-overlay"]}`}>
             <div className={`${friendListStyle["friend-list-modal"]}`}>
               <h2 className={`${friendListStyle["friend-list-h2"]}`}>친구 목록</h2>
-              {/* <button onClick={setIsListVisible(false)} className={`${friendListStyle["modal-close-btn"]}`}>X</button> */}
+              {/* 닫기 버튼 */}
+              <img className={`${friendListStyle["modal-search-btn"]}`} src="/img/main/search.png" alt="" onClick={modalOpen}></img>
               <button onClick={() => {setIsListVisible(false); setShowChat(false) }} className={`${friendListStyle["modal-close-btn"]}`}><AiOutlineClose size='20'/></button>
               
               <div className={`${friendListStyle["friend-list"]}`}>
@@ -160,6 +164,8 @@ const FriendList = () => {
                 onShowChat={handleShowChat}
                 chats={chats} />)
             }
+
+            {searchVisible && <SearchFind searchVisible={searchVisible}/>}
           </div>
         }
 
