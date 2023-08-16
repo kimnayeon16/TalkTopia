@@ -48,7 +48,6 @@
   flex-direction: column;
   justify-content: left;
   /* justify-content: space-evenly; */
-  gap: 100px;
   height: 250px;
   overflow: auto;
 }
