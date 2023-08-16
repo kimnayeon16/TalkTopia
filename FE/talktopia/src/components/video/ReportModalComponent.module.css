@@ -4,56 +4,73 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
-  height: 400px;
+  /* height: 400px; */
+  height: auto;
   padding: 2em;
-  background: rgb(212, 241, 241);
-  border-radius: 5px;
+  background: linear-gradient(rgba(255, 255, 255, 0.636) 60%, rgba(255, 255, 255, 0.347));
+  backdrop-filter: blur(5px);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
   font-family: 'Dovemayo_wild';
-
-  border: 1px solid #a2a4a7;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
+  transition: right 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .report-modal-close {
   position: absolute;
   top: 0;
   right: 0;
-  width: 70px;
+  width: 50px;
   border: none;
-  background-color: none;
-  line-height: 50px;
-  font-size: 80%;
-  color: #aaa;
-  text-decoration: none;
+  color: #05050592;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  transition: transform 0.3s;
+  /* text-decoration: none; */
 }
 
 .report-modal-close:hover {
+  transform: scale(1.05); /* 호버 시 확대 효과 */
   color: black;
 }
 
-.report-modal-content header {
+.report-modal-titlebox {
+  width: auto;
+  margin: 0;
+  padding: 0px 20px;
+}
+
+.report-modal-title {
+  display: block;
   font-weight: bold;
-}
-
-.report-modal-content h1 {
   font-size: 17px;
-  margin: 0 0 15px;
+  margin: 0;  
 }
 
-
-.report-reaseon-container {
+.report-reason-container {
   display: flex;
+  padding: 10px 20px;
+  margin: 5% 0% 2%;
+  border-radius: 10px;
+  border-top: 2.4px solid rgba(255, 255, 255, 0.657);
+  border-bottom: 2.3px solid rgba(0, 0, 0, 0.02);
+  background: linear-gradient(rgba(0, 0, 0, 0.026) 10%, transparent 20%, rgba(255, 255, 255, 0.57) 70%);
   flex-direction: column;
   justify-content: left;
   justify-content: space-evenly;
-  gap: 100px;
 }
 
 .report-reason-content {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.report-reason-content:hover {
+  transform: scale(1.02);
 }
 
 /* 체크박스 */
@@ -74,32 +91,37 @@
 
 /* 상세설명 창 */
 .textarea {
-  padding: 0.4rem 0.6rem;
-  border-radius: 5px;
-  border: 1px solid silver;
   width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid silver;
   resize: none;
+  border-radius: 10px;
+  border-top: 2.4px solid rgba(255, 255, 255, 0.657);
+  border-bottom: 2.3px solid rgba(0, 0, 0, 0.02);
   font-size: 0.9rem;
-  &:focus {
-    outline-color: darken(mix(hotpink, orange, 75%), 5%);
-  }
+  outline-color: rgb(36, 36, 36);
 }
 
 /* 신고 버튼 */
 .report-button {
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
   border: 0;
+  /* background: rgb(84, 151, 205); */
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  background: rgb(84, 151, 205);
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
-  width: 100%;
-  transition: 0.1s;
-  &:hover {
-    background-color: darken(mix(hotpink, orange, 75%), 5%);
-    color: white;
-    cursor: pointer;
-  }
+  border-radius: 10px;
+  border-top: 2.4px solid rgba(255, 255, 255, 0.657);
+  border-bottom: 2.3px solid rgba(0, 0, 0, 0.02);
+  background: linear-gradient(rgba(0, 0, 0, 0.026) 10%, transparent 20%, rgba(255, 255, 255, 0.57) 70%);
+  transition: 0.25s;
+}
+
+.report-button:hover {
+  transform: scale(1.05);
+  background: rgb(84, 151, 205, 0.40);
+  color: white;
+  cursor: pointer;
 }

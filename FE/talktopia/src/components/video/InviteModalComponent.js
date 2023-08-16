@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from '../../utils';
+import { AiOutlineClose } from "react-icons/ai";
 
 import style from './InviteModalComponent.module.css'
 
@@ -9,6 +10,7 @@ import style from './InviteModalComponent.module.css'
 function InviteModalComponent(props) {
     const user = useSelector((state) => state.userInfo);    // Redux 정보
     const checkBoxList = props.inviteFriendsList
+    console.log('checkBoxList', checkBoxList)
 
     const [checkedList, setCheckedList] = useState([]);
     const [isChecked, setIsChecked] = useState(false);
@@ -61,8 +63,14 @@ function InviteModalComponent(props) {
     return (
         <>
             <div className={style['invite-modal-content']}>
-                <h1>친구 목록</h1>
-                <button className={style['invite-modal-close']} onClick={props.closeInviteModal}>close</button>
+                <div className={style['invite-modal-titlebox']} >
+                    <p className={style['invite-modal-title']}>친구 목록</p>
+                </div>
+
+                <button className={style['invite-modal-close']} onClick={props.closeInviteModal}>
+                   <AiOutlineClose size='20'/>
+                </button>
+                
                 <form onSubmit={onSubmit}>
                     <div className={style['friends-container']} >
                         {checkBoxList.map((item, idx) => (
