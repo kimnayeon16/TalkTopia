@@ -1,5 +1,6 @@
 package com.example.talktopia.api.response.post;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Builder;
@@ -13,13 +14,15 @@ public class PostRes {
 	String postTitle;
 	String postContent;
 	int postCount;
+	LocalDateTime postCreateTime;
 	List<AnswerPostRes> answerPosts;
 	@Builder
-	public PostRes(long postNo, String postTitle, String postContent, int postCount, List<AnswerPostRes> answerPosts) {
+	public PostRes(long postNo, String postTitle, String postContent, int postCount,LocalDateTime postCreateTime ,List<AnswerPostRes> answerPosts) {
 		this.postNo = postNo;
 		this.postTitle = postTitle;
 		this.postCount=postCount;
 		this.postContent = postContent;
+		this.postCreateTime =postCreateTime;
 		this.answerPosts=answerPosts;
 	}
 }
