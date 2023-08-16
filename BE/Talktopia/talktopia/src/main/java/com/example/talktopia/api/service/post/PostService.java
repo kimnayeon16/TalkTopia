@@ -69,7 +69,7 @@ public class PostService {
 		}
 		List<AnswerPost> answerPosts = answerPostRepository.findByPostPostNo(post.getPostNo());
 		List<AnswerPostRes> answerPostRes = showPostOne(answerPosts);
-		return new PostRes(post.getPostNo(),post.getPostTitle(),post.getPostContent(),post.getPostCount(),answerPostRes);
+		return new PostRes(post.getPostNo(),post.getPostTitle(),post.getPostContent(),post.getPostCount(),post.getPostCreateTime(),answerPostRes);
 
 	}
 
