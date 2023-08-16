@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 
 import style from './UserVideoComponent.module.css'
 import { BACKEND_URL } from '../../utils';
-
+import { useTranslation } from "react-i18next";
 
 const flag = {
     'ko-KR': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%BD%94%EB%A6%AC%EC%95%84.png',
@@ -28,7 +28,7 @@ const flag = {
 
 
 function UserVideoComponent (props) {
-
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);    // Redux 정보
     console.log(flag[props.nation])
 
@@ -52,7 +52,7 @@ function UserVideoComponent (props) {
                 icon: "success",
                 // title: "만나서 반가워요!",
                 text: response.data.message,
-                confirmButtonText: "확인",
+                confirmButtonText:  t(`UserVideoComponent.confirmButtonText1`),
                 confirmButtonColor: '#90dbf4',
                 timer: 1500,
                 timerProgressBar: true,
@@ -66,7 +66,7 @@ function UserVideoComponent (props) {
                 icon: "error",
                 // title: "만나서 반가워요!",
                 text: error,
-                confirmButtonText: "확인",
+                confirmButtonText:t(`UserVideoComponent.confirmButtonText1`),
                 confirmButtonColor: '#90dbf4',
                 timer: 1500,
                 timerProgressBar: true,

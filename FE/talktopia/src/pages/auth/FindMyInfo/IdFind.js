@@ -6,12 +6,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { reduxFindMyInfo } from "../../../store.js";
-
+import { useTranslation } from "react-i18next";
 function IdFind() {
     const headers ={
         'Content-Type' : 'application/json'
     }
-
+    const { t } = useTranslation();
     let navigate = useNavigate();
     let dispatch = useDispatch();
 
@@ -95,8 +95,8 @@ function IdFind() {
       }else{
         Swal.fire({
           icon: "warning",
-          title: "빠짐없이 입력해주세요.",
-          confirmButtonText: "확인",
+          title: t(`IdFind.IdFind1`),
+          confirmButtonText: t(`IdFind.IdFind2`),
           confirmButtonColor: '#90dbf4',
           timer: 2000,
           timerProgressBar: true,
@@ -116,21 +116,21 @@ function IdFind() {
       <>
         <div className={`${style.background}`}>
           <h2 className={`${style.logo}`}>TalkTopia</h2>
-          <h2 className={`${style.title}`}>아이디 찾기</h2>
+          <h2 className={`${style.title}`}>{t(`IdFind.IdFind3`)}</h2>
           <div className={`${style["img-container"]}`}>
             <img className={`${style["fade-in-box"]}`} src="/img/find1.png" alt=""></img>
             <img className={`${style["fade-in-box-1"]}`} src="/img/find2.png" alt=""></img>
           </div>
-          <p className={`${style.p}`}>TalkTopia 가입 시 등록한 이름과 이메일을 입력해주세요.</p>
+          <p className={`${style.p}`}>{t(`IdFind.IdFind4`)}</p>
           <div className={`${style["parent-container"]}`}>
-            <input className={`${style.input}`} type="text" value={userName} onChange={onNameHandler} placeholder="이름" onKeyPress={onCheckEnter}></input>
+            <input className={`${style.input}`} type="text" value={userName} onChange={onNameHandler} placeholder={t(`IdFind.IdFind7`)} onKeyPress={onCheckEnter}></input>
             <br/>
-            <input className={`${style["input-email"]}`} type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} placeholder="이메일"></input>
+            <input className={`${style["input-email"]}`} type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} placeholder={t(`IdFind.IdFind8`)}></input>
             <span className={`${style["input-email-1"]}`}>@</span>
             {emailSelect === true ? (
               <select className={`${style["input-email-2"]}`} value={userEmailDomain} onChange={onEmailDomainHandler} onKeyPress={onCheckEnter}>
-                <option value="default" disabled> 선택하세요 </option>
-                <option value="">직접입력</option>
+                <option value="default" disabled> {t(`IdFind.IdFind5`)} </option>
+                <option value="">{t(`IdFind.IdFind6`)}</option>
                 <option value="gmail.com">gmail.com</option>
                 <option value="hotmail.com">hotmail.com</option>
                 <option value="outlook.com">outlook.com</option>
@@ -147,7 +147,7 @@ function IdFind() {
                 <span className={`${style.span}`} onClick={() => {setEmailSelect(true); setUserEmailDomain("default") }}>✖</span>
               </>
             )}
-            <button className={`${style.button}`} onClick={findId}>아이디 찾기</button>
+            <button className={`${style.button}`} onClick={findId}>{t(`IdFind.IdFind3`)}</button>
           </div>
           <img className={`${style.turtle}`} src="/img/fish/turtle.png" alt=""></img>
             <img className={`${style.grass2}`} src="/img/grass/grass2.png" alt=""></img>

@@ -7,9 +7,10 @@ import Swal from 'sweetalert2';
 import { reduxUserInfo } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import Nav from '../../nav/Nav';
-
+import { useTranslation } from "react-i18next";
 
 function PostDetail() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   let dispatch = useDispatch();
   const user = useSelector((state) => state.userInfo);
@@ -84,7 +85,7 @@ function PostDetail() {
         const minutes = dateTime.getMinutes();
         const seconds = dateTime.getSeconds();
 
-        setFormattedDateTime(`작성 일자 : ${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분 ${seconds}초`);
+        setFormattedDateTime(`${t(`PostDetail.ment1`)} : ${year}${t(`PostDetail.ment2`)} ${month}${t(`PostDetail.ment3`)} ${day}${t(`PostDetail.ment4`)} ${hours}${t(`PostDetail.ment5`)} ${minutes}${t(`PostDetail.ment6`)} ${seconds}${t(`PostDetail.ment7`)}`);
 
       })
       .catch((error) => {
@@ -118,8 +119,8 @@ function PostDetail() {
         setNewComment(""); // 새로운 댓글 입력 상태 초기화
         Swal.fire({
           icon: "success",
-          title: "댓글이 등록되었습니다.",
-          confirmButtonText: "확인",
+          title:  t(`PostDetail.ment8`),
+          confirmButtonText: t(`PostDetail.ment9`),
           timer: 2000,
           timerProgressBar: true,
           confirmButtonColor: '#90dbf4',
@@ -132,7 +133,7 @@ function PostDetail() {
         Swal.fire({
           icon: "error",
           title: message,
-          confirmButtonText: "확인",
+          confirmButtonText: t(`PostDetail.ment10`),
           confirmButtonColor: '#90dbf4',
         })
         console.log("댓글 등록 실패");
@@ -145,10 +146,10 @@ function PostDetail() {
   const handleDeleteButtonClick = () => {
     Swal.fire({
       icon: "warning",
-      title: "게시글을 삭제하시겠습니까?",
+      title: t(`PostDetail.ment11`),
       showCancelButton: true,
-      confirmButtonText: "확인",
-      cancelButtonText: "취소",
+      confirmButtonText: t(`PostDetail.ment12`),
+      cancelButtonText: t(`PostDetail.ment13`),
       timer: 2000,
       confirmButtonColor: '#90dbf4',
       cancelButtonColor: '#ec1c57',
@@ -170,8 +171,8 @@ function PostDetail() {
             ).then((response) => {
               Swal.fire({
                 icon: "success",
-                title: "게시글이 성공적으로 삭제되었습니다.",
-                confirmButtonText: "확인",
+                title: t(`PostDetail.ment14`),
+                confirmButtonText: t(`PostDetail.ment15`),
                 timer: 2000,
                 timerProgressBar: true,
                 confirmButtonColor: '#90dbf4',
@@ -203,20 +204,20 @@ function PostDetail() {
     <div className={`${style.background1}`}>
       <Nav/>
         <div className={`${style.container1}`}>
-          <h2 className={`${style.question}`}>질문</h2>
+          <h2 className={`${style.question}`}>{t(`PostDetail.ment16`)}</h2>
             <div className={`${style.box1}`}>
               <div className={`${style.header}`}>
-                <h2 className={`${style.h2}`}>제목 : {detailedPost.postTitle}</h2>
+                <h2 className={`${style.h2}`}>{t(`PostDetail.ment17`)} {detailedPost.postTitle}</h2>
                 <p className={`${style.date}`}>{formattedDateTime}</p>
                 <img className={`${style.line}`} src="/img/findMyInfo/find1.png" alt=""/>
                 <p className={`${style["post-content"]}`}>{detailedPost.postContent}</p>
               </div>
             </div>
-            <button className={`${style["delete-button"]}`} onClick={handleDeleteButtonClick}>게시글 삭제</button>
+            <button className={`${style["delete-button"]}`} onClick={handleDeleteButtonClick}>{t(`PostDetail.ment18`)}</button>
         </div>
 
         <div className={`${style.container2}`}>
-          <h2 className={`${style.question}`}>답변</h2>
+          <h2 className={`${style.question}`}>{t(`PostDetail.ment19`)}</h2>
           <div className={`${style.box2}`}>
             <div className={`${style["answer-posts"]}`}>
               {
@@ -224,7 +225,7 @@ function PostDetail() {
                 <ul>
                   {detailedPost.answerPosts.map((answerPost, index) => (
                       <li className={`${style.li}`} key={index}>
-                        <span className={`${style.answer1}`}>관리자 답변 {index + 1}</span>
+                        <span className={`${style.answer1}`}>{t(`PostDetail.ment20`)} {index + 1}</span>
                         <p className={`${style.answer}`}>{answerPost.contentContent}</p>
                       </li>
                   ))}
@@ -232,9 +233,9 @@ function PostDetail() {
                   : (
                     <ul>
                       <li className={`${style.li}`} >
-                        <p className={`${style.answer2}`}>아직 답변이 달리지 않았습니다.</p>
-                        <p className={`${style.answer2}`}>순차적으로 처리하고 있으니 빠른 시일 내에 답변을 제공하겠습니다.</p>
-                        <p className={`${style.answer2}`}>TalkTopia에 많은 관심을 가져주셔서 감사합니다.</p>
+                        <p className={`${style.answer2}`}>{t(`PostDetail.ment21`)}</p>
+                        <p className={`${style.answer2}`}>{t(`PostDetail.ment22`)}</p>
+                        <p className={`${style.answer2}`}>{t(`PostDetail.ment23`)}</p>
                       </li>
                     </ul>
                   )
@@ -246,8 +247,8 @@ function PostDetail() {
             isAdmin ? 
             <div className={`${style["comment-section-container"]}`}>
                   <div className={`${style["comment-section"]}`}>
-                      <input className={`${style["comment-input"]}`} type="text" placeholder="문의 글에 대한 답변을 입력하세요." value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
-                      <button className={`${style["comment-button"]}`} onClick={handleCommentSubmit}>등록</button>
+                    <input className={`${style["comment-input"]}`} type="text" placeholder={t(`PostDetail.ment24`)} value={newComment} onChange={(e) => setNewComment(e.target.value)}/>
+                    <button className={`${style["comment-button"]}`} onClick={handleCommentSubmit}>{t(`PostDetail.ment25`)}</button>
                   </div>
               </div>
               :

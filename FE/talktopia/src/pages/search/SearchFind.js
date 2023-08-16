@@ -5,11 +5,11 @@ import style from './SearchFind.module.css'
 import AddFriendButton from '../../components/search/AddFriendButton' // 추가된 부분
 import useTokenValidation from '../../utils/useTokenValidation';
 import { AiOutlineClose } from "react-icons/ai";
-
+import { useTranslation } from "react-i18next";
 
 function FriendSearch({searchVisible, onShowSearchFind}) {
   useTokenValidation();
-
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchNickname, setSearchNickname] = useState('');
   const [searchType, setSearchType] = useState('ID'); // 초기값으로 'ID' 설정
@@ -87,7 +87,7 @@ const [modal, setModal] = useState(searchVisible);
   };
   const renderSearchResults = () => {
     if (searchResults.length === 0) {
-      return <p>검색 결과에 매칭되는 유저가 없습니다.</p>;
+      return <p>{t(`searchFind.searchFind1`)}</p>;
     }
 };
 
@@ -106,20 +106,20 @@ const modalChange = () => {
     {modal &&
     <div className={`${style.janjan}`}>
         <div>
-          <h2 className={`${style.modaltitle}`}>사용자 검색</h2>
+        <h2 className={`${style.modaltitle}`}>{t(`searchFind.searchFind2`)}</h2>
           <button onClick={modalChange}  className={`${style.out}`}><AiOutlineClose size='20'/></button>
 
         </div>
         <div className={`${style.button1}`}>
-          <button className={`${style["button-change"]}`} onClick={() => setSearchType('ID')}>아이디로 검색</button>
-          <button className={`${style["button-change"]}`} onClick={() => setSearchType('EMAIL')}>이메일로 검색</button>
-          <button className={`${style["button-change"]}`} onClick={() => setSearchType('LANG')}>언어로 검색</button>
+          <button className={`${style["button-change"]}`} onClick={() => setSearchType('ID')}>{t(`searchFind.searchFind3`)}</button>
+          <button className={`${style["button-change"]}`} onClick={() => setSearchType('EMAIL')}>{t(`searchFind.searchFind4`)}</button>
+          <button className={`${style["button-change"]}`} onClick={() => setSearchType('LANG')}>{t(`searchFind.searchFind5`)}</button>
         </div>
         <div className={`${style["button-input"]}`}>
             {
               searchType === 'LANG' && ( // 언어 검색일 때만 드롭다운 메뉴 표시
               <select className={`${style.iSelect}`} value={selectedLanguage} onChange={handleLanguageChange}>
-                <option value=''>언어 선택</option>
+                <option value=''>{t(`searchFind.searchFind6`)}</option>
                 {languageOptions.map((language, index) => (
                   <option key={index} value={language}>{language}</option>
                 ))}
@@ -131,14 +131,14 @@ const modalChange = () => {
                 type="text"
                 value={searchNickname}
                 onChange={handleInputChange}
-                placeholder={searchType === 'ID' ? '아이디를 입력하세요' : '이메일을 입력하세요'}
+                placeholder={searchType === 'ID' ? t(`searchFind.searchFind7`) : t(`searchFind.searchFind8`)}
                 className={`${style.iInput}`}
               />
             )}
         </div>
         <hr className={`${style["search-find-hr"]}`}></hr>
         <div className={`${style["search-resultss"]}`}>
-          <h2 className={`${style.modaltitle1}`}>검색 결과</h2>
+        <h2 className={`${style.modaltitle1}`}>{t(`searchFind.searchFind9`)}</h2>
           <div className={`${style.container}`}>
 
             <div className={`${style.container2}`}>
@@ -194,7 +194,7 @@ const modalChange = () => {
                   </div>) 
                   : 
                   (
-                    <p className={`${style["no-results-message"]}`}>검색 결과에 일치하는 사용자가 없습니다.</p>
+                    <p className={`${style["no-results-message"]}`}>{t(`searchFind.searchFind16`)}</p>
                   )
                 }
               </div>

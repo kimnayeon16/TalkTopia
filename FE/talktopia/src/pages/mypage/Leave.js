@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import style from "./Leave.module.css";
+import { useTranslation } from "react-i18next";
 
 function Leave(){
+    const { t } = useTranslation();
     let navigate = useNavigate();
 
     const confirm = ()=>{
@@ -11,10 +13,10 @@ function Leave(){
     return(
         <div className={`${style.background}`}>
             <h2 className={`${style.logo}`}>TalkTopia</h2>
-            <h2 className={`${style.title}`}>회원 탈퇴가 완료되었습니다.</h2>
-            <p className={`${style.p}`}>TalkTopia를 이용해주시고 사랑해주셔서 감사했습니다.</p>
-            <p className={`${style.p}`}>더욱 더 노력하고 발전하는 TalkTopia가 되겠습니다.</p>
-            <button className={`${style.button}`} onClick={confirm}>확인</button>
+            <h2 className={`${style.title}`}> {t(`Leave.msg1`)}</h2>
+            <p className={`${style.p}`}>{t(`Leave.msg2`)}</p>
+            <p className={`${style.p}`}>{t(`Leave.msg3`)}</p>
+            <button className={`${style.button}`} onClick={confirm}>{t(`Leave.accept`)}</button>
         </div>
     )
 }

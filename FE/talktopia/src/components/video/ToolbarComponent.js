@@ -9,12 +9,12 @@ import { MdOutlineChangeCircle } from "react-icons/md"; // 주제 바꾸기
 import { BiExit } from "react-icons/bi";                // 주제 제시 종료
 import { HiOutlineLightBulb } from "react-icons/hi";    // 주제 제시
 
-
+import { useTranslation } from "react-i18next";
 import style from "./ToolbarComponent.module.css"
 
 
 function ToolbarComponent(props) {
-
+    const { t } = useTranslation();
     const handleTopicbutton = (e) => {
         e.preventDefault();
         if (props.roomRole === 'HOST') {
@@ -29,11 +29,11 @@ function ToolbarComponent(props) {
                     <>
                         <button className={`${style['video-game-button']} ${style['video-game-button-HOST']}`} onClick={props.openTopic} >
                             <MdOutlineChangeCircle size="24" color="black" />
-                            <p className={style['topic-button']}>랜덤 생성</p>
+                            <p className={style['topic-button']}>{t(`ToolbarComponent.ToolbarComponent1`)}</p>
                         </button>  
                         <button className={`${style['video-game-button']} ${style['video-game-button-HOST']}`} onClick={props.closeTopicbar} >
                             <BiExit size="24" color="black" />
-                            <p className={style['topic-button']}>주제 종료</p>
+                            <p className={style['topic-button']}>{t(`ToolbarComponent.ToolbarComponent2`)}</p>
                         </button>  
                     </>
                 ) : (
@@ -45,7 +45,7 @@ function ToolbarComponent(props) {
                         onClick={handleTopicbutton}
                     >
                         <HiOutlineLightBulb size="24" color={props.roomRole === 'HOST' ? "black" : "grey"} />
-                        <p className={style['topic-button']}>주제 제시</p>
+                        <p className={style['topic-button']}>{t(`ToolbarComponent.ToolbarComponent3`)}</p>
                     </button>  
                 )}
             </div>

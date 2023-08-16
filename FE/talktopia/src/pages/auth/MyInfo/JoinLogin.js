@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
 import {GoogleLogin} from "@react-oauth/google";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import jwtDecode from "jwt-decode";
-
+import { useTranslation } from "react-i18next";
 import ServiceWorkerListener from '../fcm/ServiceWorkerListener';
 import getFCMToken from '../fcm/getToken';
 import sendTokenToServer from '../fcm/sendTokenToServer';
@@ -24,6 +24,7 @@ import NotificationAccordion from '../fcm/NotificationAccordion';
 const clientId = '489570255387-1e0n394ptqvja97m2sl6rpf3bta0hjb0.apps.googleusercontent.com'
 
 function JoinLogin(){
+    const { t } = useTranslation();
     const headers ={
         'Content-Type' : 'application/json'
     }
@@ -110,9 +111,9 @@ function JoinLogin(){
         
             await Swal.fire({
               icon: "success",
-              title: "만나서 반가워요!",
-              text: "오늘도 새로운 친구를 만나러 가볼까요?",
-              confirmButtonText: "확인",
+              title:  t(`JoinLogin.JoinLogin1`),
+              text: t(`JoinLogin.JoinLogin2`),
+              confirmButtonText:  t(`JoinLogin.JoinLogin3`),
               confirmButtonColor: '#90dbf4',
               timer: 2000,
               timerProgressBar: true,
@@ -122,9 +123,9 @@ function JoinLogin(){
           } catch (error) {
             await Swal.fire({
                 icon: "warning",
-                title: "아이디 또는 비밀번호가 <br/> 일치하지 않습니다.",
-                text: "아이디, 비밀번호를 다시 확인해주세요.",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin4`)+"<br/>"+t(`JoinLogin.JoinLogin0`),
+                text:t(`JoinLogin.JoinLogin5`),
+                confirmButtonText: t(`JoinLogin.JoinLogin6`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -148,7 +149,7 @@ function JoinLogin(){
     const [userLan, setUserLan] = useState(''); //lan 담을 state
 
     const [pwConfirmMsg, setPwConfirmMsg] = useState(''); //pw 일치 확인 메세지
-    const [nameMsg, setNameMsg] = useState("띄어쓰기 불가능");
+    const [nameMsg, setNameMsg] = useState(t(`JoinLogin.JoinLogin7`));
 
     const [idValid, setIdValid] = useState(false);
     const [pwValid, setPwValid] = useState(false);
@@ -159,7 +160,7 @@ function JoinLogin(){
     const [emailConfirmWindow, setEmailConfirmWindow] = useState(false);
     const [emailConfirm, setEmailConfirm] = useState("");
     const [emailConfirmServer, setEmailConfirmServer] = useState("");
-    const [emailButton, setEmailButton] = useState("이메일 인증");
+    const [emailButton, setEmailButton] = useState(t(`JoinLogin.JoinLogin8`));
     const [isButtonDisabled, setButtonDisabled] = useState(false);
 
     //모든 정보가 입력됐을 때 회원가입 완료
@@ -197,9 +198,9 @@ function JoinLogin(){
         if(userIdJoin === ""){
             Swal.fire({
                 icon: "warning",
-                title: "아이디를 입력해주세요",
+                title: t(`JoinLogin.JoinLogin9`),
                 // showCancelButton: true,
-                confirmButtonText: "확인",
+                confirmButtonText:t(`JoinLogin.JoinLogin10`),
                 confirmButtonColor: '#90dbf4',
                 // cancelButtonText: "취소",
                 timer: 2000,
@@ -212,8 +213,8 @@ function JoinLogin(){
 
                 Swal.fire({
                     icon: "success",
-                    title: "사용가능한 아이디입니다.",
-                    text: `다음 회원가입 절차를 진행해주세요!`,
+                    title: t(`JoinLogin.JoinLogin11`),
+                    text: `${t(`JoinLogin.JoinLogin12`)}`,
                     confirmButtonColor: '#90dbf4',
                     // confirmButtonText: "확인",
                     timer: 2000,
@@ -223,9 +224,9 @@ function JoinLogin(){
             .catch((error)=>{
                 Swal.fire({
                     icon: "warning",
-                    title: "이미 사용 중인 아이디입니다.",
-                    text: `다른 아이디를 입력해주세요!`,
-                    confirmButtonText: "확인",
+                    title: t(`JoinLogin.JoinLogin13`),
+                    text: `${t(`JoinLogin.JoinLogin14`)}`,
+                    confirmButtonText: t(`JoinLogin.JoinLogin15`),
                     confirmButtonColor: '#90dbf4',
                     timer: 2000,
                     timerProgressBar: true,
@@ -234,8 +235,8 @@ function JoinLogin(){
         }else{
             Swal.fire({
                 icon: "warning",
-                title: "아이디 입력 조건을 확인해주세요!",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin16`),
+                confirmButtonText: t(`JoinLogin.JoinLogin17`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -266,10 +267,10 @@ function JoinLogin(){
         setUserPwConfirm(e.target.value);
 
         if(e.target.value === userPwJoin){
-            setPwConfirmMsg("비밀번호가 일치합니다.");
+            setPwConfirmMsg(t(`JoinLogin.JoinLogin18`));
             setUserPwConfirmCorrect(true);
         }else{
-            setPwConfirmMsg("비밀번호가 일치하지 않습니다.");
+            setPwConfirmMsg(t(`JoinLogin.JoinLogin19`));
             setUserPwConfirmCorrect(false);
     }}
 
@@ -281,7 +282,7 @@ function JoinLogin(){
             setNameMsg("");
         }else{
             setUserNameCorrect(false);
-            setNameMsg("띄어쓰기 불가능");
+            setNameMsg(t(`JoinLogin.JoinLogin20`));
         }
     }
 
@@ -352,12 +353,12 @@ function JoinLogin(){
             .then((response) =>{
                 console.log(response);
                 setCountdown(180);
-                setEmailButton("전송 완료");
+                setEmailButton(t(`JoinLogin.JoinLogin21`),);
                 setEmailConfirmWindow(true);
                 Swal.fire({
                     icon: "success",
-                    title: "입력하신 이메일 주소로 <br/> 인증번호가 발송됐습니다.",
-                    confirmButtonText: "확인",
+                    title: t(`JoinLogin.JoinLogin22`)+ <br/>+t(`JoinLogin.JoinLogin01`),
+                    confirmButtonText: t(`JoinLogin.JoinLogin23`),
                     confirmButtonColor: '#90dbf4',
                     timer: 1500,
                     timerProgressBar: true,
@@ -367,8 +368,8 @@ function JoinLogin(){
             .catch((error) => {
                 Swal.fire({
                     icon: "error",
-                    title: "이미 존재하는 이메일입니다.",
-                    confirmButtonText: "확인",
+                    title: t(`JoinLogin.JoinLogin24`),
+                    confirmButtonText:t(`JoinLogin.JoinLogin25`),
                     confirmButtonColor: '#90dbf4',
                     timer: 1500,
                     timerProgressBar: true,
@@ -378,9 +379,9 @@ function JoinLogin(){
         }else{
             Swal.fire({
                 icon: "warning",
-                title: "유효한 이메일이 아닙니다!",
-                text: "이메일을 맞게 입력했는지 확인해주세요.",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin26`),
+                text: t(`JoinLogin.JoinLogin27`),
+                confirmButtonText: t(`JoinLogin.JoinLogin28`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -397,13 +398,13 @@ function JoinLogin(){
         if(emailConfirm === emailConfirmServer){
             
             setEmailConfirmWindow(false);
-            setEmailButton("인증 완료");
+            setEmailButton(t(`JoinLogin.JoinLogin29`));
             setButtonDisabled(true);
             setUserEmailCorrect(true);
             Swal.fire({
                 icon: "success",
-                title: "이메일 인증에 성공했습니다.",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin30`),
+                confirmButtonText:t(`JoinLogin.JoinLogin31`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -412,9 +413,9 @@ function JoinLogin(){
         }else{
             Swal.fire({
                 icon: "warning",
-                title: "인증 번호가 올바르지 않습니다.",
-                text: "다시 확인해주세요.",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin32`),
+                text:  t(`JoinLogin.JoinLogin001`),
+                confirmButtonText:  t(`JoinLogin.JoinLogin33`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -473,9 +474,9 @@ function JoinLogin(){
                 .then((response) => {
                     Swal.fire({
                         icon: "success",
-                        title: "회원 가입 성공",
-                        text: `TalkTopia의 친구가 되어주셔서 감사합니다 👨🏾‍🤝‍👨🏻`,
-                        confirmButtonText: "확인",
+                        title:  t(`JoinLogin.JoinLogin34`),
+                        text: ` ${t(`JoinLogin.JoinLogin35`)}`,
+                        confirmButtonText:  t(`JoinLogin.JoinLogin36`),
                         timer: 2000,
                         timerProgressBar: true,
                         confirmButtonColor: '#90dbf4',
@@ -488,7 +489,7 @@ function JoinLogin(){
                 })
             }catch(error){
                  console.error("에러 발생",error);
-                 alert("회원가입 실패");
+                 alert( t(`JoinLogin.JoinLogin37`));
             }
 
             //초기화
@@ -501,8 +502,8 @@ function JoinLogin(){
              setUserEmail("");
              setUserLan("");
              setPwConfirmMsg("");
-             setNameMsg("띄어쓰기 불가능")
-             setEmailButton("이메일 인증");
+             setNameMsg( t(`JoinLogin.JoinLogin38`))
+             setEmailButton( t(`JoinLogin.JoinLogin39`));
              setIdValid(false);
              setPwValid(false);
              setEmailValid(false);
@@ -523,8 +524,8 @@ function JoinLogin(){
         }else if(!userIdCorrect){
             Swal.fire({
                 icon: "warning",
-                title: "아이디 중복 확인을 해주세요.",
-                confirmButtonText: "확인",
+                title:  t(`JoinLogin.JoinLogin40`),
+                confirmButtonText:  t(`JoinLogin.JoinLogin41`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -532,8 +533,8 @@ function JoinLogin(){
         }else if(!userPwCorrect || !userPwConfirmCorrect){
             Swal.fire({
                 icon: "warning",
-                title: "비밀번호를 확인해주세요.",
-                confirmButtonText: "확인",
+                title:  t(`JoinLogin.JoinLogin42`),
+                confirmButtonText: t(`JoinLogin.JoinLogin43`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -541,8 +542,8 @@ function JoinLogin(){
         }else if(!userNameCorrect || /\s/.test(userName)){
             Swal.fire({
                 icon: "warning",
-                title: "이름을 정확히 입력해주세요.",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin44`),
+                confirmButtonText: t(`JoinLogin.JoinLogin45`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -550,8 +551,8 @@ function JoinLogin(){
         }else if(!userEmailCorrect){
             Swal.fire({
                 icon: "warning",
-                title: "이메일을 인증해주세요.",
-                confirmButtonText: "확인",
+                title:t(`JoinLogin.JoinLogin46`),
+                confirmButtonText: t(`JoinLogin.JoinLogin47`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -559,8 +560,8 @@ function JoinLogin(){
         }else if(!userLanCorrect){
             Swal.fire({
                 icon: "warning",
-                title: "사용언어를 선택해주세요.",
-                confirmButtonText: "확인",
+                title: t(`JoinLogin.JoinLogin48`),
+                confirmButtonText:t(`JoinLogin.JoinLogin49`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -598,21 +599,21 @@ function JoinLogin(){
         <div className={`${style.cont} ${change ? style["s--signup"] : ""}`}>
             {/* sign in start */}
             <div className={`${style["form-signin"]} ${style["sign-in"]}`} >
-                <h2 className={`${style["h2-Font"]}`}>TalkTopia에 오신걸 환영해요! 🐬</h2>
+                <h2 className={`${style["h2-Font"]}`}>{t(`JoinLogin.JoinLogin50`)}</h2>
                 <div className={`${style.login}`}>
                 
-                    <span className={`${style["login-sub"]}`}>아이디</span>
+                    <span className={`${style["login-sub"]}`}>{t(`JoinLogin.JoinLogin51`)}</span>
                     <input className={`${style.input}`} type="text" value={userId} onChange={onIdHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
                 <div className={`${style.login}`}>
-                    <span className={`${style["login-sub"]}`}>비밀번호</span>
+                    <span className={`${style["login-sub"]}`}>{t(`JoinLogin.JoinLogin52`)}</span>
                     <input className={`${style.input}`} type="password" value={userPw} onChange={onPwHandler} onKeyPress={onCheckEnter}/>
                 </div>
                 
-                <button type="button" className={`${style["submit-login"]} ${style["submit"]}`} onClick={onLogin}>로그인</button>
+                <button type="button" className={`${style["submit-login"]} ${style["submit"]}`} onClick={onLogin}>{t(`JoinLogin.JoinLogin53`)}</button>
                 {/* <button></button> */}
-                <div className={`${style.line}`}>SNS계정으로 로그인</div>
+                <div className={`${style.line}`}>{t(`JoinLogin.JoinLogin54`)}</div>
                 <div  className={`${style.google}`}>
                 <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
@@ -673,9 +674,9 @@ function JoinLogin(){
                               }else{
                                 Swal.fire({
                                     icon: "success",
-                                    title: "만나서 반가워요!",
-                                    text: "오늘도 새로운 친구를 만나러 가볼까요?",
-                                    confirmButtonText: "확인",
+                                    title: t(`JoinLogin.JoinLogin55`),
+                                    text: t(`JoinLogin.JoinLogin56`),
+                                    confirmButtonText:t(`JoinLogin.JoinLogin57`),
                                     confirmButtonColor: '#90dbf4',
                                     timer: 2000,
                                     timerProgressBar: true,
@@ -709,9 +710,9 @@ function JoinLogin(){
                 {/* <button type="button" className={`${style["ka-btn"]}`}><span>카카오톡</span>으로 로그인</button> */}
 
                 <div className={`${style["find-area"]}`}>
-                    <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>아이디 찾기</span>
+                    <span className={style["forgot-pass"]} onClick={()=>{navigate('/findId')}}>{t(`JoinLogin.JoinLogin58`)}</span>
                     <span></span>
-                    <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>비밀번호 찾기</span>
+                    <span className={style["forgot-pass"]} onClick={()=>{navigate('/findPassword')}}>{t(`JoinLogin.JoinLogin59`)}</span>
                 </div>
             </div>
             {/* sign in end */}
@@ -721,16 +722,16 @@ function JoinLogin(){
             {/* 옆에 있는 사진 영역 시작 */}
             <div className={style.img}>
                 <div className={`${style["img__text"]} ${style["m--up"]}`}>
-                    <h2 className={`${style["h2-Font"]}`}>만나서 반가워요</h2>
-                    <p>새로운 친구들과 함께할 준비가 되셨나요? 😊<br/> 지금 로그인하고 TalkTopia의 다양한 서비스를 즐겨보세요!</p>
+                    <h2 className={`${style["h2-Font"]}`}>{t(`JoinLogin.JoinLogin60`)}</h2>
+                    <p>{t(`JoinLogin.JoinLogin61`)}<br/> {t(`JoinLogin.JoinLogin62`)}</p>
                 </div>
                 <div className={`${style["img__text"]} ${style["m--in"]}`}>
-                    <h2 className={`${style["h2-Font"]}`}>처음이신가요?</h2>
-                    <p>여러분의 새로운 시작을 환영합니다 💙 <br/> 가입하고 전세계의 새로운 친구들을 사겨보세요!</p>
+                    <h2 className={`${style["h2-Font"]}`}>{t(`JoinLogin.JoinLogin63`)}</h2>
+                    <p>{t(`JoinLogin.JoinLogin64`)} <br/> {t(`JoinLogin.JoinLogin65`)}</p>
                 </div>
                 <div className={style["img__btn"]} onClick={handleToggleSignUp}>
-                    <span className={`${style["m--up"]} ${change ? style.active : ""}`}>회원가입 하러가기</span>
-                    <span className={`${style["m--in"]} ${change ? "" : style.active}`}>로그인 하러가기</span>
+                    <span className={`${style["m--up"]} ${change ? style.active : ""}`}>{t(`JoinLogin.JoinLogin66`)}</span>
+                    <span className={`${style["m--in"]} ${change ? "" : style.active}`}>{t(`JoinLogin.JoinLogin67`)}</span>
                 </div>
             </div>
             {/* 옆에 있는 사진 영역 끝 */}
@@ -741,26 +742,26 @@ function JoinLogin(){
             <div className={style["sub-cont"]}>
 
 
-                <h2 className={`${style["h2-Join"]}`}>새로운 모험이 시작됩니다! <br/> 🌊 함께 멋진 시간을 만들어가요! </h2>
+                <h2 className={`${style["h2-Join"]}`}>{t(`JoinLogin.JoinLogin68`)} <br/> {t(`JoinLogin.JoinLogin69`)}</h2>
                 <div className={`${style["form-signup"]}`}>
                     <div className={style["div-join-container-isButton"]}>
                         <div className={style["div-join"]}>
-                            <span className={`${style["span-join"]}`}>아이디 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span className={`${style["span-join"]}`}>{t(`JoinLogin.JoinLogin70`)} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="text" value={userIdJoin} onChange={onIdJoinHandler} className={style["div-input"]}></input>
-                            <button className={`${style.buttonId}`} onClick={onCheckId} >중복 확인</button>
+                            <button className={`${style.buttonId}`} onClick={onCheckId} >{t(`JoinLogin.JoinLogin71`)}</button>
                         </div>
                     </div>
                     <div className={style["div-join-error"]}>
                         <div className={`${style["div-join-error-1"]}`}></div>
                         {
                             !idValid && userIdJoin.length >=0 &&
-                            (<div className={`${style["guide"]} ${style["div-join-error2"]}`}>영문, 숫자 조합으로 6~12자리 입력해주세요.</div>)
+                            (<div className={`${style["guide"]} ${style["div-join-error2"]}`}>{t(`JoinLogin.JoinLogin72`)}</div>)
                         }
                         <div className={`${style["div-join-error-3"]}`}></div>
                     </div>
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
-                            <span className={`${style["span-join"]}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span className={`${style["span-join"]}`}>{t(`JoinLogin.JoinLogin73`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="password" value={userPwJoin} onChange={onPwJoinHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
@@ -768,7 +769,7 @@ function JoinLogin(){
                         <div className={`${style["div-join-error-1"]}`}></div>
                         {
                             !pwValid && userPwJoin.length >=0 &&
-                            (<div className={`${style["guide"]} ${style["div-join-error2"]}` }>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>)
+                            (<div className={`${style["guide"]} ${style["div-join-error2"]}` }>{t(`JoinLogin.JoinLogin74`)}</div>)
                         }
                         <div className={`${style["div-join-error-3"]}`}></div>
                     </div>
@@ -776,7 +777,7 @@ function JoinLogin(){
 
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
-                            <span className={`${style["span-join"]}`}>비밀번호 확인</span>
+                            <span className={`${style["span-join"]}`}>{t(`JoinLogin.JoinLogin75`)}</span>
                             <input type="password" value={userPwConfirm} onChange={onConfirmPwHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
@@ -790,7 +791,7 @@ function JoinLogin(){
 
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
-                            <span className={`${style["span-join"]}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span className={`${style["span-join"]}`}>{t(`JoinLogin.JoinLogin76`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="text" value={userName} onChange={onNameHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
@@ -802,15 +803,15 @@ function JoinLogin(){
 
                     <div className={style["div-join-container-isButton"]}>
                         <div className={style["div-join-email"]}>
-                            <span className={`${style["span-join"]}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span className={`${style["span-join"]}`}>{t(`JoinLogin.JoinLogin77`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} className={`${style["div-input-email"]} ${style["email-input"]}`}></input>
                             <span>@</span>
                             {
                             emailSelect === true ? 
                             <>
                             <select className={`${style["select"]} ${style["select-email"]} ${style["div-input-email"]}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
-                                <option value="default" disabled>선택하세요</option>
-                                <option value="">직접입력</option>
+                                <option value="default" disabled>{t(`JoinLogin.JoinLogin78`)}</option>
+                                <option value="">{t(`JoinLogin.JoinLogin79`)}</option>
                                 <option value="gmail.com">gmail.com</option>
                                 <option value="hotmail.com">hotmail.com</option>
                                 <option value="outlook.com">outlook.com</option>
@@ -847,17 +848,17 @@ function JoinLogin(){
                                 <div className={style["div-join-container-isButton-1"]}>
                                     <div className={`${style["div-join"]} ${style["div-join-email-code"]}`}>
                                         <span className={`${style["span-join"]}`}></span>
-                                        <input type="text" value={emailConfirm} onChange={onEmailVerify} className={style["div-input-email-1"]} placeholder="이메일로 전송된 인증코드를 입력해주세요."></input>
+                                        <input type="text" value={emailConfirm} onChange={onEmailVerify} className={style["div-input-email-1"]} placeholder={t(`JoinLogin.JoinLogin80`)}></input>
                                         <div>
-                                            <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
-                                            <button onClick={checkEmail} className={`${style.buttonId}`}>재전송</button>
+                                            <button onClick={checkEmailVerify} className={`${style.buttonId}`}>{t(`JoinLogin.JoinLogin81`)}</button>
+                                            <button onClick={checkEmail} className={`${style.buttonId}`}>{t(`JoinLogin.JoinLogin002`)}</button>
                                         </div>
                                     </div>
                                 </div>
                                 {countdown > 0 ? (
-                                    <p className={`${style.message}`}>남은 시간: {Math.floor(countdown / 60)}분 {countdown % 60}초</p>
+                                    <p className={`${style.message}`}>{t(`JoinLogin.JoinLogin82`)} {Math.floor(countdown / 60)}{t(`JoinLogin.JoinLogin83`)} {countdown % 60}{t(`JoinLogin.JoinLogin84`)}</p>
                                 ) : (
-                                    <p className={`${style.message}`}>시간 초과</p>
+                                    <p className={`${style.message}`}>{t(`JoinLogin.JoinLogin85`)}</p>
                                 )}
                             </>
                             : 
@@ -866,26 +867,26 @@ function JoinLogin(){
 
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
-                            <span className={`${style["span-join"]}`}>사용 언어&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span className={`${style["span-join"]}`}>{t(`JoinLogin.JoinLogin87`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <select className={`${style.selectLan} ${style["div-input"]}`} value={userLan} onChange={onLanHandler}>
-                                <option value="" disabled>선택하세요</option>
-                                <option value="ko-KR">한국어</option>
-                                <option value="de-DE">독일어</option>
-                                <option value="ru-RU">러시아어</option>
-                                <option value="es-ES">스페인어</option>
-                                <option value="en-US">영어</option>
-                                <option value="it-IT">이탈리아어</option>
-                                <option value="id-ID">인도네시아어</option>
-                                <option value="ja-JP">일본어</option>
-                                <option value="fr-FR">프랑스어</option>
-                                <option value="pt-PT">포르투칼어</option>
-                                <option value="zh-CN">중국어 간체</option>
-                                <option valye="pt-TW">중국어 번체</option>
-                                <option value="hi-IN">힌두어</option>
+                                <option value="" disabled>{t(`JoinLogin.JoinLogin88`)}</option>
+                                <option value="ko-KR">{t(`JoinLogin.JoinLogin89`)}</option>
+                                <option value="de-DE">{t(`JoinLogin.JoinLogin90`)}</option>
+                                <option value="ru-RU">{t(`JoinLogin.JoinLogin91`)}</option>
+                                <option value="es-ES">{t(`JoinLogin.JoinLogin92`)}</option>
+                                <option value="en-US">{t(`JoinLogin.JoinLogin93`)}</option>
+                                <option value="it-IT">{t(`JoinLogin.JoinLogin94`)}</option>
+                                <option value="id-ID">{t(`JoinLogin.JoinLogin95`)}</option>
+                                <option value="ja-JP">{t(`JoinLogin.JoinLogin96`)}</option>
+                                <option value="fr-FR">{t(`JoinLogin.JoinLogin97`)}</option>
+                                <option value="pt-PT">{t(`JoinLogin.JoinLogin98`)}</option>
+                                <option value="zh-CN">{t(`JoinLogin.JoinLogin99`)}</option>
+                                <option valye="pt-TW">{t(`JoinLogin.JoinLogin100`)}</option>
+                                <option value="hi-IN">{t(`JoinLogin.JoinLogin101`)}</option>
                             </select>
                         </div>
                     </div>
-                    <button className={`${style["submit-1"]}`} onClick={onSingUp}>회원가입</button>
+                    <button className={`${style["submit-1"]}`} onClick={onSingUp}>{t(`JoinLogin.JoinLogin102`)}</button>
 
                     <img className={`${style.friend11}`} src="/img/fish/friend11.png" alt=""></img>
                     <img className={`${style.fish6}`} src="/img/fish/fish6.png" alt=""></img>

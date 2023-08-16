@@ -1,17 +1,18 @@
 import React from 'react';
 import './ReporterTable.css';
-
+import { useTranslation } from "react-i18next";
 const ReporterTable = ({ data }) => {
+    const { t } = useTranslation();
     return (
         <table className="reporter-table">
             <thead>
                 <tr>
-                    <th>DB No</th>
-                    <th>신고자</th>
-                    <th>신고 당한 사람</th>
-                    <th>신고 내용</th>
-                    <th>생성 시간</th>
-                    <th>방 ID</th>
+                    <th>{t(`ReporterTable.ReporterTable1`)}</th>
+                    <th>{t(`ReporterTable.ReporterTable2`)}</th>
+                    <th>{t(`ReporterTable.ReporterTable3`)}</th>
+                    <th>{t(`ReporterTable.ReporterTable4`)}</th>
+                    <th>{t(`ReporterTable.ReporterTable5`)}</th>
+                    <th>{t(`ReporterTable.ReporterTable6`)}</th>
                 </tr>
             </thead>
             <tbody>

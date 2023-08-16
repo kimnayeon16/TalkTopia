@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { reduxUserInfo } from "../../store";
 import Nav from '../../nav/Nav';
 import useTokenValidation from "../../utils/useTokenValidation";
-
+import { useTranslation } from "react-i18next";
 function MyInfo(){
     useTokenValidation();
-
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);
     
     const navigate = useNavigate();
@@ -93,10 +93,10 @@ function MyInfo(){
         setUserPwConfirm(e.target.value);
 
         if(e.target.value === userPw){
-            setPwConfirmMsg("비밀번호가 일치합니다.");
+            setPwConfirmMsg(t(`MyInfo.setPwConfirmMsg1`));
             setUserPwCorrect(true);
         }else{
-            setPwConfirmMsg("비밀번호가 일치하지 않습니다.");
+            setPwConfirmMsg(t(`MyInfo.setPwConfirmMsg2`));
             setUserPwCorrect(false);
     }}
 
@@ -112,22 +112,22 @@ function MyInfo(){
         if(!pwValid){
             Swal.fire({
                 icon: "warning",
-                title: "비밀번호 입력 조건을 확인해주세요.",
-                confirmButtonText: "확인",
+                title: t(`MyInfo.updateMyInfoPwValid`),
+                confirmButtonText:  t(`MyInfo.confirmButtonText1`),
                 confirmButtonColor: '#90dbf4',
             })
         }else if(!userPwCorrect){
             Swal.fire({
                 icon: "warning",
-                title: "비밀번호가 일치하지 않아요.",
-                confirmButtonText: "확인",
+                title: t(`MyInfo.updateMyInfouserPwCorrect`),
+                confirmButtonText:  t(`MyInfo.confirmButtonText2`),
                 confirmButtonColor: '#90dbf4',
             })
         }else if(userName.length === 0 || /\s/.test(userName)){
             Swal.fire({
                 icon: "warning",
-                title: "이름 입력 조건을 확인해주세요.",
-                confirmButtonText: "확인",
+                title: t(`MyInfo.checkyourId`),
+                confirmButtonText: t(`MyInfo.confirmButtonText3`),
                 confirmButtonColor: '#90dbf4',
             })
         }else{
@@ -164,8 +164,8 @@ function MyInfo(){
 
                 Swal.fire({
                     icon: "success",
-                    title: "수정이 완료되었습니다.",
-                    confirmButtonText: "확인",
+                    title: t(`MyInfo.ModifySuccess`),
+                    confirmButtonText:  t(`MyInfo.confirmButtonText4`),
                     confirmButtonColor: '#90dbf4',
                     // timer: 2000,
                     // timerProgressBar: true,
@@ -183,11 +183,11 @@ function MyInfo(){
     const leave = () => {
         Swal.fire({
             icon: "warning",
-            title: "정말 탈퇴하시겠어요?",
-            text: "탈퇴 버튼 클릭 시 계정은 삭제되며 복구되지 않습니다.",
+            title: t(`MyInfo.checkLeaveReal`),
+            text:t(`MyInfo.checkLeaveRealText`),
             showCancelButton: true,
-            confirmButtonText: "탈퇴하기",
-            cancelButtonText: "취소",
+            confirmButtonText:t(`MyInfo.confirmButtonText5`),
+            cancelButtonText:t(`MyInfo.cancelButtonText1`),
             confirmButtonColor: '#90dbf4',
             cancelButtonColor: '#ee5561',
         }).then((result) => {
@@ -250,8 +250,8 @@ function MyInfo(){
 
             Swal.fire({
                 icon: "success",
-                title: "프로필 사진이 수정되었습니다.",
-                confirmButtonText: "확인",
+                title: t(`MyInfo.modifyyourImage`),
+                confirmButtonText: t(`MyInfo.confirmButtonText6`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -273,27 +273,27 @@ function MyInfo(){
     return(
         <div className={`${style.background}`}>
             <Nav/>
-            <h2 className={`${style.title}`}>내 정보 수정</h2>
+            <h2 className={`${style.title}`}>{t(`MyInfo.modifyMyInfo`)}</h2>
             <div className={`${style.divide}`}>
                 <div className={`${style.profile}`}>
                     <img style={{ width: '80px', height: '80px', borderRadius: '50%',
                     overflow: 'hidden'}} src={userImgUrl} alt="프로필 이미지"/>
                     <form>
                         <label for="file">
-                            <div className={`${style["btn-upload"]}`}>파일 업로드하기</div>
+                        <div className={`${style["btn-upload"]}`}>{t(`MyInfo.fileupload1`)}</div>
                         </label>
                         <input className={`${style["signup-profileImg-label1"]}`} type="file" name="file" id="file"accept="image/*" onChange={onChangeFiles}/>
-                        <button className={`${style["signup-profileImg-label"]}`} onClick={upload}>등록</button>
+                        <button className={`${style["signup-profileImg-label"]}`} onClick={upload}>{t(`MyInfo.fileupload2`)}</button>
                     </form>
                     <div className={`${style.together}`}>
                         <div className={`${style.together1}`}>
-                            <p className={`${style.p}`}>아이디&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p className={`${style.p}`}>{t(`MyInfo.modifyId`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             <input type="text" value={userId1} className={`${style["input-1"]}`} readOnly></input>
                         </div>
                     </div>
                     <div className={`${style.together}`}>
                     <div className={`${style.together1}`}>
-                        <p className={`${style.p}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p className={`${style.p}`}>{t(`MyInfo.modifyEmail`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <input type="text" value={userEmail} className={`${style["input-1"]}`} readOnly></input>
                     </div>
                 </div>
@@ -301,15 +301,15 @@ function MyInfo(){
             <div className={`${style.profile}`}>
                 <div className={`${style.together}`}>
                     <div className={`${style.together1}`}>
-                        <p className={`${style.p}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <p className={`${style.p}`}>{t(`MyInfo.modifyPW`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         {/* <p className={`${style.guide}`}>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p> */}
                         <input type="password" value={userPw} className={inputClassName} onChange={onPwHandler} onKeyPress={onCheckEnter} readOnly={googleId}></input>
                     </div>
                 </div>
-                <div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
+                <div className={`${style.guide}`}>{t(`MyInfo.modifyGuide`)}</div>
                 <div className={`${style.together}`}>
                     <div className={`${style.together1}`}>
-                        <p className={`${style.p}`}>비밀번호 확인&nbsp;</p>
+                    <p className={`${style.p}`}>{t(`MyInfo.modifyCheckyourPw`)}&nbsp;</p>
                         <input type="password" value={userPwConfirm} className={inputClassName} onChange={onPwConfirmHandler} onKeyPress={onCheckEnter} readOnly={googleId}></input>
                     </div>
                 </div>
@@ -318,38 +318,38 @@ function MyInfo(){
                 </div>
                 <div className={`${style.together}`}>
                     <div className={`${style.together1}`}>
-                        <p className={`${style.p}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    <p className={`${style.p}`}>{t(`MyInfo.modifyName`)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         <input type="text" value={userName} className={`${style.input}`} onChange={onNameHandler} onKeyPress={onCheckEnter}></input>
                     </div>
                 </div>
-                <div className={`${style.guide}`}>띄어쓰기 불가능</div>
+                <div className={`${style.guide}`}>{t(`MyInfo.noyAccessSpace`)}</div>
            
                 <div className={`${style.together2}`}>
                     <div className={`${style.together1}`}>
                     
-                        <p className={`${style.p}`}>사용 언어&nbsp;&nbsp;&nbsp;</p>
+                    <p className={`${style.p}`}>{t(`MyInfo.userLanguage`)}&nbsp;&nbsp;&nbsp;</p>
                         <select className={`${style.select}`} value={userLan} onChange={onLanHandler} onKeyPress={onCheckEnter}>
-                            <option value="" disabled>선택하세요</option>
-                            <option value="ko-KR">한국어</option>
-                            <option value="de-DE">독일어</option>
-                            <option value="ru-RU">러시아어</option>
-                            <option value="es-ES">스페인어</option>
-                            <option value="en-US">영어</option>
-                            <option value="it-IT">이탈리아어</option>
-                            <option value="id-ID">인도네시아어</option>
-                            <option value="ja-JP">일본어</option>
-                            <option value="fr-FR">프랑스어</option>
-                            <option value="pt-PT">포르투칼어</option>
-                            <option value="zh-CN">중국어 간체</option>
-                            <option valye="pt-TW">중국어 번체</option>
-                            <option value="hi-IN">힌두어</option>
+                            <option value="" disabled>{t(`MyInfo.idontknow`)}</option>
+                            <option value="ko-KR">{t(`MyInfo.useLanguage1`)}</option>
+                            <option value="de-DE">{t(`MyInfo.useLanguage2`)}</option>
+                            <option value="ru-RU">{t(`MyInfo.useLanguage3`)}</option>
+                            <option value="es-ES">{t(`MyInfo.useLanguage4`)}</option>
+                            <option value="en-US">{t(`MyInfo.useLanguage5`)}</option>
+                            <option value="it-IT">{t(`MyInfo.useLanguage6`)}</option>
+                            <option value="id-ID">{t(`MyInfo.useLanguage7`)}</option>
+                            <option value="ja-JP">{t(`MyInfo.useLanguage8`)}</option>
+                            <option value="fr-FR">{t(`MyInfo.useLanguage9`)}</option>
+                            <option value="pt-PT">{t(`MyInfo.useLanguage10`)}</option>
+                            <option value="zh-CN">{t(`MyInfo.useLanguage11`)}</option>
+                            <option valye="pt-TW">{t(`MyInfo.useLanguage12`)}</option>
+                            <option value="hi-IN">{t(`MyInfo.useLanguage13`)}</option>
                         </select>
                     </div>
                 </div>
             </div>
             </div>
-            <button className={`${style.button1}`} onClick={leave}>탈퇴하기</button>
-            <button className={`${style.button}`} onClick={updateMyInfo}>수정하기</button>
+            <button className={`${style.button1}`} onClick={leave}>{t(`MyInfo.DeclineUser`)}</button>
+            <button className={`${style.button}`} onClick={updateMyInfo}>{t(`MyInfo.Modify`)}</button>
             <img className={`${style.turtle1}`} src="/img/fish/turtle.png" alt=""></img>
             <img className={`${style.grass21}`} src="/img/grass/grass2.png" alt=""></img>
             <img className={`${style.grass51}`} src="/img/grass/grass5.png" alt=""></img>

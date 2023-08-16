@@ -4,12 +4,12 @@ import { BACKEND_URL } from '../../utils';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { useTranslation } from "react-i18next";
 
 const WhaleGroup = () => {
   const user = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
-  
+  const { t } = useTranslation();
   // const userInfoString = localStorage.getItem("UserInfo");
   // const userInfo = JSON.parse(userInfoString);
   
@@ -70,8 +70,8 @@ const WhaleGroup = () => {
         {
           join ?
           <div className={`${style["speech-bubble2"]}`}>
-            <p className={`${style.message}`}>랜덤 6인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={() => {enterCommonRoom(6)}}>참여하기</button>
+             <p className={`${style.message}`}>{t(`WhaleGroup.ment1`)}</p>
+            <button className={`${style.button}`} onClick={() => {enterCommonRoom(6)}}>{t(`WhaleGroup.ment2`)}</button>
           </div>
           : null
         }

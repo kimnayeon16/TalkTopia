@@ -3,8 +3,9 @@ import axios from 'axios';
 import FriendAddStatusModal from './FriendAddStatusModal';
 import style from './FriendAddStatusModal.module.css';
 import Swal from 'sweetalert2';
-
+import { useTranslation } from "react-i18next";
 function AddFriendButton({ userId, friendId }) {
+  const { t } = useTranslation();
   const [isRequestSent, setIsRequestSent] = useState(false); // 친구 추가 요청 여부
   const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 버튼 비활성화 여부
   const [message, setMessage] = useState(''); // 메시지 표시
@@ -25,8 +26,8 @@ function AddFriendButton({ userId, friendId }) {
 
       Swal.fire({
         icon: "success",
-        title: "친구 추가를 요청하셨습니다!",
-        confirmButtonText: "확인",
+        title:  t(`AddFriendButton.AddFriendButton1`),
+        confirmButtonText:  t(`AddFriendButton.AddFriendButton2`),
         confirmButtonColor: '#90dbf4',
         timer: 2000,
         timerProgressBar: true,
@@ -39,7 +40,7 @@ function AddFriendButton({ userId, friendId }) {
 
       setTimeout(() => {
         setIsRequestSent(false);
-        setMessage('친구 요청 성공');
+        setMessage( t(`AddFriendButton.AddFriendButton3`));
         setIsModalOpen(false); // 모달창을 닫아줍니다.
         setTimeout(() => {
           setMessage('');
@@ -54,14 +55,14 @@ function AddFriendButton({ userId, friendId }) {
         if (error.response && error.response.data && error.response.data.message === '이미 친구입니다.') {
           Swal.fire({
             icon: "warning",
-            title: "이미 친구입니다!",
-            confirmButtonText: "확인",
+            title: t(`AddFriendButton.AddFriendButton4`),
+            confirmButtonText: t(`AddFriendButton.AddFriendButton2`),
             confirmButtonColor: '#90dbf4',
             timer: 2000,
             timerProgressBar: true,
         })
     
-          setMessage('이미 친구입니다.');
+          setMessage(t(`AddFriendButton.AddFriendButton5`));
           setIsModalOpen(true);
           setTimeout(() => {
             closeModalAndRefresh(); // 일정 시간 후에 모달을 닫고 초기화
@@ -83,7 +84,7 @@ function AddFriendButton({ userId, friendId }) {
         className={`${style.myfriendAdd} ${isButtonDisabled ? 'disabled' : ''}`}
         onClick={isButtonDisabled ? null : handleAddFriend}
       >
-        {message || '친구 추가'}
+        {message ||  t(`AddFriendButton.AddFriendButton6`)}
       </button>
       <FriendAddStatusModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)}>
         

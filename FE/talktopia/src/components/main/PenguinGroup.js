@@ -5,12 +5,12 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { useTranslation } from "react-i18next";
 
 const PenguinGroup = () => {
   const user = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   
   // const userInfoString = localStorage.getItem("UserInfo");
   // const userInfo = JSON.parse(userInfoString);
@@ -65,8 +65,8 @@ const PenguinGroup = () => {
         <div>
           {join ?
           <div className={`${style["speech-bubble"]}`}>
-            <p className={`${style.message}`}>랜덤 2인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={() => {enterCommonRoom(2)}}>참여하기</button>
+              <p className={`${style.message}`}>{t(`PenguinGroup.ment1`)}</p>
+              <button className={`${style.button}`} onClick={() => {enterCommonRoom(2)}}>{t(`PenguinGroup.ment2`)}</button>
           </div>
           :
           null

@@ -5,11 +5,12 @@ import style from './PostForm.module.css'; // 스타일 파일을 import
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../utils';
-
+import { useTranslation } from "react-i18next";
 import Nav from '../../nav/Nav';
 import { reduxUserInfo } from '../../store';
 
 function PostForm() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   let dispatch = useDispatch();
   const user = useSelector((state) => state.userInfo);
@@ -40,8 +41,8 @@ function PostForm() {
     if(postTitle.length === 0){
       Swal.fire({
         icon: "warnging",
-        title: "제목을 입력해주세요.",
-        confirmButtonText: "확인",
+        title:t(`PostDetail.PostForm1`),
+        confirmButtonText: t(`PostDetail.PostForm2`),
         confirmButtonColor: '#90dbf4',
         timer: 2000,
         timerProgressBar: true,
@@ -49,8 +50,8 @@ function PostForm() {
     }else if(postContent.length === 0){
       Swal.fire({
         icon: "warnging",
-        title: "문의 내용을 입력해주세요.",
-        confirmButtonText: "확인",
+        title: t(`PostDetail.PostForm3`),
+        confirmButtonText:t(`PostDetail.PostForm4`),
         confirmButtonColor: '#90dbf4',
         timer: 2000,
         timerProgressBar: true,
@@ -76,8 +77,8 @@ function PostForm() {
           console.log(response.data.message);
           Swal.fire({
             icon: "success",
-            title: "문의가 등록되었습니다.",
-            confirmButtonText: "확인",
+            title: t(`PostDetail.PostForm5`),
+            confirmButtonText: t(`PostDetail.PostForm6`),
             confirmButtonColor: '#90dbf4',
             timer: 2000,
             timerProgressBar: true,
@@ -96,12 +97,12 @@ function PostForm() {
     
     Swal.fire({
       icon: "success",
-      title: "취소하시겠습니까?",
-      text: "작성 내용은 저장되지 않습니다.",
+      title: t(`PostDetail.PostForm7`),
+      text: t(`PostDetail.PostForm8`),
       showCancelButton: true,
-      confirmButtonText: "확인",
+      confirmButtonText: t(`PostDetail.PostForm9`),
       confirmButtonColor: '#f32f70',
-      cancelButtonText: "취소",
+      cancelButtonText: t(`PostDetail.PostForm10`),
       reverseButtons: true, 
     }).then((result) => {
       if (result.isConfirmed) {
@@ -121,19 +122,19 @@ function PostForm() {
   return (
     <div className={`${style.background}`}>
       <Nav/>
-      <h2 className={`${style.title}`}>문의하기</h2>
+      <h2 className={`${style.title}`}>{t(`PostForm.PostForm11`)}</h2>
       <form className={`${style.form}`}>
-        <p className={`${style.name}`}>제목</p>
-        <input className={`${style.input}`} type="text" placeholder="제목을 입력해주세요." value={postTitle} onChange={e => setPostTitle(e.target.value)} />
-        <p className={`${style.name1}`}>문의 내용</p>
+        <p className={`${style.name}`}>{t(`PostForm.PostForm12`)}</p>
+        <input className={`${style.input}`} type="text" placeholder={t(`PostForm.PostForm13`)} value={postTitle} onChange={e => setPostTitle(e.target.value)} />
+        <p className={`${style.name1}`}>{t(`PostForm.PostForm14`)}</p>
         <textarea className={`${style.textarea}`}
-          placeholder="문의 내용을 입력해주세요."
+          placeholder={t(`PostForm.PostForm15`)}
           value={postContent}
           onChange={e => setPostContent(e.target.value)}
         />
         <div className={`${style.buttonGroup}`}>
-          <button className={`${style.button}`} onClick={cancel}>취소</button>
-          <button className={`${style.button}`} onClick={handleSubmit}>등록하기</button>
+          <button className={`${style.button}`} onClick={cancel}>{t(`PostForm.PostForm16`)}</button>
+          <button className={`${style.button}`} onClick={handleSubmit}>{t(`PostForm.PostForm17`)}</button>
         </div>
       </form>
             <img className={`${style.grass1}`} src="/img/grass/grass2.png" alt=""></img>

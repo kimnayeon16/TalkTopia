@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BACKEND_URL } from '../../utils';
-
+import { useTranslation } from "react-i18next";
 
 import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
 import style from './Chat.module.css';
 
 function Chat(props) {
     const user = useSelector((state) => state.userInfo);
-
+    const { t } = useTranslation();
     const [messageList, setMessageList] = useState([]);
     const [message, setMessage] = useState('');
     const chatScroll = useRef(null);
@@ -151,7 +151,7 @@ function Chat(props) {
     return (
         <>
             <div className={style['chat-title']}>
-                <p className={style['chat-title-text']}>Chat</p>
+            <p className={style['chat-title-text']}>{t(`Chat.Chat1`)}</p>
             </div>
 
             <div className={style['chat-div-line']}></div>
@@ -181,7 +181,7 @@ function Chat(props) {
 
             <div className={style['message-input-container']}>
                 <input
-                    placeholder="메세지를 보내세요"
+                    placeholder={t(`Chat.Chat2`)}
                     className={style['message-input']}
                     value={message}
                     onChange={messageChangeHandler}

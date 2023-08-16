@@ -6,11 +6,11 @@ import './NoficitaionDetail.css';
 import AcceptButton from "./AcceptButton.js"; // "수락" 버튼 컴포넌트를 가져옵니다.
 import DenyButton from "./DenyButton.js";
 import CloseButton from "./CloseButton.js";
-
+import { useTranslation } from "react-i18next";
 
 function NotificationDetail({ rmNo, closeModal }) {
     const [notificationData, setNotificationData] = useState(null);
-
+    const { t } = useTranslation();
     useEffect(() => {
         const fetchNotificationData = async () => {
             try {
@@ -48,29 +48,29 @@ function NotificationDetail({ rmNo, closeModal }) {
                 <div className="NotificationCloseButton" onClick={closeModal}>X</div>
             </div>
             <div className="NotificationBody">
-                    {notificationData.rmType === "Fail Request" ? (
-                        <div className="NotificationDetailH1">Fail Request Message</div>
+            {notificationData.rmType === "Fail Request" ? (
+                        <div className="NotificationDetailH1">{t(`NotificationDetail.NotificationDetail1`)}</div>
                     ) : notificationData.rmVrSession === "NONE" ? (
-                        <div className="NotificationDetailH1">Friend Request Message</div>
+                        <div className="NotificationDetailH1">{t(`NotificationDetail.NotificationDetail2`)}</div>
                     ) : (
-                        <div className="NotificationDetailH1">Room Request Message</div>
+                        <div className="NotificationDetailH1">{t(`NotificationDetail.NotificationDetail3`)}</div>
                     )}
                 <div className="NotificationDetailP">
-                    <div className="NotificationDetailLabel">Message Body</div>
+                <div className="NotificationDetailLabel">{t(`NotificationDetail.NotificationDetail4`)}</div>
                     <div className="NotificationDetailLabelChildren"> {notificationData.rmContent}</div>
                 </div>    
                 <div className="NotificationDetailP">
-                    <div className="NotificationDetailLabel">Message Status</div>
+                    <div className="NotificationDetailLabel">{t(`NotificationDetail.NotificationDetail5`)}</div>
                     <div className="NotificationDetailLabelChildren">{notificationData.rmType}</div>
                 </div>
                 <div className="NotificationDetailP">
-                    <div className="NotificationDetailLabel">Sender Id</div>
+                    <div className="NotificationDetailLabel">{t(`NotificationDetail.NotificationDetail6`)}</div>
                     <div className="NotificationDetailLabelChildren"> {notificationData.rmHost}</div>
                 </div>
                 <div className="NotificationDetailP">
                     {notificationData.rmVrSession !== "NONE" ? (
                         <>
-                        <div className="NotificationDetailLabel">Room Id</div>
+                        <div className="NotificationDetailLabel">{t(`NotificationDetail.NotificationDetail7`)}</div>
                         <div className="NotificationDetailLabelChildren"> {notificationData.rmVrSession}</div>
                         </>
                     ) : null}

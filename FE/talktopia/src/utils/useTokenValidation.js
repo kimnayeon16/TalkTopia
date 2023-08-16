@@ -6,10 +6,11 @@ import { removeCookie } from "../cookie";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import newToken from "./newToken";
+import { useTranslation } from "react-i18next";
 
 function useTokenValidation(userInfo){
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
     useEffect(() => {
       const userInfoString = localStorage.getItem("UserInfo");
       const userInfo = JSON.parse(userInfoString);
@@ -36,9 +37,9 @@ function useTokenValidation(userInfo){
                 localStorage.removeItem("UserInfo");
                 Swal.fire({
                     icon: "error",
-                    title: "세션 정보가 만료되어 <br/> 로그아웃되었습니다.",
-                    text: "TalkTopia를 계속 이용하고 싶으시면 다시 로그인해주세요.",
-                    confirmButtonText: "확인",
+                    title:  t(`useTokenValidation.useTokenValidation1`)+ <br/> + t(`useTokenValidation.JoinLogin2`),
+                    text:  t(`useTokenValidation.useTokenValidation3`),
+                    confirmButtonText:  t(`useTokenValidation.useTokenValidation4`),
                     confirmButtonColor: '#90dbf4',
                   }).then(() => {
                     navigate('/logout')

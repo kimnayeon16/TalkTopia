@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { BACKEND_URL, BACKEND_URL_CHAT } from '../../utils';
 import { useSelector } from 'react-redux';
 import { AiOutlineClose } from "react-icons/ai";
-
+import { useTranslation } from "react-i18next";
 
 import { useEffect } from 'react';
 import friendListStyle from './FriendList.module.css';
@@ -14,7 +14,7 @@ import SearchFind from '../../pages/search/SearchFind';
 
 const FriendList = () => {
   const user = useSelector((state) => state.userInfo);
-  
+  const { t } = useTranslation();
   
   const [isUp, setIsUp] = useState(false);
   /* friend list용 state */
@@ -111,7 +111,7 @@ const FriendList = () => {
         { isListVisible &&
           <div className={`${friendListStyle["friend-list-modal-overlay"]}`}>
             <div className={`${friendListStyle["friend-list-modal"]}`}>
-              <h2 className={`${friendListStyle["friend-list-h2"]}`}>친구 목록</h2>
+            <h2 className={`${friendListStyle["friend-list-h2"]}`}>{t(`FriendList1.ment1`)}</h2>
               {/* 돋보기 버튼 */}
               <img className={`${friendListStyle["modal-search-btn"]}`} src="/img/main/search.png" alt="" onClick={modalOpen}></img>
               {/* 닫기 버튼 */}

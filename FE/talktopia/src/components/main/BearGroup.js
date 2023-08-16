@@ -5,9 +5,10 @@ import axios from 'axios';
 import { BACKEND_URL } from '../../utils';
 import { reduxUserInfo } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useTranslation } from "react-i18next";
 
 const BearGroup = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
   // const dispatch = useDispatch();
@@ -82,8 +83,8 @@ const BearGroup = () => {
         {
             join?
           <div className={`${style["speech-bubble3"]}`}>
-            <p className={`${style.message}`}>랜덤 4인 방에 참여하세요!</p>
-            <button className={`${style.button}`} onClick={() => {enterCommonRoom(4)}}>참여하기</button>
+            <p className={`${style.message}`}>{t(`BearGroup.ment1`)}</p>
+            <button className={`${style.button}`} onClick={() => {enterCommonRoom(4)}}>{t(`BearGroup.ment2`)}</button>
           </div>
           :
           null

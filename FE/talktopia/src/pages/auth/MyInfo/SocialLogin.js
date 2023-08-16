@@ -6,10 +6,10 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { reduxUserInfo } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useTranslation } from "react-i18next";
 function SocialLogin(){
     const user = useSelector((state) => state.userInfo);
-
+    const { t } = useTranslation();
     const navigate = useNavigate();
     let dispatch = useDispatch();
 
@@ -42,8 +42,8 @@ function SocialLogin(){
         if(!userLanCorrect){
             Swal.fire({
                 icon: "warning",
-                title: "사용 언어를 선택해주세요!",
-                confirmButtonText: "확인",
+                title:  t(`SocialLogin.SocialLoginmsg1`),
+                confirmButtonText: t(`SocialLogin.SocialLoginmsg2`),
                 confirmButtonColor: '#90dbf4',
                 timer: 2000,
                 timerProgressBar: true,
@@ -79,9 +79,9 @@ function SocialLogin(){
 
                 Swal.fire({
                     icon: "success",
-                    title: "회원가입 성공!",
-                    text: "TalkTopia의 친구가 되어주셔서 감사합니다 👨🏾‍🤝‍👨🏻",
-                    confirmButtonText: "확인",
+                    title: t(`SocialLogin.SocialLoginmsg3`),
+                    text: t(`SocialLogin.SocialLoginmsg4`),
+                    confirmButtonText: t(`SocialLogin.SocialLoginmsg5`),
                     confirmButtonColor: '#90dbf4',
                     timer: 2000,
                     timerProgressBar: true,
@@ -103,33 +103,32 @@ function SocialLogin(){
     return(
         <div className={`${style.background}`}>
             <h2 className={`${style.logo}`}>TalkTopia</h2>
-            <h2 className={`${style.title}`}>추가 정보 입력</h2>
-            <p className={`${style.p}`}>환영합니다! 소셜 로그인으로 가입해주셔서 감사합니다. </p>
-            <p className={`${style.p}`}>TalkTopia의 모든 기능을 이용하시려면 간단한 정보를 추가로 입력해주세요.</p>
-            <p className={`${style.p}`}>이 정보는 맞춤형 서비스를 제공하는 데에 도움이 됩니다.</p>
-
+            <h2 className={`${style.title}`}>{t(`SocialLogin.SocialLoginmsg8`)}</h2>
+            <p className={`${style.p}`}>{t(`SocialLogin.SocialLoginmsg9`)} </p>
+            <p className={`${style.p}`}>{t(`SocialLogin.SocialLoginmsg10`)}</p>
+            <p className={`${style.p}`}>{t(`SocialLogin.SocialLoginmsg11`)}</p>
             <div className={style["div-join-container"]}>
                 <div className={style["div-join"]}>
-                    <span className={`${style["span-join"]}`}>사용 언어&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span className={`${style["span-join"]}`}>{t(`SocialLogin.Socialmsg1`)} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <select className={`${style.selectLan} ${style.input}`} value={userLan} onChange={onLanHandler}>
-                        <option value="" disabled>선택하세요</option>
-                        <option value="ko-KR">한국어</option>
-                        <option value="de-DE">독일어</option>
-                        <option value="ru-RU">러시아어</option>
-                        <option value="es-ES">스페인어</option>
-                        <option value="en-US">영어</option>
-                        <option value="it-IT">이탈리아어</option>
-                        <option value="id-ID">인도네시아어</option>
-                        <option value="ja-JP">일본어</option>
-                        <option value="fr-FR">프랑스어</option>
-                        <option value="pt-PT">포르투칼어</option>
-                        <option value="zh-CN">중국어 간체</option>
-                        <option valye="pt-TW">중국어 번체</option>
-                        <option value="hi-IN">힌두어</option>
+                        <option value="" disabled>{t(`SocialLogin.Socialmsg2`)}</option>
+                        <option value="ko-KR">{t(`SocialLogin.Socialmsg3`)}</option>
+                        <option value="de-DE">{t(`SocialLogin.Socialmsg4`)}</option>
+                        <option value="ru-RU">{t(`SocialLogin.Socialmsg5`)}</option>
+                        <option value="es-ES">{t(`SocialLogin.Socialmsg6`)}</option>
+                        <option value="en-US">{t(`SocialLogin.Socialmsg7`)}</option>
+                        <option value="it-IT">{t(`SocialLogin.Socialmsg8`)}</option>
+                        <option value="id-ID">{t(`SocialLogin.Socialmsg9`)}</option>
+                        <option value="ja-JP">{t(`SocialLogin.Socialmsg10`)}</option>
+                        <option value="fr-FR">{t(`SocialLogin.Socialmsg11`)}</option>
+                        <option value="pt-PT">{t(`SocialLogin.Socialmsg12`)}</option>
+                        <option value="zh-CN">{t(`SocialLogin.Socialmsg13`)} </option>
+                        <option valye="pt-TW">{t(`SocialLogin.Socialmsg14`)} </option>
+                        <option value="hi-IN">{t(`SocialLogin.Socialmsg15`)}</option>
                     </select>
                 </div>
             </div>
-            <button className={`${style.button}`} onClick={regist}>회원가입 완료</button>
+            <button className={`${style.button}`} onClick={regist}>{t(`SocialLogin.Success`)}</button>
             <img className={`${style.turtle}`} src="/img/fish/turtle.png" alt=""></img>
             <img className={`${style.grass2}`} src="/img/grass/grass2.png" alt=""></img>
             <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>

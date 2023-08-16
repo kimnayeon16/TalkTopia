@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from "../../utils";
 import NotificationDetailModal from "../alarm/NotificationDetail"; // 새로운 모달 컴포넌트 추가
-
+import { useTranslation } from "react-i18next";
 // import addFriendIcon from "../../../public/img/dding/addFriendIcon.png"
 // import inviteRoomIcon from "../../../public/img/dding/inviteRoomIcon.png"
 
 import style from './Nav.module.css';
 
 function Alram(){
-
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);
     const [notifications, setNotifications] = useState([]);
     const [ddingModalVisible, setDdingModalVisible] = useState(false);
@@ -79,12 +79,12 @@ function Alram(){
                 ddingModalVisible && (
                     <div className={style["ddingModal"]} onMouseOver={handleDdingMouseOver} onMouseOut={handleDdingMouseOut} >
                         <div className={style["refresh-button"]} onClick={refreshNotifications}>
-                            <span className={style["refresh-icon"]}>⟳</span> 새로고침
+                            <span className={style["refresh-icon"]}>⟳</span> {t(`Alram1.Alram11`)}
                         </div>
 
                         {notifications == [] ? (
                             <div className={style["notification-item"]}>
-                                <p>알림이 비었습니다.</p>
+                                 <p>{t(`Alram1.Alram22`)}</p>
                             </div>
                         ) : (
                             <>

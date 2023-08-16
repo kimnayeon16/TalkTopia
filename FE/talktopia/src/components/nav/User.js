@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
 import { removeCookie } from "../../cookie";
-
+import { useTranslation } from "react-i18next";
 import style from './Nav.module.css';
 
 function User(){
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);
     const [userName, setUserName] = useState("");
     const [userImg, setUserImg] = useState("");
@@ -26,31 +26,31 @@ function User(){
         const lang = userInfo.sttLang;
 
         if(lang === `ko-KR`){
-            setUserLang("한국어");
+            setUserLang( t(`UserSet.lang1`));
         }else if(lang === `en-US`){
-            setUserLang("영어");
+            setUserLang(t(`UserSet.lang2`));
         }else if(lang === `de-DE`){
-            setUserLang("독일어");
+            setUserLang(t(`UserSet.lang3`));
         }else if(lang === `ru-RU`){
-            setUserLang("러시아어");
+            setUserLang(t(`UserSet.lang4`));
         }else if(lang === `es-ES`){
-            setUserLang("스페인어");
+            setUserLang(t(`UserSet.lang5`));
         }else if(lang === `it-IT`){
-            setUserLang("이탈리아어");
+            setUserLang(t(`UserSet.lang6`));
         }else if(lang === `id-ID`){
-            setUserLang("인도네시아어");
+            setUserLang(t(`UserSet.lang7`));
         }else if(lang === `ja-JP`){
-            setUserLang("일본어");
+            setUserLang(t(`UserSet.lang8`));
         }else if(lang === `fr-FR`){
-            setUserLang("프랑스어");
+            setUserLang(t(`UserSet.lang9`));
         }else if(lang === `zh-CN`){
-            setUserLang("중국어 간체");
+            setUserLang(t(`UserSet.lang10`));
         }else if(lang === `zh-TW`){
-            setUserLang("중국어 번체");
+            setUserLang(t(`UserSet.lang11`));
         }else if(lang === `pt-PT`){
-            setUserLang("포르투갈어");
+            setUserLang(t(`UserSet.lang12`));
         }else if(lang === `th-TH`){
-            setUserLang("베트남어");
+            setUserLang(t(`UserSet.lang13`));
         }
     }, []);
 
@@ -111,10 +111,10 @@ function User(){
                         <div className={`${style.meModal}`}>
                             <img className={`${style.img}`} style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden'}} src={userImg} alt=""/>
                             <p className={`${style.mytext}`} style={{ fontSize: determineFontSize() }}>{userName}</p>
-                            <p className={`${style.mytext}`}> 언어 : {userLang}</p>
+                            <p className={`${style.mytext}`}>{t(`UserSet.lang14`)}{userLang}</p>
                             <hr/>
-                            <p className={`${style.mytext}`} onClick={()=>{navigate('/myinfo/passwordConfirm')}}>내 정보 보기</p>
-                            <p className={`${style.mytext}`} onClick={logout}>로그아웃</p>
+                            <p className={`${style.mytext}`} onClick={()=>{navigate('/myinfo/passwordConfirm')}}>{t(`UserSet.lang15`)}</p>
+                            <p className={`${style.mytext}`} onClick={logout}>{t(`UserSet.lang16`)}</p>
                         </div>
                     </div>
                 }
