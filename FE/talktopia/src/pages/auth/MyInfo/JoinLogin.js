@@ -313,6 +313,8 @@ function JoinLogin(){
         setUserEmailDomain(e.target.value);
         const value = e.target.value;
 
+        console.log("vaulaklerk", value);
+
         const regex = /^[a-zA-Z]+\.[a-zA-Z]+$/;
 
         if(regex.test(value)){
@@ -331,7 +333,7 @@ function JoinLogin(){
     const checkEmail = async (e) => {
         e.preventDefault();
         
-        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0 && emailValid){
+        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0 && emailValid && !/\s/.test(userEmailPrefix) && !/\s/.test(userEmailDomain)){
             // setCountdown(180);
             // setEmailButton("전송 완료");
             // setEmailConfirmWindow(true);
@@ -343,6 +345,7 @@ function JoinLogin(){
             //     timer: 1500,
             //     timerProgressBar: true,
             // })
+            console.log("이메일", userEmail)
     
             await axios
             .get(`${BACKEND_URL}/api/v1/join/checkEmail/${userEmail}`, {headers})
@@ -359,7 +362,6 @@ function JoinLogin(){
                     timer: 1500,
                     timerProgressBar: true,
                 })
-                console.log(response);
                 setEmailConfirmServer(response.data.message);
             })
             .catch((error) => {
