@@ -37,6 +37,7 @@ function ConversationLog(props) {
             const data = {
                 transcript: newMfinalTranscript,                    // stt 
                 sendUserId: props.myUserId,                         // 말한 사용자 이름
+                sendUserName: props.myUserName,
                 streamId: props.mainStreamManager.stream.streamId,  // streamId (이건 다른걸로 바꿔도 무방)
                 sourceLang: user.transLang                          // 번역 source 언어
             };
@@ -149,7 +150,8 @@ function ConversationLog(props) {
 
             let messageData = ({
                 transcript: data.transcript,            // 전달받은 메세지
-                sendUserId: data.sendUserId,            // 전달한 사용자 이름
+                sendUserId: data.sendUserId,            // 전달한 사용자 아이디
+                sendUserName: data.sendUserName,        // 전달한 사용자 이름
                 connectionId: event.from.connectionId,  // Connection object of the sender 
                 source: data.sourceLang,                // 전달받은 메세지 언어
                 translate: translatedMessage            // 번역된 메세지 
@@ -254,7 +256,7 @@ function ConversationLog(props) {
                     >
                         <div className={ `${style.msg_detail }`}>
                             <div className={ `${style.msg_info }`}>
-                                <p>{data.sendUserId}</p>
+                                <p>{data.sendUserName}</p>
                             </div>
                             <div className={ `${style.msg_content }`}>
                                 <p className={ `${style.text }`}>{data.translate}</p>
