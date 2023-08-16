@@ -26,17 +26,13 @@ function JoinRoom() {
 
     const [localUser, setLocalUser] = useState(undefined);  // subscribers 요소에 들어갈 거임. 그러면서 publisher 역할도 함.
     
-    console.log('현재 localUser 정보',localUser)
     // session, state 선언
     const [session, setSession] = useState(undefined)
     const [subscribers, setSubscribers] = useState([]);
     const [mySessionId, setMySessionId] = useState(undefined);  
-    console.log('현재 참가자 정보', subscribers)
 
     // 방의 모든 참여자의 역할 정보 <----------------------------------------------------
-    const [allRoomRoles, setAllRoomRoles] = useState(undefined);
     const initialRoomRoles = useRef(undefined);
-    console.log('모든 참여자의 역할 정보', allRoomRoles)
 
     // 토큰, 방 타입 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
@@ -96,19 +92,16 @@ function JoinRoom() {
         const userData = { 
             mySessionId: location.state.mySessionId, 
             myUserId: user.userId,
-            // roomRole: location.state.roomRole
         }
         userDataRef.current = userData
         userRollRef.current = location.state.roomRole
 
-        console.log('location으로 전달된 정보', location.state.allRoomRoles)
         // 방 역할 정보 객체로 변환
         const userRoles = location.state.allRoomRoles.reduce((acc, user) => {
             acc[user.userId] = user.vroomRole;
             return acc;
         }, {});
         initialRoomRoles.current = userRoles
-        // setAllRoomRoles(userRoles);
 
         // 웹 소켓 연결
         stomp.connect({}, (frame) => {
@@ -118,31 +111,7 @@ function JoinRoom() {
                     console.log('이건 게스트가 나갈때 응답')
                 } else if (typeof receivedData === 'object') {  // host 나갔을 때 오는 응답
                     console.log('호스트나갔을 때 웹소켓 응답 데이터', receivedData)
-                    console.log(receivedData.userId)
-                    console.log('이거는 localUser', localUser)
                     setHostId(receivedData.userId)
-                    // changeLocalUser(receivedData[0].userId)
-                    // setLocalUser((prevLocalUser)=>{
-                    //     const updatedLocalUser = prevLocalUser.map((userObj) => {
-                    //         if (userObj.userId === receivedData[0].userId) {
-                    //             return { ...userObj, roomRole: 'HOST'};
-                    //         }
-                    //         return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
-                    //     })
-                    //     console.log('유저 정보를 업데이트하였습니다.');
-                    //     return updatedLocalUser;
-                    // })
-                    // setLocalUser((prev)=>({...prev, roomRole: receivedData[0].roomRole }))
-                    // userRollRef.current = receivedData[0].roomRole
-                    // if (receivedData[0].roomRole === 'HOST') {
-
-                    //     sessionRef.current.signal({
-                    //         data: JSON.stringify(user.userId),  // Any string (optional)
-                    //         to: [],                             // Array of Connection objects (optional. Broadcast to everyone if empty)
-                    //         type: 'roomRole',                   // The type of message (optional)
-                    //     })
-                    // }
-
                 }
                 console.log("JSON.parse(message.body)", JSON.parse(message.body));
             })
@@ -151,32 +120,9 @@ function JoinRoom() {
         // 주제 목록 불러오기
         getTopicList();
 
-
         // 윈도우 객체에 화면 종료 이벤트 추가
         window.addEventListener('beforeunload', onBeforeUnload); 
         joinSession();  // 세션 입장
-
-        // userRole 역할
-        // if (sessionRef.current !== undefined) {
-        //     sessionRef.current.on('signal:roomRole', async (event) => {
-        //         const data = JSON.parse(event.data);
-        //         console.log('전달받은 호스트 유저 ID', data)
-        //         if (user.userId !== data ) {  // 전달받은 메세지가 본인 메세지가 아닌 경우
-        //             setLocalUser((prevLocalUser)=>{
-        //                 const updatedLocalUser = prevLocalUser.map((userObj) => {
-        //                     if (userObj.userId === data) {
-        //                         console.log('찾았다 요놈', data, userObj.userId)
-        //                         return { ...userObj, roomRole: 'HOST'};
-        //                     }
-        //                     return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
-        //                 })
-        //                 console.log('유저 정보를 업데이트하였습니다.');
-        //                 return updatedLocalUser;
-        //             })
-        //         }
-        //     });
-        // }
-
 
         return () => {
             // 윈도우 객체에 화면 종료 이벤트 제거
@@ -242,8 +188,6 @@ function JoinRoom() {
             const subscriber = mySession.subscribe(event.stream, undefined);
             const jsonParts = event.stream.connection.data.split('%/%');
             const clientData = JSON.parse(jsonParts[0]).clientData
-            console.log('subscriber 데이터', subscriber)
-            console.log('모든 참여자 정보---------------------------------------', initialRoomRoles.current)
 
             let currentUserRole;
             if (
@@ -530,25 +474,11 @@ function JoinRoom() {
             })
             setSubscribers(updatedSubscribers)
         }
-
-        // if (hostId !== undefined) {
-        //     setLocalUser((prevLocalUser)=>{
-        //         const updatedLocalUser = prevLocalUser.map((userObj) => {
-        //             if (userObj.userId === data) {
-        //                 return { ...userObj, roomRole: 'HOST'};
-        //             }
-        //             return userObj; // 조건을 만족하지 않는 객체는 그대로 반환
-        //         })
-        //         console.log('유저 정보를 업데이트하였습니다.');
-        //         return updatedLocalUser;
-        //     })
-        // }
-    }
+    };
 
     useEffect(() => {
         console.log('현재 호스트',hostId)
         changeUserRoll(hostId);
-
     }, [hostId])
 
 

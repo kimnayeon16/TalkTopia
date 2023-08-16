@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReporterTable from './ReporterTable';  // 해당 경로로 수정 필요
+import style from './AdminPage.module.css'
 
 const ReporterView = () => {
     const [data, setData] = useState([]);
@@ -17,8 +18,8 @@ const ReporterView = () => {
     }, []);
 
     return (
-        <div>
-            <h2>신고자 정보</h2>
+        <div className={style['manage-view-container']}>
+            {/* <h2>신고자 정보</h2> */}
             <ReporterTable data={data} />
         </div>
     );
