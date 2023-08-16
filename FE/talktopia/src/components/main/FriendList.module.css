@@ -76,9 +76,10 @@
 
 .modal-search-btn{
     position: absolute;
-    left: 12px;
-    top: 11px;
-    width: 30px;
+    right: 39px;
+    top: 15px;
+    width: 22px;
+    cursor: pointer;
     background: none;
     border: none;
     color: #adadad;
