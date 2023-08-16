@@ -37,9 +37,9 @@
     font-family: 'Dovemayo_wild';
 }
 
-.NotificationDetailButton:hover {
-    background-color: #0056b3;
-}
+    .NotificationDetailButton:hover {
+        background-color: #0056b3;
+    }
 
 .NotificationCloseButton{
     margin-left:95%;

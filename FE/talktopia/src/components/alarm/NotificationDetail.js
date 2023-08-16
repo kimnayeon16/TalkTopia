@@ -53,21 +53,21 @@ function NotificationDetail({ rmNo, closeModal }) {
                         <div className="NotificationDetailH1">Friend Request Message</div>
                     ) : null}
                 <div className="NotificationDetailP">
-                    <div className="NotificationDetailLabel">Notification Content</div>
+                    <div className="NotificationDetailLabel">Message Body</div>
                     <div className="NotificationDetailLabelChildren"> {notificationData.rmContent}</div>
                 </div>    
                 <div className="NotificationDetailP">
-                    <div className="NotificationDetailLabel">Notification Status</div>
+                    <div className="NotificationDetailLabel">Message Status</div>
                     <div className="NotificationDetailLabelChildren">{notificationData.rmType}</div>
                 </div>
                 <div className="NotificationDetailP">
-                    <div className="NotificationDetailLabel">Notification Sender</div>
+                    <div className="NotificationDetailLabel">Sender Id</div>
                     <div className="NotificationDetailLabelChildren"> {notificationData.rmHost}</div>
                 </div>
                 <div className="NotificationDetailP">
                     {notificationData.rmVrSession !== "NONE" ? (
                         <>
-                        <div className="NotificationDetailLabel">Notification VR Session</div>
+                        <div className="NotificationDetailLabel">Room Id</div>
                         <div className="NotificationDetailLabelChildren"> {notificationData.rmVrSession}</div>
                         </>
                     ) : null}
