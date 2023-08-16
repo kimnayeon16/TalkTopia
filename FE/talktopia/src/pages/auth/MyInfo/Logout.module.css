@@ -30,35 +30,53 @@
     } */
 }
 
+.start-header {
+  margin: 90px 0 0 0;
+}
+
 .p{
   font-family: 'Dovemayo_wild';
-  font-size: 35px;
+  font-size: 40px;
   margin-top: 40px;
-  color: #012A4A;
+  color: #ffffff;
+  font-weight: 800;
 }
 
 .button {
     font-family: 'Dovemayo_wild';
-    background-color: rgb(249, 246, 216);
     border-radius: 5px;
-    color: #635332;
+    color: white;
     width: 400px;
     height: 55px;
     font-size: 25px;
-    text-align: center;
-    margin-top: -10px;
-    .span{
-        font-size: 25px;
+    text-align: center; 
+    margin: 50px auto 0;
+  
+    background: linear-gradient(rgba(255, 255, 255, 0.578), transparent);
+    box-shadow: 0 8px 15px 0 #012a4a1b;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    color: #012a4a9c;
+    transition: all 0.5s ease-out;
+    .span {
+      font-size: 25px;
     }
+}
+.button:hover{
+  background: linear-gradient(rgba(255, 255, 255, 0.719), transparent);
+  color : #012A4A;
 }
 
 .cloud{
-    width: 120px;
-    height: 90px;
-    margin-top:40px;
-    margin-left:-100px;
-    position: relative;
-    animation: moveCloud 30s linear infinite;
+  position: fixed;
+  top: 10%;
+  left: 8%;
+  z-index: -1;
+
+  width: 120px;
+  height: 90px;
+  animation: moveCloud 30s linear infinite;
 }
 
 @keyframes moveCloud {
@@ -71,10 +89,12 @@
 }
 
 .cloud2{
+  position: fixed;
+  top: 28%;
+  right: 5%;
+  z-index: -1;
   width: 120px;
   height: 90px;
-  margin-top:20px;
-  margin-left: 850px;
   animation: moveCloud2 20s ease-in-out infinite;
 }
 
@@ -88,11 +108,13 @@
 }
 
 .cloud3{
-  position: relative;
+  position: fixed;
+  top: 38%;
+  left: 20%;
+  z-index: -1;
+
   width: 100px;
   height: 100px;
-  margin-top:-50px;
-  margin-left: 600px;
   animation: moveCloud3 20s ease-in-out infinite;
 }
 
@@ -106,9 +128,12 @@
 }
 
 .wave{
-    width:90px;
-    margin-top: 80px;
-    animation: waves 3s ease-in-out infinite;
+  position: fixed;
+  top: 55%;
+  left: 10%;
+  z-index: -1;
+  width: 130px;
+  animation: waves 3s ease-in-out infinite;
   }
   
   @keyframes waves {
@@ -132,10 +157,13 @@
   
   
   .wave1{
-    width:80px;
-    margin-top: 10px;
-    margin-left: 700px;
-    animation: waves1 3s ease-in-out infinite;
+    width: 130px;
+  position: fixed;
+  right: 10%;
+  bottom: 28%;
+  z-index: -1;
+
+  animation: waves1 3s ease-in-out infinite;
   }
   
   @keyframes waves1 {

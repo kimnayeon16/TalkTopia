@@ -37,6 +37,8 @@ function MyInfo(){
     const [pwConfirmMsg, setPwConfirmMsg] = useState('');
     const [userPwCorrect, setUserPwCorrect] = useState(false);
 
+    const [googleId, setGoogleId] = useState(false);
+
 
     useEffect(()=>{
         const userInfoString = localStorage.getItem("UserInfo");
@@ -59,11 +61,20 @@ function MyInfo(){
             setUserImgUrl(response.data.userProfileImgUrl);
             setUserLan(response.data.userLan);
 
+            if(response.data.userId.charAt(0) === '*'){
+                setGoogleId(true);
+                console.log(googleId, "구글아이디");
+            }
+
         })
          .catch((error)=>{
              console.log("못 불러옴", error);
          })
     },[]);
+
+    useEffect(() => {
+        console.log(googleId, "구글아이디");
+      }, [googleId]);
     
     const onPwHandler = (e) => {
         const value = e.target.value;
@@ -139,9 +150,6 @@ function MyInfo(){
 
                 const userInfoString = localStorage.getItem("UserInfo");
                 const userInfo = JSON.parse(userInfoString);
-
-                
-                
 
                 userInfo.userId = userId1;
                 userInfo.userName = userName;
@@ -260,7 +268,8 @@ function MyInfo(){
         }
     }
 
-
+    const inputClassName = `${googleId ?style["input-1"] : style.input}`;
+    
     return(
         <div className={`${style.background}`}>
             <Nav/>
@@ -294,14 +303,14 @@ function MyInfo(){
                     <div className={`${style.together1}`}>
                         <p className={`${style.p}`}>비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                         {/* <p className={`${style.guide}`}>변경을 원하는 비밀번호를 입력해주세요. <br/> 변경을 원치 않으시다면 기존의 비밀번호를 입력해주세요.</p> */}
-                        <input type="password" value={userPw} className={`${style.input}`} onChange={onPwHandler} onKeyPress={onCheckEnter}></input>
+                        <input type="password" value={userPw} className={inputClassName} onChange={onPwHandler} onKeyPress={onCheckEnter} readOnly={googleId}></input>
                     </div>
                 </div>
                 <div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>
                 <div className={`${style.together}`}>
                     <div className={`${style.together1}`}>
                         <p className={`${style.p}`}>비밀번호 확인&nbsp;</p>
-                        <input type="password" value={userPwConfirm} className={`${style.input}`} onChange={onPwConfirmHandler} onKeyPress={onCheckEnter}></input>
+                        <input type="password" value={userPwConfirm} className={inputClassName} onChange={onPwConfirmHandler} onKeyPress={onCheckEnter} readOnly={googleId}></input>
                     </div>
                 </div>
                 <div>

@@ -24,9 +24,10 @@ function PostList() {
         .then((response) => {
           console.log("성공");
           console.log(response);
+          
           setData(response.data);
         })
-        .catch((error) => { 
+        .catch((error) => {
           console.log("실패", error);
         })
 
@@ -35,9 +36,44 @@ function PostList() {
       }
     };
     fetchData();
+
+
+    // /////////////////////////////////////////////
+    
+
+
   }, []);
 
+  const [activeIndex, setActiveIndex] = useState(null);
+  const handleItemClick = (index) => {
+    if (index === activeIndex) {
+      setActiveIndex(null); // 현재 열려있는 패널을 닫기 위해 클릭한 아이템의 인덱스를 초기화
+    } else {
+      setActiveIndex(index); // 클릭한 아이템의 인덱스로 패널을 열기
+    }
+  };
+
+
   return (
+    // <div>
+    //   {data.map((item, index) => (
+    //     <div key={index} className="accordion-item">
+    //       <button
+    //         className={`accordion-title ${activeIndex === index ? 'active' : ''}`}
+    //         onClick={() => handleItemClick(index)}
+    //       >
+    //         {item.postTitle}
+    //       </button>
+    //       {activeIndex === index && (
+    //         <div className="accordion-content">
+    //           {item.content}
+    //         </div>
+    //       )}
+    //     </div>
+    //   ))}
+    // </div>
+
+
       <div>
         <ul className={`${style.ul}`}>
           <div className={`${style.li}`}> 번호 &nbsp;&nbsp;&nbsp;&nbsp; 제목 </div>

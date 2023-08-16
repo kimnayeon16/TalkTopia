@@ -31,9 +31,10 @@ function Logout(){
         <div className={`${style.background}`}>
              <img className={`${style.cloud}`} src="/img/cloud/cloud4.png" alt=""/>
             <img className={`${style.cloud2}`} src="/img/cloud/cloud5.png" alt=""/>
+            <img className={`${style.cloud3}`} src="/img/cloud/cloud6.png" alt=""/>
+            <div className={`${style["start-header"]}`}>
             <h2 className={`${style.h2}`}>TalkTopia<span className={`${style.span}`}>에서 다양한 국적의 사람들과 <br/> 소통하며 즐거운 시간 보내셨나요?</span></h2>
             <p className={`${style.p}`}>또 만나요 우리 !</p>
-            <img className={`${style.cloud3}`} src="/img/cloud/cloud6.png" alt=""/>
             <button className={`${style.button}`} onClick={()=>{navigate('/')}}><span className={`${style.span}`}>💻</span> TalkTopia 홈으로 가기 <span className={`${style.span}`}>⛵</span></button>
             <img className={`${style.friend1}`} src="/img/start/friend4.png" alt=""></img>
             <img className={`${style.friend}`} src="/img/start/friend.png" alt=""></img>
@@ -48,6 +49,7 @@ function Logout(){
             <img className={`${style.wave}`} src="/img/boat/boat3.png" alt=""/>
             <img className={`${style.wave1}`} src="/img/boat/boat5.png" alt=""/>
             {/* <img className={`${splash ? style.splash : style.splash1 }`} src="/img/start/splash.png" alt=""/> */}
+        </div>
         </div>
     )
 }

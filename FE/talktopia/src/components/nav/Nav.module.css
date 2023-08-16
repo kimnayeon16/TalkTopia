@@ -14,12 +14,29 @@
   display: inline-block;
 }
 
-.admin {
-  width: 55px;
+.admin{
+width:55px;
+position: fixed;
+top: 17px;
+right: 410px;
+z-index: 10;
+}
+
+.adminModal{
+  font-family: 'Dovemayo_wild';
+  font-size: 17px;
+  width: 160px;
+  height: 50px;
+  border-radius: 15px;
+  background-color: white;
+  opacity: 0.8;
+  z-index: 100;
   position: fixed;
-  top: 20px;
-  right: 410px;
-  z-index: 9;
+  top: 75px;
+  right: 360px;
+  margin: 0;
+  padding: 10px;
+  flex-direction: column;
 }
 
 
