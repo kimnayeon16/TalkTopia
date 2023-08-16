@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.talktopia.api.request.vr.VRoomFriendReq;
+import com.example.talktopia.api.response.vr.ShowAllVRoomRes;
 import com.example.talktopia.api.service.user.UserStatusService;
 import com.example.talktopia.common.message.RoomExitStatus;
 
@@ -163,10 +164,15 @@ public class VRoomService {
 
 				participantsService.joinRoom(user,vRoom, RoomRole.GUEST);
 				VRoomRes vRoomRes = new VRoomRes();
+				//참여자의 Role와 id를 알아야함
+				List<ShowAllVRoomRes> showAllVRoomRes = findAllRoom(connRoomId);
+				vRoomRes.setShowAllVRoomRes(showAllVRoomRes);
+
 				vRoomRes.setToken(token);
 				//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
 				vRoomRes.setVrSession(roomId);
 				vRoomRes.setRoomRole(RoomRole.GUEST);
+
 				userStatusService.updateUserStatus(user.getUserId(),"BUSY");
 				// Return the response to the client
 				// 토큰정보와 상태 정보 리턴
@@ -230,6 +236,9 @@ public class VRoomService {
 			//            this.mapUserSession.get(userEmail).put(sessionName, token);
 			// Prepare the response with the tokeny
 			VRoomRes vRoomRes = new VRoomRes();
+			//참여자의 Role와 id를 알아야함
+			List<ShowAllVRoomRes> showAllVRoomRes = findAllRoom(connRoomId);
+			vRoomRes.setShowAllVRoomRes(showAllVRoomRes);
 			vRoomRes.setToken(token);
 			vRoomRes.setVrSession(roomId);
 			vRoomRes.setRoomRole(RoomRole.HOST);
@@ -261,7 +270,6 @@ public class VRoomService {
 		}
 
 	}
-
 	@Transactional
 	public VRoomRes enterFriendRoom(VRoomReq vRoomReq) throws Exception {
 		User user = userRepository.findByUserId(vRoomReq.getUserId()).orElseThrow(()->new Exception("유저가앖어"));
@@ -322,9 +330,13 @@ public class VRoomService {
 			//            this.mapUserSession.get(userEmail).put(sessionName, token);
 			// Prepare the response with the tokeny
 			VRoomRes vRoomRes = new VRoomRes();
+			//참여자의 Role와 id를 알아야함
+			List<ShowAllVRoomRes> showAllVRoomRes = findAllRoom(roomId);
+			vRoomRes.setShowAllVRoomRes(showAllVRoomRes);
 			vRoomRes.setToken(token);
 			vRoomRes.setVrSession(roomId);
 			vRoomRes.setRoomRole(RoomRole.HOST);
+
 			System.out.println(-2);
 			// Return the response to the client
 			// 토큰정보와 상태 정보 리턴
@@ -381,6 +393,9 @@ public class VRoomService {
 
 		participantsService.joinRoom(user,vRoom, RoomRole.GUEST);
 		VRoomRes vRoomRes = new VRoomRes();
+		//참여자의 Role와 id를 알아야함
+		List<ShowAllVRoomRes> showAllVRoomRes = findAllRoom(connId);
+		vRoomRes.setShowAllVRoomRes(showAllVRoomRes);
 		vRoomRes.setToken(token);
 		//vRoomRes.setToken(this.mapSessionToken.get(connRoomId).getToken());
 		vRoomRes.setVrSession(connId);
@@ -549,6 +564,21 @@ public class VRoomService {
 		SaveVRoom saveVRoom = saveVRoomRepository.findBySvrSession(vrSession);
 		saveVRoom.setSvrCloseTime(LocalDateTime.now());
 		saveVRoomRepository.save(saveVRoom);
+	}
+
+
+	private List<ShowAllVRoomRes> findAllRoom(String connRoomId) {
+		List<Participants> participants = participantsRepository.findByVRoom_VrSession(connRoomId);
+		List<ShowAllVRoomRes> showAllVRoomRes = new ArrayList<>();
+		for(Participants part : participants) {
+			User user = userRepository.findByUserNo(part.getUser().getUserNo());
+			ShowAllVRoomRes show = ShowAllVRoomRes.builder()
+				.vRoomRole(part.getRoomRole())
+				.userId(user.getUserId())
+				.build();
+			showAllVRoomRes.add(show);
+		}
+		return showAllVRoomRes;
 	}
 
 }
