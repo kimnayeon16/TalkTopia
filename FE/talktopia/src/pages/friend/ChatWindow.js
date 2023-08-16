@@ -5,10 +5,12 @@ import { BACKEND_URL, BACKEND_URL_CHAT } from '../../utils';
 import SockJS from 'sockjs-client'; // <-- 수정
 import Stomp from "stompjs";        // <-- 수정
 import style from './ChatWindow.module.css';
+import { AiOutlineClose } from "react-icons/ai";
+
 
 // import allStyle from './Friend.module.css';
 
-function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
+function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
   const user = useSelector((state) => state.userInfo);
 
 
@@ -21,7 +23,8 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
   let [stompClient, setStompClient] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [componentLoaded, setComponentLoaded] = useState(false)
+  const [chatTimes, setChatTimes] = useState([]);
+  // const [componentLoaded, setComponentLoaded] = useState(false)
   const observerRef = useRef(null);
   const hasMoreLogs = useRef(true);
   /* state end */
@@ -50,44 +53,53 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
     // console.log("Attempting to connect to WebSocket");
     connect();
 
-    // 스크롤 이벤트용 ////////////////////////////////////////////
-    hasMoreLogs.current = true; // 스크롤가능하게함
-    // IntersectionObserver를 생성하고 연결
-    observerRef.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        // 스크롤 이벤트 1.5초 지연
-        setTimeout(() => {
-          loadMoreChatLogs();
-        }, 1500);
-      }
-    });
+    // // 스크롤 이벤트용 ////////////////////////////////////////////
+    // hasMoreLogs.current = true; // 스크롤가능하게함
+    // // IntersectionObserver를 생성하고 연결
+    // observerRef.current = new IntersectionObserver(entries => {
+    //   if (entries[0].isIntersecting) {
+    //     // 스크롤 이벤트 1.5초 지연
+    //     setTimeout(() => {
+    //       loadMoreChatLogs();
+    //     }, 1500);
+    //   }
+    // });
     
-    if (observerRef.current) {
-      observerRef.current.observe(document.querySelector('#placeholder'));
-    }
+    // if (observerRef.current) {
+    //   observerRef.current.observe(document.querySelector('#placeholder'));
+    // }
     
-    return () => {
-      // 컴포넌트 언마운트 시 이벤트 해제
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-        hasMoreLogs.current = true;
-        observerRef.current=null
-      }
+    // return () => {
+    //   // 컴포넌트 언마운트 시 이벤트 해제
+    //   if (observerRef.current) {
+    //     observerRef.current.disconnect();
+    //     hasMoreLogs.current = true;
+    //     observerRef.current=null
+    //   }
 
-      // 이 부분은 언마운트될 때 연결을 해제하는 로직입니다.
-      if (stompClient && stompClient.connected) {
-        console.log("Component unmounting. Disconnecting stomp.");
-        stompClient.disconnect();
-      }
-    };
-  }, [friendId, sessionId]);
+    //   // 이 부분은 언마운트될 때 연결을 해제하는 로직입니다.
+    //   if (stompClient && stompClient.connected) {
+    //     console.log("Component unmounting. Disconnecting stomp.");
+    //     stompClient.disconnect();
+    //   }
+    // };
+  }, [friend, sessionId]);
   
 
 
 
-  
+  // 채팅 내용 변경될때마다 실행  
   useEffect(()=>{
-    setChatLog(chats)
+    console.log("chats", chats)
+    console.log("원래 내용, ", {chatLog});
+    setChatLog(chats) // 채팅내용 재반영
+    console.log("재반영, ", {chatLog});
+
+    let formatedTimes = [];
+    chats.forEach((chat)=>formatedTimes.push(formatDate(chat.scrcSendTime)));
+
+    setChatTimes(formatedTimes);
+    console.log("채팅시간", {chatTimes})
   }, [chats])
   /* end useEffect */
 
@@ -116,8 +128,12 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
         // console.log(message)
         console.log("subscribe==>", JSON.parse(message.body));
         // showChatMsg(JSON.parse(message.body));  // subscribe결과 화면에 출력
-        setChatLog(prevLog => [...prevLog, JSON.parse(message.body)])
-        console.log(user.userId);
+        // setChatLog(prevLog => [...prevLog, JSON.parse(message.body)])
+        setChatLog([...chatLog, ...[JSON.parse(message.body)] ])
+        console.log("새로운 채팅로그", {chatLog})
+        const newChatTime = formatDate(message.body.scrcSendTime)
+        setChatTimes([...chatTimes, ...[newChatTime]]);
+        console.log("새로운 채팅시간", {chatTimes})
       })
     })
   }
@@ -178,6 +194,25 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
       sendChatMsg(); 
     }
   };
+  /* 채팅창 닫기 */
+  const handleCloseBtn = ()=>{
+    onShowChat(false);
+  }
+
+  // 시간 포맷
+  const formatDate = (inputDate) => {
+    const currentDate = new Date();
+    const targetDate = new Date(inputDate);
+    const timeDiff = currentDate - targetDate;
+    
+    if (timeDiff < 1800000) { // Less than 10 minutes
+      const minutesAgo = Math.floor(timeDiff / 60000);
+      return minutesAgo > 0 ? `${minutesAgo}분 전` : '방금 전';
+    } else {
+      const options = { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
+      return targetDate.toLocaleString('en-US', options);
+    }
+  }
   /* 함수영역 끝 */
 
   return (
@@ -187,11 +222,31 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
 
 
         <div className={`${style["chat-header"]}`}>
-          <h2>{friendName}와의 채팅</h2>
+          {/* 접속한사람 */}
+          { friend.userStatus == "ONLINE" && (
+            <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-online"]}`}>
+              <img src={friend.userImg}></img>
+            </div>)
+          }
+          {/* 다른용무중 */}
+          { friend.userStatus == "BUSY" && (
+            <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-busy"]}`}>
+              <img src={friend.userImg}></img>
+            </div>)
+          }
+          {/* 미접속 */}
+          { friend.userStatus == "OFFLINE" && (
+            <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
+              <img src={friend.userImg}></img>
+            </div>)
+          }
+          <h2>{friend.userName}</h2>
         </div>
 
 
         <div id="chat-content" className={`${style["chat-content"]}`}>
+          <button onClick={handleCloseBtn} className={`${style["chat-close-btn"]}`}><AiOutlineClose size='20'/></button>
+
           <div id="placeholder" className={`${style["placeholder"]}`}></div>
           {isLoading && <div className={`${style["placeholder-loading-msg"]}`}>Loading...</div>}
           { chatLog && 
@@ -200,9 +255,7 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
                 {chat.scrcSenderId == user.userId &&
                   // 채팅을 보낸사람이 나일때
                   <div className={`${style["my-chat-msg"]}`}>
-                    {chat.scrcSenderId}
-                    <span>보낸사람 : <b>{user.userName}</b></span>
-                    <span className={`${style["chat-send-time"]}`}>{chat.scrcSendTime}</span>
+                    <span className={`${style["chat-send-time"]}`}>{chatTimes[i]}</span>
                     <div className={`${style["chat-msg"]}`}>{chat.scrcContent}
                     </div>
                   </div>
@@ -210,12 +263,26 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
 
                 {chat.scrcSenderId != user.userId &&  // 채팅을 보낸사람이 친구일때
                   <div className={`${style["friend-chat-msg"]}`}>
-                    {chat.scrcSenderId}
-
-                    <span>보낸사람 : <b>{friendName}</b>  </span>
-                    <span className={`${style["chat-send-time"]}`}>{chat.scrcSendTime}</span>
-                    <div className={`${style["chat-msg"]}`}>{chat.scrcContent}
-                    </div>
+                      {/* 접속한사람 */}
+                      { friend.userStatus == "ONLINE" && (
+                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-online"]}`}>
+                          <img src={friend.userImg}></img>
+                        </div>)
+                      }
+                      {/* 다른용무중 */}
+                      { friend.userStatus == "BUSY" && (
+                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-busy"]}`}>
+                          <img src={friend.userImg}></img>
+                        </div>)
+                      }
+                      {/* 미접속 */}
+                      { friend.userStatus == "OFFLINE" && (
+                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
+                          <img src={friend.userImg}></img>
+                        </div>)
+                      }
+                    <div className={`${style["chat-msg"]}`}>{chat.scrcContent}</div>
+                      <span className={`${style["chat-send-time"]}`}>{chatTimes[i]}</span>
                   </div>
                 }
               </div>
@@ -230,7 +297,9 @@ function ChatWindow({friendId, friendName, sessionId, showChat, chats}) {
             onKeyPress={handleOnKeyPress}
             value = {chatMsg}>
           </input>
-          <button className={`${style["chat-send-btn"]}`} onClick={sendChatMsg}>전송</button>
+          <button className={`${style["chat-send-btn"]}`} onClick={sendChatMsg}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+          </button>
         </div>
 
 
