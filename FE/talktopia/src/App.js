@@ -35,10 +35,6 @@ import WebSpeechApi from './apis/stt/WebSpeechApi.js';
 import Sample from './apis/stt/Sample.js';
 import JoinRoom from './pages/video/JoinRoom.js';
 
-
-import FriendList from './pages/friend/FriendList';
-import ChatWindow from './pages/friend/ChatWindow';
-
 import GoogleLoginButton from './pages/auth/MyInfo/GoogleLoginButton';
 import { AnimatePresence } from "framer-motion";
 
@@ -125,10 +121,6 @@ function App() {
         <Route path="/*" element={<Error/>}/>
         {/* 삭제할거 */}
         <Route path="/google" element={<GoogleLoginButton/>}/>
-
-        {/* 친구목록 */}
-        <Route path="/friendList" element={<FriendList/>}/>
-        <Route path="/chat" element={<ChatWindow />} />
 
         {/* 관리자페이지 */}
         <Route path="/admin" element={<AdminPage />} />

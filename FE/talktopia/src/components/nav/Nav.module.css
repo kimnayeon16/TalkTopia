@@ -5,22 +5,23 @@
   font-size: 35px;
   margin-left: -1250px;
   margin-bottom: 650px;
-  z-index: 10;
+  z-index: 9;
 }
 
 /* 관리자 페이지 */
-.admin-space{
-position: relative;
-display: inline-block;
+.admin-space {
+  position: relative;
+  display: inline-block;
 }
 
-.admin{
-width:55px;
-position: fixed;
-top: 20px;
-right: 410px;
-z-index: 10;
+.admin {
+  width: 55px;
+  position: fixed;
+  top: 20px;
+  right: 410px;
+  z-index: 9;
 }
+
 
 
 
@@ -30,15 +31,15 @@ z-index: 10;
   display: inline-block;
 }
 
-.user{
-  width:55px;
+.user {
+  width: 55px;
   position: fixed;
   top: 20px;
   right: 320px;
-  z-index: 10;
+  z-index: 9;
 }
 
-.meModal{
+.meModal {
   font-family: 'Dovemayo_wild';
   font-size: 17px;
   width: 160px;
@@ -55,12 +56,12 @@ z-index: 10;
   flex-direction: column;
 }
 
-.mytext{
+.mytext {
   margin: 10px 0;
   font-size: clamp(14px, 1.5vw, 18px);
 }
 
-.mytext:hover{
+.mytext:hover {
   background-color: rgba(122, 184, 243, 0.896);
   opacity: 0.5;
   border-radius: 15px;
@@ -69,22 +70,22 @@ z-index: 10;
 
 
 /* 알림 */
-.dding-space{
+.dding-space {
   position: relative;
   display: inline-block;
 }
 
-.dding{
-  width:60px;
+.dding {
+  width: 60px;
   height: auto;
   position: fixed;
   top: 17px;
   right: 230px;
-  z-index: 10;
+  z-index: 9;
   transition: all 0.3s;
 }
 
-.ddingModal{
+.ddingModal {
   font-family: 'Dovemayo_wild';
   font-size: 17px;
   width: 300px;
@@ -104,7 +105,7 @@ z-index: 10;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   transition: all 0.3s;
-  }
+}
 
 
 .notification-item {
@@ -283,4 +284,80 @@ z-index: 10;
   border-radius: '50%';
   overflow: 'hidden';
   margin-top: 15px;
+}
+
+
+/* -------------- 반응형 구간 ------------------------- */
+/* 큰화면 */
+@media only screen and (min-width : 1900px) {
+  .user {
+    zoom: 1.5
+  }
+
+  .dding {
+    zoom: 1.5
+  }
+
+  .earth {
+    zoom: 1.5
+  }
+
+  .faq {
+    zoom: 1.5
+  }
+}
+
+/* 작은화면 */
+@media only screen and (max-width: 1200px) {
+  .user {
+    zoom: 1
+  }
+
+  .dding {
+    zoom: 1
+  }
+
+  .earth {
+    zoom: 1
+  }
+
+  .faq {
+    zoom: 1
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .user {
+    zoom: 0.7
+  }
+
+  .dding {
+    zoom: 0.7
+  }
+
+  .earth {
+    zoom: 0.7
+  }
+
+  .faq {
+    zoom: 0.7
+  }
+}
+
+@media only screen and (max-width: 546px) {
+  .user {
+    zoom: 0.5
+  }
+
+  .dding {
+    zoom: 0.5
+  }
+
+  .earth {
+    zoom: 0.5
+  }
+
+  .faq {
+    zoom: 0.5
+  }
 }

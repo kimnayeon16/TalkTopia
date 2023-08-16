@@ -121,9 +121,6 @@ animation: bounce 5s infinite ease-in-out;
 .body {
   margin: 0;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   background-image: url('./../../../public/img/background/sea.png');
   background-size: cover;
@@ -137,6 +134,7 @@ animation: bounce 5s infinite ease-in-out;
   top: 85%;
   right: 20%;
 }
+
 .fishContainer {
   position: absolute;
   top: calc(90% - 25px);
@@ -171,6 +169,9 @@ animation: bounce 5s infinite ease-in-out;
   right: 20%;
   
 }
+.bearGroup:hover{
+  cursor: pointer;
+}
 /* ------------------------ container 구간 -------------------- */
 .bearContainer1 {
   position: absolute;
@@ -191,7 +192,7 @@ animation: bounce 5s infinite ease-in-out;
   top: 50%;
   right: 0;
   animation: bearswim3 16s ease-in-out infinite, bounce 2s ease-in-out infinite;
-  /* z-index:10; */
+  z-index:10;
 }
 .bearContainer4 {
   position: absolute;
@@ -212,6 +213,9 @@ animation: bounce 5s infinite ease-in-out;
   position: absolute;
   top: 44%;
   left: 20%;
+}
+.penguinGroup:hover{
+  cursor: pointer;
 }
 
 .peng1Container {
@@ -248,6 +252,9 @@ animation: bounce 5s infinite ease-in-out;
   position: absolute;
   top: 65%;
   right: 35%;
+}
+.friendGroup:hover{
+  cursor: pointer;
 }
 
 .nimoContainer {
@@ -286,6 +293,9 @@ animation: bounce 5s infinite ease-in-out;
   position: absolute;
   top: 25%;
   right: 50%;
+}
+.whaleGroup:hover{
+  cursor: pointer;
 }
 
 .whiteContainer {
@@ -384,7 +394,7 @@ animation: bounce 5s infinite ease-in-out;
   /* margin-left: -500px;
   left:100%; */
   bottom:0px;
-  right: 400px;
+  right: 40%;
   }
   .coralContainer4{
   position: fixed;
@@ -392,28 +402,30 @@ animation: bounce 5s infinite ease-in-out;
   left:100%; */
   bottom: 0px;
   right: 10px;
-  z-index: 20;
+  z-index: 21;
   }
 
   .stoneContainer1{
   position: fixed;
   /* margin-left: -300px;
   left:100%; */
-  left: 550px;
+  left: 30%;
+  bottom: -9px;
   }
   .stoneContainer2{
   position: fixed;
   /* margin-left: -600px;
   left:100%; */
   left: 170px;
-  z-index: 20;
+  bottom: 0;
+  z-index: 9;
   }
   .stoneContainer3{
   position: fixed;
   /* margin-left: 150px;
   left:100%; */
-  right: 550px;
-  bottom: 0px;
+  right: 25%;
+  bottom: -10px;
   }
   .stone1{
       width: 100px;
@@ -469,7 +481,7 @@ animation: bounce 5s infinite ease-in-out;
   position: absolute;
   top: calc(90% - 25px);
   right: 50%;
-  z-index: 9;
+  z-index: 20;
   }
 .crabContainer1{
   position: fixed;
@@ -495,6 +507,94 @@ animation: bounce 5s infinite ease-in-out;
   background-image: url('./../../../public/img/main/crab-sign.png');
   animation: moveUpAndDown 10s;
 }
+/* -------------- 반응형 구간 ------------------------- */
+/* 큰화면 */
+@media only screen and (min-width : 1900px) {
+  .bearGroup{
+    zoom : 1.5 
+  }
+  .penguinGroup{
+    zoom : 1.5  
+  } 
+  .friendGroup{
+    zoom : 1.5  
+  }
+  .whaleGroup{
+    zoom : 1.5  
+  }
+  .coralGroup{
+    zoom : 1.5  
+  }
+  .crabContainer1{
+    zoom : 1.5  
+  }
+  
+}
+
+/* 작은화면 */
+@media only screen and (max-width: 1200px) {
+  .bearGroup{
+    zoom : 1  
+  }
+  .penguinGroup{
+    zoom : 1  
+  } 
+  .friendGroup{
+    zoom : 1  
+  }
+  .whaleGroup{
+    zoom : 1  
+  }
+  .coralGroup{
+    zoom : 1  
+  }
+  .crabContainer1{
+    zoom : 1  
+  }
+
+}
+@media only screen and (max-width: 950px) {
+  .bearGroup{
+    zoom :0.7  
+  }
+  .penguinGroup{
+    zoom :0.7  
+  } 
+  .friendGroup{
+    zoom :0.7  
+  }
+  .whaleGroup{
+    zoom :0.7  
+  }
+  .coralGroup{
+    zoom :0.7  
+  }
+  .crabContainer1{
+    zoom :0.7  
+  }
+}
+
+@media only screen and (max-width: 546px) {
+  .bearGroup{
+    zoom : 0.5  
+  }
+  .penguinGroup{
+    zoom : 0.5  
+  } 
+  .friendGroup{
+    zoom : 0.5  
+  }
+  .whaleGroup{
+    zoom : 0.5  
+  }
+  .coralGroup{
+    zoom : 0.5  
+  }
+  .crabContainer1{
+    zoom : 0.5  
+  }
+}
+
 
 /* ------------------------ keyframe 구간 -------------------- */
 
@@ -709,7 +809,7 @@ animation: bounce 5s infinite ease-in-out;
   margin-left: 140px;
   margin-top: -120px;
   padding-top: 15px;
-  /* z-index: 30; */
+  z-index: 30;
 }
 
 .speech-bubble2:after {
@@ -725,17 +825,17 @@ animation: bounce 5s infinite ease-in-out;
 	border-top: 0;
 	margin-top: -12.5px;
 	margin-left: -25px;
-  /* z-index: 30; */
+  z-index: 30;
 }
 
 .speech-bubble3 {
+	position: relative;
+  bottom: 100px;
   width: 300px;
   height: 120px;
-	position: relative;
 	background: #9ad1d6;
 	border-radius: 15px;
   margin-left: -380px;
-  bottom: 100px;
   padding-top: 15px;
   z-index: 20;
 }
@@ -753,5 +853,5 @@ animation: bounce 5s infinite ease-in-out;
 	border-top: 0;
 	margin-top: -10px;
 	margin-right: -20px;
-  z-index: 20;
+  z-index: 30;
 } 
