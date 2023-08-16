@@ -19,7 +19,7 @@ function FriendSearch({searchVisible, onShowSearchFind}) {
   const languageOptions = [ // 언어 옵션들을 배열로 정의
   '한국어', '독일어', '러시아어', '스페인어', '영어',
   '이탈리아어', '인도네시아어', '일본어', '중국어_간체',
-   '중국어_번체', '태국어', '포르투갈어', '프랑스어'
+   '중국어_번체', '힌디어', '포르투갈어', '프랑스어'
 ];
 
   const userInfoString = localStorage.getItem("UserInfo");

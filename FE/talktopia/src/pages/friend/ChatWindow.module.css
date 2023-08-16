@@ -112,7 +112,7 @@
 }
 
 .friend-section-profile-busy::after {
-  color: rgb(214, 124, 40);
+  color: #ff9f46;
 }
 
 .friend-section-profile-offline::after {
@@ -244,7 +244,7 @@
 }
 
 .friend-chat-msg .friend-section-profile-busy::after {
-  color: rgb(214, 124, 40);
+  color: #ff9f46;
 }
 
 .friend-chat-msg .friend-section-profile-offline::after {

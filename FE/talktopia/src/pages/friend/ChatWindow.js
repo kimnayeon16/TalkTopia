@@ -6,6 +6,7 @@ import SockJS from 'sockjs-client'; // <-- 수정
 import Stomp from "stompjs";        // <-- 수정
 import style from './ChatWindow.module.css';
 import { AiOutlineClose } from "react-icons/ai";
+import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
 
 
 // import allStyle from './Friend.module.css';
@@ -19,6 +20,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
   const [chatMsg, setChatMsg] = useState("");
   // 채팅 내용
   const [chatLog, setChatLog] = useState(chats)
+  const [translatedChatLog, setTranslatedChatLog] = useState([]);
   // 웹소켓 전용 sockJs, stomp
   let [stompClient, setStompClient] = useState();
 
@@ -39,7 +41,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
 
 
 //  세션아이디 변경시 useEffect /////////////////////
-  useEffect(() => {
+  useEffect( () => {
     //////////////////// 웹소켓 ////////////////////
     // 이전에 연결 돼있으면
     // console.log("useEffect triggered by sessionId change:", sessionId);
@@ -55,11 +57,17 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
     // console.log("Attempting to connect to WebSocket");
     connect();
 
-    ////////////// 채팅내용 재반영 //////////////////
+    ////////////// 채팅내용 재반영 & 번역 //////////////////
     setChatLog(chats) // 채팅내용 재반영
-    let formatedTimes = [];
-    chats.forEach((chat)=>formatedTimes.push(formatDate(chat.scrcSendTime)));
+
+    let formatedTimes = []; // 보낸시간 리포맷
+    let translatedMessages = []; // 번역된 메세지
+    chats.forEach(async (chat)=>{
+      formatedTimes.push(formatDate(chat.scrcSendTime))
+      translatedMessages.push(await translationHandler(chat.scrcContent, friend.usreLangTrans, user.transLang))
+    });
     setChatTimes(formatedTimes);
+    setTranslatedChatLog(translatedMessages);
 
     // After chatLog is updated, scroll to the bottom of the chat window
     if (chatWindowRef.current) {
@@ -127,9 +135,13 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
       console.log("웹소켓 연결 완료 stomp=>", stomp)
       setStompClient(stomp);
       
-      stomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
+      stomp.subscribe(`/topic/sub/${sessionId}`, async (message) => {
         setChatLog(prevLog => [...prevLog, JSON.parse(message.body)]);
         setChatTimes(prevTimes => [...prevTimes, formatDate(JSON.parse(message.body).scrcSendTime)]);
+
+        //번역
+        let translated = await translationHandler(JSON.parse(message.body).scrcContent, friend.usreLangTrans, user.transLang);
+        setTranslatedChatLog(prevLog => [...prevLog, translated]);
       })
     })
   }
@@ -194,6 +206,38 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
   const handleCloseBtn = ()=>{
     onShowChat(false);
   }
+  // Rapid API translation
+  const translationHandler = async (text, sourceLanguage, targetLanguage) => {
+    const encodedParams = new URLSearchParams();
+    encodedParams.set('source_language', sourceLanguage)        // 전달 받은 텍스트 언어
+    encodedParams.set('target_language', targetLanguage)        // 번역할 언어
+    encodedParams.set('text', text)
+
+    console.log('translationHandler data', encodedParams)
+
+    const options = {
+        method: 'POST',
+        url: 'https://text-translator2.p.rapidapi.com/translate',
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'X-RapidAPI-Key': REACT_APP_X_RAPID_API_KEY,
+            'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
+        },
+        data: encodedParams,
+    };
+        
+    try {
+        const response = await axios.request(options);
+        let translatedText = response.data.data.translatedText
+        console.log('번역에 성공하였습니다.', translatedText)
+        return translatedText
+    } catch (error) {
+        console.error(error);
+        // alert('번역에 실패하였습니다.');
+        return text
+    }
+  };
+
 
   // 시간 포맷
   const formatDate = (inputDate) => {
@@ -265,24 +309,26 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
 
                 {chat.scrcSenderId != user.userId &&  // 채팅을 보낸사람이 친구일때
                   <div className={`${style["friend-chat-msg"]}`}>
-                      {/* 접속한사람 */}
-                      { friend.userStatus == "ONLINE" && (
-                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-online"]}`}>
-                          <img src={friend.userImg}></img>
-                        </div>)
-                      }
-                      {/* 다른용무중 */}
-                      { friend.userStatus == "BUSY" && (
-                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-busy"]}`}>
-                          <img src={friend.userImg}></img>
-                        </div>)
-                      }
-                      {/* 미접속 */}
-                      { (friend.userStatus == "OFFLINE" || friend.userStatus == null)  && (
-                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
-                          <img src={friend.userImg}></img>
-                        </div>)
-                      }
+                    {/* 접속한사람 */}
+                    { friend.userStatus == "ONLINE" && (
+                      <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-online"]}`}>
+                        <img src={friend.userImg}></img>
+                      </div>)
+                    }
+                    {/* 다른용무중 */}
+                    { friend.userStatus == "BUSY" && (
+                      <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-busy"]}`}>
+                        <img src={friend.userImg}></img>
+                      </div>)
+                    }
+                    {/* 미접속 */}
+                    { (friend.userStatus == "OFFLINE" || friend.userStatus == null)  && (
+                      <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
+                        <img src={friend.userImg}></img>
+                      </div>)
+                    }
+                    
+                    
                     <div className={`${style["chat-msg"]}`}>{chat.scrcContent}</div>
                       <span className={`${style["chat-send-time"]}`}>{chatTimes[i]}</span>
                   </div>

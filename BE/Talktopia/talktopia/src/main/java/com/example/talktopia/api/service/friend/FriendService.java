@@ -128,6 +128,8 @@ public class FriendService {
 		List<UnknownUserReq> res = new ArrayList<>();
 		for (Friend f : arr) {
 			User temp = userRepository.findByUserNo(f.getFrFriendNo());
+			String langTrans = languageRepository.findByLangName(temp.getLanguage().getLangName()).getLangTrans();
+
 			String userStatus = userStatusService.getUserStatus(temp.getUserId());
 			UnknownUserReq friend = UnknownUserReq.builder()
 				.userId(temp.getUserId())
@@ -136,6 +138,7 @@ public class FriendService {
 				.userLngImg(temp.getLanguage().getLangFlagImgUrl())
 				.userStatus(userStatus)
 				.userName(temp.getUserName())
+				.userLangTrans(langTrans)
 				.build();
 			res.add(friend);
 		}
