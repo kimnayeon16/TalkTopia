@@ -1,10 +1,11 @@
 import React from 'react';
 import './ChatTable.css';
 // import logIcon from "../../../public/img/admin/logImage.png"
+import style from './VideoChatLogTable.module.css'
 
 const VideoChatLogTable = ({ data }) => {
     return (
-        <table className="chat-table">
+        <table className={style["chat-table"]}>
             <thead>
                 <tr>
                     <th>DB No</th>

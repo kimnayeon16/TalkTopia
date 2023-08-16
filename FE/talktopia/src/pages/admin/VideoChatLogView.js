@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import VideoChatLogTable from './VideoChatLogTable';
+import style from './AdminPage.module.css'
 
 const VideoChatLogView = () => {
     const [data, setData] = useState([]);
@@ -13,8 +14,7 @@ const VideoChatLogView = () => {
     }, []);
 
     return (
-        <div>
-            <h2>화상채팅방 로그</h2>
+        <div className={style['manage-view-container']}>
             <VideoChatLogTable data={data} />
         </div>
     );
