@@ -54,7 +54,7 @@
     padding-left: 10px;
     font-weight: 800;
     text-align: left;
-    color: #2d2f32;
+    color: #4a4d52;
 }
 
 /* 스크롤바 */
@@ -76,7 +76,7 @@
     border: 1px solid transparent;
 }
 
-.modal-search-btn{
+.modal-search-btn {
     position: absolute;
     right: 39px;
     top: 15px;
@@ -198,9 +198,21 @@
 
     box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
 
-    background-color: rgba(0, 0, 0, 0.204);
-    border: 2px solid rgba(255, 255, 255, 0.919);
+    transition: all 0.2s ease-out;
 
+    /* blur */
+    box-shadow: 0 5px 10px rgba(255, 255, 255, .1);
+    border-radius: 20px;
+
+    background: linear-gradient(rgba(0, 0, 0, 0.045) 20%, transparent, #e0feff66);    /* background-color: rgba(255, 255, 255, 0.3); */
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border: 2px solid white;
+}
+
+.enter-chat-btn:hover {
+    background-color: white;
 }
 
 .enter-chat-btn * {
@@ -208,47 +220,55 @@
     position: relative;
     top: 2px;
     right: 1px;
-    color: white;
+    color: #84848b;
+}
+
+.enter-chat-btn:hover *{
+    color: #a2a2a9;
+
 }
 
 /* -------------- 반응형 구간 ------------------------- */
 /* 큰화면 */
 @media only screen and (min-width : 1900px) {
-    .friend-list-modal{
-        zoom : 1.5
+    .friend-list-modal {
+        zoom: 1.5
     }
 }
+
 @media only screen and (min-height : 1900px) {
-    .friend-list{
+    .friend-list {
         height: 95%;
     }
 }
 
 /* 작은화면 */
 @media only screen and (max-width: 1200px) {
-    .friend-list-modal{
-        zoom : 1
+    .friend-list-modal {
+        zoom: 1
     }
 }
+
 @media only screen and (max-height: 900px) {
-    .friend-list{
+    .friend-list {
         height: 90%;
     }
 }
+
 @media only screen and (max-height: 760px) {
-    .friend-list{
+    .friend-list {
         height: 80%;
     }
 }
 
 @media only screen and (max-width: 950px) {
-    .friend-list-modal{
-        zoom : 0.7
+    .friend-list-modal {
+        zoom: 0.7
     }
 }
 
 @media only screen and (max-width: 546px) {
-    .friend-list-modal{
-        zoom : 0.5
+    .friend-list-modal {
+        zoom: 0.5
     }
 }

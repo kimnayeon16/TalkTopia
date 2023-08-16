@@ -1,21 +1,42 @@
-.janjan{
-  background-color: rgb(197, 242, 254);
-  /* background-color: white; */
-  background-attachment: fixed;
-  background-size: cover;  /*이미지를 커버할 수 있도록 설정*/
-  border-radius: 20px;
-  text-align: center;
+.janjan {
   position: fixed;
   top: 15%;
-  left: 25%;
-  width: 50%;
-  height: 60%;
-  z-index: 1000;
+  right: 370px;
+  width: 550px;
+  height: 70%;
+  padding: 20px;
+  /*이미지를 커버할 수 있도록 설정*/
+  text-align: left;
+  z-index: 100;
+  border-radius: 20px;
+  font-family: 'Dovemayo_wild';
+
+  /* blur */
+  /* box-shadow: 0 5px 30px rgba(0, 0, 0, .2); */
+  border-radius: 20px;
+
+  background: linear-gradient(rgba(255, 255, 255, 0.636) 60%, rgba(255, 255, 255, 0.347), #e0feff66);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
+.janjan h2 {}
+
+.search-find-hr {
+  height: 3px;
+  background-image: linear-gradient(90deg, white, rgba(255, 255, 255, 0.206));
+  border: 0;
+}
+
 .img-small {
-    max-width: 25px; /* 최대 너비 설정 */
-    max-height: 25px; /* 최대 높이 설정 */
-  }
+  max-width: 25px;
+  /* 최대 너비 설정 */
+  max-height: 25px;
+  /* 최대 높이 설정 */
+}
+
 /* 가로 목록 스타일 */
 .horizontal-list {
   display: flex;
@@ -23,40 +44,58 @@
   list-style: none;
   padding: 0;
 
-  justify-content: center; /* 중앙 정렬 추가 */
+  justify-content: center;
+  /* 중앙 정렬 추가 */
 }
-.iSelect{
-  font-family: 'Dovemayo_wild';
-  text-align: center;
+
+.iSelect {
   width: 190px;
-  height: 40px;
-  margin-top: 10px;
-}
-.button-input{
-  margin: auto;
-  padding: 10px;
-}
+  height: 50px;
 
-.iInput{
-  font-family: 'Dovemayo_wild';
-  color: #013A63;
-  margin: auto;
-  padding: 10px;
-  border: 1px solid #013A63;;
+  /* padding: 10px 10px 10px 20px; */
+  width: 100%;
+
+  margin: 10px 0 0 0;
+  background-color: rgba(233, 234, 236, 0.555);
   border-radius: 30px;
-  width:300px;
-  height: 40px;
-  text-align: center;
-  margin-top: 10px;
+  color: rgb(92, 93, 97);
+  border: 2px solid rgba(255, 255, 255, 0.201);
+  border-top: 2px solid rgba(255, 255, 255, 0.604);
 }
 
+.button-input {
+  margin: auto;
+  /* padding: 10px; */
+}
+
+.iInput {
+  padding: 10px 10px 10px 20px;
+  width: 100%;
+
+  margin: 10px 0 0 0;
+  background-color: rgba(233, 234, 236, 0.555);
+  border-radius: 30px;
+  color: rgb(92, 93, 97);
+  border: 2px solid rgba(255, 255, 255, 0.201);
+  border-top: 2px solid rgba(255, 255, 255, 0.604);
+  font-family: 'Dovemayo_wild';
+}
+
+.iInput::after {
+  content: url("../../../public/img/search.svg");
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 50px;
+}
 
 
 /* 가로 내용 스타일 */
 .horizontal-content {
   align-items: center;
   margin: 10px;
-  
+
 }
 
 /* 이미지 스타일 */
@@ -65,37 +104,51 @@
   height: auto;
 }
 
-.button1{
-  font-family: 'Dovemayo_wild';
-  display: flex; /* Flex 컨테이너로 설정 */
-  justify-content: space-between; /* 가로 방향 가운데 정렬 */
-  align-items: center;
-  margin: 0 70px;
+.button1 {
+  /* display: grid;
+  grid-template-columns: 1fr 1fr 1fr; */
+  margin: 20px 0 0 0;
   z-index: 100;
 }
 
-.button-change{
-  font-family: 'Dovemayo_wild';
-  justify-content: center;
-  background-color: #5187b6;
-  width: 150px;
+.button-change {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  width: 120px;
   height: 40px;
-  color: white;
+  font-family: 'Dovemayo_wild';
+  font-size: 18px;
+  color: #4a4b4d;
   z-index: 100;
+
+  transition: all 0.2s ease-out;
+
+  /* blur */
+  box-shadow: 0 5px 10px rgba(255, 255, 255, .1);
+  border-radius: 20px;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.045) 20%, transparent, #e0feff66);
+  /* background-color: rgba(255, 255, 255, 0.3); */
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+
 }
 
-.button-change:hover{
-  background-color: rgb(117, 168, 186);
+.button-change:hover {
+  background-color: white;
 }
 
 
 .button-margin {
-  margin: 0 10px; /* 원하는 여백 크기를 설정하세요 */
+  margin: 0 10px;
+  /* 원하는 여백 크기를 설정하세요 */
 }
+
 .no-results-message {
-  font-family: 'Dovemayo_wild'; 
   font-size: 20px;
-  color: #777;
+  color: #0000008f;
   text-align: center;
   padding: 10px;
 }
@@ -107,81 +160,43 @@
 } */
 
 
-.search-resultss{
+.search-resultss {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   /* position: relative; */
 }
 
-/* SearchFind.css 파일 또는 원하는 곳에 스타일을 추가하세요 */
-.user-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.user-table th, .user-table td {
-  font-family: 'Dovemayo_wild'; 
-  border: none;
-  /* padding: 1px; */
-  text-align: center; 
-  border-radius: 8px;
-  color:#013A63;
-}
-
-.user-table th {
-  background-color: #5187b6;
-  /* padding: 10; */
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-  position: sticky;
-  top: 0;
-}
-
-.user-table td {
-  /* padding: 10; */
-  font-family: 'Dovemayo_wild'; 
-}
-
-.no-results-message {
-  font-size: 16px;
-  color: #777;
-  text-align: center;
-  padding: 10px;
-}
-
-
-.user-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-}
-.modaltitle{
-    margin: auto;
-    text-align: center;
-    font-size: 1.5rem;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color:#013A63;
-    font-weight: 700;
-}
-
-.modaltitle1{
-  margin: auto;
-  text-align: center;
-  font-size: 1.5rem;
-  margin-top: 25px;
-  margin-bottom: 10px;
-  color:#013A63;
+.modaltitle {
+  font-size: 17px;
   font-weight: 700;
+
+  margin: 0;
+  text-align: left;
+  font-size: 30px;
+  display: inline;
+  color: #4a4d52;
 }
 
-.out{
+.modaltitle1 {
+  margin: 0;
+  display: inline-block;
+  text-align: left;
+  font-size: 25px;
+  /* margin-top: 25px; */
+  /* margin-bottom: 10px; */
+  color: #4a4d52;
+  font-weight: 600;
+}
+
+.out {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 25px;
+  right: 12px;
+  top: 6px;
+  width: auto;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  display: inline;
+  color: #05050592;
 }
 
 
@@ -189,154 +204,137 @@
  */
 
 
-.container{
-  display: flex;
-  width:100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center
+.container {
+  width: 100%;
 }
 
-.container1{
-  display: flex;
-  width:95%;
+.container1 {
+  width: 100%;
+  margin: 10px 0 0 0;
 }
 
-.container2{
-  display: flex;
-  width:100%;
-  flex-direction: column;
-  text-align: center;
+.container2 {
+  text-align: left;
 }
 
-.container2{
-  display: flex;
-  width:98%;
-  flex-direction: column;
-  text-align: center;
+.table-container {
+  margin: 10px 0 0 0;
+  height: 270px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  border-radius: 20px;
 }
 
-.table-container{
-  flex-direction: column;
-  height: 180px;
-	overflow: auto;
-  justify-content: space-between;
+/* 스크롤바 */
+.table-container::-webkit-scrollbar {
+  width: 4px;
 }
+
+.table-container::-webkit-scrollbar-track {
+  /* background-color: grey; */
+  border-radius: 10px;
+  /* box-shadow: inset 0px 0px 5px white; */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #8db1c7;
+
+  border-radius: 10px;
+  /* background-clip: padding-box; */
+  border: 1px solid transparent;
+}
+
+
 
 .row {
-  display: flex;
-  width: 100%;
-  align-items: center; /* 수직 정렬 */
-  padding: 5px 0; /* 필요한 여백을 설정하세요 */
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 2fr 2fr;
   align-items: center;
-  
+  width: 100%;
+  padding: 10px;
+
+  transition: all 0.2s ease-out;
 }
 
-.image{
-  flex: 1.5;
-  width:100%;
-  height: 30px;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  background-color: #5187b6;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-}
-
-.idd{
-  flex: 2.5;
-  background-color: #5187b6;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-}
-
-.name{
-  flex: 2;
-  background-color: #5187b6;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-}
-
-.language{
-  flex: 2;
-  background-color: #5187b6;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-}
-
-.status{
-  flex: 2;
-  background-color: #5187b6;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-}
-
-.add{
-  flex: 2;
-  background-color: #5187b6;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-}
-
-.image1{
-  flex: 1.5;
-  width:100%;
-  height: 30px;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
+.row:hover {
+  background-color: #ffffff6e;
 
 }
 
-.idd1{
-  flex: 2.5;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-  max-width: 100px;
-  white-space: normal;
+
+/* 프사 뒷배경 */
+.friend-section-profile {
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 5px 10px rgb(148 208 255 / 30%);
 }
 
-.name1{
-  flex: 2;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
-  justify-content: space-between;
+/* 프사 이미지 */
+.friend-section-profile img {
+  position: relative;
+  top: 5px;
+  left: 5px;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
-.language1{
-  flex: 2;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
+.friend-section-profile::after {
+  content: "●";
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+  position: relative;
+  top: -45px;
+  right: -35px;
+  z-index: 1;
+
+  color: #2d2f32;
 }
 
-.status1{
-  flex: 2;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
+/* 상태따라 다른 색 */
+.friend-section-profile-online::after {
+  color: rgb(40, 214, 95);
 }
 
-.add1{
-  flex: 2;
-  width:100%;
-  border-radius: 10px;
-  font-family: 'Dovemayo_wild'; 
-  color: #012A4A;
+.friend-section-profile-busy::after {
+  color: rgb(214, 124, 40);
 }
+
+.friend-section-profile-offline::after {
+  color: rgb(214, 40, 40);
+}
+
+/* 프사 이미지 끝 */
+
+/* 언어 */
+.language {}
+
+
+/* 이름 영역 */
+.user-name * {
+  /* grid-column: 2; */
+  width: 100%;
+  box-sizing: border-box;
+  /* padding: 0 10px 0 20px; */
+
+  word-break: keep-all;
+}
+
+.user-name *:first-of-type {
+  font-size: small;
+  text-align: left;
+  color: #949498;
+}
+
+.user-name *:last-of-type {
+  font-size: 17px;
+  text-align: left;
+  color: #4a4b4d;
+  font-weight: 600;
+}
+
+.add {}

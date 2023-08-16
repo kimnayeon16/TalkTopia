@@ -231,7 +231,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
             </div>)
           }
           {/* 미접속 */}
-          { friend.userStatus == "OFFLINE" || friend.userStatus == null && (
+          { (friend.userStatus == "OFFLINE" || friend.userStatus == null) && (
             <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
               <img src={friend.userImg}></img>
             </div>)
@@ -278,7 +278,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
                         </div>)
                       }
                       {/* 미접속 */}
-                      { friend.userStatus == "OFFLINE" || friend.userStatus == null  && (
+                      { (friend.userStatus == "OFFLINE" || friend.userStatus == null)  && (
                         <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
                           <img src={friend.userImg}></img>
                         </div>)
