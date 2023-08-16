@@ -12,8 +12,6 @@ import friendListStyle from './FriendList.module.css';
 import ChatWindow from '../../pages/friend/ChatWindow';
 import SearchFind from '../../pages/search/SearchFind';
 
-import SearchFind from '../../pages/search/SearchFind';
-
 const FriendList = () => {
   const user = useSelector((state) => state.userInfo);
   
@@ -30,13 +28,6 @@ const FriendList = () => {
   const [searchVisible, setSearchVisible] = useState(false);
 
   /* friend list용 state 끝 */
-
-
-  // 친구 검색
-  const [searchVisible, setSearchVisible] = useState(false);
-
-
-
 
   /* 함수 영역 시작 */
   const headers = {
@@ -73,7 +64,6 @@ const FriendList = () => {
       "userId" :user.userId,
       "friendId" : friend.userId
     }
-<<<<<<< FE/talktopia/src/components/main/FriendList.js
     // console.log("enter request body: ", requestBody)
     axios.post(`${BACKEND_URL_CHAT}/api/v1/chat/enter`, JSON.stringify(requestBody)  ,{ headers })
       .then((response) => {
@@ -100,13 +90,6 @@ const FriendList = () => {
   }
 
 
-=======
-
-    const modalOpen = () => {
-      setSearchVisible(!searchVisible);
-    }
-  
->>>>>>> FE/talktopia/src/components/main/FriendList.js
   /* 함수 영역 끝 */
 
 
@@ -118,7 +101,6 @@ const FriendList = () => {
         <div onClick={crabClick} className={` ${isUp ? style.up : style.crab}`}></div>
       </div>
 
-<<<<<<< FE/talktopia/src/components/main/FriendList.js
         { isListVisible &&
           <div className={`${friendListStyle["friend-list-modal-overlay"]}`}>
             <div className={`${friendListStyle["friend-list-modal"]}`}>
@@ -159,29 +141,6 @@ const FriendList = () => {
                           {friend.userId}
                         </div>
                         <div>{friend.userName}</div>
-=======
-      { isListVisible &&
-        <div className={`${friendListStyle["friend-list-modal-overlay"]}`}>
-          <div className={`${friendListStyle["friend-list-modal"]}`}>
-            <h2 className={`${friendListStyle["friend-list-h2"]}`}>친구 목록</h2>
-            {/* <button onClick={setIsListVisible(false)} className={`${friendListStyle["modal-close-btn"]}`}>X</button> */}
-            <img className={`${friendListStyle["modal-search-btn"]}`} src="/img/main/search.png" alt="" onClick={modalOpen}></img>
-            <button onClick={() => {setIsListVisible(false); setShowChat(false); setSearchVisible(false);}} className={`${friendListStyle["modal-close-btn"]}`}>X</button>
-            
-            <div className={`${friendListStyle["friend-list"]}`}>
-              { friendList && 
-                friendList.map((friend, i) => (
-                  <div key={i} className={`${friendListStyle["friend-section"]}`}>
-                    <div className={`${friendListStyle["friend-section-profile"]}`}>
-                      <img src={friend.userImg}></img>
-                    </div>
-                    <div className={`${friendListStyle["friend-section-name"]}`}>
-                      <div className={`${friendListStyle["friend-section-name-status"]}`}>
-                        {friend.userStatus}
-                      </div>
-                      <div>
-                        {friend.userName}
->>>>>>> FE/talktopia/src/components/main/FriendList.js
                       </div>
                       <button className={`${friendListStyle["enter-chat-btn"]}`} onClick={()=>{enterChat(friend)}}>
                         {/* <img src="http://www.w3.org/2000/svg"></img> */}
