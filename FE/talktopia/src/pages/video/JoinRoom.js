@@ -368,6 +368,7 @@ function JoinRoom() {
 
     // 주제 리스트
     const [topicList, setTopicList] = useState(undefined);      // 토픽 리스트 저장
+    const [topicTitle, setTopicTitle] = useState(undefined);
     const getTopicList = () => {
         const headers = {
             'Content-Type' : 'application/json',
@@ -376,8 +377,10 @@ function JoinRoom() {
 
         axios.get(`${BACKEND_URL}/api/v1/topic/start/${user.sttLang}`, { headers })
         .then((response) => {
-            const shuffledData = shuffleTopic(response.data)
+            const shuffledData = shuffleTopic(response.data.topicList)
+            const newTopicTitle = response.data.title
             setTopicList(shuffledData);     
+            setTopicTitle(newTopicTitle)
             console.log(shuffledData)
         })
         .catch((error) => {
@@ -541,7 +544,7 @@ function JoinRoom() {
                                             userId={ sub.userId }
                                             userName={ sub.userName }
                                             roomRole={ sub.roomRole }
-                                            nation={ sub.natioin }
+                                            nation={ sub.nation }
                                             streamManager={ sub.streamManager }
                                             participantCount={ participantCount }
                                             openReportModal = { openReportModal }
@@ -577,6 +580,7 @@ function JoinRoom() {
                                 <ConversationLog
                                     isAudioActive={ localUser.isAudioActive }
                                     myUserId={ localUser.userId }
+                                    myUserName={ localUser.userName }
                                     mainStreamManager={ localUser.streamManager }
                                     conversationLogHandler={ conversationLogHandler }
                                     vrSession={ userDataRef.current.mySessionId }
@@ -585,6 +589,7 @@ function JoinRoom() {
                             <div className={style['chat-container']}>
                                 <Chat
                                     myUserId={ localUser.userId }
+                                    myUserName={ localUser.userName }
                                     mainStreamManager={ localUser.streamManager }
                                     chatLogHandler={ chatLogHandler }
                                     vrSession={ userDataRef.current.mySessionId }
@@ -597,6 +602,7 @@ function JoinRoom() {
                         <>
                             <TopicModalComponent 
                                 isTopic = { isTopic }
+                                topicTitle={ topicTitle }
                                 topicList={ topicList }
                                 mainStreamManager={ localUser.streamManager }
                             />

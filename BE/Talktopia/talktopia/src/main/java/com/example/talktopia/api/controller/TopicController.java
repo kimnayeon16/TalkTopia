@@ -21,7 +21,7 @@ public class TopicController {
 	private final TopicService topicService;
 
 	@GetMapping("/start/{sttLang}")
-	public List<Topic> startTopic(@PathVariable String sttLang){
+	public TopicRes startTopic(@PathVariable String sttLang){
 		return topicService.startTopic(sttLang);
 	}
 

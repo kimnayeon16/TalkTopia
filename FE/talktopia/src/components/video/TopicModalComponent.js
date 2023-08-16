@@ -57,11 +57,18 @@ function TopicModalComponent(props) {
     return (
         <>
             {isTopicModal ? (
-                <div className={style['report-modal-window']} onClick={closeTopicModal}>
-                    <div className={style['report-modal-content']} onClick={preventCloseTopicModal}>
-                        <h1>주제에 대해 자유롭게 이야기해보세요</h1>
-                        <button className={style['report-modal-close']} onClick={closeTopicModal}>close</button>
-                        <h2>{message}</h2>
+                <div className={style['topic-modal-window']} onClick={closeTopicModal}>
+                    <div className={style['topic-modal-content']} onClick={preventCloseTopicModal}>
+                        <button className={style['topic-modal-close']} onClick={closeTopicModal}>
+                            <img className={style['topic-close-button']} src="img/dding/failRequestIcon.png" alt="Fail Icon" />
+                            {/* close */}
+                        </button>
+                        <div className={`${style['topic-modal-box']} ${style['title']}`}>
+                            <p className={style['topic-modal-title']}>{props.topicTitle}</p>
+                        </div>
+                        <div className={`${style['topic-modal-box']} ${style['text']}`}>
+                            <p className={style['topic-modal-text']}>{message}</p>
+                        </div>
                     </div>
                 </div>
             ) : null}

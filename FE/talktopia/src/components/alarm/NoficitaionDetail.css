@@ -3,10 +3,10 @@
 .NotificationDetailDiv {
     z-index: 1000;
     background-color:  rgba(204, 223, 241, 0.896);
-    padding: 20px;
+    padding: 5px;
     border-radius: 10px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    width: 500px;
+    width: 470px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -21,8 +21,9 @@
 }
 
 .NotificationDetailP {
+    display: flex;
     font-size: 16px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     font-family: 'Dovemayo_wild';
 }
 
@@ -36,15 +37,34 @@
     font-family: 'Dovemayo_wild';
 }
 
-.NotificationDetailButton:hover {
-    background-color: #0056b3;
-}
-.NotificationModalHeader{
+    .NotificationDetailButton:hover {
+        background-color: #0056b3;
+    }
 
-}
 .NotificationCloseButton{
-    margin-left:90%;
-    font-size: 24px;
+    margin-left:95%;
+    font-size: 20px;
+}
+.buttonStatus {
+    display: flex;
+    justify-content: space-between; /* 가로로 간격을 고르게 배치 */
+    margin-top: 10px; /* 상단 여백을 조절하거나 필요에 따라 수정해주세요 */
 }
 
-  
+.NotificationBody{
+    background-color: azure;
+    margin: auto;
+    width: 400px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.NotificationDetailLabel {
+    font-family: 'Dovemayo_wild';
+    width:200px;
+}
+
+.NotificationDetailLabelChildren{
+    font-family: 'Dovemayo_wild';
+    right:0;
+}
