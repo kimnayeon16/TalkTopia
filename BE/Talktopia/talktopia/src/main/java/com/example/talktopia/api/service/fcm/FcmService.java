@@ -122,10 +122,10 @@ public class FcmService {
 				User user = userRepository.findByUserId(fcmSendVroomMessage.getUserId()).orElseThrow(()->new Exception("노 유저"));
 				StringBuilder body = new StringBuilder();
 				for(String list : notInviteList){
-					body.append(list).append("sir ");
+					body.append(list).append("user ");
 				}
 				Notification notification = Notification.builder()
-					.setTitle("There are people who don't accept invitations")
+					.setTitle(" They are not online")
 					.setBody(body.toString())
 					.build();
 
@@ -185,12 +185,13 @@ public class FcmService {
 
 	}
 
-	public Message failFCMMessage(FCMFailMessage fcmFailMessage) throws Exception {
+	public Message 	failFCMMessage(FCMFailMessage fcmFailMessage) throws Exception {
 		User hostUser =userRepository.findByUserId(fcmFailMessage.getSenderId()).orElseThrow(()->new Exception("호스트 유저가없어요"));
 		User user = userRepository.findByUserId(fcmFailMessage.getReceiverId()).orElseThrow(()-> new Exception("받는 사람이 없어"));
 		String title = "Invitation notification status";
 		String body = fcmFailMessage.getSenderId()+" has declined your invitation.";
 		if(user.getToken().getTFcm() !=null){
+
 			Reminder reminder = Reminder.builder()
 				.rmContent(body)
 				.rmType("Fail Request")
@@ -202,6 +203,9 @@ public class FcmService {
 				.build();
 			reminderRepository.save(reminder);
 
+			Map<String, String> data = new HashMap<>();
+			data.put("rmNo", String.valueOf(reminder.getRmNo()));
+
 			Notification notification = Notification.builder()
 				.setTitle(title)
 				.setBody(body)
@@ -210,6 +214,7 @@ public class FcmService {
 			com.google.firebase.messaging.Message message = com.google.firebase.messaging.Message.builder()
 				.setToken(user.getToken().getTFcm())
 				.setNotification(notification)
+				.putAllData(data)
 				.build();
 
 			firebaseMessaging.send(message);
