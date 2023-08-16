@@ -2,6 +2,8 @@
 import React from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../utils";
+import "./DenyButton.css"
+import e from "cors";
 
 function DenyButton({ notification, closeModal }) {
     const handleDenyClick = async () => {
@@ -13,12 +15,17 @@ function DenyButton({ notification, closeModal }) {
         };
 
         try {
+            console.log(requestData.receiverNo,requestData.rmHost,requestData.rmVrSession,requestData.rmType)
+            const userInfoString = localStorage.getItem("UserInfo");
+            const userInfo = JSON.parse(userInfoString);
             await axios.post(`${BACKEND_URL}/api/v1/notice/read/deny`, requestData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add authorization headers if needed
+                    'Authorization': `Bearer ${userInfo.accessToken}`
                 }
-            });
+            }).catch((error)=> {
+                console.log(error);
+            })
             closeModal(); // Close the modal after denying
         } catch (error) {
             console.error("Error denying notification:", error);
@@ -28,8 +35,12 @@ function DenyButton({ notification, closeModal }) {
     if (notification.rmType === "Done.") {
         return null;
     }
+
     return (
-        <button className="DenyButton" onClick={handleDenyClick}>Deny</button>
+        <button className="DenyButton" onClick={handleDenyClick}>
+            <img className ="NotificationImg" src="img/dding/failRequestIcon.png" alt="Fail Icon" />
+            Deny
+        </button>
     );
 }
 

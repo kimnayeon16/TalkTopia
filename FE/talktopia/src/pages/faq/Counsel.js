@@ -5,7 +5,9 @@ import style from './Counsel.module.css';
 import Nav from '../../nav/Nav';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxUserInfo } from '../../store';
+import useTokenValidation from '../../utils/useTokenValidation';
 function OneToOneInquiry() {
+  useTokenValidation();
 
   const navigate = useNavigate();
 

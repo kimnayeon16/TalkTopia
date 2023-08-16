@@ -88,11 +88,21 @@ public class FcmService {
 					String title = "A video chat room invitation notification has been sent.";
 					String body = fcmSendVroomMessage.getUserId()+" has invited you to the video chat room.";
 					VRoom vRoom = vRoomRepository.findByVrSession(fcmSendVroomMessage.getVrSession());
+
+					Reminder reminder = Reminder.builder()
+						.rmContent(body)
+						.rmType("Room Request")
+						.user(user)
+						.rmGuest(user.getUserId())
+						.rmVrSession(fcmSendVroomMessage.getVrSession())
+						.rmHost(hostUser.getUserId())
+						.rmRead(false)
+						.build();
+					reminderRepository.save(reminder);
+
+
 					Map<String, String> data = new HashMap<>();
-					data.put("vrSession", vRoom.getVrSession());
-					data.put("userId",fcmSendVroomMessage.getUserId());
-					data.put("accept", "수락");
-					data.put("denied", "거절");
+					data.put("rmNo", String.valueOf(reminder.getRmNo()));
 
 					Notification notification = Notification.builder()
 						.setTitle(title)
@@ -106,27 +116,16 @@ public class FcmService {
 						.build();
 
 					firebaseMessaging.send(message);
-					Reminder reminder = Reminder.builder()
-						.rmContent(body)
-						.rmType("Room Request")
-						.user(user)
-						.rmGuest(user.getUserId())
-						.rmVrSession(fcmSendVroomMessage.getVrSession())
-						.rmHost(hostUser.getUserId())
-						.rmRead(false)
-						.build();
-					reminderRepository.save(reminder);
-
 				}
 			}
 			if(notInviteList.size()>0){
 				User user = userRepository.findByUserId(fcmSendVroomMessage.getUserId()).orElseThrow(()->new Exception("노 유저"));
 				StringBuilder body = new StringBuilder();
 				for(String list : notInviteList){
-					body.append(list).append("sir ");
+					body.append(list).append("user ");
 				}
 				Notification notification = Notification.builder()
-					.setTitle("There are people who don't accept invitations")
+					.setTitle(" They are not online")
 					.setBody(body.toString())
 					.build();
 
@@ -151,13 +150,23 @@ public class FcmService {
 			if(friendService.isAlreadyFriend(duplicateUser.getUserNo(),user.getUserNo())){
 				throw new RuntimeException("We're already friends.");
 			}
-			Map<String, String> data = new HashMap<>();
-			data.put("userId",fcmSendFriendMessage.getUserId());
-			data.put("friendId", fcmSendFriendMessage.getFriendId());
-			data.put("accept", "수락");
-			data.put("denied", "거절");
 
-				Notification notification = Notification.builder()
+			Reminder reminder = Reminder.builder()
+				.rmContent(body)
+				.rmType("Friend Request")
+				.user(user)
+				.rmVrSession("NONE")
+				.rmGuest(user.getUserId())
+				.rmHost(hostUser.getUserId())
+				.rmRead(false)
+				.build();
+
+			reminderRepository.save(reminder);
+
+			Map<String, String> data = new HashMap<>();
+			data.put("rmNo", String.valueOf(reminder.getRmNo()));
+
+			Notification notification = Notification.builder()
 				.setTitle(title)
 				.setBody(body)
 				.build();
@@ -169,16 +178,6 @@ public class FcmService {
 				.build();
 
 			firebaseMessaging.send(message);
-			Reminder reminder = Reminder.builder()
-				.rmContent(body)
-				.rmType("Friend Request")
-				.user(user)
-				.rmVrSession("NONE")
-				.rmGuest(user.getUserId())
-				.rmHost(hostUser.getUserId())
-				.rmRead(false)
-				.build();
-			reminderRepository.save(reminder);
 			return new Message("Notification sent successfully");
 		}
 
@@ -186,12 +185,27 @@ public class FcmService {
 
 	}
 
-	public Message failFCMMessage(FCMFailMessage fcmFailMessage) throws Exception {
+	public Message 	failFCMMessage(FCMFailMessage fcmFailMessage) throws Exception {
 		User hostUser =userRepository.findByUserId(fcmFailMessage.getSenderId()).orElseThrow(()->new Exception("호스트 유저가없어요"));
 		User user = userRepository.findByUserId(fcmFailMessage.getReceiverId()).orElseThrow(()-> new Exception("받는 사람이 없어"));
 		String title = "Invitation notification status";
 		String body = fcmFailMessage.getSenderId()+" has declined your invitation.";
 		if(user.getToken().getTFcm() !=null){
+
+			Reminder reminder = Reminder.builder()
+				.rmContent(body)
+				.rmType("Fail Request")
+				.rmVrSession("NONE")
+				.rmGuest(user.getUserId())
+				.rmHost(hostUser.getUserId())
+				.user(user)
+				.rmRead(false)
+				.build();
+			reminderRepository.save(reminder);
+
+			Map<String, String> data = new HashMap<>();
+			data.put("rmNo", String.valueOf(reminder.getRmNo()));
+
 			Notification notification = Notification.builder()
 				.setTitle(title)
 				.setBody(body)
@@ -200,19 +214,11 @@ public class FcmService {
 			com.google.firebase.messaging.Message message = com.google.firebase.messaging.Message.builder()
 				.setToken(user.getToken().getTFcm())
 				.setNotification(notification)
+				.putAllData(data)
 				.build();
 
 			firebaseMessaging.send(message);
-			Reminder reminder = Reminder.builder()
-				.rmContent(body)
-				.rmType("a rejection message")
-				.rmVrSession("NONE")
-				.rmGuest(user.getUserId())
-				.rmHost(hostUser.getUserId())
-				.user(user)
-				.rmRead(false)
-				.build();
-			reminderRepository.save(reminder);
+
 			return new Message("Notification sent successfully");
 		}
 		return new Message("The user does not exist.");

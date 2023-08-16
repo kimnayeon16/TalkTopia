@@ -22,8 +22,11 @@ import ServiceWorkerListener from '../auth/fcm/ServiceWorkerListener';
 import getFCMToken from '../auth/fcm/getToken';
 import sendTokenToServer from '../auth/fcm/sendTokenToServer';
 import NotificationAccordion from '../auth/fcm/NotificationAccordion';
+import useTokenValidation from '../../utils/useTokenValidation';
 
 function Home(){
+  useTokenValidation();
+
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userInfo);

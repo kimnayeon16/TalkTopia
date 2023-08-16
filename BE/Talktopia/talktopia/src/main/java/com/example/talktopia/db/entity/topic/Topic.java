@@ -32,10 +32,14 @@ public class Topic {
 	@Column(name = "topic_content")
 	private String topicConent;
 
+	@Column(name = "topic_title")
+	private String topicTitle;
+
 	@Builder
-	public Topic(long topicId, String topicConent, String topicLang) {
+	public Topic(long topicId, String topicConent, String topicLang, String topicTitle) {
 		this.topicId = topicId;
 		this.topicConent = topicConent;
 		this.topicLang = topicLang;
+		this.topicTitle = topicTitle;
 	}
 }

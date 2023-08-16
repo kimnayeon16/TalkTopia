@@ -10,9 +10,27 @@ import style from './UserVideoComponent.module.css'
 import { BACKEND_URL } from '../../utils';
 
 
+const flag = {
+    'ko-KR': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%BD%94%EB%A6%AC%EC%95%84.png',
+    'en-US': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EB%AF%B8%EA%B5%AD.png',
+    'de-DE': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EB%8F%85%EC%9D%BC.png',
+    'ru-RU': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EB%9F%AC%EC%8B%9C%EC%95%84.png',
+    'es-ES': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%8A%A4%ED%8E%98%EC%9D%B8.png',
+    'it-IT': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%9D%B4%ED%83%88%EB%A6%AC%EC%95%84.png',
+    'id-ID': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%9D%B8%EB%8F%84%EB%84%A4%EC%8B%9C%EC%95%84.png',
+    'ja-JP': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%9E%AC%ED%8C%AC.png',
+    'fr-FR': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%ED%94%84%EB%9E%91%EC%8A%A4.png',
+    'zh-CN': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%A4%91%EA%B5%AD.png',
+    'zh-TW': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%EC%A4%91%EA%B5%AD.png',
+    'pt-PT': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%ED%8F%AC%EB%A5%B4%ED%88%AC%EA%B0%88.png',
+    'th-TH': 'https://talktopia.s3.ap-northeast-2.amazonaws.com/profile/%ED%83%9C%EA%B5%AD.png',
+}
+
+
 function UserVideoComponent (props) {
 
     const user = useSelector((state) => state.userInfo);    // Redux 정보
+    console.log(flag[props.nation])
 
     const friendAdd = async () => {
 
@@ -36,7 +54,7 @@ function UserVideoComponent (props) {
                 text: response.data.message,
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
-                timer: 1000,
+                timer: 1500,
                 timerProgressBar: true,
               })
 
@@ -45,12 +63,12 @@ function UserVideoComponent (props) {
         })
         .catch((error) => {
             Swal.fire({
-                icon: "success",
-                title: "만나서 반가워요!",
+                icon: "error",
+                // title: "만나서 반가워요!",
                 text: error,
                 confirmButtonText: "확인",
                 confirmButtonColor: '#90dbf4',
-                timer: 1000,
+                timer: 1500,
                 timerProgressBar: true,
               })
             console.log("에러 발생", error);
@@ -64,9 +82,14 @@ function UserVideoComponent (props) {
 
     return (
         <>
-            <div className={style['name-tag']}>
-                <span>{props.userName}</span>
-                <span>{props.roomRole}</span>
+            <div className={style['user-info']}>
+
+                <img src={flag[props.nation]} alt="" className={style['flag-img']} />
+                <div className={style['name-tag']}>
+                    <span>{`[${props.roomRole}] `}</span>
+                    <br/>
+                    <span>{props.userName}</span>
+                </div>
             </div>
             
             {props.streamManager !== undefined ? (
@@ -81,10 +104,10 @@ function UserVideoComponent (props) {
             {user.userId !== props.userId ? (
                 <div className={style['participant-actions']}>
                     <button className={style['participant-actions-button']} onClick={ friendAdd }>
-                        <FaUserPlus size="14"/>
+                        <FaUserPlus size="18"/>
                     </button>
                     <button className={style['participant-actions-button']} onClick={ reportUser }>
-                        <FaUserTimes size="14"/>
+                        <FaUserTimes size="18"/>
                     </button>
                 </div>
             ) : null}

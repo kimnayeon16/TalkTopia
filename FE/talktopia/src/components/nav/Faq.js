@@ -17,15 +17,15 @@ function Faq(){
 
     const handleFaqMouseOver = () => {
         setFaqMoalVisible(true);
-      }
+    }
     
-      const handleFaqMouseOut = () => {
+    const handleFaqMouseOut = () => {
         setFaqMoalVisible(false);
-      }
+    }
       
     return(
         <div className={`${style["faq-space"]}`} onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}>
-            <img className={`${style.faq}`} src="/img/nav/faq1.png" alt="" onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}></img>
+            <img className={`${style.faq}`} src="/img/nav/faq3.png" alt="" onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}></img>
             {
                 faqModalVisible &&
                 <div className={`${style.faqModal}`} onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}>
@@ -33,7 +33,7 @@ function Faq(){
                     <p className={`${style.faqtext}`} onClick={()=>{navigate('/counsel')}}>1:1 문의</p>
                 </div> 
             }
-        </div>   
+        </div>
     )
 }
 

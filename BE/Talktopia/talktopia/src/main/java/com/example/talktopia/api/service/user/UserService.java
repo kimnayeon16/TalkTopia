@@ -57,6 +57,7 @@ public class UserService {
 
 	// Token validate Time
 	private Long accessExpiredMs = 30 * 60 * 1000L + 34200000;
+	// private Long accessExpiredMs = 7 * 60 * 1000L + 32400000; // 7분 테스트
 	private Long refreshExpiredMs = accessExpiredMs + 7 * 24 * 60 * 60 * 1000L;
 
 	// 회원가입
@@ -206,7 +207,7 @@ public class UserService {
 		return new Message("회원 탈퇴가 완료되었습니다.");
 	}
 
-	public void modifyUser(UserInfoReq userInfoReq) {
+	public String modifyUser(UserInfoReq userInfoReq) {
 		// 1. 조회
 		User updateUser = userRepository.findByUserId(userInfoReq.getUserId())
 			.orElseThrow(() -> new RuntimeException("유효하지 않은 회원 정보입니다."));
@@ -219,6 +220,8 @@ public class UserService {
 		updateUser.hashPassword(bCryptPasswordEncoder);
 
 		userRepository.save(updateUser);
+
+		return updateUser.getLanguage().getLangTrans();
 
 	}
 

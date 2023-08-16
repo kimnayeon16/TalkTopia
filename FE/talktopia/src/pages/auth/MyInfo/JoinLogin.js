@@ -313,6 +313,8 @@ function JoinLogin(){
         setUserEmailDomain(e.target.value);
         const value = e.target.value;
 
+        console.log("vaulaklerk", value);
+
         const regex = /^[a-zA-Z]+\.[a-zA-Z]+$/;
 
         if(regex.test(value)){
@@ -331,7 +333,7 @@ function JoinLogin(){
     const checkEmail = async (e) => {
         e.preventDefault();
         
-        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0 && emailValid){
+        if(userEmailDomain !== "default" && userEmailDomain.length !== 0 && userEmailPrefix.length !== 0 && emailValid && !/\s/.test(userEmailPrefix) && !/\s/.test(userEmailDomain)){
             // setCountdown(180);
             // setEmailButton("전송 완료");
             // setEmailConfirmWindow(true);
@@ -343,6 +345,7 @@ function JoinLogin(){
             //     timer: 1500,
             //     timerProgressBar: true,
             // })
+            console.log("이메일", userEmail)
     
             await axios
             .get(`${BACKEND_URL}/api/v1/join/checkEmail/${userEmail}`, {headers})
@@ -359,7 +362,6 @@ function JoinLogin(){
                     timer: 1500,
                     timerProgressBar: true,
                 })
-                console.log(response);
                 setEmailConfirmServer(response.data.message);
             })
             .catch((error) => {
@@ -489,6 +491,7 @@ function JoinLogin(){
                  alert("회원가입 실패");
             }
 
+            //초기화
              setUserIdJoin("");
              setUserJoinPw("");
              setUserPwConfirm("");
@@ -498,7 +501,25 @@ function JoinLogin(){
              setUserEmail("");
              setUserLan("");
              setPwConfirmMsg("");
+             setNameMsg("띄어쓰기 불가능")
              setEmailButton("이메일 인증");
+             setIdValid(false);
+             setPwValid(false);
+             setEmailValid(false);
+             setEmailSelect(true);
+             setEmailConfirmWindow(false);
+             setEmailConfirm("");
+             setEmailConfirmWindow(false);
+             setEmailConfirm("");
+             setEmailConfirmServer("");
+             setButtonDisabled(false);
+             setUserIdCorrect(false);
+             setUserPwCorrect(false);
+             setUserPwConfirmCorrect(false);
+             setUserNameCorrect(false);
+             setUserEmailCorrect(false);
+             setUserLanCorrect(false);
+
         }else if(!userIdCorrect){
             Swal.fire({
                 icon: "warning",
@@ -855,12 +876,12 @@ function JoinLogin(){
                                 <option value="en-US">영어</option>
                                 <option value="it-IT">이탈리아어</option>
                                 <option value="id-ID">인도네시아어</option>
-                                <option value="th-TH">태국어</option>
                                 <option value="ja-JP">일본어</option>
                                 <option value="fr-FR">프랑스어</option>
                                 <option value="pt-PT">포르투칼어</option>
                                 <option value="zh-CN">중국어 간체</option>
                                 <option valye="pt-TW">중국어 번체</option>
+                                <option value="hi-IN">힌두어</option>
                             </select>
                         </div>
                     </div>

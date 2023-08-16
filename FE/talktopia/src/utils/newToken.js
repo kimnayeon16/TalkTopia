@@ -9,15 +9,18 @@ function NewToken(){
         'Content-Type' : 'application/json'
     }
 
-    const userId = useSelector((state) => state.userInfo.userId);
-    let dispatch = useDispatch();
+    const userInfoString = localStorage.getItem("UserInfo");
+    const userInfo = JSON.parse(userInfoString);
+
+    // const userId = useSelector((state) => state.userInfo.userId);
+    // let dispatch = useDispatch();
 
     const refreshToken = getCookie('refreshToken');
 
 
     const requestBody = {
-        userId,
-        refreshToken
+        userId: userInfo.userId,
+        refreshToken: refreshToken
     };
 
     const requestBodyJSON = JSON.stringify(requestBody);
@@ -28,11 +31,20 @@ function NewToken(){
         .post(`${BACKEND_URL}/api/v1/user/reqNewToken`, requestBodyJSON, {headers})
         .then((response)=>{
             console.log(response.data);
-            dispatch(reduxUserInfo({
-                userId: response.data.userId,
-                accessToken: response.data.accessToken,
-                expiredDate: response.data.expiredDate
-            }));
+            // dispatch(reduxUserInfo({
+            //     userId: response.data.userId,
+            //     accessToken: response.data.accessToken,
+            //     expiredDate: response.data.expiredDate
+            // }));
+
+            const userInfoString = localStorage.getItem("UserInfo");
+            const userInfo = JSON.parse(userInfoString);
+
+            userInfo.accessToken = response.data.accessToken;
+            userInfo.expiredDate = response.data.expiredDate;
+
+            //다시 localStorage에 저장
+            localStorage.setItem("UserInfo", JSON.stringify(userInfo));
 
             setCookie('refreshToken', response.data.refreshToken, {
                 path: '/',

@@ -1,4 +1,4 @@
-  import React from 'react';
+import React from 'react';
 import './Modal.css'; // 모달 스타일을 위한 CSS 파일을 임포트하세요.
 import useTokenValidation from '../../utils/useTokenValidation';
 

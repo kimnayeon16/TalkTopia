@@ -65,6 +65,7 @@ function Alram(){
       };
         //모달창으로 가는 로직
       const handleNotificationClick = (notification,e) => {
+
         e.stopPropagation();
         setSelectedNotification(notification.rmNo);
         setDdingModalVisible(false);

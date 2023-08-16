@@ -28,6 +28,7 @@ function Chat(props) {
             let newMessageList = ({
                 connectionId: event.from.connectionId,  // Connection object of the sender 
                 sendUserId: data.sendUserId, 
+                sendUserName: data.sendUserName,
                 message: translatedMessage              // Message
             });
             props.chatLogHandler(data.sendUserId, data.message)
@@ -59,6 +60,7 @@ function Chat(props) {
             const data = {
                 message: message, 
                 sendUserId: props.myUserId, 
+                sendUserName: props.myUserName,
                 streamId: props.mainStreamManager.stream.streamId,
                 sourceLang: user.transLang
             };
@@ -166,7 +168,7 @@ function Chat(props) {
                     >
                         <div className={ `${style.msg_detail }`}>
                             <div className={ `${style.msg_info }`}>
-                                <p> {data.sendUserId}</p>
+                                <p> {data.sendUserName}</p>
                             </div>
                             <div className={ `${style.msg_content }`}>
                                 <p className={ `${style.text }`}>{data.message}</p>

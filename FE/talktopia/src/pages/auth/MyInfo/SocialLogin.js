@@ -89,6 +89,13 @@ function SocialLogin(){
                       navigate('/home')
                   )
                 }
+            }).catch((error)=>{
+                Swal.fire({
+                    icon: "fail",
+                    title: "올바르지 않은 접근입니다.",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#90dbf4',
+                  })
             })
         }
     }
@@ -114,16 +121,25 @@ function SocialLogin(){
                         <option value="it-IT">이탈리아어</option>
                         <option value="id-ID">인도네시아어</option>
                         <option value="ja-JP">일본어</option>
-                        <option value="th-TH">태국어</option>
                         <option value="fr-FR">프랑스어</option>
                         <option value="pt-PT">포르투칼어</option>
                         <option value="zh-CN">중국어 간체</option>
                         <option valye="pt-TW">중국어 번체</option>
+                        <option value="hi-IN">힌두어</option>
                     </select>
                 </div>
             </div>
             <button className={`${style.button}`} onClick={regist}>회원가입 완료</button>
-
+            <img className={`${style.turtle}`} src="/img/fish/turtle.png" alt=""></img>
+            <img className={`${style.grass2}`} src="/img/grass/grass2.png" alt=""></img>
+            <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>
+            <img className={`${style.fish4}`} src="/img/fish/fish4.png" alt=""></img>
+            <img className={`${style.fish33}`} src="/img/fish/fish33.png" alt=""></img>
+            <img className={`${style.fish34}`} src="/img/fish/fish34.png" alt=""></img>
+            <img className={`${style.friend14}`} src="/img/fish/friend14.png" alt=""></img>
+            <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
+            <img className={`${style.bubble2}`} src="/img/bubble/bubble2.png" alt=""></img>
+            <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
         </div>
     )
 }

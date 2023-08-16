@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { AiOutlineClose } from "react-icons/ai";
 import style from './TopicModalComponent.module.css'
 
 function TopicModalComponent(props) {
@@ -57,11 +58,17 @@ function TopicModalComponent(props) {
     return (
         <>
             {isTopicModal ? (
-                <div className={style['report-modal-window']} onClick={closeTopicModal}>
-                    <div className={style['report-modal-content']} onClick={preventCloseTopicModal}>
-                        <h1>주제에 대해 자유롭게 이야기해보세요</h1>
-                        <button className={style['report-modal-close']} onClick={closeTopicModal}>close</button>
-                        <h2>{message}</h2>
+                <div className={style['topic-modal-window']} onClick={closeTopicModal}>
+                    <div className={style['topic-modal-content']} onClick={preventCloseTopicModal}>
+                        <button className={style['topic-modal-close']} onClick={closeTopicModal}>
+                            <AiOutlineClose size='20'/>
+                        </button>
+                        <div className={style['topic-modal-titlebox']}>
+                            <p className={style['topic-modal-title']}>{props.topicTitle}</p>
+                        </div>
+                        <div className={style['topic-modal-textbox']}>
+                            <p className={style['topic-modal-text']}>{message}</p>
+                        </div>
                     </div>
                 </div>
             ) : null}

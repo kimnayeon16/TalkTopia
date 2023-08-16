@@ -23,9 +23,9 @@ function IdFindFail(props) {
             <img className={`${style.fish331}`} src="/img/fish/fish33.png" alt=""></img>
             <img className={`${style.fish34}`} src="/img/fish/fish34.png" alt=""></img>
             <img className={`${style.friend14}`} src="/img/fish/friend14.png" alt=""></img>
-            <img className={`${style.bubble1}`} src="/img/bubble/bubble1.png" alt=""></img>
+            <img className={`${style.bubble11}`} src="/img/bubble/bubble1.png" alt=""></img>
             <img className={`${style.bubble21}`} src="/img/bubble/bubble2.png" alt=""></img>
-            <img className={`${style.bubble3}`} src="/img/bubble/bubble3.png" alt=""></img>
+            <img className={`${style.bubble31}`} src="/img/bubble/bubble3.png" alt=""></img>
         </div>
     );
 }

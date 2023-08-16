@@ -8,8 +8,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { reduxUserInfo } from "../../store";
 import Nav from '../../nav/Nav';
+import useTokenValidation from "../../utils/useTokenValidation";
 
 function MyInfo(){
+    useTokenValidation();
+
     const user = useSelector((state) => state.userInfo);
     
     const navigate = useNavigate();
@@ -39,16 +42,10 @@ function MyInfo(){
         const userInfoString = localStorage.getItem("UserInfo");
         const userInfo = JSON.parse(userInfoString);
 
-        console.log(userInfo);
-
         setUserAccessToken(userInfo.accessToken);
 
         const api = `${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`;
 
-        console.log(`${BACKEND_URL}/api/v1/myPage/${userInfo.userId}`)
-
-        console.log(userInfo.userId, "아이디")
-        console.log(userInfo.accessToken)
         axios.get(api, {
             headers : {
                 'Content-Type': 'application/json',
@@ -62,7 +59,6 @@ function MyInfo(){
             setUserImgUrl(response.data.userProfileImgUrl);
             setUserLan(response.data.userLan);
 
-            console.log(response);
         })
          .catch((error)=>{
              console.log("못 불러옴", error);
@@ -139,17 +135,20 @@ function MyInfo(){
                 },
               })
             .then((response) => {
-                console.log(response, "반응, 여기에 응답으로 값들을 다 받아서 넣어주는게 나을까?");
-                console.log(userLan);
+                console.log(response.data);
 
                 const userInfoString = localStorage.getItem("UserInfo");
                 const userInfo = JSON.parse(userInfoString);
+
+                
+                
 
                 userInfo.userId = userId1;
                 userInfo.userName = userName;
                 userInfo.userPw = userPw;
                 userInfo.profileUrl = userImgUrl;
                 userInfo.sttLang = userLan;
+                userInfo.transLang = response.data;
 
                 //다시 localStorage에 저장
                 localStorage.setItem("UserInfo", JSON.stringify(userInfo));
@@ -187,7 +186,6 @@ function MyInfo(){
             if (result.isConfirmed) {
                 axios.delete(`${BACKEND_URL}/api/v1/myPage/leave/${userId1}`, {
                     params: {
-                        // name: user.userId
                         name: userId1
                     },
                     headers: {
@@ -331,11 +329,11 @@ function MyInfo(){
                             <option value="it-IT">이탈리아어</option>
                             <option value="id-ID">인도네시아어</option>
                             <option value="ja-JP">일본어</option>
-                            <option value="th-TH">태국어</option>
                             <option value="fr-FR">프랑스어</option>
                             <option value="pt-PT">포르투칼어</option>
                             <option value="zh-CN">중국어 간체</option>
                             <option valye="pt-TW">중국어 번체</option>
+                            <option value="hi-IN">힌두어</option>
                         </select>
                     </div>
                 </div>
