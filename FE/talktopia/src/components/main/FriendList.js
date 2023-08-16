@@ -50,6 +50,7 @@ const FriendList = () => {
     axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
     .then((response) => {
       setFriendList(response.data);
+      console.log("friends", response.data)
       setIsListVisible(true)
     })
     .catch((error) => {
@@ -132,11 +133,17 @@ const FriendList = () => {
                         </div>)
                       }
                       {/* 미접속 */}
-                      { friend.userStatus == "OFFLINE" && (
+                      { friend.userStatus == "OFFLINE"  || friend.userStatus == null && (
                         <div className={`${friendListStyle["friend-section-profile"]} ${friendListStyle["friend-section-profile-offline"]}`}>
                           <img src={friend.userImg}></img>
                         </div>)
                       }
+                      {/* 아예 상태 없음 */}
+                      {/* { friend.userStatus == null && (
+                        <div className={`${friendListStyle["friend-section-profile"]}`}>
+                          <img src={friend.userImg}></img>
+                        </div>)
+                      } */}
 
 
                       {/* 유저 이름영역 */}
@@ -170,7 +177,7 @@ const FriendList = () => {
         }
 
       {searchVisible && 
-      <SearchFind searchVisible={searchVisible} onShowSearchFind={handleShowSearchFind}/>
+      (<SearchFind searchVisible={searchVisible} onShowSearchFind={handleShowSearchFind}/>)
       }
 
 

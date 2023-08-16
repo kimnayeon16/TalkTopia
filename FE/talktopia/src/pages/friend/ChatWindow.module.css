@@ -70,6 +70,7 @@
   font-size: 20px;
   font-weight: 800;
   display: inline;
+  color: #2d2f32;
 }
 
 /* 프사 뒷배경 */
@@ -80,7 +81,7 @@
   box-sizing: border-box;
   background-color: white;
   border-radius: 50%;
-  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.chat-header .3);
+  box-shadow: 0 5px 10px rgb(148 208 255 / 30%);
 
 }
 
@@ -101,6 +102,8 @@
   top: -35px;
   right: -15px;
   z-index: 1;
+
+  color: #2d2f32;
 }
 
 /* 상태따라 다른 색 */
@@ -137,16 +140,19 @@
 
 /* 스크롤바 */
 .chat-content::-webkit-scrollbar {
-  width: 8px;
+  width: 3px;
 }
 
 .chat-content::-webkit-scrollbar-track {
   border-radius: 10px;
+  /* background-color: #15aeff; */
+
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.204);
-  border-radius: 10px;
+.chat-content::-webkit-scrollbar-thumb {
+  /* background-color: rgba(0, 0, 0, 0.204); */
+  background-color: #8db1c7;
+  border-radius: 20px;
   /* background-clip: padding-box; */
   border: 1px solid transparent;
 }
@@ -227,6 +233,9 @@
   top: -35px;
   right: -28px;
   z-index: 1;
+
+  color: #2d2f32;
+
 }
 
 /* 상태따라 다른 색 */

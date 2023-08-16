@@ -5,7 +5,7 @@ import style from './SearchFind.module.css'
 import AddFriendButton from '../../components/search/AddFriendButton' // 추가된 부분
 import useTokenValidation from '../../utils/useTokenValidation';
 
-function FriendSearch(searchVisible, onShowSearchFind) {
+function FriendSearch({searchVisible, onShowSearchFind}) {
   useTokenValidation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +20,8 @@ function FriendSearch(searchVisible, onShowSearchFind) {
    '중국어_번체', '태국어', '포르투갈어', '프랑스어'
 ];
 
+  const userInfoString = localStorage.getItem("UserInfo");
+  const userInfo = JSON.parse(userInfoString);
 
 
 const [modal, setModal] = useState(searchVisible);
@@ -31,6 +33,9 @@ const [modal, setModal] = useState(searchVisible);
       setSearchResults([]);
       return;
     }
+
+    const userInfoString = localStorage.getItem("UserInfo");
+    const userInfo = JSON.parse(userInfoString);
   
     try {
       const response = await axios.post(
@@ -38,7 +43,7 @@ const [modal, setModal] = useState(searchVisible);
         {
           search: searchNickname,
           findType: searchType,
-          userId: "talktopia1",
+          userId: userInfo.userId,
           language: selectedLanguage
         }
       );
@@ -154,7 +159,7 @@ const modalChange = () => {
                         <div className={`${style.language1}`}>{user.userLng}</div>
                         <div className={`${style.status1}`}>{user.userStatus}</div>
                         <div className={`${style.add1}`}>
-                          <AddFriendButton userId="talktopia1" friendId={user.userId} />    
+                          <AddFriendButton userId={userInfo.userId} friendId={user.userId} />    
                         </div>
                       </div>
                     ))}
