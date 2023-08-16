@@ -4,7 +4,11 @@ import { BsMic } from "react-icons/bs";             // Mic on
 import { BsMicMute } from "react-icons/bs";         // Mic off
 import { ImExit } from "react-icons/im";            // Leave
 import { FaUserFriends } from "react-icons/fa";     // invite friend
-import { FiHash } from "react-icons/fi";            // 주제 제시
+// import { FiHash } from "react-icons/fi";            // 주제 제시
+import { MdOutlineChangeCircle } from "react-icons/md"; // 주제 바꾸기
+import { BiExit } from "react-icons/bi";                // 주제 제시 종료
+import { HiOutlineLightBulb } from "react-icons/hi";    // 주제 제시
+
 
 import style from "./ToolbarComponent.module.css"
 
@@ -24,12 +28,12 @@ function ToolbarComponent(props) {
                 {props.isTopicbar ? (
                     <>
                         <button className={`${style['video-game-button']} ${style['video-game-button-HOST']}`} onClick={props.openTopic} >
-                            <FiHash size="24" color="black" />
-                            <p>랜덤 생성</p>
+                            <MdOutlineChangeCircle size="24" color="black" />
+                            <p className={style['topic-button']}>랜덤 생성</p>
                         </button>  
                         <button className={`${style['video-game-button']} ${style['video-game-button-HOST']}`} onClick={props.closeTopicbar} >
-                            <FiHash size="24" color="black" />
-                            <p>주제 종료</p>
+                            <BiExit size="24" color="black" />
+                            <p className={style['topic-button']}>주제 종료</p>
                         </button>  
                     </>
                 ) : (
@@ -40,8 +44,8 @@ function ToolbarComponent(props) {
                         } 
                         onClick={handleTopicbutton}
                     >
-                        <FiHash size="24" color={props.roomRole === 'HOST' ? "black" : "grey"} />
-                        <p>주제 제시</p>
+                        <HiOutlineLightBulb size="24" color={props.roomRole === 'HOST' ? "black" : "grey"} />
+                        <p className={style['topic-button']}>주제 제시</p>
                     </button>  
                 )}
             </div>

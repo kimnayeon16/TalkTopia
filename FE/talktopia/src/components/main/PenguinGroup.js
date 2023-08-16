@@ -46,6 +46,7 @@ const PenguinGroup = () => {
                 mySessionId: response.data.vrSession,
                 token: response.data.token,
                 roomRole: response.data.roomRole,
+                allRoomRoles: response.data.showAllVRoomRes,
                 roomType: 'common'
             }
         });

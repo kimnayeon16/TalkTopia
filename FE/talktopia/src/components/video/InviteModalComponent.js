@@ -60,9 +60,13 @@ function InviteModalComponent(props) {
         // props.closeInviteModal();
     }, [checkedList]);
 
+    const preventCloseTopicModal = (e) => {
+        e.stopPropagation();
+    }
+
     return (
         <>
-            <div className={style['invite-modal-content']}>
+            <div className={style['invite-modal-content']} onClick={preventCloseTopicModal}>
                 <div className={style['invite-modal-titlebox']} >
                     <p className={style['invite-modal-title']}>친구 목록</p>
                 </div>

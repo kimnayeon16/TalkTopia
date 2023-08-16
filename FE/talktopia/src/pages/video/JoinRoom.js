@@ -33,6 +33,11 @@ function JoinRoom() {
     const [mySessionId, setMySessionId] = useState(undefined);  
     console.log('현재 참가자 정보', subscribers)
 
+    // 방의 모든 참여자의 역할 정보 <----------------------------------------------------
+    const [allRoomRoles, setAllRoomRoles] = useState(undefined);
+    const initialRoomRoles = useRef(undefined);
+    console.log('모든 참여자의 역할 정보', allRoomRoles)
+
     // 토큰, 방 타입 관리
     const [openviduToken, setOpenviduToken] = useState(undefined);
     const [roomType, setRoomType] = useState(undefined);
@@ -95,6 +100,15 @@ function JoinRoom() {
         }
         userDataRef.current = userData
         userRollRef.current = location.state.roomRole
+
+        console.log('location으로 전달된 정보', location.state.allRoomRoles)
+        // 방 역할 정보 객체로 변환
+        const userRoles = location.state.allRoomRoles.reduce((acc, user) => {
+            acc[user.userId] = user.vroomRole;
+            return acc;
+        }, {});
+        initialRoomRoles.current = userRoles
+        // setAllRoomRoles(userRoles);
 
         // 웹 소켓 연결
         stomp.connect({}, (frame) => {
@@ -229,11 +243,28 @@ function JoinRoom() {
             const jsonParts = event.stream.connection.data.split('%/%');
             const clientData = JSON.parse(jsonParts[0]).clientData
             console.log('subscriber 데이터', subscriber)
-            
+            console.log('모든 참여자 정보---------------------------------------', initialRoomRoles.current)
+
+            let currentUserRole;
+            if (
+                initialRoomRoles.current && 
+                Object.keys(initialRoomRoles.current).length !== 0 && 
+                clientData.userId in initialRoomRoles.current
+                ) {
+                currentUserRole = initialRoomRoles.current[clientData.userId];
+
+                const updatedInitialRoomRoles = { ...initialRoomRoles.current };
+                delete updatedInitialRoomRoles[clientData.userId];
+                initialRoomRoles.current = updatedInitialRoomRoles;
+            } else {
+                currentUserRole = clientData.roomRole;
+            }
+
             const newUser = {
                 userId: clientData.userId,
                 userName: clientData.userName,
-                roomRole: clientData.roomRole,
+                // roomRole: clientData.roomRole,
+                roomRole: currentUserRole,
                 nation: clientData.nation,
                 isVideoActive: event.stream.videoActive,
                 isAudioActive: event.stream.audioActive,
@@ -355,7 +386,8 @@ function JoinRoom() {
 
         axios.get(`${BACKEND_URL}/api/v1/friend/list/${user.userId}`, { headers })
         .then((response) => {
-            setInviteFriendsList(response.data);     
+            let friendList = response.data
+            setInviteFriendsList((prev)=>friendList);     
             setIsInviteModalOpen(true);
         })
         .catch((error) => {
@@ -482,7 +514,7 @@ function JoinRoom() {
         })
     }
 
-    //
+    // 유저 권한 업데이트
     const changeUserRoll = (data) => {
         console.log('제발 떠라', subscribers)
         if (data === user.userId) { 
@@ -613,7 +645,7 @@ function JoinRoom() {
             ) : null}
 
             {isReportModalOpen ? (
-                <div className={style['report-modal-window']}>
+                <div className={style['report-modal-window']} onClick={closeReportModal}>
                     <ReportModalComponent 
                         vrSession={ userDataRef.current.mySessionId }
                         reportUserId={ isReportUserId }
@@ -623,7 +655,7 @@ function JoinRoom() {
             ) : null}
 
             {isInviteModalOpen ? (
-                <div className={style['report-modal-window']}>
+                <div className={style['report-modal-window']} onClick={closeInviteModal}>
                     <InviteModalComponent
                         vrSession={ userDataRef.current.mySessionId }
                         inviteFriendsList={ inviteFriendsList }

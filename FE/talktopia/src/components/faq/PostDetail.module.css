@@ -40,7 +40,7 @@
 }
 
 .box2 {
-  height: 550px;
+  height: 620px;
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   margin: auto;
@@ -53,9 +53,9 @@
   flex: 1;
   padding: 20px;
   width: 700px;
-  max-height: 550px;
+  max-height: 620;
   overflow-y: auto;
-  margin-bottom: 100px;
+  margin-bottom: 0px;
 }
 
 .container2 {
@@ -117,16 +117,16 @@
   }
   
   .post-content {
+    /* position: relative; */
     font-family: 'Dovemayo_wild';
     color: #012A4A;
     font-size: 16px;
     line-height: 1.5;
-    width: 600px;
     text-align: center;
     top: 30%;
     padding-bottom: 30px;
-    /* margin-left: 30px; */
-
+    margin: 0;
+    width: 100%;
   }
   
   .answer-posts {
@@ -169,6 +169,12 @@
     width: 550px;
     height: 50px;
     background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .comment-input1 {
+    width: 100%;
+    padding: 10px;
+    height: 50px;
   }
   
   .comment-button {
@@ -351,14 +357,15 @@
 
 .line{
   width: 100%;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
 .date{
-   font-family: 'Dovemayo_wild';
+    text-align: center;
+    margin: 0;
+    font-family: 'Dovemayo_wild';
     font-size: 16px;
     color: #29446a;
-    position: fixed;
-    /* bottom: 170px; */
-    /* left: 50px; */
+    position: relative;
 }

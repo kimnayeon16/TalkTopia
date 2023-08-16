@@ -94,18 +94,16 @@
 
 /* 초대 버튼 */
 .invite-button {
-  margin-top: 1rem;
+  margin-top: 10px;
   padding: 0.5rem 0.75rem;
   width: 100%;
-  border: 0;
-  /* background: rgb(84, 151, 205); */
   font-size: 0.8rem;
   font-weight: 700;
+  box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.204);
+  border: 2px solid rgba(255, 255, 255, 0.919);
   text-transform: uppercase;
   border-radius: 10px;
-  border-top: 2.4px solid rgba(255, 255, 255, 0.657);
-  border-bottom: 2.3px solid rgba(0, 0, 0, 0.02);
-  background: linear-gradient(rgba(0, 0, 0, 0.026) 10%, transparent 20%, rgba(255, 255, 255, 0.57) 70%);
   transition: 0.25s;
 }
 
