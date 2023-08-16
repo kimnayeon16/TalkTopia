@@ -94,10 +94,14 @@ function ReportModalComponent(props) {
         })
     };
 
+    const preventCloseTopicModal = (e) => {
+        e.stopPropagation();
+    }
+
 
     return (
         <>
-            <div className={style['report-modal-content']}>
+            <div className={style['report-modal-content']} onClick={preventCloseTopicModal}>
                 <div className={style['report-modal-titlebox']}>
                     <p className={style['report-modal-title']}>유저 신고</p>
                 </div>
