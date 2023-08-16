@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 import friendListStyle from './FriendList.module.css';
 import ChatWindow from '../../pages/friend/ChatWindow';
 
+import SearchFind from '../../pages/search/SearchFind';
+
 const FriendList = () => {
   const user = useSelector((state) => state.userInfo);
   
@@ -23,6 +25,10 @@ const FriendList = () => {
   const [enterSessionId, setEnterSessionId] = useState(""); // 채팅방 session
   const [chats, setChats] = useState([]) // 채팅 내용
   /* friend list용 state 끝 */
+
+
+  // 친구 검색
+  const [searchVisible, setSearchVisible] = useState(false);
 
 
 
@@ -85,6 +91,10 @@ const FriendList = () => {
           console.log(error);
         });
     }
+
+    const modalOpen = () => {
+      setSearchVisible(!searchVisible);
+    }
   
   /* 함수 영역 끝 */
 
@@ -102,7 +112,8 @@ const FriendList = () => {
           <div className={`${friendListStyle["friend-list-modal"]}`}>
             <h2 className={`${friendListStyle["friend-list-h2"]}`}>친구 목록</h2>
             {/* <button onClick={setIsListVisible(false)} className={`${friendListStyle["modal-close-btn"]}`}>X</button> */}
-            <button onClick={() => {setIsListVisible(false); setShowChat(false) }} className={`${friendListStyle["modal-close-btn"]}`}>X</button>
+            <img className={`${friendListStyle["modal-search-btn"]}`} src="/img/main/search.png" alt="" onClick={modalOpen}></img>
+            <button onClick={() => {setIsListVisible(false); setShowChat(false); setSearchVisible(false);}} className={`${friendListStyle["modal-close-btn"]}`}>X</button>
             
             <div className={`${friendListStyle["friend-list"]}`}>
               { friendList && 
@@ -137,6 +148,8 @@ const FriendList = () => {
           }
         </div>
       }
+
+      {searchVisible && <SearchFind searchVisible={searchVisible}/>}
 
 
     </div>

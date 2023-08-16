@@ -11,8 +11,11 @@ import { css } from "@emotion/react";
 import Nav from '../../nav/Nav';
 
 import style from "./Faq.module.css";
+import useTokenValidation from '../../utils/useTokenValidation';
 
 export default function Faq() {
+  useTokenValidation();
+
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const navigate: NavigateFunction = useNavigate();
