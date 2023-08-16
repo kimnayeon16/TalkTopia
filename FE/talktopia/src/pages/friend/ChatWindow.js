@@ -27,6 +27,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
   // const [componentLoaded, setComponentLoaded] = useState(false)
   const observerRef = useRef(null);
   const hasMoreLogs = useRef(true);
+  const chatWindowRef = useRef(null); // 스크롤용 
   /* state end */
   
   useEffect(() => {
@@ -39,6 +40,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
 
 //  세션아이디 변경시 useEffect /////////////////////
   useEffect(() => {
+    //////////////////// 웹소켓 ////////////////////
     // 이전에 연결 돼있으면
     // console.log("useEffect triggered by sessionId change:", sessionId);
     // console.log("useEffect triggered by friendID change:", friendId);
@@ -53,54 +55,55 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
     // console.log("Attempting to connect to WebSocket");
     connect();
 
-    // // 스크롤 이벤트용 ////////////////////////////////////////////
-    // hasMoreLogs.current = true; // 스크롤가능하게함
-    // // IntersectionObserver를 생성하고 연결
-    // observerRef.current = new IntersectionObserver(entries => {
-    //   if (entries[0].isIntersecting) {
-    //     // 스크롤 이벤트 1.5초 지연
-    //     setTimeout(() => {
-    //       loadMoreChatLogs();
-    //     }, 1500);
-    //   }
-    // });
-    
-    // if (observerRef.current) {
-    //   observerRef.current.observe(document.querySelector('#placeholder'));
-    // }
-    
-    // return () => {
-    //   // 컴포넌트 언마운트 시 이벤트 해제
-    //   if (observerRef.current) {
-    //     observerRef.current.disconnect();
-    //     hasMoreLogs.current = true;
-    //     observerRef.current=null
-    //   }
-
-    //   // 이 부분은 언마운트될 때 연결을 해제하는 로직입니다.
-    //   if (stompClient && stompClient.connected) {
-    //     console.log("Component unmounting. Disconnecting stomp.");
-    //     stompClient.disconnect();
-    //   }
-    // };
-  }, [friend, sessionId]);
-  
-
-
-
-  // 채팅 내용 변경될때마다 실행  
-  useEffect(()=>{
-    console.log("chats", chats)
-    console.log("원래 내용, ", {chatLog});
+    ////////////// 채팅내용 재반영 //////////////////
     setChatLog(chats) // 채팅내용 재반영
-    console.log("재반영, ", {chatLog});
-
     let formatedTimes = [];
     chats.forEach((chat)=>formatedTimes.push(formatDate(chat.scrcSendTime)));
-
     setChatTimes(formatedTimes);
-    console.log("채팅시간", {chatTimes})
-  }, [chats])
+
+    // After chatLog is updated, scroll to the bottom of the chat window
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+
+    // // 스크롤 이벤트용 ////////////////////////////////////////////
+    hasMoreLogs.current = true; // 스크롤가능하게함
+    // IntersectionObserver를 생성하고 연결
+    observerRef.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        // 스크롤 이벤트 1.5초 지연
+        setTimeout(() => {
+          loadMoreChatLogs();
+        }, 1500);
+      }
+    });
+    
+    if (observerRef.current) {
+      observerRef.current.observe(document.querySelector('#placeholder'));
+    }
+    
+    return () => {
+      // 컴포넌트 언마운트 시 이벤트 해제
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        hasMoreLogs.current = true;
+        observerRef.current=null
+      }
+
+      // 이 부분은 언마운트될 때 연결을 해제하는 로직입니다.
+      if (stompClient && stompClient.connected) {
+        console.log("Component unmounting. Disconnecting stomp.");
+        stompClient.disconnect();
+      }
+    };
+  }, [friend, sessionId]);
+
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [chatLog]);
+
   /* end useEffect */
 
 
@@ -125,15 +128,8 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
       setStompClient(stomp);
       
       stomp.subscribe(`/topic/sub/${sessionId}`, (message) => {
-        // console.log(message)
-        console.log("subscribe==>", JSON.parse(message.body));
-        // showChatMsg(JSON.parse(message.body));  // subscribe결과 화면에 출력
-        // setChatLog(prevLog => [...prevLog, JSON.parse(message.body)])
-        setChatLog([...chatLog, ...[JSON.parse(message.body)] ])
-        console.log("새로운 채팅로그", {chatLog})
-        const newChatTime = formatDate(message.body.scrcSendTime)
-        setChatTimes([...chatTimes, ...[newChatTime]]);
-        console.log("새로운 채팅시간", {chatTimes})
+        setChatLog(prevLog => [...prevLog, JSON.parse(message.body)]);
+        setChatTimes(prevTimes => [...prevTimes, formatDate(JSON.parse(message.body).scrcSendTime)]);
       })
     })
   }
@@ -205,7 +201,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
     const targetDate = new Date(inputDate);
     const timeDiff = currentDate - targetDate;
     
-    if (timeDiff < 1800000) { // Less than 10 minutes
+    if (timeDiff < 1800000) { // 30분 이하일 때는 N분전
       const minutesAgo = Math.floor(timeDiff / 60000);
       return minutesAgo > 0 ? `${minutesAgo}분 전` : '방금 전';
     } else {
@@ -235,16 +231,22 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
             </div>)
           }
           {/* 미접속 */}
-          { friend.userStatus == "OFFLINE" && (
+          { friend.userStatus == "OFFLINE" || friend.userStatus == null && (
             <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
               <img src={friend.userImg}></img>
             </div>)
           }
+          {/* 아예 상태 없음 */}
+          {/* { friend.userStatus == null && (
+            <div className={`${style["friend-section-profile"]}`}>
+              <img src={friend.userImg}></img>
+            </div>)
+          } */}
           <h2>{friend.userName}</h2>
         </div>
 
 
-        <div id="chat-content" className={`${style["chat-content"]}`}>
+        <div id="chat-content" className={`${style["chat-content"]}`}  ref={chatWindowRef} >
           <button onClick={handleCloseBtn} className={`${style["chat-close-btn"]}`}><AiOutlineClose size='20'/></button>
 
           <div id="placeholder" className={`${style["placeholder"]}`}></div>
@@ -276,7 +278,7 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
                         </div>)
                       }
                       {/* 미접속 */}
-                      { friend.userStatus == "OFFLINE" && (
+                      { friend.userStatus == "OFFLINE" || friend.userStatus == null  && (
                         <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
                           <img src={friend.userImg}></img>
                         </div>)

@@ -5,7 +5,7 @@ import style from './SearchFind.module.css'
 import AddFriendButton from '../../components/search/AddFriendButton' // 추가된 부분
 import useTokenValidation from '../../utils/useTokenValidation';
 
-function FriendSearch(searchVisible, onShowSearchFind) {
+function FriendSearch({searchVisible, onShowSearchFind}) {
   useTokenValidation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
