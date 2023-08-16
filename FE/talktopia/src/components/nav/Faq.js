@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../utils";
-
+import { useTranslation } from "react-i18next";
 import style from './Nav.module.css';
 
 function Faq(){
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);
     const [userName, setUserName] = useState("");
     const [userImg, setUserImg] = useState("");
@@ -30,7 +30,7 @@ function Faq(){
                 faqModalVisible &&
                 <div className={`${style.faqModal}`} onMouseOver={handleFaqMouseOver} onMouseOut={handleFaqMouseOut}>
                     <p className={`${style.faqtext}`} onClick={()=>{navigate('/faq')}}>FAQ</p>
-                    <p className={`${style.faqtext}`} onClick={()=>{navigate('/counsel')}}>1:1 문의</p>
+                    <p className={`${style.faqtext}`} onClick={()=>{navigate('/counsel')}}>{t(`faqq.faqq1`)}</p>
                 </div> 
             }
         </div>

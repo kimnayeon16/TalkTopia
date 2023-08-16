@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import style from './Nav.module.css';
 import { useState } from 'react';
-
+import { useTranslation } from "react-i18next";
 function Admin() {
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
     const [adminModalVisible, setAdminMoalVisible] = useState(false);
 
     const handleAdminMouseOver = () => {
@@ -23,7 +23,7 @@ function Admin() {
             adminModalVisible &&
                 <div onClick={()=>{navigate('/Admin')}} onMouseOver={handleAdminMouseOver} onMouseOut={handleAdminMouseOut}>
                     <div className={`${style.adminModal}`}>
-                        <p className={`${style.countrytext}`}>관리자페이지입니다</p>
+                        <p className={`${style.countrytext}`}>{t(`Admin1.Admin11`)}</p>
                     </div>
                 </div>
             }

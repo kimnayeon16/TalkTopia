@@ -7,14 +7,14 @@ import Stomp from "stompjs";        // <-- 수정
 import style from './ChatWindow.module.css';
 import { AiOutlineClose } from "react-icons/ai";
 import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
-
+import { useTranslation } from "react-i18next";
 
 // import allStyle from './Friend.module.css';
 
 function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
   const user = useSelector((state) => state.userInfo);
 
-
+  const { t } = useTranslation();
 
   /* state start */
   const [chatMsg, setChatMsg] = useState("");

@@ -5,10 +5,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { reduxUserInfo } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useTranslation } from "react-i18next";
 const FriendGroup = () => {
   const user = useSelector((state) => state.userInfo);
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
   // const dispatch = useDispatch();
 
@@ -76,8 +76,8 @@ const FriendGroup = () => {
           {
             join ?
           <div className={`${style["speech-bubble1"]}`}>
-            <p className={`${style.message}`}>방을 만들어서 친구들과 소통해요!</p>
-            <button className={`${style.button}`} onClick={()=>{enterFriendRoom(6)}}>참여하기</button>
+             <p className={`${style.message}`}>{t(`FriendGroup.ment1`)}</p>
+            <button className={`${style.button}`} onClick={()=>{enterFriendRoom(6)}}>{t(`FriendGroup.ment2`)}</button>
           </div>
             :
             null

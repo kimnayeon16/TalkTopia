@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useTranslation } from "react-i18next";
 function NotificationAccordion() {
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [token, setToken] = useState('');  // JWT 토큰을 저장할 상태
-
+  const { t } = useTranslation();
+  
   // 알림 데이터를 가져오는 함수
   const fetchNotifications = async () => {
     console.log("fetchNotifications");
@@ -43,11 +44,11 @@ function NotificationAccordion() {
 
   return (
     <div className="notification-container">
-      <button onClick={() => setIsOpen(!isOpen)}>알림</button>
+      <button onClick={() => setIsOpen(!isOpen)}>{t(`NotificationAccordion.Notification1`)}</button>
       {isOpen && (
         <div>
           <div className="refresh-button" onClick={refreshNotifications}>
-            <span className="refresh-icon">⟳</span> 새로고침
+            <span className="refresh-icon">⟳</span> {t(`NotificationAccordion.Notification2`)}
           </div>
           <div className="accordion">
             {notifications.map((notification, index) => (

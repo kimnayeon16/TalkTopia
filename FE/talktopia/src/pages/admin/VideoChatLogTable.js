@@ -2,7 +2,7 @@ import React from 'react';
 import './ChatTable.css';
 // import logIcon from "../../../public/img/admin/logImage.png"
 import style from './VideoChatLogTable.module.css'
-
+import { useTranslation } from "react-i18next";
 const VideoChatLogTable = ({ data }) => {
     return (
         <table className={style["chat-table"]}>

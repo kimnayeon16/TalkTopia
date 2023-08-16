@@ -4,8 +4,9 @@ import axios from "axios";
 import { BACKEND_URL } from "../../utils";
 import "./DenyButton.css"
 import e from "cors";
-
+import { useTranslation } from "react-i18next";
 function DenyButton({ notification, closeModal }) {
+    const { t } = useTranslation();
     const handleDenyClick = async () => {
         const requestData = {
             rmType: notification.rmType,
@@ -39,7 +40,7 @@ function DenyButton({ notification, closeModal }) {
     return (
         <button className="DenyButton" onClick={handleDenyClick}>
             <img className ="NotificationImg" src="img/dding/failRequestIcon.png" alt="Fail Icon" />
-            Deny
+            {t(`Deny.Deny1`)}
         </button>
     );
 }

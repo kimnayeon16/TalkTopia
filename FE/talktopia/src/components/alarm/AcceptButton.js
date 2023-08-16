@@ -4,8 +4,10 @@ import { BACKEND_URL } from "../../utils";
 import "./AcceptButton.css"
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 function AcceptButton({ notification, closeModal }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const handleAccept = async () => {
         try {
@@ -60,9 +62,9 @@ function AcceptButton({ notification, closeModal }) {
                         // "방이 꽉찼어요" 에러 처리
                         Swal.fire({
                             icon: "error",
-                            title: "방이 꽉 찼어요",
-                            text: "더 이상 참여할 수 없는 방입니다.",
-                            confirmButtonText: "확인",
+                            title: t(`Accept.Accept1`),
+                            text: t(`Accept.Accept2`),
+                            confirmButtonText: t(`Accept.Accept3`),
                             confirmButtonColor: '#f47b7b',
                             timer: 2000,
                         timerProgressBar: true,
@@ -71,9 +73,9 @@ function AcceptButton({ notification, closeModal }) {
                         // 다른 에러 처리
                         Swal.fire({
                             icon: "error",
-                            title: "에러",
-                            text: "오류가 발생했습니다.",
-                            confirmButtonText: "확인",
+                            title: t(`Accept.Accept4`),
+                            text: t(`Accept.Accept5`),
+                            confirmButtonText: t(`Accept.Accept6`),
                             confirmButtonColor: '#f47b7b',
                             timer: 2000,
                         timerProgressBar: true,
@@ -94,9 +96,9 @@ function AcceptButton({ notification, closeModal }) {
 
                     Swal.fire({
                         icon: "success",
-                        title: "친구 등록 완료",
-                        text: "친구와 토크토피아 세상을 함께 누려주세요 !",
-                        confirmButtonText: "확인",
+                        title: t(`Accept.Accept7`),
+                        text: t(`Accept.Accept8`),
+                        confirmButtonText: t(`Accept.Accept9`),
                         confirmButtonColor: '#90dbf4',
                         timer: 2000,
                         timerProgressBar: true,
@@ -106,9 +108,9 @@ function AcceptButton({ notification, closeModal }) {
                         // 서버에서 RunTimeException을 던진 경우 처리
                         Swal.fire({
                             icon: "error",
-                            title: "중복 친구 오류",
-                            text: "중복된 친구입니다.",
-                            confirmButtonText: "확인",
+                            title:t(`Accept.Accept10`),
+                            text: t(`Accept.Accept11`),
+                            confirmButtonText: t(`Accept.Accept12`),
                             confirmButtonColor: '#f47b7b',
                             timer: 3000,
                             timerProgressBar: true,
@@ -117,9 +119,9 @@ function AcceptButton({ notification, closeModal }) {
                         console.log("에러", error);
                         Swal.fire({
                             icon: "error",
-                            title: "알수 없는 에러",
-                            text: "알수 없는 에러로 친구 추가가 안됐습니다.",
-                            confirmButtonText: "확인",
+                            title: t(`Accept.Accept13`),
+                            text: t(`Accept.Accept14`),
+                            confirmButtonText: t(`Accept.Accept15`),
                             confirmButtonColor: '#f47b7b',
                             timer: 3000,
                             timerProgressBar: true,
@@ -141,7 +143,7 @@ function AcceptButton({ notification, closeModal }) {
     return (
         <button className="AcceptButton" onClick={handleAccept}>
             <img className ="NotificationImg" src="img/dding/doneRequestIcon.png" alt="Accept Icon" />
-            Accept
+            {t(`Accept.Accept16`)}
         </button>
     );
 }

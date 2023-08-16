@@ -41,8 +41,8 @@ function Earth(){
             earthModalVisible &&
                 <div onMouseOver={handleEarthMouseOver} onMouseOut={handleEarthMouseOut}>
                     <div className={`${style.earthModal}`}>
-                        <p className={`${style.countrytext}`} onClick={() => changeLanguage('ko')}>한국어</p>
-                        <p className={`${style.countrytext}`} onClick={() => changeLanguage('en')}>영어</p>
+                        <p className={`${style.countrytext}`} onClick={() => changeLanguage('ko')}>{t(`Earth.Earth1`)}</p>
+                        <p className={`${style.countrytext}`} onClick={() => changeLanguage('en')}>{t(`Earth.Earth2`)}</p>
                     </div>
                 </div>
             }

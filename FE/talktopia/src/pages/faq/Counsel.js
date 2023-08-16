@@ -6,9 +6,10 @@ import Nav from '../../nav/Nav';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxUserInfo } from '../../store';
 import useTokenValidation from '../../utils/useTokenValidation';
+import { useTranslation } from "react-i18next";
 function OneToOneInquiry() {
   useTokenValidation();
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   let dispatch = useDispatch();
@@ -33,13 +34,13 @@ function OneToOneInquiry() {
     <div className={`${style.background}`}>
       <Nav/>
         <div className={`${style.page}`}>
-            <h2 className={`${style.title}`}>1:1 문의</h2>
+          <h2 className={`${style.title}`}>{t(`Counsel.realcoun1`)}</h2>
             <div className={`${style.categoryGroup}`}>
               <span className={`${style.category}`} onClick={()=>{navigate('/faq')}}>FAQ</span>
-              <span className={`${style.category}`} onClick={()=>{navigate('/counsel')}}>1대1 문의하기</span>
+              <span className={`${style.category}`} onClick={()=>{navigate('/counsel')}}>{t(`Counsel.realcoun2`)}</span>
             </div>
             <PostList />
-            <button className={`${style.button}`} onClick={()=>{navigate('/inquiry')}}>문의하기</button>
+            <button className={`${style.button}`} onClick={()=>{navigate('/inquiry')}}>{t(`Counsel.realcoun3`)}</button>
         </div>
         <img className={`${style.grass1}`} src="/img/grass/grass2.png" alt=""></img>
         <img className={`${style.grass5}`} src="/img/grass/grass5.png" alt=""></img>

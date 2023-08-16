@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BACKEND_URL } from '../../utils';
-
+import { useTranslation } from "react-i18next";
 
 import { REACT_APP_X_RAPID_API_KEY } from "../../utils";
 import style from './CoversationLog.module.css';
 
 function ConversationLog(props) {
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);
     const chatScroll = useRef(null);
 
@@ -242,7 +243,7 @@ function ConversationLog(props) {
     return (
         <>
             <div className={style['convesation-title']}>
-                <p className={style['conversation-title-text']}>Conversation</p>
+            <p className={style['conversation-title-text']}>{t(`ConversationLog.ConversationLog1`)}</p>
             </div>
             <div className={style['conversation-div-line']}></div>
     

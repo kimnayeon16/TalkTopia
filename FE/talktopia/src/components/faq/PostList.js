@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'; // Link 컴포넌트 추가
 import axios from 'axios';
 import style from './PostList.module.css'; // 스타일 파일을 import
 import { BACKEND_URL } from '../../utils';
-
+import { useTranslation } from "react-i18next";
 function PostList() {
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function PostList() {
 
       <div>
         <ul className={`${style.ul}`}>
-          <div className={`${style.li}`}> 번호 &nbsp;&nbsp;&nbsp;&nbsp; 제목 </div>
+        <div className={`${style.li}`}> {t(`PostList.PostList1`)} &nbsp;&nbsp;&nbsp;&nbsp; {t(`PostList.PostList2`)} </div>
         </ul>
         <ul className={`${style.ul}`}>
           {data.map((item,i) => (

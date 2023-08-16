@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from '../../utils';
 import { AiOutlineClose } from "react-icons/ai";
-
+import { useTranslation } from "react-i18next";
 import style from './InviteModalComponent.module.css'
 
 
 function InviteModalComponent(props) {
+    const { t } = useTranslation();
     const user = useSelector((state) => state.userInfo);    // Redux 정보
     const checkBoxList = props.inviteFriendsList
     console.log('checkBoxList', checkBoxList)
@@ -68,7 +69,7 @@ function InviteModalComponent(props) {
         <>
             <div className={style['invite-modal-content']} onClick={preventCloseTopicModal}>
                 <div className={style['invite-modal-titlebox']} >
-                    <p className={style['invite-modal-title']}>친구 목록</p>
+                <p className={style['invite-modal-title']}>{t(`InviteModalComponent.InviteModalComponent1`)}</p>
                 </div>
 
                 <button className={style['invite-modal-close']} onClick={props.closeInviteModal}>
@@ -90,7 +91,7 @@ function InviteModalComponent(props) {
                         ))}
                     </div>
 
-                    <button type='submit' className={style['invite-button']}>초대하기</button>
+                    <button type='submit' className={style['invite-button']}>{t(`InviteModalComponent.InviteModalComponent2`)}</button>
                 </form>
             </div>
         </>

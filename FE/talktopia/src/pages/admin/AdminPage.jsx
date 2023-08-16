@@ -5,10 +5,10 @@ import VideoChatLogView from './VideoChatLogView';
 
 import style from './AdminPage.module.css'
 import { useNavigate } from 'react-router-dom';
-
+import { useTranslation } from "react-i18next";
 const AdminPage = () => {
     const navigate = useNavigate();
-
+    const { t } = useTranslation();
     const [selectedPage, setSelectedPage] = useState('reporter'); // 초기 페이지를 'userView'로 설정
 
     return (
@@ -22,13 +22,13 @@ const AdminPage = () => {
                     onClick={() => setSelectedPage('reporter')} 
                     className={`${style['manage-button']} ${selectedPage === 'reporter' ? style['selected-manage-button'] : ''}`}
                 >
-                    신고자
+                    {t(`AdminPage.AdminPage2`)}
                 </button>
                 <button 
                     onClick={() => setSelectedPage('videoChatLog')} 
                     className={`${style['manage-button']} ${selectedPage === 'videoChatLog' ? style['selected-manage-button'] : ''}`}
                 >
-                    화상채팅방 로그
+                    {t(`AdminPage.AdminPage3`)}
                 </button>
             </div>
 

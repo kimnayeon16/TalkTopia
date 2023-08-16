@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "../../../utils";
 import style from "./PasswordFind.module.css";
-
+import { useTranslation } from "react-i18next";
 function PasswordFind(){
+  const { t } = useTranslation();
     const headers ={
         'Content-Type' : 'application/json',
     }
@@ -75,21 +76,21 @@ function PasswordFind(){
     return(
       <div className={`${style.background}`}>
         <h2 className={`${style.logo}`}>TalkTopia</h2>
-        <h2 className={`${style.title}`}>비밀번호 찾기</h2>
+        <h2 className={`${style.title}`}>{t(`PasswordFind.PasswordFind1`)}</h2>
         <div className={`${style["img-container"]}`}>
             <img className={`${style["fade-in-box"]}`} src="/img/find1.png" alt=""></img>
             <img className={`${style["fade-in-box-1"]}`} src="/img/find3.png" alt=""></img>
         </div>
-        <p className={`${style.p}`}>TalkTopia 가입 시 등록한 이름, 아이디와 이메일을 입력해주세요.</p>
+        <p className={`${style.p}`}>{t(`PasswordFind.PasswordFind2`)}</p>
         <div className={`${style["parent-container"]}`}>
-          <input className={`${style.input}`} type="text" value={userId} onChange={onIdHandler} placeholder="아이디" onKeyPress={onCheckEnter}></input><br/>
-          <input className={`${style.input}`} type="text" value={userName} onChange={onNameHandler} placeholder="이름" onKeyPress={onCheckEnter}></input><br/>
-          <input className={`${style["input-email"]}`} type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} placeholder="이메일"></input>
+          <input className={`${style.input}`} type="text" value={userId} onChange={onIdHandler} placeholder={t(`PasswordFind.PasswordFind3`)} onKeyPress={onCheckEnter}></input><br/>
+          <input className={`${style.input}`} type="text" value={userName} onChange={onNameHandler} placeholder={t(`PasswordFind.PasswordFind4`)} onKeyPress={onCheckEnter}></input><br/>
+          <input className={`${style["input-email"]}`} type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} placeholder={t(`PasswordFind.PasswordFind4`)}></input>
             <span className={`${style["input-email-1"]}`}>@</span>
             {emailSelect === true ? (
               <select className={`${style["input-email-2"]}`} value={userEmailDomain} onChange={onEmailDomainHandler} onKeyPress={onCheckEnter}>
-                <option value="default" disabled> 선택하세요 </option>
-                <option value="">직접입력</option>
+                <option value="default" disabled> {t(`PasswordFind.PasswordFind6`)} </option>
+                <option value="">{t(`PasswordFind.PasswordFind7`)}</option>
                 <option value="gmail.com">gmail.com</option>
                 <option value="hotmail.com">hotmail.com</option>
                 <option value="outlook.com">outlook.com</option>
@@ -106,7 +107,7 @@ function PasswordFind(){
                 <span className={`${style.span}`} onClick={() => {setEmailSelect(true); setUserEmailDomain("default") }}>✖</span>
               </>
             )}
-        <button className={`${style.button}`} onClick={findPw}>비밀번호 찾기</button>
+        <button className={`${style.button}`} onClick={findPw}>{t(`PasswordFind.PasswordFind8`)}</button>
         </div>
         <img className={`${style.turtle}`} src="/img/fish/turtle.png" alt=""></img>
             <img className={`${style.grass2}`} src="/img/grass/grass2.png" alt=""></img>

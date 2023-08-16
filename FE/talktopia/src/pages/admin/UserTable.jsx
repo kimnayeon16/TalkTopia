@@ -1,17 +1,18 @@
 // UserTable.js
 import React from 'react';
 import '../../css/UserTable.css'
-
+import { useTranslation } from "react-i18next";
 function UserTable({ user }) {
+    const { t } = useTranslation();
     return (
         <table className="user-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Profile Image</th>
-                    <th>Language</th>
+                    <th>{t(`UserTable.UserTable1`)}</th>
+                    <th>{t(`UserTable.UserTable2`)}</th>
+                    <th>{t(`UserTable.UserTable3`)}</th>
+                    <th>{t(`UserTable.UserTable4`)}</th>
+                    <th>{t(`UserTable.UserTable5`)}</th>
                 </tr>
             </thead>
             <tbody>
