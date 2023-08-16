@@ -140,6 +140,7 @@ public class ReminderService {
 		FCMFailMessage fcmFailMessage = FCMFailMessage.builder()
 			.senderId(opppsiteHostA.getUserId())
 			.receiverId(oppsiteUserA.getUserId())
+			.vRoomType(reminderInviteReq.getRmType())
 			.build();
 
 

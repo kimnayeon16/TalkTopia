@@ -201,10 +201,14 @@ public class FcmService {
 	public Message 	failFCMMessage(FCMFailMessage fcmFailMessage) throws Exception {
 		User hostUser =userRepository.findByUserId(fcmFailMessage.getSenderId()).orElseThrow(()->new Exception("호스트 유저가없어요"));
 		User user = userRepository.findByUserId(fcmFailMessage.getReceiverId()).orElseThrow(()-> new Exception("받는 사람이 없어"));
+		String body = "";
+		if(fcmFailMessage.getVRoomType().equals("Friend Request"))	{
+			body = fcmFailMessage.getSenderId()+" has declined your Friend Request.";
+		} else if (fcmFailMessage.getVRoomType().equals("Room Request")){
+			body = fcmFailMessage.getSenderId()+" has declined your Room Request.";
+		}
 		String title = "Invitation notification status";
-		String body = fcmFailMessage.getSenderId()+" has declined your invitation.";
 		if(user.getToken().getTFcm() !=null){
-
 			Reminder reminder = Reminder.builder()
 				.rmContent(body)
 				.rmType("Fail Request")
