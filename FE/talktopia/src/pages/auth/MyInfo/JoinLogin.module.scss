@@ -83,34 +83,37 @@ $diffRatio: (
 
 // 회원가입영역
 .form-signup {
-  // width: 40%;
+  width: 50%;
   height: 100%;
   margin: 30px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
   transition: transform $switchAT ease-in-out;
 }
 
 .sub-cont {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   position: absolute;
   left: 70%;
   top: 0;
   // width: $contW;
-  width: calc(100vw - 30%
-  );
-height: 100%;
-// background: #dad2bc;
-background: #bcd8da;
-transition: transform $switchAT ease-in-out;
+  width: calc(100vw - 30%);
+  height: 100%;
+  // background: #dad2bc;
+  background: #bcd8da;
+  transition: transform $switchAT ease-in-out;
 
-//jinseo
-// display: none;
+  //jinseo
+  // display: none;
 
-@include signUpActive {
-  transform: translate3d(-57%, 0, 0);
-  display: block;
-  // transform: translate3d(1000 * -1,0,0);
-}
+  @include signUpActive {
+    transform: translate3d(-57%, 0, 0);
+    display: block;
+    // transform: translate3d(1000 * -1,0,0);
+  }
 }
 
 button {
@@ -167,8 +170,8 @@ button {
   }
 
   @include signUpActive {
-    transform: translate3d(-70vw, 0, 0);
 
+    transform: translate3d(-70vw, 0, 0);
     &:before {
       // transform: translate3d(0,0,0);
       // transform: translate3d(-1000,0,0);
@@ -212,6 +215,7 @@ button {
     p {
       font-size: 20px;
       line-height: 1.5;
+      word-break: keep-all ;
     }
 
     // 로그인창에 있는거 : 만나서 반가워요
@@ -219,13 +223,13 @@ button {
 
       // 회원가입 활성화 될 때
       @include signUpActive {
-        transform: translate3d(1500px, 0, 0);
+        transform: translate3d(60vw, 0, 0);
       }
     }
 
     // 회원가입창에 있는거 : 처음이신가요
     &.m--in {
-      transform: translateX(-100vw);
+      transform: translateX(-200%);
 
       // 회원가입 활성화 될 때
       @include signUpActive {
@@ -247,7 +251,8 @@ button {
     text-transform: uppercase;
     font-size: 15px;
     cursor: pointer;
-    margin-top: 200px;
+    // margin-top: 200px;
+    bottom: -50%;
 
     &:after {
       content: '';
@@ -308,7 +313,7 @@ h2 {
 .h2-Join {
   color: #012A4A;
   font-family: 'EF_jejudoldam';
-  margin-top: 60px;
+  margin-top: 50px;
   margin-bottom: 50px;
 }
 
@@ -365,7 +370,7 @@ h2 {
   color: #012A4A;
 }
 
-.submit-login{
+.submit-login {
   margin: 50px auto 0;
 }
 
@@ -384,7 +389,7 @@ h2 {
   background: #1a759f;
   text-transform: uppercase;
   color: white;
-  margin: 70px auto 0;
+  margin: 15px auto 0;
   // left: 50%;
   // transform: translateX(-50%);
 }
@@ -505,7 +510,7 @@ h2 {
   line-height: 0px;
 }
 
-.find-area{
+.find-area {
   margin: 30px 0 0 0;
 }
 
@@ -522,7 +527,7 @@ h2 {
 
   transition: all 0.1s ease-out;
 
-  &:hover{
+  &:hover {
     background-color: #013A63;
     color: #bcd8da;
   }
@@ -534,10 +539,23 @@ h2 {
 
 
 
+// .buttonId:hover{
+//   background-color: #013A63;
+//   color: #bcd8da;
+// }
+
+
+
 
 select {
+  // -moz-appearance: none;
+  // -webkit-appearance: none;
+  // appearance: none;
+
+  cursor: pointer;
   width: 140px;
-  height: 35px;
+  max-height: 35px;
+  min-height: 20px;
   // background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
   background: calc(100% - 5px) center no-repeat;
   background-size: 20px;
@@ -550,12 +568,15 @@ select {
 
 select option {
   // background: rgb(236, 227, 198);
-  background: #f5ecb8;
-  color: #013A63;
+  padding: 30px 0;
+  background: #013A63;
+  color: #bcd8da;
   padding: 3px 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
-.selectEmail {
+.select-email {
   font-family: 'Dovemayo_wild';
   color: #013A63;
   border: 1px solid #013A63;
@@ -587,32 +608,32 @@ select option {
   font-family: 'Dovemayo_wild';
   color: #ed2752;
   font-size: 12px;
-  margin-top: -40px;
-  margin-left: 90px;
+  margin : -15px 0 0 0;
+
 }
 
 .guide1 {
   font-family: 'Dovemayo_wild';
   color: #ed2752;
   font-size: 12px;
-  margin-top: -20px;
-  margin-left: 90px;
+  margin : -15px 0 0 0;
+
 }
 
 .guide-pass {
   font-family: 'Dovemayo_wild';
   color: #ed2752;
   font-size: 12px;
-  margin-top: -40px;
-  margin-left: 80px;
+  margin : -15px 0 0 0;
+
 }
 
 .guide-pass-correct {
   font-family: 'Dovemayo_wild';
   color: #45a91e;
   font-size: 12px;
-  margin-top: -40px;
-  margin-left: 80px;
+  margin : -15px 0 0 0;
+
 }
 
 .guide-email {
@@ -628,26 +649,116 @@ select option {
 
 
 
+
+// .div-join-container {
+//   display: flex;
+//   margin-bottom: 20px;
+//   justify-content: center;
+// }
+
+// .div-join-container-isButton {
+//   display: flex;
+//   margin-bottom: 20px;
+//   // justify-content: center;
+//   margin-left: 300px;
+// }
+
+// .div-join-container-isButton-1 {
+//   display: flex;
+//   margin-bottom: 20px;
+//   margin-left: 420px;
+// }
+
+// .div-join {
+//   display: flex;
+//   align-items: center;
+// }
+
+
+// .span-join {
+//   font-family: 'Dovemayo_wild';
+//   font-size: 14px;
+//   color: #012A4A;
+//   // margin-left: 10px;
+//   margin-right: 20px;
+//   // display: flex; /* 추가 */
+//   align-items: center;
+  
+// }
+
+// .div-input {
+//   font-family: 'Dovemayo_wild'; 
+//   width: 270px;
+//   height: 40px;
+//   flex: 1; /* input이 가능한 최대 너비를 확보하여 한 줄에 표시 */
+//   margin: 0;
+//   padding: 0;
+//   border: none;
+//   border-bottom: 2px solid #013A63;
+//   border-radius: 0px;
+//   font-size: 16px;
+//   text-align: center;
+//   margin-top: 10px;
+// }
+
+
+
+// ///////////////////////////////////////////////////
 .div-join-container {
   // display: flex;
-  margin-bottom: 20px;
   // justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .div-join-container-isButton {
   width: 100%;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0px;
 
 }
 
 .div-join-container-isButton-1 {
   width: 100%;
-
+  margin: 0 0 20px 0px;
 }
 
 .div-join {
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+.div-join-email {
+  display: grid;
+  align-items: center;
+
+  grid-template-columns: 1fr 1.5fr 0fr 1.5fr 1fr;
+}
+.div-join-email-code {
+  display: grid;
+  align-items: center;
+
+  grid-template-columns: 1fr 3fr 1fr;
+}
+
+
+.div-join-error{
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  width: 100%;
+}
+.div-join-error-1{
+  width: 100%;
+  grid-column: 1;
+}
+.div-join-error-2{
+  width: 100%;
+
+  grid-column: 2;
+}
+.div-join-error-3{
+  width: 100%;
+
+  grid-column: 3;
 }
 
 
@@ -664,8 +775,8 @@ select option {
 
 .div-input {
   font-family: 'Dovemayo_wild';
-  // width: 270px;
-  // height: 40px;
+  width: 100%;
+  height: 40px;
   flex: 1;
   /* input이 가능한 최대 너비를 확보하여 한 줄에 표시 */
   margin: 0;
@@ -680,7 +791,7 @@ select option {
 
 .div-input-email {
   font-family: 'Dovemayo_wild';
-  width: 130px;
+  width: 100%;
   height: 40px;
   flex: 1;
   margin: 0;
@@ -695,7 +806,7 @@ select option {
 
 .div-input-email-1 {
   font-family: 'Dovemayo_wild';
-  width: 270px;
+  width: 100%;
   height: 40px;
   flex: 1;
   margin: 0;
@@ -705,7 +816,6 @@ select option {
   border-radius: 0px;
   font-size: 12px;
   text-align: center;
-  margin-left: -35px;
 }
 
 .out-email {
@@ -743,7 +853,7 @@ select option {
 .friend11 {
   position: absolute;
   width: 60px;
-  margin: -450px 0 0 350px;
+  margin: -50px 0 0 650px;
   animation: friend11 3s ease-in-out infinite;
 }
 
@@ -778,14 +888,14 @@ select option {
 .fish6 {
   position: absolute;
   width: 55px;
-  margin: 50px 0 0 200px;
+  margin: 450px 0 0 500px;
   animation: fish3 15s ease-in-out infinite;
 }
 
 .fish7 {
   position: absolute;
   width: 55px;
-  margin: -40px 0 0 -400px;
+  margin: 360px 0 0 -180px;
   animation: fish3 15s ease-in-out infinite;
 }
 
@@ -950,7 +1060,7 @@ select option {
 // }
 
 // bubble
-.bubble1{
+.bubble1 {
   position: absolute;
   width: 60px;
   margin: -454px 0 0 -550px;
@@ -958,7 +1068,7 @@ select option {
   animation: bubble1 3s ease-in-out infinite;
 }
 
-.bubble2{
+.bubble2 {
   position: absolute;
   width: 60px;
   margin: -150px 0 0 -800px;
@@ -966,7 +1076,7 @@ select option {
   animation: bubble2 3s ease-in-out infinite;
 }
 
-.bubble4{
+.bubble4 {
   position: absolute;
   width: 60px;
   margin: 100px 0 0 -100px;
@@ -974,7 +1084,7 @@ select option {
   animation: bubble1 3s ease-in-out infinite;
 }
 
-.bubble5{
+.bubble5 {
   position: absolute;
   width: 60px;
   margin: -200px 0 0 500px;
@@ -982,7 +1092,7 @@ select option {
   animation: bubble2 3s ease-in-out infinite;
 }
 
-.bubble6{
+.bubble6 {
   position: absolute;
   width: 60px;
   margin: -450px 0 0 200px;
@@ -990,26 +1100,26 @@ select option {
   animation: bubble3 3s ease-in-out infinite;
 }
 
-.bubble3{
+.bubble3 {
   position: absolute;
   width: 60px;
-  margin: -200px 0 0 350px;
+  margin: 237px 0 0 700px;
   opacity: 0.5;
   animation: bubble3 3s ease-in-out infinite;
 }
 
-.bubble7{
+.bubble7 {
   position: absolute;
   width: 60px;
-  margin: 100px 0 0 -150px;
+  margin: 400px 0 0 30px;
   opacity: 0.5;
   animation: bubble1 3s ease-in-out infinite;
 }
 
-.bubble8{
+.bubble8 {
   position: absolute;
   width: 60px;
-  margin: -350px 0 0 -400px;
+  margin: 50px 0 0 -81px;
   opacity: 0.5;
   animation: bubble2 3s ease-in-out infinite;
 }

@@ -206,7 +206,7 @@ public class UserService {
 		return new Message("회원 탈퇴가 완료되었습니다.");
 	}
 
-	public void modifyUser(UserInfoReq userInfoReq) {
+	public String modifyUser(UserInfoReq userInfoReq) {
 		// 1. 조회
 		User updateUser = userRepository.findByUserId(userInfoReq.getUserId())
 			.orElseThrow(() -> new RuntimeException("유효하지 않은 회원 정보입니다."));
@@ -219,6 +219,8 @@ public class UserService {
 		updateUser.hashPassword(bCryptPasswordEncoder);
 
 		userRepository.save(updateUser);
+
+		return updateUser.getLanguage().getLangTrans();
 
 	}
 

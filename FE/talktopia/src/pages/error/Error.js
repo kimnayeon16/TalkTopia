@@ -1,7 +1,7 @@
 function Error(){
     return(
         <div>
-            <h2>에러페이지</h2>
+            <h2>존재하지 않는 페이지입니다.</h2>
         </div>
     )
 }

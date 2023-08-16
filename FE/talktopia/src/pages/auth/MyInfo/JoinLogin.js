@@ -729,11 +729,13 @@ function JoinLogin(){
                             <button className={`${style.buttonId}`} onClick={onCheckId} >중복 확인</button>
                         </div>
                     </div>
-                    <div>
+                    <div className={style["div-join-error"]}>
+                        <div className={`${style["div-join-error-1"]}`}></div>
                         {
                             !idValid && userIdJoin.length >=0 &&
-                            (<><br/><div className={`${style.guide}`}>영문, 숫자 조합으로 6~12자리 입력해주세요.</div></>)
+                            (<div className={`${style["guide"]} ${style["div-join-error2"]}`}>영문, 숫자 조합으로 6~12자리 입력해주세요.</div>)
                         }
+                        <div className={`${style["div-join-error-3"]}`}></div>
                     </div>
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
@@ -741,37 +743,51 @@ function JoinLogin(){
                             <input type="password" value={userPwJoin} onChange={onPwJoinHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
-                    <div>
+                    <div className={style["div-join-error"]}>
+                        <div className={`${style["div-join-error-1"]}`}></div>
                         {
                             !pwValid && userPwJoin.length >=0 &&
-                            (<><br/><div className={`${style.guide}`}>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div></>)
+                            (<div className={`${style["guide"]} ${style["div-join-error2"]}` }>영문, 숫자, 특수문자(!@#$%^*+=-) 조합으로 8~16자리 입력해주세요.</div>)
                         }
+                        <div className={`${style["div-join-error-3"]}`}></div>
                     </div>
+
+
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>비밀번호 확인</span>
                             <input type="password" value={userPwConfirm} onChange={onConfirmPwHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
-                    <div>
-                        <br/><div className={`${style["guide-pass"]} ${userPwConfirmCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
+                    <div className={`${style["div-join-error"]}`}>
+                        <div className={`${style["div-join-error-1"]}`}></div>
+                        <div className={`${style["guide-pass"]} ${style["div-join-error2"]} ${userPwConfirmCorrect ? style["guide-pass-correct"] : ""}`}>{pwConfirmMsg}</div>
+                        <div className={`${style["div-join-error-3"]}`}></div>
                     </div>
+
+
+
                     <div className={style["div-join-container"]}>
                         <div className={style["div-join"]}>
                             <span className={`${style["span-join"]}`}>이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="text" value={userName} onChange={onNameHandler} className={style["div-input"]}></input>
                         </div>
                     </div>
-                    <div className={`${userNameCorrect ? "" : style.guide1}`}>{nameMsg}</div>
+                    <div className={[`${userNameCorrect ? "" : style.guide1}`, `${style["div-join-error"]}`].join(" ")}>
+                        <div className={`${style["div-join-error-1"]}`}></div>
+                        <div className={`${style["div-join-error-2"]}`}>{nameMsg}</div>
+                        <div className={`${style["div-join-error-3"]}`}></div>
+                    </div>
+
                     <div className={style["div-join-container-isButton"]}>
-                        <div className={style["div-join"]}>
+                        <div className={style["div-join-email"]}>
                             <span className={`${style["span-join"]}`}>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input type="text" value={userEmailPrefix} onChange={onEmailPrefixHandler} className={`${style["div-input-email"]} ${style["email-input"]}`}></input>
                             <span>@</span>
                             {
                             emailSelect === true ? 
                             <>
-                            <select className={`${style.select} ${style.selectEmail} ${style["div-input-email"]}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
+                            <select className={`${style["select"]} ${style["select-email"]} ${style["div-input-email"]}`} value={userEmailDomain} onChange={onEmailDomainHandler}>
                                 <option value="default" disabled>선택하세요</option>
                                 <option value="">직접입력</option>
                                 <option value="gmail.com">gmail.com</option>
@@ -808,10 +824,13 @@ function JoinLogin(){
                                     </div>
                                 </div> */}
                                 <div className={style["div-join-container-isButton-1"]}>
-                                    <div className={style["div-join"]}>
+                                    <div className={`${style["div-join"]} ${style["div-join-email-code"]}`}>
+                                        <span className={`${style["span-join"]}`}></span>
                                         <input type="text" value={emailConfirm} onChange={onEmailVerify} className={style["div-input-email-1"]} placeholder="이메일로 전송된 인증코드를 입력해주세요."></input>
-                                        <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
-                                        <button onClick={checkEmail} className={`${style.buttonId}`}>재전송</button>
+                                        <div>
+                                            <button onClick={checkEmailVerify} className={`${style.buttonId}`}>인증 번호 확인</button>
+                                            <button onClick={checkEmail} className={`${style.buttonId}`}>재전송</button>
+                                        </div>
                                     </div>
                                 </div>
                                 {countdown > 0 ? (
@@ -836,12 +855,12 @@ function JoinLogin(){
                                 <option value="en-US">영어</option>
                                 <option value="it-IT">이탈리아어</option>
                                 <option value="id-ID">인도네시아어</option>
-                                <option value="th-TH">태국어</option>
                                 <option value="ja-JP">일본어</option>
                                 <option value="fr-FR">프랑스어</option>
                                 <option value="pt-PT">포르투칼어</option>
                                 <option value="zh-CN">중국어 간체</option>
                                 <option valye="pt-TW">중국어 번체</option>
+                                <option value="hi-IN">힌두어</option>
                             </select>
                         </div>
                     </div>

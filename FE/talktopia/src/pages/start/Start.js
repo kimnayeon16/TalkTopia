@@ -46,7 +46,7 @@ function Start(){
                             <li className={style["content__container__list__item"]}>olá</li>
                             <li className={style["content__container__list__item"]}>Hola</li>
                             <li className={style["content__container__list__item"]}>Ciao</li>
-                            <li className={style["content__container__list__item"]}>สวัสดี</li>
+                            <li className={style["content__container__list__item"]}>नमस्ते</li>
                             <li className={style["content__container__list__item"]}>Halo</li>
                         </ul>
                     </div>

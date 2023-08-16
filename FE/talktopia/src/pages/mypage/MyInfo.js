@@ -8,8 +8,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { reduxUserInfo } from "../../store";
 import Nav from '../../nav/Nav';
+import useTokenValidation from "../../utils/useTokenValidation";
 
 function MyInfo(){
+    useTokenValidation();
+
     const user = useSelector((state) => state.userInfo);
     
     const navigate = useNavigate();
@@ -27,7 +30,6 @@ function MyInfo(){
     const [userEmail, setUserEmail] = useState("");
     const [userImgUrl, setUserImgUrl] = useState("");
     const [userLan, setUserLan] = useState("");
-    const [userTransLan, setUserTransLan] = useState("");
     const [userAccessToken, setUserAccessToken] = useState("");
 
     const [pwValid, setPwValid] = useState(false);
@@ -118,35 +120,6 @@ function MyInfo(){
                 confirmButtonColor: '#90dbf4',
             })
         }else{
-            if(userLan === "ko-KR"){
-                setUserTransLan("ko");
-            }else if(userLan === "en-US"){
-                setUserTransLan("en");
-            }else if(userLan === "de-DE"){
-                setUserTransLan("de");
-            }else if(userLan === "ru-RU"){
-                setUserTransLan("ru");
-            }else if(userLan === "es-ES"){
-                setUserTransLan("es");
-            }else if(userLan === "it-IT"){
-                setUserTransLan("it");
-            }else if(userLan === "id-ID"){
-                setUserTransLan("id");
-            }else if(userLan === "ja-JP"){
-                setUserTransLan("ja");
-            }else if(userLan === "fr-FR"){
-                setUserTransLan("fr");
-            }else if(userLan === "zh-CN"){
-                setUserTransLan("zh-CN");
-            }else if(userLan === "zh-TW"){
-                setUserTransLan("zh-TW");
-            }else if(userLan === "pt-PT"){
-                setUserTransLan("pt");
-            }else if(userLan === "th-TH"){
-                setUserTransLan("th");
-            }
-
-
             axios.put(`${BACKEND_URL}/api/v1/myPage/modify`, {
                 userId: userId1,
                 userName: userName,
@@ -162,8 +135,7 @@ function MyInfo(){
                 },
               })
             .then((response) => {
-                console.log(response);
-                console.log(userLan);
+                console.log(response.data);
 
                 const userInfoString = localStorage.getItem("UserInfo");
                 const userInfo = JSON.parse(userInfoString);
@@ -176,7 +148,7 @@ function MyInfo(){
                 userInfo.userPw = userPw;
                 userInfo.profileUrl = userImgUrl;
                 userInfo.sttLang = userLan;
-                userInfo.transLang = userTransLan;
+                userInfo.transLang = response.data;
 
                 //다시 localStorage에 저장
                 localStorage.setItem("UserInfo", JSON.stringify(userInfo));
@@ -357,11 +329,11 @@ function MyInfo(){
                             <option value="it-IT">이탈리아어</option>
                             <option value="id-ID">인도네시아어</option>
                             <option value="ja-JP">일본어</option>
-                            <option value="th-TH">태국어</option>
                             <option value="fr-FR">프랑스어</option>
                             <option value="pt-PT">포르투칼어</option>
                             <option value="zh-CN">중국어 간체</option>
                             <option valye="pt-TW">중국어 번체</option>
+                            <option value="hi-IN">힌두어</option>
                         </select>
                     </div>
                 </div>

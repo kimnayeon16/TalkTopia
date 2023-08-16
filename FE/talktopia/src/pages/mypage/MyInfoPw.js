@@ -8,10 +8,13 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useUnload from '../../utils/useUnload';
 import Nav from '../../nav/Nav';
+import useTokenValidation from "../../utils/useTokenValidation";
 
 function MyInfoPw(){
+    useTokenValidation();
+
     const user = useSelector((state) => state.userInfo);
-    let navigate = useNavigate();
+    const navigate = useNavigate();
   
     const [userPw,setUserPw] = useState("");
    
@@ -28,7 +31,7 @@ function MyInfoPw(){
       if(userInfo.userId.charAt(0) === "*"){
         navigate('/myinfo');
       }
-    },[])
+    },[]);
 
     const onUserPwHandle = (e) => {
         setUserPw(e.target.value);
