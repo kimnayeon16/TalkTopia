@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from '../../utils';
 import axios from 'axios';
+import { AiOutlineClose } from "react-icons/ai";
 import Swal from "sweetalert2";
 
 import style from './ReportModalComponent.module.css'
@@ -97,8 +98,14 @@ function ReportModalComponent(props) {
     return (
         <>
             <div className={style['report-modal-content']}>
-                <h1>유저 신고</h1>
-                <button className={style['report-modal-close']} onClick={props.closeReportModal}>close</button>
+                <div className={style['report-modal-titlebox']}>
+                    <p className={style['report-modal-title']}>유저 신고</p>
+                </div>
+
+                <button className={style['report-modal-close']} onClick={props.closeReportModal}>
+                    <AiOutlineClose size='20'/>
+                </button>
+
                 <form onSubmit={onSubmit}>
                     <div className={style['report-reason-container']} >
                         {checkBoxList.map((item, idx) => (
@@ -109,7 +116,7 @@ function ReportModalComponent(props) {
                                     checked={checkedList.includes(item)}
                                     onChange={(e) => checkHandler(e, item)}
                                 />
-                                <label htmlFor={item} >{item}</label>
+                                <label htmlFor={item}>{item}</label>
                             </div>
                         ))}
                     </div>
