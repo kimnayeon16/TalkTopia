@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../../utils";
 import './NoficitaionDetail.css';
 import AcceptButton from "./AcceptButton.js"; // "수락" 버튼 컴포넌트를 가져옵니다.
 import DenyButton from "./DenyButton.js";
+import CloseButton from "./CloseButton.js";
 
 
 function NotificationDetail({ rmNo, closeModal }) {
@@ -47,11 +48,13 @@ function NotificationDetail({ rmNo, closeModal }) {
                 <div className="NotificationCloseButton" onClick={closeModal}>X</div>
             </div>
             <div className="NotificationBody">
-            {notificationData.rmVrSession !== "NONE" ? (
-                        <div className="NotificationDetailH1">Room Request Message</div>
+                    {notificationData.rmType === "Fail Request" ? (
+                        <div className="NotificationDetailH1">Fail Request Message</div>
                     ) : notificationData.rmVrSession === "NONE" ? (
                         <div className="NotificationDetailH1">Friend Request Message</div>
-                    ) : null}
+                    ) : (
+                        <div className="NotificationDetailH1">Room Request Message</div>
+                    )}
                 <div className="NotificationDetailP">
                     <div className="NotificationDetailLabel">Message Body</div>
                     <div className="NotificationDetailLabelChildren"> {notificationData.rmContent}</div>
@@ -75,8 +78,16 @@ function NotificationDetail({ rmNo, closeModal }) {
                                 {/* 여기에 나머지 데이터 표시 */}
             </div>
             <div className="buttonStatus">
-                <AcceptButton notification={notificationData} closeModal={closeModal} />
-                <DenyButton notification={notificationData} closeModal={closeModal} />
+            {notificationData.rmType === "Fail Request" ? (
+                    // "Fail Request"인 경우에는 CloseButton을 렌더링
+                    <CloseButton closeModal={closeModal} />
+                ) : (
+                    // 그 외의 경우에는 AcceptButton과 DenyButton을 렌더링
+                    <>
+                        <AcceptButton notification={notificationData} closeModal={closeModal} />
+                        <DenyButton notification={notificationData} closeModal={closeModal} />
+                    </>
+                )}
             </div>
         </div>
     );

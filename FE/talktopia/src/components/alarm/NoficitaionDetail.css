@@ -68,3 +68,17 @@
     font-family: 'Dovemayo_wild';
     right:0;
 }
+
+.NotificationDetailLabelMain{
+    display: block;
+    font-family: 'Dovemayo_wild';
+    width:150px;
+    margin: auto;
+    font-weight: bold; /* 굵게 설정 */
+    font-size: 18px; /* 크기 조정 */
+}
+.NotificationDetailLabelChildrenMain{
+    font-family: 'Dovemayo_wild';
+    width : 200px;
+
+}
