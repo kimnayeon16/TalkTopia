@@ -180,6 +180,19 @@ public class FcmService {
 			firebaseMessaging.send(message);
 			return new Message("Notification sent successfully");
 		}
+		else if(userStatusService.getUserStatus(user.getUserId()).equals("OFFLINE")) {
+			Reminder reminder = Reminder.builder()
+				.rmContent(body)
+				.rmType("Friend Request")
+				.user(user)
+				.rmVrSession("NONE")
+				.rmGuest(user.getUserId())
+				.rmHost(hostUser.getUserId())
+				.rmRead(false)
+				.build();
+			reminderRepository.save(reminder);
+			return new Message("Notification sent successfully but he is OFFLINE");
+		}
 
 		return new Message("This user is not logged in.");
 
