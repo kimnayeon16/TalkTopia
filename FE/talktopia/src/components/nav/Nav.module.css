@@ -1,10 +1,31 @@
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.title {
+=======
 .title{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   position: fixed;
   font-family: 'EF_jejudoldam';
   color: #012A4A;
   font-size: 35px;
   margin-left: -1250px;
   margin-bottom: 650px;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+  z-index: 9;
+}
+
+/* 관리자 페이지 */
+.admin-space {
+  position: relative;
+  display: inline-block;
+}
+
+.admin {
+  width: 55px;
+  position: fixed;
+  top: 20px;
+  right: 410px;
+  z-index: 9;
+=======
   z-index: 10;
 }
 
@@ -20,16 +41,33 @@ position: fixed;
 top: 20px;
 right: 410px;
 z-index: 10;
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
 }
+
 
 
 
 /* 내 정보 */
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.user-space {
+=======
 .user-space{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   position: relative;
   display: inline-block;
 }
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.user {
+  width: 55px;
+  position: fixed;
+  top: 20px;
+  right: 320px;
+  z-index: 9;
+}
+
+.meModal {
+=======
 .user{
   width:55px;
   position: fixed;
@@ -39,6 +77,7 @@ z-index: 10;
 }
 
 .meModal{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   font-family: 'Dovemayo_wild';
   font-size: 17px;
   width: 160px;
@@ -55,12 +94,20 @@ z-index: 10;
   flex-direction: column;
 }
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.mytext {
+=======
 .mytext{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   margin: 10px 0;
   font-size: clamp(14px, 1.5vw, 18px);
 }
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.mytext:hover {
+=======
 .mytext:hover{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   background-color: rgba(122, 184, 243, 0.896);
   opacity: 0.5;
   border-radius: 15px;
@@ -69,22 +116,39 @@ z-index: 10;
 
 
 /* 알림 */
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.dding-space {
+=======
 .dding-space{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   position: relative;
   display: inline-block;
 }
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.dding {
+  width: 60px;
+=======
 .dding{
   width:60px;
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   height: auto;
   position: fixed;
   top: 17px;
   right: 230px;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+  z-index: 9;
+  transition: all 0.3s;
+}
+
+.ddingModal {
+=======
   z-index: 10;
   transition: all 0.3s;
 }
 
 .ddingModal{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   font-family: 'Dovemayo_wild';
   font-size: 17px;
   width: 300px;
@@ -97,6 +161,18 @@ z-index: 10;
   right: 115px;
   margin: 0;
   padding: 10px;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  transition: all 0.3s;
+}
+
+
+=======
 
   border: 1px solid #e0e0e0;
   border-radius: 4px;
@@ -107,6 +183,7 @@ z-index: 10;
   }
 
 
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
 .notification-item {
   padding: 10px 15px;
   border-bottom: 1px solid #e0e0e0;
@@ -180,16 +257,40 @@ z-index: 10;
 }
 
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+
+=======
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
 
 
 
 
 /* 언어 변경(지구) */
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.earth-space {
+=======
 .earth-space{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   position: relative;
   display: inline-block;
 }
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.earth {
+  width: 50px;
+  height: auto;
+  position: fixed;
+  top: 24px;
+  right: 140px;
+  z-index: 9;
+}
+
+.earthModal {
+  font-family: 'Dovemayo_wild';
+  font-size: 17px;
+  width: 120px;
+  height: 90px;
+=======
 .earth{
   width:50px;
   position: fixed;
@@ -205,6 +306,7 @@ z-index: 10;
   height: 90px;
   margin-top: -320px;
   margin-left: 1350px;
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   border-radius: 15px;
   background-color: white;
   opacity: 0.8;
@@ -216,6 +318,15 @@ z-index: 10;
   padding: 10px;
   display: flex;
   flex-direction: column;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+}
+
+.countrytext {
+  margin: 5px 0;
+}
+
+.countrytext:hover {
+=======
 
 }
 
@@ -224,6 +335,7 @@ z-index: 10;
 }
 
 .countrytext:hover{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   background-color: rgba(122, 184, 243, 0.896);
   opacity: 0.5;
   border-radius: 15px;
@@ -232,7 +344,11 @@ z-index: 10;
 
 
 /* faq */
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.faq-space {
+=======
 .faq-space{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   position: relative;
   display: inline-block;
 }
@@ -252,6 +368,12 @@ z-index: 10;
   font-size: 17px;
   width: 120px;
   height: 90px;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+
+  margin-top: -320px;
+  margin-left: 1350px;
+=======
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   border-radius: 15px;
   background-color: white;
   opacity: 0.8;
@@ -263,6 +385,15 @@ z-index: 10;
   padding: 10px;
   display: flex;
   flex-direction: column;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+}
+
+.faqtext {
+  margin: 5px 0;
+}
+
+.faqtext:hover {
+=======
 
 }
 
@@ -271,16 +402,100 @@ z-index: 10;
 }
 
 .faqtext:hover{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   background-color: rgba(122, 184, 243, 0.896);
   opacity: 0.5;
   border-radius: 15px;
   color: white;
 }
 
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+.img {
+=======
 .img{
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
   width: '50px';
   height: '50px';
   border-radius: '50%';
   overflow: 'hidden';
   margin-top: 15px;
+<<<<<<< FE/talktopia/src/components/nav/Nav.module.css
+}
+
+
+/* -------------- 반응형 구간 ------------------------- */
+/* 큰화면 */
+@media only screen and (min-width : 1900px) {
+  .user {
+    zoom: 1.5
+  }
+
+  .dding {
+    zoom: 1.5
+  }
+
+  .earth {
+    zoom: 1.5
+  }
+
+  .faq {
+    zoom: 1.5
+  }
+}
+
+/* 작은화면 */
+@media only screen and (max-width: 1200px) {
+  .user {
+    zoom: 1
+  }
+
+  .dding {
+    zoom: 1
+  }
+
+  .earth {
+    zoom: 1
+  }
+
+  .faq {
+    zoom: 1
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .user {
+    zoom: 0.7
+  }
+
+  .dding {
+    zoom: 0.7
+  }
+
+  .earth {
+    zoom: 0.7
+  }
+
+  .faq {
+    zoom: 0.7
+  }
+}
+
+@media only screen and (max-width: 546px) {
+  .user {
+    zoom: 0.5
+  }
+
+  .dding {
+    zoom: 0.5
+  }
+
+  .earth {
+    zoom: 0.5
+  }
+
+  .faq {
+    zoom: 0.5
+  }
+=======
+>>>>>>> FE/talktopia/src/components/nav/Nav.module.css
 }

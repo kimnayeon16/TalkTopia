@@ -1,9 +1,11 @@
-.friend-list-modal-overlay{
+.friend-list-modal-overlay {
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 100vw; /* 모달창 너비 조정 */
-    height: 100vh; /* 모달창 높이 조정 */
+    width: 100vw;
+    /* 모달창 너비 조정 */
+    height: 100vh;
+    /* 모달창 높이 조정 */
 
     /* backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px ); */
@@ -13,47 +15,63 @@
     z-index: 100;
 }
 
-.friend-list-modal{
+.friend-list-modal {
     position: absolute;
     right: 0%;
     bottom: 25%;
 
-    width: 350px;
+    width: 370px;
     height: 60%;
 
     padding: 20px;
     border-radius: 20px;
-    background-color: white;
-    
-    word-break: break-all;
+
+    word-break: keep-all;
+    font-family: 'Dovemayo_wild';
+
+    /* blur */
+    /* box-shadow: 0 5px 30px rgba(0, 0, 0, .2); */
+    border-radius: 20px;
+
+    background: linear-gradient(rgba(255, 255, 255, 0.636) 60%, rgba(255, 255, 255, 0.347));
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
 }
 
-.friend-list{
+.friend-list {
     overflow-y: scroll;
     overflow-x: hidden;
+    margin-top: 30px;
+    height: 80%;
+    border-radius: 20px;
 }
 
-.friend-list-h2{
-    margin: 28px 0 0 0;
+.friend-list-h2 {
+    /* margin: 20px 0 0 0; */
+    padding-left: 10px;
     font-weight: 800;
+    text-align: left;
 }
 
 /* 스크롤바 */
 .friend-list::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
-  
+
 .friend-list::-webkit-scrollbar-track {
     /* background-color: grey; */
     border-radius: 10px;
-    box-shadow: inset 0px 0px 5px white;
+    /* box-shadow: inset 0px 0px 5px white; */
 }
-  
+
 .friend-list::-webkit-scrollbar-thumb {
-    background-color: #2f3542;
+    background-color: rgba(0, 0, 0, 0.204);
     border-radius: 10px;
     /* background-clip: padding-box; */
-    border: 2px solid transparent;
+    border: 1px solid transparent;
 }
 
 .modal-search-btn{
@@ -68,7 +86,7 @@
 }
 
 
-.modal-close-btn{
+.modal-close-btn {
     position: absolute;
     right: 12px;
     top: 6px;
@@ -76,59 +94,157 @@
     background: none;
     border: none;
     font-size: 1.5em;
-    color: #adadad;
+    color: #05050592;
     display: inline;
 }
 
 
-.friend-section{
+.friend-section {
     display: grid;
     grid-template-columns: 15% 70% 15%;
+    align-items: center;
 
-    margin: 30px 0 0 0;
-}
-.friend-section:hover{
-    background-color: #d8dadf;
+    padding: 10px;
+
+
+    transition: all 0.2s ease-out;
+
 }
 
-.friend-section-profile{
+.friend-section:hover {
+    background-color: #ffffff6e;
+}
+
+/* 프사 뒷배경 */
+.friend-section-profile {
     grid-column: 1;
-    width: 100%;
-    box-sizing: border-box;
-}
-.friend-section-profile img{
-    width: 100%;
+    width: 50px;
     height: 50px;
-    border-radius: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 5px 10px rgba(255, 255, 255, 0.3);
+
 }
 
-.friend-section-name{
+/* 프사 이미지 */
+.friend-section-profile img {
+    position: relative;
+    top: 8%;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.friend-section-profile::after {
+    content: "●";
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+    position: relative;
+    top: -45px;
+    right: -18px;
+    z-index: 1;
+}
+
+/* 상태따라 다른 색 */
+.friend-section-profile-online::after {
+    color: rgb(40, 214, 95);
+}
+
+.friend-section-profile-busy::after {
+    color: rgb(214, 124, 40);
+}
+
+.friend-section-profile-offline::after {
+    color: rgb(214, 40, 40);
+}
+
+/* 프사 이미지 끝 */
+
+.friend-section-name {
     grid-column: 2;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 15px;
+    padding: 0 10px 0 20px;
 
     word-break: break-all;
 }
-.friend-section-name *:first-of-type{
+
+.friend-section-name *:first-of-type {
     font-size: small;
     text-align: left;
+    color: #949498;
 }
-.friend-section-name *:last-of-type{
+
+.friend-section-name *:last-of-type {
     font-size: larger;
     text-align: left;
+    color: #4a4b4d;
+    font-weight: 600;
 }
-.friend-section-name-status{
 
-}
-
-.enter-chat-btn{
+/* 채팅하기 버튼 */
+.enter-chat-btn {
     display: inline;
     grid-column: 3;
     border: none;
-    width: 100%;
-    height: 100%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 
-    background-color: rgb(158, 158, 255);
-    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+
+    background-color: rgba(0, 0, 0, 0.204);
+    border: 2px solid rgba(255, 255, 255, 0.919);
+
+}
+
+.enter-chat-btn * {
+    width: 24px;
+    position: relative;
+    top: 2px;
+    right: 1px;
+    color: white;
+}
+
+/* -------------- 반응형 구간 ------------------------- */
+/* 큰화면 */
+@media only screen and (min-width : 1900px) {
+    .friend-list-modal{
+        zoom : 1.5
+    }
+}
+@media only screen and (min-height : 1900px) {
+    .friend-list{
+        height: 95%;
+    }
+}
+
+/* 작은화면 */
+@media only screen and (max-width: 1200px) {
+    .friend-list-modal{
+        zoom : 1
+    }
+}
+@media only screen and (max-height: 900px) {
+    .friend-list{
+        height: 75%;
+    }
+}
+@media only screen and (max-height: 760px) {
+    .friend-list{
+        height: 70%;
+    }
+}
+
+@media only screen and (max-width: 950px) {
+    .friend-list-modal{
+        zoom : 0.7
+    }
+}
+
+@media only screen and (max-width: 546px) {
+    .friend-list-modal{
+        zoom : 0.5
+    }
 }
