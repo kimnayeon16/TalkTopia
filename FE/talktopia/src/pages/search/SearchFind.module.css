@@ -222,6 +222,7 @@
   height: 270px;
   overflow-x: hidden;
   overflow-y: scroll;
+  max-height: 300px;
 
   border-radius: 20px;
 }
