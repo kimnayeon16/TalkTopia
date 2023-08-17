@@ -188,6 +188,7 @@
   /* color: #4a4b4d; */
   color: rgb(92, 93, 97);
 }
+
 .chat-msg-parent {
   margin-bottom: 10px;
 }
@@ -209,6 +210,11 @@
   border: 2px solid white;
   margin: 0 13px 0 10px;
   background-color: rgba(233, 234, 236, 0.524);
+}
+
+.chat-msg-original {
+  color: rgb(160 161 167);
+  font-size: 14px;
 }
 
 /* 친구 채팅 윗부분 프사, 시간 */

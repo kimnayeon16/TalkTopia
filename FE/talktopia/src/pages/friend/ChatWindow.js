@@ -69,7 +69,24 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
     setChatTimes(formatedTimes);
     setTranslatedChatLog(translatedMessages);
 
-    // After chatLog is updated, scroll to the bottom of the chat window
+    // 번역
+    // 번역이 비동기 처리되어 저장되므로 순서대로 번역결과가 저장되도록 할 것
+    const translatedPromises = chats.map(async (chat)=>{
+      const sourceLang = chat.scrcSenderId === user.userId ? user.transLang : friend.userLangTrans;
+      const targetLang = chat.scrcSenderId === user.userId ? friend.userLangTrans : user.transLang;
+      const translated = await translationHandler(chat.scrcContent, sourceLang, targetLang);
+      return translated;
+    })
+
+    Promise.all(translatedPromises)
+      .then(message => {
+        console.log(message);
+        setTranslatedChatLog(message);
+      });
+    // 번역 끝
+    
+
+    // 채팅 업데이트 후 스크롤 맨 밑으로 내림
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
@@ -136,11 +153,14 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
       setStompClient(stomp);
       
       stomp.subscribe(`/topic/sub/${sessionId}`, async (message) => {
-        setChatLog(prevLog => [...prevLog, JSON.parse(message.body)]);
-        setChatTimes(prevTimes => [...prevTimes, formatDate(JSON.parse(message.body).scrcSendTime)]);
+        const chat = JSON.parse(message.body);
+        setChatLog(prevLog => [...prevLog, chat]);
+        setChatTimes(prevTimes => [...prevTimes, formatDate(chat.scrcSendTime)]);
 
         //번역
-        let translated = await translationHandler(JSON.parse(message.body).scrcContent, friend.usreLangTrans, user.transLang);
+        const sourceLang = chat.scrcSenderId === user.userId ? user.transLang : friend.userLangTrans;
+        const targetLang = chat.scrcSenderId === user.userId ? friend.userLangTrans : user.transLang;
+        const translated = await translationHandler(chat.scrcContent, sourceLang, targetLang);
         setTranslatedChatLog(prevLog => [...prevLog, translated]);
       })
     })
@@ -329,7 +349,14 @@ function ChatWindow({friend, sessionId, showChat, onShowChat, chats}) {
                     }
                     
                     
-                    <div className={`${style["chat-msg"]}`}>{chat.scrcContent}</div>
+                    <div className={`${style["chat-msg"]}`}>
+                      <div className={`${style["chat-msg-original"]}`}>
+                        {chat.scrcContent}
+                      </div>
+                      <div className={`${style["chat-msg-translated"]}`}>
+                        {translatedChatLog[i]}
+                      </div>
+                    </div>
                       <span className={`${style["chat-send-time"]}`}>{chatTimes[i]}</span>
                   </div>
                 }
