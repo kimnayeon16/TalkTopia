@@ -877,6 +877,8 @@
 }
 
 .button {
+  /* position: relative; */
+  bottom : 10px;
   width: 100px;
   /* background-color: white; */
   /* background: linear-gradient(rgba(0, 0, 0, 0.028), transparent, #e0feff66); */
@@ -901,14 +903,19 @@
 
 /* 펭귄 모달 */
 .speech-bubble {
-  width: 250px;
-  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 300px;
+  height: 140px;
   position: relative;
   background: #9ad1d6;
   border-radius: 15px;
   margin-left: 130px;
   margin-top: -60px;
-  padding-top: 15px;
+  padding: 10px;
+
   z-index: 10;
 
   /* blur */
@@ -944,14 +951,18 @@
 
 /* 친구 모달 */
 .speech-bubble1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 300px;
-  height: 120px;
+  height: 140px;
   position: relative;
   background: #9ad1d6;
   border-radius: 15px;
   margin-left: 240px;
   margin-top: 10px;
-  padding-top: 15px;
+  padding: 10px;
   z-index: 11;
 
   /* blur */
@@ -985,14 +996,19 @@
 }
 
 .speech-bubble2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 300px;
-  height: 120px;
+  height: 140px;
   position: relative;
   background: #9ad1d6;
   border-radius: 15px;
   margin-left: 140px;
   margin-top: -120px;
-  padding-top: 15px;
+  padding: 10px;
+
   z-index: 30;
 
   /* blur */
@@ -1027,15 +1043,20 @@
   -webkit-backdrop-filter: blur(4px);
 }
 
+/* 곰 */
 .speech-bubble3 {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   bottom: 100px;
   width: 300px;
-  height: 120px;
+  height: 140px;
   background: #9ad1d6;
   border-radius: 15px;
   margin-left: -380px;
-  padding-top: 15px;
+  padding: 10px;
   z-index: 20;
 
   /* blur */
