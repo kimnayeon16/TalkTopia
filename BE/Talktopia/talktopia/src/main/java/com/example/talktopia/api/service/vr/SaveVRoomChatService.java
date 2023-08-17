@@ -91,11 +91,14 @@ public class SaveVRoomChatService {
 		List<SaveVRoomChatLog> logList = saveVRoomChatLogRepository.findAll();
 
 		// 해당 SaveVRoom 값들 Res로 Build 후 list에 추가
-		if(!logList.isEmpty()) {
+		if (!logList.isEmpty()) {
 			for (SaveVRoomChatLog logs : logList) {
-				resList.add(new SaveVRoomChatLogRes(logs.getVrLogNo(), logs.getSaveVRoom().getSvrCreateTime(),
-					logs.getSaveVRoom().getSvrCloseTime(), logs.getSaveVRoom().getSvrSession(),
-					logs.getVrChatLogFileUrl()));
+				SaveVRoom saveVRoom = logs.getSaveVRoom();
+				if (saveVRoom != null) {
+					resList.add(new SaveVRoomChatLogRes(logs.getVrLogNo(), saveVRoom.getSvrCreateTime(),
+						saveVRoom.getSvrCloseTime(), saveVRoom.getSvrSession(),
+						logs.getVrChatLogFileUrl()));
+				}
 			}
 		}
 
