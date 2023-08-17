@@ -3,6 +3,8 @@
   top: 15%;
   right: 370px;
   width: 550px;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 0fr 0fr 5fr;
   height: 70%;
   padding: 20px;
   /*이미지를 커버할 수 있도록 설정*/
@@ -64,7 +66,7 @@
 }
 
 .button-input {
-  margin: auto;
+  /* margin: auto; */
   /* padding: 10px; */
 }
 
@@ -160,10 +162,33 @@
 } */
 
 
-.search-resultss {
+.search-results {
   width: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
   /* position: relative; */
 }
+
+/* 스크롤바 */
+.search-results::-webkit-scrollbar {
+  width: 4px;
+}
+
+.search-results::-webkit-scrollbar-track {
+  /* background-color: grey; */
+  border-radius: 10px;
+  /* box-shadow: inset 0px 0px 5px white; */
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background-color: #8db1c7;
+
+  border-radius: 10px;
+  /* background-clip: padding-box; */
+  border: 1px solid transparent;
+}
+
 
 .modaltitle {
   font-size: 17px;
@@ -177,7 +202,7 @@
 }
 
 .modaltitle1 {
-  margin: 0;
+  margin: 0 0 10px 0;
   display: inline-block;
   text-align: left;
   font-size: 25px;
@@ -219,33 +244,12 @@
 
 .table-container {
   margin: 10px 0 0 0;
-  height: 270px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  max-height: 300px;
+  /* height: 270px; */
+  /* max-height: 300px; */
+  transition: height 0.2s ease-out;
 
   border-radius: 20px;
 }
-
-/* 스크롤바 */
-.table-container::-webkit-scrollbar {
-  width: 4px;
-}
-
-.table-container::-webkit-scrollbar-track {
-  /* background-color: grey; */
-  border-radius: 10px;
-  /* box-shadow: inset 0px 0px 5px white; */
-}
-
-.table-container::-webkit-scrollbar-thumb {
-  background-color: #8db1c7;
-
-  border-radius: 10px;
-  /* background-clip: padding-box; */
-  border: 1px solid transparent;
-}
-
 
 
 .row {
@@ -345,26 +349,12 @@
       zoom : 1.5
   }
 }
-@media only screen and (min-height : 1900px) {
-  .table-container{
-      height: 95%;
-  }
-}
+
 
 /* 작은화면 */
 @media only screen and (max-width: 1200px) {
   .janjan{
       zoom : 1
-  }
-}
-@media only screen and (max-height: 900px) {
-  .table-container{
-      height: 80%;
-  }
-}
-@media only screen and (max-height: 760px) {
-  .table-container{
-      height: 70%;
   }
 }
 

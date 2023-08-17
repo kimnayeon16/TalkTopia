@@ -23,6 +23,7 @@ z-index: 10;
 }
 
 .adminModal{
+  position: absolute;
   font-family: 'Dovemayo_wild';
   font-size: 17px;
   width: 160px;
@@ -31,7 +32,6 @@ z-index: 10;
   background-color: white;
   opacity: 0.8;
   z-index: 100;
-  position: fixed;
   top: 75px;
   right: 360px;
   margin: 0;
@@ -124,6 +124,26 @@ z-index: 10;
   transition: all 0.3s;
 }
 
+/* 스크롤바 */
+.ddingModal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ddingModal::-webkit-scrollbar-track {
+  /* background-color: grey; */
+  border-radius: 10px;
+  /* box-shadow: inset 0px 0px 5px white; */
+}
+
+.ddingModal::-webkit-scrollbar-thumb {
+  background-color: #8db1c7;
+
+  border-radius: 10px;
+  /* background-clip: padding-box; */
+  border: 1px solid transparent;
+}
+
+
 
 .notification-item {
   padding: 10px 15px;
@@ -137,7 +157,7 @@ z-index: 10;
   
   /* 간격 및 둥근 테두리 스타일 추가 */
   margin-bottom: 8px;      /* 아이템 간의 간격 설정 */
-  border-radius: 5px;      /* 둥근 테두리 설정 */
+  border-radius: 20px;      /* 둥근 테두리 설정 */
 
   display: flex;           /* 플렉스박스 설정 */
   align-items: center;     /* 수직 중앙 정렬 */
@@ -170,6 +190,7 @@ z-index: 10;
   text-align: center;
   border-top: 1px solid #e0e0e0;
   transition: background-color 0.2s;
+  border-radius: 20px;
 }
 
 .refresh-button:hover {
@@ -307,74 +328,74 @@ z-index: 10;
 /* -------------- 반응형 구간 ------------------------- */
 /* 큰화면 */
 @media only screen and (min-width : 1900px) {
-  .user {
+  .user, .meModal {
     zoom: 1.5
   }
 
-  .dding {
+  .dding, .ddingModal {
     zoom: 1.5
   }
 
-  .earth {
+  .earth, .earthModal {
     zoom: 1.5
   }
 
-  .faq {
+  .faq, .faqModal {
     zoom: 1.5
   }
 }
 
 /* 작은화면 */
 @media only screen and (max-width: 1200px) {
-  .user {
+  .user, .meModal {
     zoom: 1
   }
 
-  .dding {
+  .dding, .ddingModal {
     zoom: 1
   }
 
-  .earth {
+  .earth, .earthModal {
     zoom: 1
   }
 
-  .faq {
+  .faq, .faqModal {
     zoom: 1
   }
 }
 
 @media only screen and (max-width: 950px) {
-  .user {
+  .user, .meModal {
     zoom: 0.7
   }
 
-  .dding {
+  .dding, .ddingModal {
     zoom: 0.7
   }
 
-  .earth {
+  .earth, .earthModal {
     zoom: 0.7
   }
 
-  .faq {
+  .faq, .faqModal {
     zoom: 0.7
   }
 }
 
 @media only screen and (max-width: 546px) {
-  .user {
+  .user, .meModal {
     zoom: 0.5
   }
 
-  .dding {
+  .dding, .ddingModal {
     zoom: 0.5
   }
 
-  .earth {
+  .earth, .earthModal {
     zoom: 0.5
   }
 
-  .faq {
+  .faq, .faqModal {
     zoom: 0.5
   }
 }
