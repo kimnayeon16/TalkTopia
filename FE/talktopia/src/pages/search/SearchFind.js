@@ -137,68 +137,53 @@ const modalChange = () => {
             )}
         </div>
         <hr className={`${style["search-find-hr"]}`}></hr>
-        <div className={`${style["search-resultss"]}`}>
         <h2 className={`${style.modaltitle1}`}>{t(`searchFind.searchFind9`)}</h2>
+        <div className={`${style["search-results"]}`}>
           <div className={`${style.container}`}>
-
-            <div className={`${style.container2}`}>
-              <div className={`${style.container3}`}>
-                {
-                searchResults.length > 0 ? (
-                  <div className={`${style["table-container"]}`}>
-                    {searchResults.map((user, index) => (
-                      <div className={`${style.row}`} key={index}>
-
-                        {/* <div className={`${style.image1}`}>
-                          <img src={user.userImg} alt={`프로필 이미지 ${user.userImg}`} className={`${style["img-small"]}`}/>
-                        </div> */}
-                        
-                        {/* 프사 영역 */}
-                        {/* 접속한사람 */}
-                        { user.userStatus == "ONLINE" && (
-                          <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-online"]}`}>
-                            <img src={user.userImg}></img>
-                          </div>)
-                        }
-                        {/* 다른용무중 */}
-                        { user.userStatus == "BUSY" && (
-                          <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-busy"]}`}>
-                            <img src={user.userImg}></img>
-                          </div>)
-                        }
-                        {/* 미접속 */}
-                        { (user.userStatus == "OFFLINE"  || user.userStatus == null) && (
-                          <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
-                            <img src={user.userImg}></img>
-                          </div>)
-                        }
-                        {/* 프사 영역 끝  */}
-
-                        {/* 언어 */}
-                        <div className={`${style.language}`}>{user.userLng}</div>
-
-                        {/* 이름 영역 */}
-                        <div className={`${style["user-name"]}`}>
-                          <div>{user.userId}</div>
-                          <div className={`${style.name1}`}>{user.userName}</div>
-                        </div>
-
-
-                        {/* <div className={`${style.status1}`}>{user.userStatus}</div> */}
-
-                        <div className={`${style.add}`}>
-                          <AddFriendButton userId={userInfo.userId} friendId={user.userId} />    
-                        </div>
+            {
+              searchResults.length > 0 ? (
+                <div className={`${style["table-container"]}`}>
+                  {searchResults.map((user, index) => (
+                    <div className={`${style.row}`} key={index}>                        {/* <div className={`${style.image1}`}>
+                        <img src={user.userImg} alt={`프로필 이미지 ${user.userImg}`} className={`${style["img-small"]}`}/>
+                      </div> */}
+                      
+                      {/* 프사 영역 */}
+                      {/* 접속한사람 */}
+                      { user.userStatus == "ONLINE" && (
+                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-online"]}`}>
+                          <img src={user.userImg}></img>
+                        </div>)
+                      }
+                      {/* 다른용무중 */}
+                      { user.userStatus == "BUSY" && (
+                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-busy"]}`}>
+                          <img src={user.userImg}></img>
+                        </div>)
+                      }
+                      {/* 미접속 */}
+                      { (user.userStatus == "OFFLINE"  || user.userStatus == null) && (
+                        <div className={`${style["friend-section-profile"]} ${style["friend-section-profile-offline"]}`}>
+                          <img src={user.userImg}></img>
+                        </div>)
+                      }
+                      {/* 프사 영역 끝  */}                        {/* 언어 */}
+                      <div className={`${style.language}`}>{user.userLng}</div>                        {/* 이름 영역 */}
+                      <div className={`${style["user-name"]}`}>
+                        <div>{user.userId}</div>
+                        <div className={`${style.name1}`}>{user.userName}</div>
+                      </div>                        {/* <div className={`${style.status1}`}>{user.userStatus}</div> */}                        <div className={`${style.add}`}>
+                        <AddFriendButton userId={userInfo.userId} friendId={user.userId} />    
                       </div>
-                    ))}
-                  </div>) 
-                  : 
-                  (
-                    <p className={`${style["no-results-message"]}`}>{t(`searchFind.searchFind16`)}</p>
-                  )
-                }
-              </div>
-            </div>
+                    </div>
+                  ))}
+                </div>
+                ) 
+                : 
+                (
+                  <p className={`${style["no-results-message"]}`}>{t(`searchFind.searchFind16`)}</p>
+                )
+              }
           </div>
         </div>
     </div>
