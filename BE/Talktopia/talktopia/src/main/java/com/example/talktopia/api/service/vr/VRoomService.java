@@ -341,6 +341,7 @@ public class VRoomService {
 			// Return the response to the client
 			// 토큰정보와 상태 정보 리턴
 			userStatusService.updateUserStatus(user.getUserId(),"BUSY");
+			saveVroom(roomId);
 			return vRoomRes;
 
 		} catch (Exception e) {
