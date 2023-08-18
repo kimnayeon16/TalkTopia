@@ -37,7 +37,7 @@ function useTokenValidation(userInfo){
                 localStorage.removeItem("UserInfo");
                 Swal.fire({
                     icon: "error",
-                    title:  t(`useTokenValidation.useTokenValidation1`)+ <br/> + t(`useTokenValidation.JoinLogin2`),
+                    title:  t(`useTokenValidation.useTokenValidation1`)+ <br/> + t(`useTokenValidation.useTokenValidation2`),
                     text:  t(`useTokenValidation.useTokenValidation3`),
                     confirmButtonText:  t(`useTokenValidation.useTokenValidation4`),
                     confirmButtonColor: '#90dbf4',
